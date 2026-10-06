@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semantic Playback</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true"></span>Semantic Playback</div>
+    <div class="title" id="title">—</div>
+    <div class="chips">
+      <span class="chip" id="chip-conn" title="Player bridge">offline</span>
+      <span class="chip" id="chip-interp" title="Interpreter">rules</span>
+      <span class="chip" id="chip-embed" title="Embedding model">—</span>
+      <button class="chip toggle" id="chip-spoilers" data-focus title="Spoiler protection">spoilers: strict</button>
+      <button class="chip toggle" id="chip-voice" data-focus title="Spoken replies">voice replies: on</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage">
+      <div class="video-wrap">
+        <video id="video" playsinline preload="auto"></video>
+        <div class="start" id="start"><button data-focus id="start-btn">▶ Press OK to start</button></div>
+        <div class="hud">
+          <div class="rate" id="hud-rate"></div>
+          <div class="loop" id="hud-loop"></div>
+        </div>
+        <div class="toast" id="toast" hidden></div>
+        <div class="cards" id="cards"></div>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="track" id="track">
+          <div class="watched" id="watched"></div>
+          <div class="loop-range" id="loop-range" hidden></div>
+          <div class="playhead" id="playhead"></div>
+        </div>
+        <div class="times"><span id="t-pos">0:00</span><span id="t-dur">0:00</span></div>
+      </div>
+      <form class="ask" id="ask" autocomplete="off">
+        <button type="button" class="mic" id="mic" data-focus title="Hold to talk (browser speech recognition)">🎙</button>
+        <input id="q" data-focus placeholder="Say or type: “go back to the replay of the last goal”" />
+        <button type="submit" data-focus class="go">Ask</button>
+      </form>
+      <div class="suggest" id="suggest"></div>
+    </section>
+
+    <aside class="panel">
+      <nav class="tabs">
+        <button class="tab active" data-tab="pipeline" data-focus>Pipeline</button>
+        <button class="tab" data-tab="context" data-focus>Context Envelope</button>
+        <button class="tab" data-tab="memory" data-focus>Viewing Memory</button>
+      </nav>
+      <div class="tabbody" id="tab-pipeline">
+        <div class="utt" id="utt">Ask something to see the real pipeline: input → context → intent → MCP tool calls → player.</div>
+        <ol class="trace" id="trace"></ol>
+      </div>
+      <div class="tabbody" id="tab-context" hidden><pre id="envelope" class="json">—</pre></div>
+      <div class="tabbody" id="tab-memory" hidden><ol class="memory" id="memory"></ol></div>
+    </aside>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

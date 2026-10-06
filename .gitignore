@@ -34,3 +34,8 @@ Thumbs.db
 .tmp/
 .cache/
 artifacts/
+
+# Generated data (regenerate with npm run media:generate && npm run ingest)
+data/clips/
+data/memory/
+data/content/*/match.mp4

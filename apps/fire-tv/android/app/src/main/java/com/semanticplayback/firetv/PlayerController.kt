@@ -1,0 +1,98 @@
+package com.semanticplayback.firetv
+
+import android.os.Handler
+import android.os.Looper
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackParameters
+import androidx.media3.exoplayer.ExoPlayer
+import org.json.JSONObject
+
+/**
+ * Fire OS implementation of the Semantic Playback player protocol on Media3 ExoPlayer.
+ * Mirrors apps/fire-tv/web/player.js: load, seek, play, pause, set_rate, play_segment, loop, clear_loop.
+ * All methods run on the main thread (ExoPlayer's application looper).
+ */
+class PlayerController(private val player: ExoPlayer, private val deviceId: String, private val serverBase: String) {
+    var contentId: String? = null
+        private set
+    private var loopStart = 0L
+    private var loopEnd = 0L
+    private var loopRemaining = 0
+    private var segmentEnd = -1L
+    private val handler = Handler(Looper.getMainLooper())
+    var onChange: () -> Unit = {}
+
+    private val enforcer = object : Runnable {
+        override fun run() {
+            val pos = player.currentPosition
+            if (loopRemaining > 0 && pos >= loopEnd) {
+                loopRemaining -= 1
+                if (loopRemaining > 0) player.seekTo(loopStart) else clearRanges()
+                onChange()
+            } else if (segmentEnd >= 0 && pos >= segmentEnd) {
+                segmentEnd = -1
+                player.pause()
+                onChange()
+            }
+            handler.postDelayed(this, 40)
+        }
+    }
+
+    init {
+        handler.post(enforcer)
+    }
+
+    private fun clearRanges() {
+        loopRemaining = 0
+        segmentEnd = -1
+    }
+
+    fun state(): JSONObject = JSONObject().apply {
+        put("deviceId", deviceId)
+        put("deviceKind", "fireos")
+        put("contentId", contentId ?: JSONObject.NULL)
+        put("positionMs", player.currentPosition)
+        put("durationMs", if (player.duration > 0) player.duration else 0)
+        put("paused", !player.playWhenReady)
+        put("rate", player.playbackParameters.speed.toDouble())
+        put("loop", if (loopRemaining > 0) JSONObject().put("startMs", loopStart).put("endMs", loopEnd).put("remaining", loopRemaining) else JSONObject.NULL)
+        put("segment", if (segmentEnd >= 0) JSONObject().put("startMs", loopStart).put("endMs", segmentEnd) else JSONObject.NULL)
+        put("updatedAt", System.currentTimeMillis())
+    }
+
+    /** Executes a command; returns null on success or an error message. */
+    fun exec(cmd: JSONObject): String? {
+        when (cmd.getString("cmd")) {
+            "load" -> {
+                val id = cmd.getString("contentId")
+                if (id != contentId) {
+                    contentId = id
+                    val url = cmd.getString("url").let { if (it.startsWith("http")) it else serverBase + it }
+                    player.setMediaItem(MediaItem.fromUri(url))
+                    player.prepare()
+                }
+                if (cmd.has("positionMs")) player.seekTo(cmd.getLong("positionMs"))
+            }
+            "seek" -> { clearRanges(); player.seekTo(cmd.getLong("positionMs")) }
+            "play" -> player.play()
+            "pause" -> player.pause()
+            "set_rate" -> player.playbackParameters = PlaybackParameters(cmd.getDouble("rate").toFloat())
+            "play_segment" -> {
+                loopRemaining = 0
+                loopStart = cmd.getLong("startMs"); segmentEnd = cmd.getLong("endMs")
+                player.seekTo(loopStart); player.play()
+            }
+            "loop" -> {
+                segmentEnd = -1
+                loopStart = cmd.getLong("startMs"); loopEnd = cmd.getLong("endMs"); loopRemaining = cmd.getInt("count")
+                player.seekTo(loopStart); player.play()
+            }
+            "clear_loop" -> clearRanges()
+            "overlay" -> Unit // rendered by MainActivity
+            else -> return "unknown command ${cmd.optString("cmd")}"
+        }
+        return null
+    }
+
+    fun release() = handler.removeCallbacks(enforcer)
+}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "lib": ["es2023"]
+  },
+  "include": ["packages/**/*.ts", "services/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
+}

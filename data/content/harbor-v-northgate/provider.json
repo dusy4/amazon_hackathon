@@ -1,0 +1,1703 @@
+{
+ "contentId": "harbor-v-northgate",
+ "title": "Harbor City FC vs Northgate United",
+ "kind": "sports_match",
+ "sport": "football",
+ "durationMs": 246000,
+ "media": "match.mp4",
+ "source": "synthetic footage rendered by scripts/demo-media/generate_match.py (owned, no third-party rights)",
+ "teams": [
+  {
+   "id": "HCFC",
+   "name": "Harbor City FC",
+   "short": "HCFC",
+   "side": "home"
+  },
+  {
+   "id": "NGU",
+   "name": "Northgate United",
+   "short": "NGU",
+   "side": "away"
+  }
+ ],
+ "roster": [
+  {
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt",
+   "position": "GK"
+  },
+  {
+   "team": "HCFC",
+   "number": 2,
+   "name": "Osei",
+   "position": "RB"
+  },
+  {
+   "team": "HCFC",
+   "number": 3,
+   "name": "Duarte",
+   "position": "LB"
+  },
+  {
+   "team": "HCFC",
+   "number": 4,
+   "name": "Haugen",
+   "position": "CB"
+  },
+  {
+   "team": "HCFC",
+   "number": 5,
+   "name": "Kimura",
+   "position": "CB"
+  },
+  {
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga",
+   "position": "DM"
+  },
+  {
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak",
+   "position": "CM"
+  },
+  {
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau",
+   "position": "AM"
+  },
+  {
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira",
+   "position": "LW"
+  },
+  {
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo",
+   "position": "ST"
+  },
+  {
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva",
+   "position": "RW"
+  },
+  {
+   "team": "NGU",
+   "number": 1,
+   "name": "Petrov",
+   "position": "GK"
+  },
+  {
+   "team": "NGU",
+   "number": 2,
+   "name": "Mbeki",
+   "position": "RB"
+  },
+  {
+   "team": "NGU",
+   "number": 3,
+   "name": "Walsh",
+   "position": "LB"
+  },
+  {
+   "team": "NGU",
+   "number": 4,
+   "name": "Reyes",
+   "position": "CB"
+  },
+  {
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist",
+   "position": "CB"
+  },
+  {
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka",
+   "position": "DM"
+  },
+  {
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer",
+   "position": "CM"
+  },
+  {
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa",
+   "position": "AM"
+  },
+  {
+   "team": "NGU",
+   "number": 11,
+   "name": "Adeyemi",
+   "position": "LW"
+  },
+  {
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor",
+   "position": "ST"
+  },
+  {
+   "team": "NGU",
+   "number": 7,
+   "name": "Rossi",
+   "position": "RW"
+  }
+ ],
+ "events": [
+  {
+   "id": "ev-01",
+   "type": "kickoff",
+   "startMs": 6000,
+   "endMs": 7000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 9,
+     "name": "Castillo"
+    }
+   ],
+   "description": "Kick-off. Castillo starts the match for Harbor City."
+  },
+  {
+   "id": "ev-02",
+   "type": "shot",
+   "startMs": 24000,
+   "endMs": 25500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    }
+   ],
+   "description": "Silva shoots from the right wing, just wide of the far post.",
+   "outcome": "wide"
+  },
+  {
+   "id": "ev-03",
+   "type": "goal_kick",
+   "startMs": 27500,
+   "endMs": 29000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 1,
+     "name": "Petrov"
+    }
+   ],
+   "description": "Goal kick. Petrov plays it short."
+  },
+  {
+   "id": "ev-04",
+   "type": "shot",
+   "startMs": 41000,
+   "endMs": 42000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Okafor through on goal and shoots.",
+   "outcome": "saved"
+  },
+  {
+   "id": "ev-05",
+   "type": "save",
+   "startMs": 41600,
+   "endMs": 43000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 1,
+     "name": "Brandt"
+    },
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Brandt saves Okafor's shot."
+  },
+  {
+   "id": "ev-06",
+   "type": "foul",
+   "startMs": 57600,
+   "endMs": 59000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 4,
+     "name": "Reyes"
+    },
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    }
+   ],
+   "description": "Reyes brings down Silva."
+  },
+  {
+   "id": "ev-07",
+   "type": "yellow_card",
+   "startMs": 59500,
+   "endMs": 62000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 4,
+     "name": "Reyes"
+    }
+   ],
+   "description": "Yellow card for Reyes (#4, Northgate)."
+  },
+  {
+   "id": "ev-08",
+   "type": "free_kick",
+   "startMs": 62000,
+   "endMs": 64500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 10,
+     "name": "Moreau"
+    },
+    {
+     "team": "NGU",
+     "number": 5,
+     "name": "Lindqvist"
+    }
+   ],
+   "description": "Moreau's free kick is cleared by Lindqvist."
+  },
+  {
+   "id": "ev-09",
+   "type": "tackle",
+   "startMs": 72000,
+   "endMs": 73000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 6,
+     "name": "Varga"
+    }
+   ],
+   "description": "Varga wins the ball back for Harbor City."
+  },
+  {
+   "id": "ev-10",
+   "type": "goal",
+   "startMs": 93000,
+   "endMs": 94500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    },
+    {
+     "team": "HCFC",
+     "number": 10,
+     "name": "Moreau"
+    }
+   ],
+   "description": "GOAL. Silva (#7) scores, assisted by Moreau. Harbor City 1-0.",
+   "scorer": {
+    "team": "HCFC",
+    "number": 7,
+    "name": "Silva"
+   },
+   "assist": {
+    "team": "HCFC",
+    "number": 10,
+    "name": "Moreau"
+   },
+   "score": {
+    "home": 1,
+    "away": 0
+   },
+   "goalNumber": 1
+  },
+  {
+   "id": "ev-11",
+   "type": "celebration",
+   "startMs": 94500,
+   "endMs": 100000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    }
+   ],
+   "description": "Silva celebrates at the corner flag.",
+   "ofEventId": "ev-10"
+  },
+  {
+   "id": "ev-12",
+   "type": "replay",
+   "startMs": 100000,
+   "endMs": 110000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    },
+    {
+     "team": "HCFC",
+     "number": 10,
+     "name": "Moreau"
+    }
+   ],
+   "description": "Slow-motion replay of Silva's first goal.",
+   "ofEventId": "ev-10",
+   "rate": 0.65
+  },
+  {
+   "id": "ev-13",
+   "type": "kickoff",
+   "startMs": 110000,
+   "endMs": 111000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Northgate restart, 1-0 down."
+  },
+  {
+   "id": "ev-14",
+   "type": "corner",
+   "startMs": 124000,
+   "endMs": 127000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 10,
+     "name": "Costa"
+    }
+   ],
+   "description": "Corner to Northgate, taken by Costa."
+  },
+  {
+   "id": "ev-15",
+   "type": "header",
+   "startMs": 127000,
+   "endMs": 128000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 5,
+     "name": "Lindqvist"
+    }
+   ],
+   "description": "Lindqvist heads towards goal.",
+   "outcome": "saved"
+  },
+  {
+   "id": "ev-16",
+   "type": "save",
+   "startMs": 127600,
+   "endMs": 129000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 1,
+     "name": "Brandt"
+    },
+    {
+     "team": "NGU",
+     "number": 5,
+     "name": "Lindqvist"
+    }
+   ],
+   "description": "Brandt saves Lindqvist's header."
+  },
+  {
+   "id": "ev-17",
+   "type": "interception",
+   "startMs": 140000,
+   "endMs": 141000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 8,
+     "name": "Bauer"
+    }
+   ],
+   "description": "Bauer intercepts in midfield."
+  },
+  {
+   "id": "ev-18",
+   "type": "goal",
+   "startMs": 146000,
+   "endMs": 147500,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    },
+    {
+     "team": "NGU",
+     "number": 8,
+     "name": "Bauer"
+    }
+   ],
+   "description": "GOAL. Okafor (#9) equalises for Northgate, assisted by Bauer. 1-1.",
+   "scorer": {
+    "team": "NGU",
+    "number": 9,
+    "name": "Okafor"
+   },
+   "assist": {
+    "team": "NGU",
+    "number": 8,
+    "name": "Bauer"
+   },
+   "score": {
+    "home": 1,
+    "away": 1
+   },
+   "goalNumber": 2
+  },
+  {
+   "id": "ev-19",
+   "type": "celebration",
+   "startMs": 147500,
+   "endMs": 152000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Okafor celebrates in front of the away fans.",
+   "ofEventId": "ev-18"
+  },
+  {
+   "id": "ev-20",
+   "type": "replay",
+   "startMs": 152000,
+   "endMs": 162000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    },
+    {
+     "team": "NGU",
+     "number": 8,
+     "name": "Bauer"
+    }
+   ],
+   "description": "Replay of Okafor's equaliser.",
+   "ofEventId": "ev-18",
+   "rate": 0.75
+  },
+  {
+   "id": "ev-21",
+   "type": "kickoff",
+   "startMs": 162000,
+   "endMs": 163000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 9,
+     "name": "Castillo"
+    }
+   ],
+   "description": "Harbor City kick off again at 1-1."
+  },
+  {
+   "id": "ev-22",
+   "type": "shot",
+   "startMs": 178000,
+   "endMs": 179500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    }
+   ],
+   "description": "Silva cuts inside and hits the post.",
+   "outcome": "post"
+  },
+  {
+   "id": "ev-23",
+   "type": "clearance",
+   "startMs": 179500,
+   "endMs": 181500,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 3,
+     "name": "Walsh"
+    }
+   ],
+   "description": "Walsh clears the rebound."
+  },
+  {
+   "id": "ev-24",
+   "type": "foul",
+   "startMs": 189800,
+   "endMs": 191000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 8,
+     "name": "Novak"
+    },
+    {
+     "team": "NGU",
+     "number": 10,
+     "name": "Costa"
+    }
+   ],
+   "description": "Novak slides in late on Costa."
+  },
+  {
+   "id": "ev-25",
+   "type": "yellow_card",
+   "startMs": 191500,
+   "endMs": 194000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 8,
+     "name": "Novak"
+    }
+   ],
+   "description": "Yellow card for Novak (#8, Harbor City)."
+  },
+  {
+   "id": "ev-26",
+   "type": "tackle",
+   "startMs": 199500,
+   "endMs": 200500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 11,
+     "name": "Ferreira"
+    }
+   ],
+   "description": "Ferreira wins it back on the left."
+  },
+  {
+   "id": "ev-27",
+   "type": "goal",
+   "startMs": 204000,
+   "endMs": 205500,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    },
+    {
+     "team": "HCFC",
+     "number": 11,
+     "name": "Ferreira"
+    }
+   ],
+   "description": "GOAL. Silva (#7) heads in Ferreira's cross. Harbor City 2-1.",
+   "scorer": {
+    "team": "HCFC",
+    "number": 7,
+    "name": "Silva"
+   },
+   "assist": {
+    "team": "HCFC",
+    "number": 11,
+    "name": "Ferreira"
+   },
+   "score": {
+    "home": 2,
+    "away": 1
+   },
+   "goalNumber": 3,
+   "method": "header"
+  },
+  {
+   "id": "ev-28",
+   "type": "celebration",
+   "startMs": 205500,
+   "endMs": 210000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    }
+   ],
+   "description": "Silva celebrates his second goal.",
+   "ofEventId": "ev-27"
+  },
+  {
+   "id": "ev-29",
+   "type": "replay",
+   "startMs": 210000,
+   "endMs": 220000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 7,
+     "name": "Silva"
+    },
+    {
+     "team": "HCFC",
+     "number": 11,
+     "name": "Ferreira"
+    }
+   ],
+   "description": "Slow-motion replay of Silva's header.",
+   "ofEventId": "ev-27",
+   "rate": 0.55
+  },
+  {
+   "id": "ev-30",
+   "type": "kickoff",
+   "startMs": 220000,
+   "endMs": 221000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Northgate kick off, 2-1 down."
+  },
+  {
+   "id": "ev-31",
+   "type": "shot",
+   "startMs": 234000,
+   "endMs": 235000,
+   "players": [
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Okafor's late shot.",
+   "outcome": "saved"
+  },
+  {
+   "id": "ev-32",
+   "type": "save",
+   "startMs": 234600,
+   "endMs": 236000,
+   "players": [
+    {
+     "team": "HCFC",
+     "number": 1,
+     "name": "Brandt"
+    },
+    {
+     "team": "NGU",
+     "number": 9,
+     "name": "Okafor"
+    }
+   ],
+   "description": "Brandt saves from Okafor in the final minute."
+  },
+  {
+   "id": "ev-33",
+   "type": "final_whistle",
+   "startMs": 240000,
+   "endMs": 246000,
+   "players": [],
+   "description": "Full time. Harbor City 2, Northgate United 1.",
+   "score": {
+    "home": 2,
+    "away": 1
+   }
+  }
+ ],
+ "replays": [
+  {
+   "startMs": 100000,
+   "endMs": 110000,
+   "sourceStartMs": 88000,
+   "sourceEndMs": 94500,
+   "ofEventId": "ev-10"
+  },
+  {
+   "startMs": 152000,
+   "endMs": 162000,
+   "sourceStartMs": 140000,
+   "sourceEndMs": 147500,
+   "ofEventId": "ev-18"
+  },
+  {
+   "startMs": 210000,
+   "endMs": 220000,
+   "sourceStartMs": 200000,
+   "sourceEndMs": 205500,
+   "ofEventId": "ev-27"
+  }
+ ],
+ "scoreboard": [
+  {
+   "startMs": 6000,
+   "home": 0,
+   "away": 0,
+   "text": "HCFC 0 - 0 NGU",
+   "endMs": 95000
+  },
+  {
+   "startMs": 95000,
+   "home": 1,
+   "away": 0,
+   "text": "HCFC 1 - 0 NGU",
+   "endMs": 148000
+  },
+  {
+   "startMs": 148000,
+   "home": 1,
+   "away": 1,
+   "text": "HCFC 1 - 1 NGU",
+   "endMs": 206000
+  },
+  {
+   "startMs": 206000,
+   "home": 2,
+   "away": 1,
+   "text": "HCFC 2 - 1 NGU",
+   "endMs": 246000
+  }
+ ],
+ "possession": [
+  {
+   "startMs": 6000,
+   "endMs": 7000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 7000,
+   "endMs": 9600,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 9600,
+   "endMs": 12200,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 12200,
+   "endMs": 14800,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 14800,
+   "endMs": 17400,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 17400,
+   "endMs": 20000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 20000,
+   "endMs": 25000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 25000,
+   "endMs": 29000,
+   "team": "NGU",
+   "number": 1,
+   "name": "Petrov"
+  },
+  {
+   "startMs": 29000,
+   "endMs": 31400,
+   "team": "NGU",
+   "number": 4,
+   "name": "Reyes"
+  },
+  {
+   "startMs": 31400,
+   "endMs": 33600,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "startMs": 33600,
+   "endMs": 35800,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "startMs": 35800,
+   "endMs": 38000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 38000,
+   "endMs": 42000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 42000,
+   "endMs": 46000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "startMs": 46000,
+   "endMs": 48600,
+   "team": "HCFC",
+   "number": 2,
+   "name": "Osei"
+  },
+  {
+   "startMs": 48600,
+   "endMs": 51000,
+   "team": "HCFC",
+   "number": 5,
+   "name": "Kimura"
+  },
+  {
+   "startMs": 51000,
+   "endMs": 53600,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 53600,
+   "endMs": 56000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 56000,
+   "endMs": 62000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 62000,
+   "endMs": 64000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 64000,
+   "endMs": 65000,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "startMs": 65000,
+   "endMs": 67400,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "startMs": 67400,
+   "endMs": 69800,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "startMs": 69800,
+   "endMs": 72000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 72000,
+   "endMs": 75600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 75600,
+   "endMs": 78000,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "startMs": 78000,
+   "endMs": 80600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 80600,
+   "endMs": 83000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 83000,
+   "endMs": 85600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 85600,
+   "endMs": 88000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 88000,
+   "endMs": 91000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 91000,
+   "endMs": 94000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 110000,
+   "endMs": 111000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 111000,
+   "endMs": 113600,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "startMs": 113600,
+   "endMs": 116200,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 116200,
+   "endMs": 118800,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 118800,
+   "endMs": 121400,
+   "team": "NGU",
+   "number": 7,
+   "name": "Rossi"
+  },
+  {
+   "startMs": 121400,
+   "endMs": 127000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 127000,
+   "endMs": 128000,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "startMs": 128000,
+   "endMs": 132000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "startMs": 132000,
+   "endMs": 134800,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 134800,
+   "endMs": 137400,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "startMs": 137400,
+   "endMs": 140000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "startMs": 140000,
+   "endMs": 143000,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "startMs": 143000,
+   "endMs": 147000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 162000,
+   "endMs": 163000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 163000,
+   "endMs": 165400,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "startMs": 165400,
+   "endMs": 167800,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "startMs": 167800,
+   "endMs": 170400,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 170400,
+   "endMs": 172800,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "startMs": 172800,
+   "endMs": 175000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "startMs": 175000,
+   "endMs": 179000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 179000,
+   "endMs": 182000,
+   "team": "NGU",
+   "number": 3,
+   "name": "Walsh"
+  },
+  {
+   "startMs": 182000,
+   "endMs": 184800,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "startMs": 184800,
+   "endMs": 187400,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 187400,
+   "endMs": 190000,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "startMs": 190000,
+   "endMs": 197000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 197000,
+   "endMs": 200000,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "startMs": 200000,
+   "endMs": 204000,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "startMs": 204000,
+   "endMs": 205000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "startMs": 220000,
+   "endMs": 221000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 221000,
+   "endMs": 223200,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 223200,
+   "endMs": 225400,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "startMs": 225400,
+   "endMs": 227600,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 227600,
+   "endMs": 229800,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "startMs": 229800,
+   "endMs": 235000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "startMs": 235000,
+   "endMs": 237000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "startMs": 237000,
+   "endMs": 238600,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "startMs": 238600,
+   "endMs": 240000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  }
+ ],
+ "touches": [
+  {
+   "ms": 6000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 7000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 9600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 12200,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 14800,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 17400,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 20000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 25000,
+   "team": "NGU",
+   "number": 1,
+   "name": "Petrov"
+  },
+  {
+   "ms": 29000,
+   "team": "NGU",
+   "number": 4,
+   "name": "Reyes"
+  },
+  {
+   "ms": 31400,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "ms": 33600,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "ms": 35800,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 38000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 42000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "ms": 46000,
+   "team": "HCFC",
+   "number": 2,
+   "name": "Osei"
+  },
+  {
+   "ms": 48600,
+   "team": "HCFC",
+   "number": 5,
+   "name": "Kimura"
+  },
+  {
+   "ms": 51000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 53600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 56000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 62000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 64000,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "ms": 65000,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "ms": 67400,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "ms": 69800,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 72000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 75600,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "ms": 78000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 80600,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 83000,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 85600,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 88000,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 91000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 110000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 111000,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "ms": 113600,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 116200,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 118800,
+   "team": "NGU",
+   "number": 7,
+   "name": "Rossi"
+  },
+  {
+   "ms": 121400,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 127000,
+   "team": "NGU",
+   "number": 5,
+   "name": "Lindqvist"
+  },
+  {
+   "ms": 128000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "ms": 132000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 134800,
+   "team": "HCFC",
+   "number": 10,
+   "name": "Moreau"
+  },
+  {
+   "ms": 137400,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 140000,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "ms": 143000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 162000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 163000,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "ms": 165400,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "ms": 167800,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 170400,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "ms": 172800,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  },
+  {
+   "ms": 175000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 179000,
+   "team": "NGU",
+   "number": 3,
+   "name": "Walsh"
+  },
+  {
+   "ms": 182000,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "ms": 184800,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 187400,
+   "team": "NGU",
+   "number": 8,
+   "name": "Bauer"
+  },
+  {
+   "ms": 190000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 197000,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "ms": 200000,
+   "team": "HCFC",
+   "number": 11,
+   "name": "Ferreira"
+  },
+  {
+   "ms": 204000,
+   "team": "HCFC",
+   "number": 7,
+   "name": "Silva"
+  },
+  {
+   "ms": 220000,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 221000,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 223200,
+   "team": "NGU",
+   "number": 6,
+   "name": "Tanaka"
+  },
+  {
+   "ms": 225400,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 227600,
+   "team": "NGU",
+   "number": 10,
+   "name": "Costa"
+  },
+  {
+   "ms": 229800,
+   "team": "NGU",
+   "number": 9,
+   "name": "Okafor"
+  },
+  {
+   "ms": 235000,
+   "team": "HCFC",
+   "number": 1,
+   "name": "Brandt"
+  },
+  {
+   "ms": 237000,
+   "team": "HCFC",
+   "number": 8,
+   "name": "Novak"
+  },
+  {
+   "ms": 238600,
+   "team": "HCFC",
+   "number": 6,
+   "name": "Varga"
+  },
+  {
+   "ms": 240000,
+   "team": "HCFC",
+   "number": 9,
+   "name": "Castillo"
+  }
+ ],
+ "matchClock": {
+  "broadcastDurationMs": 246000,
+  "matchMinutes": 90
+ }
+}

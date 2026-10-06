@@ -1,0 +1,356 @@
+{
+ "contentId": "harbor-v-northgate",
+ "source": "commentary script synthesised with Windows SAPI TTS (measured line timings)",
+ "lines": [
+  {
+   "id": "tx-001",
+   "startMs": 500,
+   "endMs": 4193,
+   "speaker": "commentator",
+   "text": "Welcome to Harbor Park. Harbor City take on Northgate United."
+  },
+  {
+   "id": "tx-002",
+   "startMs": 6500,
+   "endMs": 10590,
+   "speaker": "commentator",
+   "text": "And we're underway. Castillo starts it for Harbor City."
+  },
+  {
+   "id": "tx-003",
+   "startMs": 12000,
+   "endMs": 16463,
+   "speaker": "commentator",
+   "text": "Harbor City knocking it around in midfield, Moreau looking for an opening."
+  },
+  {
+   "id": "tx-004",
+   "startMs": 20000,
+   "endMs": 23898,
+   "speaker": "commentator",
+   "text": "Silva, the number seven, races down the right wing."
+  },
+  {
+   "id": "tx-005",
+   "startMs": 24200,
+   "endMs": 27603,
+   "speaker": "commentator",
+   "text": "He shoots! Just wide of the far post."
+  },
+  {
+   "id": "tx-006",
+   "startMs": 28500,
+   "endMs": 32219,
+   "speaker": "commentator",
+   "text": "Goal kick Northgate. Petrov plays it short."
+  },
+  {
+   "id": "tx-007",
+   "startMs": 33000,
+   "endMs": 36173,
+   "speaker": "commentator",
+   "text": "Northgate building patiently through Tanaka and Bauer."
+  },
+  {
+   "id": "tx-008",
+   "startMs": 38000,
+   "endMs": 39999,
+   "speaker": "commentator",
+   "text": "Okafor is through on goal."
+  },
+  {
+   "id": "tx-009",
+   "startMs": 41000,
+   "endMs": 45400,
+   "speaker": "commentator",
+   "text": "What a save from Brandt! The Harbor City keeper stands tall."
+  },
+  {
+   "id": "tx-010",
+   "startMs": 46000,
+   "endMs": 48144,
+   "speaker": "commentator",
+   "text": "Brandt rolls it out to Osei."
+  },
+  {
+   "id": "tx-011",
+   "startMs": 50000,
+   "endMs": 52460,
+   "speaker": "commentator",
+   "text": "Harbor City pushing forward again."
+  },
+  {
+   "id": "tx-012",
+   "startMs": 55600,
+   "endMs": 57874,
+   "speaker": "commentator",
+   "text": "Silva is brought down by Reyes."
+  },
+  {
+   "id": "tx-013",
+   "startMs": 59400,
+   "endMs": 62264,
+   "speaker": "commentator",
+   "text": "Yellow card for Reyes, the number four."
+  },
+  {
+   "id": "tx-014",
+   "startMs": 62200,
+   "endMs": 65992,
+   "speaker": "commentator",
+   "text": "Moreau whips in the free kick. Cleared by Lindqvist."
+  },
+  {
+   "id": "tx-015",
+   "startMs": 66000,
+   "endMs": 69408,
+   "speaker": "commentator",
+   "text": "Northgate try to break, but Varga wins it back."
+  },
+  {
+   "id": "tx-016",
+   "startMs": 75000,
+   "endMs": 78173,
+   "speaker": "commentator",
+   "text": "Varga in possession, Harbor City probing."
+  },
+  {
+   "id": "tx-017",
+   "startMs": 81000,
+   "endMs": 83734,
+   "speaker": "commentator",
+   "text": "Lovely patient build-up from Harbor City."
+  },
+  {
+   "id": "tx-018",
+   "startMs": 88000,
+   "endMs": 90325,
+   "speaker": "commentator",
+   "text": "Moreau finds Silva in space."
+  },
+  {
+   "id": "tx-019",
+   "startMs": 91400,
+   "endMs": 95724,
+   "speaker": "commentator",
+   "text": "Silva shoots. Goal! Silva scores!"
+  },
+  {
+   "id": "tx-020",
+   "startMs": 95400,
+   "endMs": 100388,
+   "speaker": "commentator",
+   "text": "Harbor City lead one nil. The number seven wheels away to the corner flag."
+  },
+  {
+   "id": "tx-021",
+   "startMs": 100300,
+   "endMs": 105573,
+   "speaker": "commentator",
+   "text": "Let's see that again. Moreau splits the defence, and Silva finishes low."
+  },
+  {
+   "id": "tx-022",
+   "startMs": 106600,
+   "endMs": 109828,
+   "speaker": "commentator",
+   "text": "In slow motion, the keeper had no chance."
+  },
+  {
+   "id": "tx-023",
+   "startMs": 110400,
+   "endMs": 113199,
+   "speaker": "commentator",
+   "text": "Northgate restart, one nil down."
+  },
+  {
+   "id": "tx-024",
+   "startMs": 115000,
+   "endMs": 118439,
+   "speaker": "commentator",
+   "text": "Bauer and Costa trying to find a way back into this."
+  },
+  {
+   "id": "tx-025",
+   "startMs": 123500,
+   "endMs": 126679,
+   "speaker": "commentator",
+   "text": "Corner to Northgate, Costa swings it in."
+  },
+  {
+   "id": "tx-026",
+   "startMs": 127100,
+   "endMs": 130498,
+   "speaker": "commentator",
+   "text": "Lindqvist heads goalward, and Brandt saves again!"
+  },
+  {
+   "id": "tx-027",
+   "startMs": 130199,
+   "endMs": 132119,
+   "speaker": "commentator",
+   "text": "Brandt launches it long."
+  },
+  {
+   "id": "tx-028",
+   "startMs": 134000,
+   "endMs": 136414,
+   "speaker": "commentator",
+   "text": "Harbor City looking to double the lead."
+  },
+  {
+   "id": "tx-029",
+   "startMs": 140000,
+   "endMs": 144893,
+   "speaker": "commentator",
+   "text": "Bauer intercepts! Northgate break quickly, Okafor is clear."
+  },
+  {
+   "id": "tx-030",
+   "startMs": 145400,
+   "endMs": 149344,
+   "speaker": "commentator",
+   "text": "Okafor shoots. Goal! One all!"
+  },
+  {
+   "id": "tx-031",
+   "startMs": 149000,
+   "endMs": 152194,
+   "speaker": "commentator",
+   "text": "Okafor celebrates in front of the travelling fans."
+  },
+  {
+   "id": "tx-032",
+   "startMs": 152300,
+   "endMs": 157793,
+   "speaker": "commentator",
+   "text": "Here's the replay. Bauer reads the pass, and Okafor slots it past Brandt."
+  },
+  {
+   "id": "tx-033",
+   "startMs": 158000,
+   "endMs": 160339,
+   "speaker": "commentator",
+   "text": "Clinical from the Northgate striker."
+  },
+  {
+   "id": "tx-034",
+   "startMs": 162400,
+   "endMs": 165584,
+   "speaker": "commentator",
+   "text": "Harbor City kick off again, all square."
+  },
+  {
+   "id": "tx-035",
+   "startMs": 167000,
+   "endMs": 169204,
+   "speaker": "commentator",
+   "text": "The home side pressing high now."
+  },
+  {
+   "id": "tx-036",
+   "startMs": 174400,
+   "endMs": 178353,
+   "speaker": "commentator",
+   "text": "Silva cuts in from the wing, shoots, off the post!"
+  },
+  {
+   "id": "tx-037",
+   "startMs": 179400,
+   "endMs": 183068,
+   "speaker": "commentator",
+   "text": "Walsh hacks it clear. So close for Silva."
+  },
+  {
+   "id": "tx-038",
+   "startMs": 183000,
+   "endMs": 185568,
+   "speaker": "commentator",
+   "text": "Northgate enjoying a spell of possession."
+  },
+  {
+   "id": "tx-039",
+   "startMs": 189400,
+   "endMs": 194768,
+   "speaker": "commentator",
+   "text": "Novak slides in late on Costa. Yellow card for Novak, the number eight."
+  },
+  {
+   "id": "tx-040",
+   "startMs": 195000,
+   "endMs": 197374,
+   "speaker": "commentator",
+   "text": "Northgate take the free kick quickly."
+  },
+  {
+   "id": "tx-041",
+   "startMs": 199200,
+   "endMs": 202580,
+   "speaker": "commentator",
+   "text": "Harbor City win it back, Ferreira down the left."
+  },
+  {
+   "id": "tx-042",
+   "startMs": 203000,
+   "endMs": 207333,
+   "speaker": "commentator",
+   "text": "Ferreira crosses. Silva heads it. Goal!"
+  },
+  {
+   "id": "tx-043",
+   "startMs": 206700,
+   "endMs": 208619,
+   "speaker": "commentator",
+   "text": "Two one to Harbor City!"
+  },
+  {
+   "id": "tx-044",
+   "startMs": 210300,
+   "endMs": 215873,
+   "speaker": "commentator",
+   "text": "Watch the replay. Ferreira's cross is perfect, and Silva powers the header in."
+  },
+  {
+   "id": "tx-045",
+   "startMs": 216400,
+   "endMs": 218689,
+   "speaker": "commentator",
+   "text": "That's his second of the afternoon."
+  },
+  {
+   "id": "tx-046",
+   "startMs": 220400,
+   "endMs": 222454,
+   "speaker": "commentator",
+   "text": "Northgate need a response."
+  },
+  {
+   "id": "tx-047",
+   "startMs": 225000,
+   "endMs": 227498,
+   "speaker": "commentator",
+   "text": "Long balls forward from Northgate now."
+  },
+  {
+   "id": "tx-048",
+   "startMs": 231400,
+   "endMs": 235668,
+   "speaker": "commentator",
+   "text": "Okafor, one last chance. Saved by Brandt!"
+  },
+  {
+   "id": "tx-049",
+   "startMs": 236000,
+   "endMs": 238659,
+   "speaker": "commentator",
+   "text": "Harbor City see out the final moments."
+  },
+  {
+   "id": "tx-050",
+   "startMs": 240200,
+   "endMs": 245248,
+   "speaker": "commentator",
+   "text": "And there's the final whistle! Harbor City two, Northgate United one."
+  }
+ ]
+}

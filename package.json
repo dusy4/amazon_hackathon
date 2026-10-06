@@ -1,0 +1,38 @@
+{
+  "name": "semantic-playback",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Semantic Playback — an agentic context layer for video (Amazon App Dev 2026 hackathon).",
+  "type": "module",
+  "scripts": {
+    "media:generate": "python scripts/demo-media/generate_match.py",
+    "ingest": "tsx services/media/src/ingest-cli.ts",
+    "start": "tsx services/agent/src/main.ts",
+    "dev": "tsx watch services/agent/src/main.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "smoke:mcp": "tsx scripts/mcp-smoke.ts"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1140.0",
+    "@aws-sdk/client-dynamodb": "^3.1146.0",
+    "@aws-sdk/lib-dynamodb": "^3.1146.0",
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4",
+    "ws": "^8.21.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.2",
+    "@types/qrcode": "^1.5.6",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

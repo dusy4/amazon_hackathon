@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Semantic Playback</string>
+    <string name="ask_hint">Ask about what you\'re watching</string>
+</resources>
