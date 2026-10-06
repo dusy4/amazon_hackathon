@@ -21,7 +21,7 @@ Try: “Rewind to the replay of the last goal, start three seconds before it, pl
 
 ## What runs today
 
-| Layer | Implementation | AWS path (env-switched, not yet validated without credentials) |
+| Layer | Implementation | AWS path (env-switched) |
 |---|---|---|
 | Demo media | `scripts/demo-media/generate_match.py`: synthetic, owned match + provider feed + TTS commentary | — |
 | Transcript | commentary script with measured timings | `npm run ingest -- --transcribe <Amazon Transcribe JSON>` |
@@ -31,8 +31,20 @@ Try: “Rewind to the replay of the last goal, start three seconds before it, pl
 | Tools | self-hosted MCP server, Streamable HTTP, 17 tools (`player.*`, `moments.*`, `lens.*`, `clip.create`, `share.send`, `memory.search`…) | — |
 | Players | web TV player (`apps/fire-tv/web`) + Fire OS app (`apps/fire-tv/android`, Media3 ExoPlayer + MediaSession) | — |
 | Clips | ffmpeg clip + watermark + attribution (MediaConvert-equivalent job shape) | MediaConvert |
-| Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` |
+| Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` — **live-verified 2026-10-06** |
 | Send to phone | companion web app push + QR/deep link | Alexa Send to Phone (future) |
+
+## AWS setup
+
+```bash
+aws login --region us-east-1      # browser sign-in, no long-lived keys
+aws dynamodb create-table --table-name semantic-playback-viewing-memory   --attribute-definitions AttributeName=userId,AttributeType=S AttributeName=sk,AttributeType=S   --key-schema AttributeName=userId,KeyType=HASH AttributeName=sk,KeyType=RANGE --billing-mode PAY_PER_REQUEST
+```
+Then copy `.env.example` to `.env` and enable `SP_MEMORY=dynamodb`, `SP_AGENT=bedrock`, `SP_EMBEDDINGS=nova`.
+A brand-new account cannot invoke Bedrock or Transcribe until AWS finishes account verification
+(errors: `AccessDeniedException … being verified`, `ThrottlingException: Too many tokens per day`,
+`SubscriptionRequiredException`); the app keeps running on its local fallbacks meanwhile.
+`npm test` always uses the local backends (see `vitest.config.ts`); `SP_TEST_AWS=1 npm test` uses `.env`.
 
 ## Fire OS app
 
