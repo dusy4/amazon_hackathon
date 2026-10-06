@@ -1,0 +1,279 @@
+{
+  "summary": {
+    "label": "openrouter:nvidia/nemotron-3-super-120b-a12b:free (rules fast path)",
+    "at": "2026-10-06T23:25:57.033Z",
+    "cases": 20,
+    "passRate": 1,
+    "seekHitRate": 1,
+    "R1@IoU0.5": 0.867,
+    "R1@IoU0.7": 0.867,
+    "medianMs": 7863
+  },
+  "rows": [
+    {
+      "id": "m-keeper-header",
+      "pass": true,
+      "detail": "in ev-16",
+      "iou": 1,
+      "ms": 7767,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I’ve taken you back to the save where Brandt denied Lindqvist’s header attempt—playing from around 124.6 seconds into the match."
+    },
+    {
+      "id": "m-equaliser",
+      "pass": true,
+      "detail": "in ev-18",
+      "iou": 1,
+      "ms": 14489,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "entities.resolve",
+        "player.seek"
+      ],
+      "speech": "Here’s the equaliser — Okafor’s goal making it 1‑1."
+    },
+    {
+      "id": "m-silva-header",
+      "pass": true,
+      "detail": "in ev-27",
+      "iou": 1,
+      "ms": 20635,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "moments.search",
+        "moments.search",
+        "player.get_state",
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I’ve rewound to Silva’s header goal at 3:19 in the match. Playback is now set there."
+    },
+    {
+      "id": "m-levelled",
+      "pass": true,
+      "detail": "in ev-18",
+      "iou": 1,
+      "ms": 6646,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I've taken you to Okafor's equaliser goal, making it 1‑1."
+    },
+    {
+      "id": "m-woodwork",
+      "pass": true,
+      "detail": "in ev-22",
+      "iou": 1,
+      "ms": 7863,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Silva hit the woodwork on a shot that struck the post at about 2 minutes 55 seconds into the match. I’ve jumped to that moment for you."
+    },
+    {
+      "id": "m-booking-defender",
+      "pass": true,
+      "detail": "in ev-07",
+      "iou": 1,
+      "ms": 10123,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "entities.resolve",
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Here’s the booking for Northgate defender Reyes – I’ve jumped to the yellow card at 58 seconds into the match."
+    },
+    {
+      "id": "m-replay-opener",
+      "pass": true,
+      "detail": "in ev-12",
+      "iou": 1,
+      "ms": 18806,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Showing the replay of Harbor City's opening goal by Silva."
+    },
+    {
+      "id": "m-slowmo-winner",
+      "pass": true,
+      "detail": "in ev-29",
+      "iou": 1,
+      "ms": 18313,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek",
+        "player.set_speed"
+      ],
+      "speech": "I've jumped to the slow‑motion replay of Silva's winning goal and set playback to half speed."
+    },
+    {
+      "id": "m-spoiler",
+      "pass": true,
+      "detail": "guarded",
+      "iou": null,
+      "ms": 8816,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search"
+      ],
+      "speech": "The equaliser hasn’t happened yet—it comes later in the match. If you’d like to see it, I can turn spoilers off for you. Just let me know!"
+    },
+    {
+      "id": "m-who-scored-first",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 4287,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search"
+      ],
+      "speech": "Silva scored the first goal for Harbor City FC, making it 1‑0."
+    },
+    {
+      "id": "m-multistep",
+      "pass": true,
+      "detail": "in ev-29",
+      "iou": 0,
+      "ms": 14633,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek",
+        "player.set_speed"
+      ],
+      "speech": "Going to the replay of Silva’s third goal, three seconds before it, and playing at half speed."
+    },
+    {
+      "id": "m-score",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 1745,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [],
+      "speech": "The current score is Harbor City FC 2, Northgate United 1."
+    },
+    {
+      "id": "n-reads-note",
+      "pass": true,
+      "detail": "in bt-3",
+      "iou": 1,
+      "ms": 6209,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I've jumped to the scene where Mara reads the note."
+    },
+    {
+      "id": "n-dig-key",
+      "pass": true,
+      "detail": "in bt-6",
+      "iou": 1,
+      "ms": 6413,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "They dig up the key at about 1 minute 58 seconds into the story—Mara finds the brass key in a tin box under the signal post. I’ve jumped to that moment for you."
+    },
+    {
+      "id": "n-docks-argument",
+      "pass": true,
+      "detail": "in bt-4",
+      "iou": 1,
+      "ms": 10792,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I found the argument down by the boats and jumped to that scene."
+    },
+    {
+      "id": "n-brother-admits",
+      "pass": true,
+      "detail": "in bt-7",
+      "iou": 1,
+      "ms": 17383,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Jumped to the moment where Theo admits he wrote the letter."
+    },
+    {
+      "id": "n-lamp",
+      "pass": true,
+      "detail": "in bt-8",
+      "iou": 1,
+      "ms": 5697,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "I've jumped to the scene where Mara turns the brass key and the lighthouse lamp finally comes on."
+    },
+    {
+      "id": "n-prev-inspector",
+      "pass": true,
+      "detail": "in sc-6",
+      "iou": 0,
+      "ms": 7047,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Going back to the scene with Inspector Hale where they discuss the key and the light."
+    },
+    {
+      "id": "n-who-cap",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 4340,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "lens.identify"
+      ],
+      "speech": "The woman wearing the cap is Inspector Ada Hale, the navy inspector with the gold badge."
+    },
+    {
+      "id": "n-spoiler-key",
+      "pass": true,
+      "detail": "guarded",
+      "iou": null,
+      "ms": 5821,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search"
+      ],
+      "speech": "I’m sorry, but the moment where they find the key hasn’t happened yet in your viewing. If you’d like to see it now, you can turn spoilers off. Would you like me to do that?"
+    }
+  ]
+}

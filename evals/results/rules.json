@@ -1,0 +1,263 @@
+{
+  "summary": {
+    "label": "rules",
+    "at": "2026-10-06T23:16:26.094Z",
+    "cases": 20,
+    "passRate": 0.6,
+    "seekHitRate": 0.6,
+    "R1@IoU0.5": 0.467,
+    "R1@IoU0.7": 0.467,
+    "medianMs": 8
+  },
+  "rows": [
+    {
+      "id": "m-keeper-header",
+      "pass": false,
+      "detail": "pos 215000",
+      "iou": null,
+      "ms": 113,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search"
+      ],
+      "speech": "I couldn't do that: I couldn't find that header with Brandt."
+    },
+    {
+      "id": "m-equaliser",
+      "pass": false,
+      "detail": "pos 207000",
+      "iou": null,
+      "ms": 9,
+      "interpreter": "rules",
+      "tools": [
+        "player.play_segment"
+      ],
+      "speech": "Again."
+    },
+    {
+      "id": "m-silva-header",
+      "pass": true,
+      "detail": "in ev-27",
+      "iou": 1,
+      "ms": 20,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Goal 3 — Silva (#7), 2-1."
+    },
+    {
+      "id": "m-levelled",
+      "pass": true,
+      "detail": "in ev-18",
+      "iou": 0.21,
+      "ms": 17,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Celebration — Okafor (#9)."
+    },
+    {
+      "id": "m-woodwork",
+      "pass": false,
+      "detail": "pos 215000",
+      "iou": null,
+      "ms": 0,
+      "interpreter": "rules",
+      "tools": [],
+      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+    },
+    {
+      "id": "m-booking-defender",
+      "pass": true,
+      "detail": "in ev-07",
+      "iou": 1,
+      "ms": 10,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Yellow card — Reyes (#4)."
+    },
+    {
+      "id": "m-replay-opener",
+      "pass": true,
+      "detail": "in ev-12",
+      "iou": 1,
+      "ms": 13,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Replay of goal 1 — Silva."
+    },
+    {
+      "id": "m-slowmo-winner",
+      "pass": true,
+      "detail": "in ev-29",
+      "iou": null,
+      "ms": 5,
+      "interpreter": "rules",
+      "tools": [
+        "player.set_speed"
+      ],
+      "speech": "0.5× speed."
+    },
+    {
+      "id": "m-spoiler",
+      "pass": false,
+      "detail": "pos 88000",
+      "iou": null,
+      "ms": 9,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Goal 1 — Silva (#7), 1-0."
+    },
+    {
+      "id": "m-who-scored-first",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 8,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "lens.identify"
+      ],
+      "speech": "That's Silva, number 7 for Harbor City FC. 2 goals so far."
+    },
+    {
+      "id": "m-multistep",
+      "pass": true,
+      "detail": "in ev-29",
+      "iou": 0.77,
+      "ms": 18,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "moments.search",
+        "player.seek",
+        "player.seek",
+        "player.set_speed"
+      ],
+      "speech": "Replay of goal 3 — Silva. 3 seconds earlier. 0.5× speed."
+    },
+    {
+      "id": "m-score",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 4,
+      "interpreter": "rules",
+      "tools": [
+        "lens.read_text"
+      ],
+      "speech": "Harbor City FC 2, Northgate United 1, 78 minutes played."
+    },
+    {
+      "id": "n-reads-note",
+      "pass": true,
+      "detail": "in bt-3",
+      "iou": 1,
+      "ms": 8,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Mara reads the letter: meet me at the north cliff at midnight, signed T."
+    },
+    {
+      "id": "n-dig-key",
+      "pass": false,
+      "detail": "pos 170000",
+      "iou": null,
+      "ms": 1,
+      "interpreter": "rules",
+      "tools": [],
+      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+    },
+    {
+      "id": "n-docks-argument",
+      "pass": false,
+      "detail": "pos 170000",
+      "iou": null,
+      "ms": 0,
+      "interpreter": "rules",
+      "tools": [],
+      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+    },
+    {
+      "id": "n-brother-admits",
+      "pass": true,
+      "detail": "in bt-7",
+      "iou": 1,
+      "ms": 9,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Theo admits he wrote the letter so they would find the key together."
+    },
+    {
+      "id": "n-lamp",
+      "pass": false,
+      "detail": "pos 109369",
+      "iou": 0,
+      "ms": 7,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Scene 5 — North cliff at midnight."
+    },
+    {
+      "id": "n-prev-inspector",
+      "pass": true,
+      "detail": "in sc-6",
+      "iou": 1,
+      "ms": 8,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search",
+        "player.seek"
+      ],
+      "speech": "Scene 6 — Hale returns."
+    },
+    {
+      "id": "n-who-cap",
+      "pass": false,
+      "detail": "",
+      "iou": null,
+      "ms": 6,
+      "interpreter": "rules",
+      "tools": [
+        "lens.identify"
+      ],
+      "speech": "That's Mara Quinn, the lighthouse keeper. Keeper of the Gullrock lighthouse; Theo's older sister."
+    },
+    {
+      "id": "n-spoiler-key",
+      "pass": true,
+      "detail": "guarded",
+      "iou": null,
+      "ms": 4,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search"
+      ],
+      "speech": "I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway."
+    }
+  ]
+}

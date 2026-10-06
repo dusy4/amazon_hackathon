@@ -50,12 +50,12 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
     res.json({ ok: true, interpreter: orchestrator.interpreterName, memory: app.memory.backend, players: app.bridge.list(), content: app.store.list().map((c) => c.contentId) }),
   );
   http.get("/api/content", (_req, res) =>
-    res.json(app.store.list().map((c) => ({ contentId: c.contentId, title: c.title, durationMs: c.durationMs, url: `/media/${c.contentId}/${c.media}`, embeddingModel: c.embeddingModel, sources: c.sources }))),
+    res.json(app.store.list().map((c) => ({ contentId: c.contentId, title: c.title, kind: c.kind, durationMs: c.durationMs, url: `/media/${c.contentId}/${c.media}`, embeddingModel: c.embeddingModel, sources: c.sources }))),
   );
   http.get("/api/timeline/:contentId", (req, res) => {
     const c = app.store.get(req.params.contentId);
     if (!c) return void res.status(404).json({ error: "unknown content" });
-    res.json({ contentId: c.contentId, durationMs: c.durationMs, teams: c.teams, events: c.events, transcript: c.transcript });
+    res.json({ contentId: c.contentId, kind: c.kind, durationMs: c.durationMs, teams: c.teams, events: c.events, transcript: c.transcript });
   });
   http.post("/api/utterance", async (req, res) => {
     const text = String(req.body?.text ?? "").trim();
@@ -91,7 +91,7 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
         deviceId = msg.deviceId;
         if (msg.role === "player") app.bridge.register(ws, deviceId, msg.deviceKind ?? "web");
         unsubscribe = app.onEmit((m) => ws.readyState === ws.OPEN && ws.send(JSON.stringify(m)));
-        const first = app.store.list()[0];
+        const first = app.store.get(msg.contentId) ?? app.currentIndex();
         if (msg.role === "player" && first)
           ws.send(JSON.stringify({ type: "command", id: "init", command: { cmd: "load", contentId: first.contentId, url: `/media/${first.contentId}/${first.media}` } } satisfies WireMessage));
         if (msg.role === "companion") for (const s of app.shares) ws.send(JSON.stringify({ type: "share", share: s } satisfies WireMessage));

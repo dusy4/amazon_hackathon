@@ -1,0 +1,223 @@
+{
+ "contentId": "keepers-key",
+ "source": "dialogue script synthesised with Windows SAPI TTS (measured line timings)",
+ "lines": [
+  {
+   "id": "tx-001",
+   "startMs": 6600,
+   "endMs": 13463,
+   "speaker": "hale",
+   "text": "Mara, the gale arrives tonight. Every ship in the bay will be looking for your light."
+  },
+  {
+   "id": "tx-002",
+   "startMs": 14013,
+   "endMs": 17357,
+   "speaker": "mara",
+   "text": "Then I'll light it. I always do."
+  },
+  {
+   "id": "tx-003",
+   "startMs": 17907,
+   "endMs": 25640,
+   "speaker": "hale",
+   "text": "Not without the keeper's key. The harbour log says it was signed out last week, and never returned."
+  },
+  {
+   "id": "tx-004",
+   "startMs": 26190,
+   "endMs": 30289,
+   "speaker": "mara",
+   "text": "Signed out? Nobody touches that key but me."
+  },
+  {
+   "id": "tx-005",
+   "startMs": 30839,
+   "endMs": 34742,
+   "speaker": "hale",
+   "text": "Find it before dark, or I close the harbour."
+  },
+  {
+   "id": "tx-006",
+   "startMs": 38292,
+   "endMs": 43096,
+   "speaker": "mara",
+   "text": "Top drawer. It has been in the top drawer for eleven years."
+  },
+  {
+   "id": "tx-007",
+   "startMs": 43646,
+   "endMs": 46505,
+   "speaker": "mara",
+   "text": "Empty. Just a letter."
+  },
+  {
+   "id": "tx-008",
+   "startMs": 47055,
+   "endMs": 51869,
+   "speaker": "mara",
+   "text": "Meet me at the north cliff at midnight. Signed, T."
+  },
+  {
+   "id": "tx-009",
+   "startMs": 52419,
+   "endMs": 54493,
+   "speaker": "mara",
+   "text": "T. Of course it's T."
+  },
+  {
+   "id": "tx-010",
+   "startMs": 58043,
+   "endMs": 61408,
+   "speaker": "mara",
+   "text": "Theo. Where is the keeper's key?"
+  },
+  {
+   "id": "tx-011",
+   "startMs": 61958,
+   "endMs": 64517,
+   "speaker": "theo",
+   "text": "Good evening to you too, sister."
+  },
+  {
+   "id": "tx-012",
+   "startMs": 65067,
+   "endMs": 70375,
+   "speaker": "mara",
+   "text": "Your letter was in the drawer. Signed T. Don't play games with me tonight."
+  },
+  {
+   "id": "tx-013",
+   "startMs": 70925,
+   "endMs": 75899,
+   "speaker": "theo",
+   "text": "You never listen. Not to me, not to Dad, not to anyone."
+  },
+  {
+   "id": "tx-014",
+   "startMs": 76449,
+   "endMs": 80588,
+   "speaker": "theo",
+   "text": "Midnight. North cliff. Come or don't."
+  },
+  {
+   "id": "tx-015",
+   "startMs": 84138,
+   "endMs": 89712,
+   "speaker": "theo",
+   "text": "I didn't steal it. I moved it, the way Dad told me to, before he died."
+  },
+  {
+   "id": "tx-016",
+   "startMs": 90262,
+   "endMs": 94336,
+   "speaker": "mara",
+   "text": "Dad told you? He never told me anything."
+  },
+  {
+   "id": "tx-017",
+   "startMs": 94886,
+   "endMs": 99351,
+   "speaker": "theo",
+   "text": "He drew this. Look. An X on the north cliff."
+  },
+  {
+   "id": "tx-018",
+   "startMs": 99901,
+   "endMs": 105320,
+   "speaker": "mara",
+   "text": "Under the old signal post. He always said the light belongs to the cliff."
+  },
+  {
+   "id": "tx-019",
+   "startMs": 105870,
+   "endMs": 107419,
+   "speaker": "theo",
+   "text": "Bring the lantern."
+  },
+  {
+   "id": "tx-020",
+   "startMs": 110969,
+   "endMs": 114890,
+   "speaker": "theo",
+   "text": "Hold the lantern lower. There, by the post."
+  },
+  {
+   "id": "tx-021",
+   "startMs": 115440,
+   "endMs": 118894,
+   "speaker": "mara",
+   "text": "Something metal. A tin box."
+  },
+  {
+   "id": "tx-022",
+   "startMs": 119444,
+   "endMs": 124563,
+   "speaker": "mara",
+   "text": "It's the key. The brass key. It was here all along."
+  },
+  {
+   "id": "tx-023",
+   "startMs": 125113,
+   "endMs": 129482,
+   "speaker": "theo",
+   "text": "Dad wanted us to find it together. That's why I wrote the letter."
+  },
+  {
+   "id": "tx-024",
+   "startMs": 133032,
+   "endMs": 137845,
+   "speaker": "hale",
+   "text": "It's almost one. I was about to close the harbour."
+  },
+  {
+   "id": "tx-025",
+   "startMs": 138395,
+   "endMs": 141439,
+   "speaker": "mara",
+   "text": "No need. We have the key."
+  },
+  {
+   "id": "tx-026",
+   "startMs": 141989,
+   "endMs": 147008,
+   "speaker": "hale",
+   "text": "We? Theo Quinn, I thought you'd left for good."
+  },
+  {
+   "id": "tx-027",
+   "startMs": 147558,
+   "endMs": 149857,
+   "speaker": "theo",
+   "text": "Not tonight, Inspector."
+  },
+  {
+   "id": "tx-028",
+   "startMs": 153407,
+   "endMs": 157836,
+   "speaker": "mara",
+   "text": "Eleven years. Same key, same lock."
+  },
+  {
+   "id": "tx-029",
+   "startMs": 158386,
+   "endMs": 159566,
+   "speaker": "theo",
+   "text": "Turn it."
+  },
+  {
+   "id": "tx-030",
+   "startMs": 160116,
+   "endMs": 164214,
+   "speaker": "hale",
+   "text": "There. Every ship in the bay can see it now."
+  },
+  {
+   "id": "tx-031",
+   "startMs": 164764,
+   "endMs": 167019,
+   "speaker": "mara",
+   "text": "Thank you, Theo."
+  }
+ ]
+}

@@ -1,0 +1,457 @@
+{
+ "contentId": "keepers-key",
+ "title": "The Keeper's Key",
+ "kind": "narrative",
+ "durationMs": 172969,
+ "media": "story.mp4",
+ "source": "synthetic short film rendered by scripts/demo-media/generate_story.py (owned, no third-party rights)",
+ "characters": [
+  {
+   "id": "mara",
+   "name": "Mara Quinn",
+   "role": "lighthouse keeper",
+   "aliases": [
+    "Mara",
+    "Quinn",
+    "the keeper",
+    "the lighthouse keeper",
+    "the sister"
+   ],
+   "description": "Keeper of the Gullrock lighthouse; Theo's older sister.",
+   "appearance": "long brown hair, red scarf, blue coat"
+  },
+  {
+   "id": "theo",
+   "name": "Theo Quinn",
+   "role": "fisherman",
+   "aliases": [
+    "Theo",
+    "the brother",
+    "the fisherman"
+   ],
+   "description": "Mara's younger brother, a fisherman at Pier 4.",
+   "appearance": "green beanie, orange coat"
+  },
+  {
+   "id": "hale",
+   "name": "Inspector Ada Hale",
+   "role": "harbour inspector",
+   "aliases": [
+    "Hale",
+    "Ada Hale",
+    "the inspector",
+    "inspector"
+   ],
+   "description": "Harbour inspector responsible for the storm warning.",
+   "appearance": "navy inspector's cap with a gold badge, grey hair, dark grey coat"
+  }
+ ],
+ "objects": [
+  {
+   "id": "key",
+   "name": "brass key",
+   "aliases": [
+    "key",
+    "the key",
+    "keeper's key",
+    "brass key"
+   ]
+  },
+  {
+   "id": "letter",
+   "name": "letter",
+   "aliases": [
+    "letter",
+    "the note",
+    "note"
+   ]
+  },
+  {
+   "id": "map",
+   "name": "old map",
+   "aliases": [
+    "map",
+    "the map",
+    "old map"
+   ]
+  },
+  {
+   "id": "lantern",
+   "name": "lantern",
+   "aliases": [
+    "lantern",
+    "lamp",
+    "the light"
+   ]
+  }
+ ],
+ "scenes": [
+  {
+   "id": "sc-1",
+   "number": 1,
+   "title": "Storm warning",
+   "location": "Harbour office",
+   "startMs": 5000,
+   "endMs": 36692,
+   "characters": [
+    "hale",
+    "mara"
+   ],
+   "objects": [
+    "key"
+   ],
+   "description": "Inspector Hale warns Mara that a gale is coming and the lighthouse must be lit, but the keeper's key is missing."
+  },
+  {
+   "id": "sc-2",
+   "number": 2,
+   "title": "The empty drawer",
+   "location": "Lighthouse lamp room",
+   "startMs": 36692,
+   "endMs": 56443,
+   "characters": [
+    "mara"
+   ],
+   "objects": [
+    "letter"
+   ],
+   "description": "Mara searches the lamp room; the key drawer is empty except for an unsigned-looking letter."
+  },
+  {
+   "id": "sc-3",
+   "number": 3,
+   "title": "Argument at Pier 4",
+   "location": "The docks",
+   "startMs": 56443,
+   "endMs": 82538,
+   "characters": [
+    "theo",
+    "mara"
+   ],
+   "objects": [
+    "key",
+    "letter"
+   ],
+   "description": "Mara confronts Theo at the docks about the missing key; they argue and Theo storms off."
+  },
+  {
+   "id": "sc-4",
+   "number": 4,
+   "title": "The map",
+   "location": "Lighthouse lamp room",
+   "startMs": 82538,
+   "endMs": 109369,
+   "characters": [
+    "mara",
+    "theo"
+   ],
+   "objects": [
+    "map"
+   ],
+   "description": "Theo comes to the lighthouse and shows Mara their father's old map with an X on the north cliff."
+  },
+  {
+   "id": "sc-5",
+   "number": 5,
+   "title": "North cliff at midnight",
+   "location": "North cliff",
+   "startMs": 109369,
+   "endMs": 131432,
+   "characters": [
+    "mara",
+    "theo"
+   ],
+   "objects": [
+    "key",
+    "lantern",
+    "letter"
+   ],
+   "description": "At midnight Mara and Theo dig under the signal post by lantern light and find the brass key in a tin box."
+  },
+  {
+   "id": "sc-6",
+   "number": 6,
+   "title": "Hale returns",
+   "location": "Below the lighthouse",
+   "startMs": 131432,
+   "endMs": 151807,
+   "characters": [
+    "hale",
+    "mara",
+    "theo"
+   ],
+   "objects": [],
+   "description": "Inspector Hale arrives as the storm builds; Mara shows her the key."
+  },
+  {
+   "id": "sc-7",
+   "number": 7,
+   "title": "The light",
+   "location": "Lighthouse lamp room",
+   "startMs": 151807,
+   "endMs": 168969,
+   "characters": [
+    "mara",
+    "theo",
+    "hale"
+   ],
+   "objects": [
+    "key"
+   ],
+   "description": "Mara turns the key and the lighthouse lamp comes on; the ships in the bay can see the light."
+  }
+ ],
+ "beats": [
+  {
+   "id": "bt-1",
+   "type": "revelation",
+   "sceneId": "sc-1",
+   "startMs": 16407,
+   "endMs": 26640,
+   "description": "Hale tells Mara the keeper's key is missing",
+   "characters": [
+    "hale",
+    "mara"
+   ],
+   "objects": [
+    "key"
+   ]
+  },
+  {
+   "id": "bt-2",
+   "type": "discovery",
+   "sceneId": "sc-2",
+   "startMs": 42146,
+   "endMs": 47505,
+   "description": "Mara finds a letter in the empty key drawer",
+   "characters": [
+    "mara"
+   ],
+   "objects": [
+    "letter"
+   ]
+  },
+  {
+   "id": "bt-3",
+   "type": "reading",
+   "sceneId": "sc-2",
+   "startMs": 45555,
+   "endMs": 52869,
+   "description": "Mara reads the letter: meet me at the north cliff at midnight, signed T",
+   "characters": [
+    "mara"
+   ],
+   "objects": [
+    "letter"
+   ]
+  },
+  {
+   "id": "bt-4",
+   "type": "argument",
+   "sceneId": "sc-3",
+   "startMs": 63567,
+   "endMs": 71375,
+   "description": "Mara accuses Theo of taking the key and they argue",
+   "characters": [
+    "mara",
+    "theo"
+   ],
+   "objects": [
+    "key",
+    "letter"
+   ]
+  },
+  {
+   "id": "bt-5",
+   "type": "discovery",
+   "sceneId": "sc-4",
+   "startMs": 93386,
+   "endMs": 100351,
+   "description": "Theo shows Mara their father's old map with an X on the north cliff",
+   "characters": [
+    "theo",
+    "mara"
+   ],
+   "objects": [
+    "map"
+   ]
+  },
+  {
+   "id": "bt-6",
+   "type": "discovery",
+   "sceneId": "sc-5",
+   "startMs": 117944,
+   "endMs": 125563,
+   "description": "Mara finds the brass key in a tin box under the signal post",
+   "characters": [
+    "mara",
+    "theo"
+   ],
+   "objects": [
+    "key",
+    "lantern"
+   ]
+  },
+  {
+   "id": "bt-7",
+   "type": "revelation",
+   "sceneId": "sc-5",
+   "startMs": 123613,
+   "endMs": 130482,
+   "description": "Theo admits he wrote the letter so they would find the key together",
+   "characters": [
+    "theo",
+    "mara"
+   ],
+   "objects": [
+    "letter",
+    "key"
+   ]
+  },
+  {
+   "id": "bt-8",
+   "type": "climax",
+   "sceneId": "sc-7",
+   "startMs": 156886,
+   "endMs": 160566,
+   "description": "Mara turns the brass key and the lighthouse lamp is lit",
+   "characters": [
+    "mara",
+    "theo"
+   ],
+   "objects": [
+    "key"
+   ]
+  }
+ ],
+ "signs": [
+  {
+   "startMs": 5000,
+   "endMs": 36692,
+   "text": "HARBOUR MASTER",
+   "kind": "sign"
+  },
+  {
+   "startMs": 5000,
+   "endMs": 36692,
+   "text": "STORM WARNING - GALE FORCE 9 TONIGHT",
+   "kind": "sign"
+  },
+  {
+   "startMs": 46855,
+   "endMs": 53069,
+   "kind": "letter",
+   "text": "Meet me at the north cliff at midnight. - T."
+  },
+  {
+   "startMs": 56443,
+   "endMs": 82538,
+   "text": "PIER 4",
+   "kind": "sign"
+  },
+  {
+   "startMs": 94686,
+   "endMs": 100551,
+   "kind": "map",
+   "text": "GULLROCK BAY - NORTH CLIFF (X) - the light belongs to the cliff"
+  },
+  {
+   "startMs": 109369,
+   "endMs": 131432,
+   "text": "NORTH CLIFF - DANGER",
+   "kind": "sign"
+  }
+ ],
+ "presence": [
+  {
+   "startMs": 5000,
+   "endMs": 36692,
+   "characterId": "hale",
+   "name": "Inspector Ada Hale"
+  },
+  {
+   "startMs": 5000,
+   "endMs": 36692,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 36692,
+   "endMs": 56443,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 56443,
+   "endMs": 82538,
+   "characterId": "theo",
+   "name": "Theo Quinn"
+  },
+  {
+   "startMs": 56443,
+   "endMs": 82538,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 82538,
+   "endMs": 109369,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 82538,
+   "endMs": 109369,
+   "characterId": "theo",
+   "name": "Theo Quinn"
+  },
+  {
+   "startMs": 109369,
+   "endMs": 131432,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 109369,
+   "endMs": 131432,
+   "characterId": "theo",
+   "name": "Theo Quinn"
+  },
+  {
+   "startMs": 131432,
+   "endMs": 151807,
+   "characterId": "hale",
+   "name": "Inspector Ada Hale"
+  },
+  {
+   "startMs": 131432,
+   "endMs": 151807,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 131432,
+   "endMs": 151807,
+   "characterId": "theo",
+   "name": "Theo Quinn"
+  },
+  {
+   "startMs": 151807,
+   "endMs": 168969,
+   "characterId": "mara",
+   "name": "Mara Quinn"
+  },
+  {
+   "startMs": 151807,
+   "endMs": 168969,
+   "characterId": "theo",
+   "name": "Theo Quinn"
+  },
+  {
+   "startMs": 151807,
+   "endMs": 168969,
+   "characterId": "hale",
+   "name": "Inspector Ada Hale"
+  }
+ ]
+}

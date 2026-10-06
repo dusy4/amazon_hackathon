@@ -47,6 +47,7 @@ export type Intent =
   | { type: "share" }
   | { type: "memory_query"; text: string; types: string[] }
   | { type: "spoilers"; mode: "strict" | "full" }
+  | { type: "open_content"; query: string }
   | { type: "unknown"; text: string };
 
 const ORDINALS: Record<string, number> = { first: 1, "1st": 1, opening: 1, opener: 1, second: 2, "2nd": 2, third: 3, "3rd": 3, fourth: 4, "4th": 4, fifth: 5, "5th": 5 };
@@ -68,8 +69,9 @@ const EVENT_PATTERNS: [RegExp, string[]][] = [
   [/\binterceptions?\b|\bintercepts?\b/, ["interception"]],
   [/\bclearances?\b/, ["clearance"]],
   [/\bgoals?\b|\bscored\b|\bequali[sz]er\b|\bopener\b|\bwinner\b|\bwinning goal\b/, ["goal"]],
+  [/\bscenes?\b/, ["scene"]],
 ];
-const PLURAL_RE = /\b(goals|saves|shots|chances|cards|bookings|fouls|corners|headers|replays|tackles|moments|attempts)\b/;
+const PLURAL_RE = /\b(goals|saves|shots|chances|cards|bookings|fouls|corners|headers|replays|tackles|moments|attempts|scenes)\b/;
 
 export function normalize(text: string): string {
   let t = ` ${text.toLowerCase()} `
@@ -122,6 +124,8 @@ export function parseMomentSpec(clause: string): MomentSpec | null {
 
   let ordinal: Ordinal | undefined;
   for (const [w, n] of Object.entries(ORDINALS)) if (new RegExp(`\\b${w}\\b`).test(t)) ordinal = n;
+  const sceneNo = t.match(/\bscene (?:number )?(\d+)\b/);
+  if (sceneNo) ordinal = parseInt(sceneNo[1], 10);
   if (/\bwinner\b|\bwinning goal\b/.test(t)) ordinal = "last";
   if (ordinal === undefined) {
     if (/\b(last|latest|most recent|previous|earlier)\b/.test(t)) ordinal = /\bprevious\b/.test(t) ? "previous" : "last";
@@ -130,7 +134,11 @@ export function parseMomentSpec(clause: string): MomentSpec | null {
   const deictic = /\b(that|this|the)\b/.test(t) && ordinal === undefined;
   const plural = PLURAL_RE.test(t) || /\b(every|all|each)\b/.test(t);
   const pronoun = /\b(his|him|he|her|she|their|they)\b/.test(t);
-  const descriptive = /\b(post|woodwork|bar|wide|header|cross|corner flag|slides?|late|long|low|top corner|bottom corner|volley|curl\w*)\b/.test(t);
+  const descriptive =
+    /\b(post|woodwork|bar|wide|header|cross|corner flag|slides?|late|long|low|top corner|bottom corner|volley|curl\w*)\b/.test(t) ||
+    /\b(where|when|in which)\b/.test(t);
+  // "the scene where Mara finds the key": story beats are more precise than whole scenes.
+  if (descriptive && eventTypes.includes("scene")) eventTypes.push("beat");
   return { eventTypes, replay, ordinal, deictic, plural, pronoun, mentionText: t, query: t, anchor, descriptive };
 }
 
@@ -163,8 +171,34 @@ function speed(t: string): Intent | null {
   return null;
 }
 
-export function parseClause(clause: string): Intent {
+const CONTENT_NOUN = /\b(movie|film|story|match|game|show|episode)\b/;
+const TITLE_STOPWORDS = new Set(["the", "and", "vs", "fc", "of", "an"]);
+
+/** Distinctive words of a title ("The Keeper's Key" → keeper, key). */
+export function titleKeywords(title: string): string[] {
+  return normalize(title)
+    .replace(/'s\b/g, "")
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length >= 3 && !TITLE_STOPWORDS.has(w));
+}
+
+/** "watch the keeper's key", "switch to the match", "put on the movie". */
+function openContent(t: string, titles: string[]): Intent | null {
+  const m = t.match(/^(?:let'?s |can you |could you |please )?(?:switch (?:over |back )?to|open|put on|start watching|go back to watching|watch|play)\s+(.+)$/);
+  if (!m) return null;
+  const rest = m[1];
+  if (/\b(scene|moment|where|when|part|bit|goal|replay|it|that|this|again)\b/.test(rest)) return null;
+  const titled = titles.some((title) => {
+    const kw = titleKeywords(title);
+    return kw.length > 0 && kw.filter((k) => new RegExp(`\\b${k}`).test(rest)).length >= Math.min(2, kw.length);
+  });
+  return titled || CONTENT_NOUN.test(rest) ? { type: "open_content", query: rest } : null;
+}
+
+export function parseClause(clause: string, titles: string[] = []): Intent {
   const t = normalize(clause);
+  const open = openContent(t, titles);
+  if (open) return open;
 
   // --- Viewing Memory
   if (/\b(what|which|who) (did|have) i\b|\b(what|which) \w+ (did|have) i\b|\bi (asked|clipped|shared|sent|replayed|looked up|searched)\b|\bmy (clips|history|activity)\b|\beverything i\b/.test(t)) {
@@ -188,7 +222,8 @@ export function parseClause(clause: string): Intent {
   if (/\bclip\b|\bmake a clip\b|\bsave (that|it|this)( moment| as a clip)?\b/.test(t)) {
     const rest = t.replace(/\b(clip|make a clip of|save)\b/g, " ");
     const spec = parseMomentSpec(rest);
-    return { type: "clip", spec: spec && spec.eventTypes.length + (spec.replay ? 1 : 0) > 0 && !spec.deictic ? spec : spec?.eventTypes.length && spec.ordinal ? spec : undefined, share: wantsShare };
+    const explicit = spec && spec.eventTypes.length + (spec.replay ? 1 : 0) > 0 && (!spec.deictic || spec.ordinal !== undefined || spec.descriptive);
+    return { type: "clip", spec: explicit ? spec : undefined, share: wantsShare };
   }
   if (wantsShare && /\b(phone|mobile|me|it|that|this)\b/.test(t)) return { type: "share" };
   if (/\b(back to live|return to live|go live|back to where i was|where i left off|jump to live|back to the live)\b/.test(t)) return { type: "return_live" };
@@ -226,7 +261,11 @@ export function parseClause(clause: string): Intent {
     if (/\b(he|him|she|her)\b/.test(t)) return { type: "identify", target: "pronoun" };
     return { type: "identify", target: "ball_carrier" };
   }
-  if (/\bread (out )?(the |that )?(score|scoreboard|sign|text|screen|clock)\b|\bwhat('s| is) the score\b|\bwhat minute\b|\bhow long left\b/.test(t)) return { type: "read_text" };
+  if (
+    /\bread (out )?(the |that )?(score|scoreboard|sign|text|screen|clock|letter|note|map)\b|\bwhat('s| is) the score\b|\bwhat minute\b|\bhow long left\b/.test(t) ||
+    /^read (that|this|it)( out| for me)?$|\bwhat does (that|it|this|the (sign|letter|note|map)) say\b/.test(t)
+  )
+    return { type: "read_text" };
   if (/\bwhat did (he|she|they|the commentators?|the commentary) (just )?say\b|\bwhat was (just )?said\b|\brepeat (that|the) line\b/.test(t)) return { type: "what_said" };
   if (/\bdescribe\b|\bwhat (just )?happened\b|\bexplain (that|this|what|the play)\b|\bwhat'?s going on\b|\bwhat is happening\b/.test(t)) return { type: "describe" };
 
@@ -240,9 +279,9 @@ export function parseClause(clause: string): Intent {
   return { type: "unknown", text: clause };
 }
 
-export function parseUtterance(utterance: string): Intent[] {
+export function parseUtterance(utterance: string, titles: string[] = []): Intent[] {
   const out: Intent[] = [];
-  for (const i of splitClauses(utterance).map(parseClause)) {
+  for (const i of splitClauses(utterance).map((c) => parseClause(c, titles))) {
     const prev = out[out.length - 1];
     // "I was away 5 minutes, catch me up" → one catch-up with the explicit window.
     if (prev && prev.type === "catch_up" && i.type === "catch_up") continue;

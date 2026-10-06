@@ -11,11 +11,13 @@
     "dev": "tsx watch services/agent/src/main.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "smoke:mcp": "tsx scripts/mcp-smoke.ts"
+    "smoke:mcp": "tsx scripts/mcp-smoke.ts",
+    "eval": "tsx scripts/eval.ts"
   },
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.1147.0",
     "@aws-sdk/client-bedrock-runtime": "^3.1140.0",
     "@aws-sdk/client-dynamodb": "^3.1146.0",
     "@aws-sdk/lib-dynamodb": "^3.1146.0",

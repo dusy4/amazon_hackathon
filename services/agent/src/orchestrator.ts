@@ -17,29 +17,43 @@ import {
   type TurnResult,
   entityIdForPlayer,
   formatMs,
+  isNarrative,
 } from "../../../packages/contracts/src/index.ts";
 import { buildEnvelope } from "../../context/src/envelope.ts";
 import type { PlaybackSession } from "../../context/src/session.ts";
 import type { AppContext } from "./app-context.ts";
-import { BedrockAgent } from "./bedrock-agent.ts";
+import { defaultChatModel } from "./llm.ts";
+import { LlmAgent } from "./llm-agent.ts";
 import { resolveEntities } from "./entities.ts";
-import { type Intent, type MomentSpec, parseUtterance } from "./intent.ts";
+import { type Intent, type MomentSpec, parseMomentSpec, parseUtterance, splitClauses } from "./intent.ts";
 
 interface SearchResult {
   moments: Moment[];
   hiddenBySpoilerBoundary: number;
+  bestMatchHidden?: boolean;
 }
+
+/**
+ * Intents the rules parser may execute on its own: unambiguous transport controls whose arguments are
+ * fully determined by the words ("pause", "half speed", "three seconds earlier", "repeat it twice").
+ * Anything that needs understanding — finding a moment, identifying someone, sharing, switching titles —
+ * goes to the LLM agent. With no LLM configured (or if it fails) the rules handle everything they can.
+ */
+const FAST_PATH = new Set<Intent["type"]>(["pause", "play", "set_speed", "relative_seek", "loop", "again", "clear_loop", "spoilers", "select_result", "return_live"]);
 
 class SpoilerGuard extends Error {}
 
 export class Orchestrator {
   private client: Client | null = null;
-  private bedrock: BedrockAgent | null = process.env.SP_AGENT === "bedrock" ? new BedrockAgent() : null;
+  private llm: LlmAgent | null = (() => {
+    const m = defaultChatModel();
+    return m ? new LlmAgent(m) : null;
+  })();
 
   constructor(private app: AppContext, private mcpUrl: string) {}
 
   get interpreterName() {
-    return this.bedrock ? `rules + ${this.bedrock.label}` : "rules";
+    return this.llm ? `${this.llm.label} (rules fast path)` : "rules";
   }
 
   private async mcp(): Promise<Client> {
@@ -79,7 +93,7 @@ export class Orchestrator {
     step({ kind: "context", label: "Context Envelope", component: "context-service", data: envelope });
     session.utterances.push(utterance);
 
-    const intents = parseUtterance(utterance);
+    const intents = parseUtterance(utterance, this.app.store.list().map((c) => c.title));
     const known = intents.filter((i) => i.type !== "unknown");
     step({ kind: "intent", label: intents.map((i) => i.type).join(" → "), component: "rules-parser", data: intents });
 
@@ -94,11 +108,27 @@ export class Orchestrator {
 
     const ctx: SkillCtx = { app: this.app, session, envelope, call, speech, cards, step };
 
-    try {
-      if (!known.length && this.bedrock) {
-        interpreter = this.bedrock.label;
-        const r = await this.bedrock.run(utterance, envelope, call, step, async () => (await (await this.mcp()).listTools()).tools);
+    // Fast path only when every clause is a transport control AND no clause refers to a moment
+    // ("show me the equaliser again" needs understanding, "again" alone does not).
+    const fastPath = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type)) && splitClauses(utterance).every((c) => !parseMomentSpec(c));
+    let useRules = !this.llm || fastPath;
+    if (this.llm && !fastPath) {
+      interpreter = this.llm.label;
+      try {
+        const catalog = this.app.store.list().map((c) => ({ contentId: c.contentId, title: c.title, kind: c.kind }));
+        const observed = observeLlmCalls(ctx);
+        const r = await this.llm.run(utterance, envelope, catalog, observed, step, async () => (await (await this.mcp()).listTools()).tools);
         speech.push(r);
+      } catch (e) {
+        // The model is unavailable (quota, network): degrade to the rules interpreter, visibly.
+        step({ kind: "error", label: `LLM unavailable: ${(e as Error).message.slice(0, 120)} — falling back to rules`, component: this.llm.label });
+        interpreter = "rules (LLM fallback)";
+        useRules = true;
+      }
+    }
+    try {
+      if (!useRules) {
+        /* handled by the LLM agent */
       } else if (!known.length) {
         speech.push("Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”.");
       } else {
@@ -124,6 +154,39 @@ export class Orchestrator {
   }
 }
 
+/**
+ * Wraps MCP calls made by the LLM so the session stays grounded exactly as on the rules path:
+ * a seek to a searched moment grounds it ("that goal", "clip it"), identifications set the active
+ * entity ("his shots"), and clip/share results become cards on screen.
+ */
+function observeLlmCalls(c: SkillCtx) {
+  let lastResults: Moment[] = [];
+  return async (name: string, args: Record<string, unknown> = {}) => {
+    const data = await c.call(name, args);
+    if (name === "moments.search") {
+      lastResults = data.moments ?? [];
+      if (lastResults.length > 1) c.session.ground({ kind: "result_set", label: String(args.query ?? ""), results: lastResults, resultIndex: 0 });
+    } else if (name === "player.seek") {
+      const m = lastResults.find((x) => Math.abs(x.startMs - Number(args.positionMs)) < 1500);
+      if (m) {
+        await groundMoment(c, m, "semantic_seek");
+        c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
+      }
+    } else if (name === "lens.identify" && data.entity?.id) {
+      c.session.activeEntityId = data.entity.id;
+      c.cards.push({ type: "entity", title: data.entity.name, subtitle: data.entity.role, facts: [...(data.facts ?? []), `source: ${data.provenance?.source}`] });
+    } else if (name === "clip.create" && data.clip) {
+      c.session.ground({ kind: "clip", label: data.clip.label, clipId: data.clip.clipId, moment: c.session.activeMoment ?? undefined });
+      c.cards.push({ type: "clip", title: data.clip.label, clip: data.clip });
+    } else if (name === "share.send" && data.share) {
+      const full = c.app.shares.find((s) => s.shareId === data.share.shareId);
+      const card = c.cards.find((x): x is Extract<AnswerCard, { type: "clip" }> => x.type === "clip" && x.clip.clipId === data.share.clipId);
+      if (card && full) card.share = full;
+    }
+    return data;
+  };
+}
+
 // ---------------------------------------------------------------------------------------------
 // Skills — deterministic execution of each intent
 // ---------------------------------------------------------------------------------------------
@@ -137,6 +200,9 @@ interface SkillCtx {
   step: (s: Omit<TraceStep, "ms">) => void;
 }
 
+/** People in a moment: players (sports) or characters (narrative). */
+const isPersonId = (id: string) => id.startsWith("player:") || id.startsWith("character:");
+
 const pos = (c: SkillCtx) => (c.app.bridge.state()?.positionMs ?? c.envelope.relevantCore.playback?.positionMs ?? 0);
 
 function eventStart(c: SkillCtx, m: Moment) {
@@ -149,7 +215,7 @@ function primaryEntity(c: SkillCtx, m: Moment): string | null {
   const target = m.ofEventId ? c.app.currentIndex()?.events.find((e) => e.id === m.ofEventId) : ev;
   if (target?.scorer) return entityIdForPlayer(target.scorer.team, target.scorer.number);
   const p = target?.players[0];
-  return p ? entityIdForPlayer(p.team, p.number) : (m.entityIds.find((id) => id.startsWith("player:")) ?? null);
+  return p ? entityIdForPlayer(p.team, p.number) : (m.entityIds.find(isPersonId) ?? null);
 }
 
 function entityIdsFor(c: SkillCtx, spec: MomentSpec): string[] | undefined {
@@ -163,7 +229,10 @@ function entityIdsFor(c: SkillCtx, spec: MomentSpec): string[] | undefined {
 }
 
 async function search(c: SkillCtx, args: Record<string, unknown>): Promise<SearchResult> {
-  return c.call("moments.search", args);
+  const r: SearchResult = await c.call("moments.search", args);
+  // The best match for a described moment hasn't been watched yet: say so rather than settle for a weaker visible one.
+  if (r.bestMatchHidden) throw new SpoilerGuard("I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway.");
+  return r;
 }
 
 function noResult(c: SkillCtx, r: SearchResult, what: string): never {
@@ -187,7 +256,7 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
 
   const resolveBase = async (types: string[]): Promise<Moment> => {
     // "that goal" / "the goal": prefer the grounded reference.
-    if (spec.deictic && active && !spec.anchor) {
+    if (spec.deictic && active && !spec.anchor && !spec.descriptive) {
       const activeType = active.kind === "replay" ? c.app.currentIndex()?.events.find((e) => e.id === active.ofEventId)?.type : active.eventType;
       if (activeType && types.includes(activeType)) {
         c.step({ kind: "intent", label: `“that ${activeType.replace("_", " ")}” → active reference ${active.label}`, component: "context-service" });
@@ -198,11 +267,15 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
     if (typeof spec.ordinal === "number") Object.assign(args, { ordinal: spec.ordinal });
     else if (spec.ordinal === "next") Object.assign(args, { relation: "after", anchorMs: active ? eventStart(c, active) : here, order: "first" });
     else if (spec.ordinal === "previous" && active) Object.assign(args, { relation: "before", anchorMs: eventStart(c, active) - 1, order: "nearest" });
+    else if (spec.ordinal === "previous" && types.includes("scene")) {
+      const cur = c.app.currentIndex()?.events.find((e) => e.type === "scene" && e.startMs <= here && here < e.endMs);
+      Object.assign(args, { relation: "before", anchorMs: (cur?.startMs ?? here) - 1, order: "nearest" });
+    }
     else if (anchorMs !== undefined) Object.assign(args, { relation: spec.anchor!.relation, anchorMs, order: spec.anchor!.relation === "before" ? "nearest" : "first" });
     else if (spec.descriptive) Object.assign(args, { order: "relevance" });
     else Object.assign(args, { relation: "before", order: "nearest" });
     const r = await search(c, { ...args, limit: 3 });
-    if (!r.moments.length) noResult(c, r, `that ${types[0].replace("_", " ")}`);
+    if (!r.moments.length) noResult(c, r, `that ${types[0].replace("_", " ")}${entityIds?.length ? ` with ${entityNames(c, entityIds)}` : ""}`);
     return r.moments[0];
   };
 
@@ -229,6 +302,10 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
   return r.moments[0];
 }
 
+function entityNames(c: SkillCtx, ids: string[]) {
+  return ids.map((id) => c.app.currentIndex()?.entities.find((e) => e.id === id)?.name ?? id).join(" and ");
+}
+
 async function baseOfReplay(c: SkillCtx, replay: Moment): Promise<Moment> {
   const seg = c.app.currentIndex()?.segments.find((s) => s.eventId === replay.ofEventId);
   if (!seg) return replay;
@@ -246,7 +323,7 @@ async function groundMoment(c: SkillCtx, m: Moment, how: "semantic_seek") {
   c.session.ground({ kind: "moment", label: m.label, moment: m });
   const ent = primaryEntity(c, m);
   if (ent) c.session.activeEntityId = ent;
-  await c.app.record({ type: how, contentId: c.envelope.relevantCore.contentId, contentTimeMs: m.startMs, summary: `Went to ${m.label}`, entityIds: m.entityIds.filter((e) => e.startsWith("player:")), payload: { segmentId: m.segmentId } });
+  await c.app.record({ type: how, contentId: c.envelope.relevantCore.contentId, contentTimeMs: m.startMs, summary: `Went to ${m.label}`, entityIds: m.entityIds.filter(isPersonId), payload: { segmentId: m.segmentId } });
 }
 
 async function runIntent(intent: Intent, c: SkillCtx) {
@@ -324,11 +401,11 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       if (intent.type === "loop") {
         await c.call("player.loop", { startMs: start, endMs: end, count: intent.count });
         c.speech.push(`Playing it ${intent.count} times.`);
-        await c.app.record({ type: "loop_moment", contentId: c.envelope.relevantCore.contentId, contentTimeMs: start, summary: `Looped ${m?.label ?? formatMs(start)} ${intent.count}×`, entityIds: m?.entityIds.filter((e) => e.startsWith("player:")) ?? [], payload: { count: intent.count } });
+        await c.app.record({ type: "loop_moment", contentId: c.envelope.relevantCore.contentId, contentTimeMs: start, summary: `Looped ${m?.label ?? formatMs(start)} ${intent.count}×`, entityIds: m?.entityIds.filter(isPersonId) ?? [], payload: { count: intent.count } });
       } else {
         await c.call("player.play_segment", { startMs: start, endMs: end });
         c.speech.push("Again.");
-        await c.app.record({ type: "rewatch_moment", contentId: c.envelope.relevantCore.contentId, contentTimeMs: start, summary: `Rewatched ${m?.label ?? formatMs(start)}`, entityIds: m?.entityIds.filter((e) => e.startsWith("player:")) ?? [], payload: {} });
+        await c.app.record({ type: "rewatch_moment", contentId: c.envelope.relevantCore.contentId, contentTimeMs: start, summary: `Rewatched ${m?.label ?? formatMs(start)}`, entityIds: m?.entityIds.filter(isPersonId) ?? [], payload: {} });
       }
       c.step({ kind: "action", label: `${intent.type} ${formatMs(start)}–${formatMs(end)}`, component: "player" });
       return;
@@ -355,6 +432,22 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       return;
     }
     case "identify": {
+      if (isNarrative(index)) {
+        let entityId: string | undefined;
+        if (intent.target === "mention") {
+          const r = await c.call("entities.resolve", { mention: intent.mention ?? "", atMs: pos(c) });
+          entityId = r.resolutions.find((x: { type: string }) => x.type === "character")?.id ?? r.resolutions[0]?.id;
+          if (!entityId) throw new Error("I couldn't tell who you mean");
+        } else if (intent.target === "pronoun" && c.session.activeEntityId?.startsWith("character:")) entityId = c.session.activeEntityId;
+        const r = await c.call("lens.identify", entityId ? { target: "entity", entityId, atMs: pos(c) } : { target: "on_screen", atMs: pos(c) });
+        const e = r.entity;
+        if (e.type === "character") c.session.activeEntityId = e.id;
+        c.session.ground({ kind: "entity", label: e.name, entityId: e.id, moment: c.session.activeMoment ?? undefined });
+        await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked about ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
+        c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}. ${r.facts[0] ? `${cap(r.facts[0])}` : ""}`.trim());
+        c.cards.push({ type: "entity", title: e.name, subtitle: e.role, facts: [...r.facts, `source: ${r.provenance.source}`] });
+        return;
+      }
       let entityId: string | undefined;
       let target: "ball_carrier" | "entity" = "entity";
       if (intent.target === "ball_carrier") target = "ball_carrier";
@@ -382,6 +475,13 @@ async function runIntent(intent: Intent, c: SkillCtx) {
     }
     case "read_text": {
       const r = await c.call("lens.read_text", { atMs: pos(c) });
+      if (isNarrative(index)) {
+        if (!r.text) throw new Error("there's no text on screen right now");
+        await c.app.record({ type: "ocr_read", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Read on-screen text: ${r.text}`, entityIds: [], payload: {} });
+        c.speech.push(`It says: ${r.items.map((i: { text: string }) => i.text).join(". ")}`);
+        c.cards.push({ type: "text", title: "On screen", body: r.items.map((i: { text: string; kind?: string }) => `${i.kind ?? "text"}: ${i.text}`).join("\n") });
+        return;
+      }
       if (!r.text) throw new Error("there's no scoreboard on screen");
       await c.app.record({ type: "ocr_read", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Read scoreboard: ${r.text}`, entityIds: [], payload: {} });
       const [home, away] = index!.teams;
@@ -395,6 +495,12 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       const lines = r.lines.slice(-2);
       if (!lines.length) throw new Error("nothing was said in the last few seconds");
       await c.app.record({ type: "transcript_request", contentId: c.envelope.relevantCore.contentId, contentTimeMs: p, summary: "Asked what was said", entityIds: [], payload: {} });
+      if (isNarrative(index)) {
+        const last = lines[lines.length - 1];
+        c.speech.push(`${last.speakerName} said: ${last.text}`);
+        c.cards.push({ type: "text", title: "Dialogue", body: lines.map((l: { text: string; startMs: number; speakerName: string }) => `${formatMs(l.startMs)}  ${l.speakerName}: ${l.text}`).join("\n") });
+        return;
+      }
       c.speech.push(`The commentator said: ${lines.map((l: { text: string }) => l.text).join(" ")}`);
       c.cards.push({ type: "text", title: "Commentary", body: lines.map((l: { text: string; startMs: number }) => `${formatMs(l.startMs)}  ${l.text}`).join("\n") });
       return;
@@ -404,7 +510,9 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       const r = await c.call("moments.summarize", { fromMs: Math.max(0, p - 25000), toMs: p });
       const who = c.envelope.relevantCore.currentEntities[0];
       await c.app.record({ type: "accessibility_description", contentId: c.envelope.relevantCore.contentId, contentTimeMs: p, summary: "Asked for a description", entityIds: [], payload: {} });
-      c.speech.push(`${r.summary}${who ? ` Right now ${who.name} is on the ball.` : ""}`);
+      const onScreen = c.envelope.relevantCore.currentEntities.map((e) => e.name);
+      if (isNarrative(index)) c.speech.push(`${r.summary}${onScreen.length ? ` On screen now: ${onScreen.join(" and ")}.` : ""}`);
+      else c.speech.push(`${r.summary}${who ? ` Right now ${who.name} is on the ball.` : ""}`);
       c.cards.push({ type: "text", title: "What just happened", body: r.summary });
       return;
     }
@@ -414,7 +522,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       await c.app.record({ type: "catch_up_generated", contentId: c.envelope.relevantCore.contentId, contentTimeMs: p, summary: `Catch-up over ${intent.windowMs / 60000} min: ${r.summary}`, entityIds: [], payload: { events: r.events.length } });
       c.speech.push(`Here's what you missed. ${r.summary}`);
       c.cards.push({ type: "moments", title: `Catch me up · last ${Math.round(intent.windowMs / 60000) || 1} min`, items: r.events.map((e: { description: string; atMs: number }) => ({ label: e.description, startMs: e.atMs, endMs: e.atMs + 5000 })) });
-      if (r.highlights.length) c.session.ground({ kind: "result_set", label: "catch-up highlights", results: r.highlights.map((h: Moment) => ({ ...h, segmentId: h.segmentId ?? h.eventId, kind: "event", score: 1, scoreBreakdown: {}, entityIds: [], eventType: "goal" })), resultIndex: 0 });
+      if (r.highlights.length) c.session.ground({ kind: "result_set", label: "catch-up highlights", results: r.highlights.map((h: Moment) => ({ ...h, segmentId: h.segmentId ?? h.eventId, kind: "event", score: 1, scoreBreakdown: {}, entityIds: [], eventType: h.eventType ?? "goal" })), resultIndex: 0 });
       return;
     }
     case "clip": {
@@ -451,6 +559,13 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       await c.app.record({ type: "memory_query", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked: ${intent.text}`, entityIds: [], payload: {} });
       c.speech.push(`${items[0].summary} — ${relTime(items[0].wallClock)}.`);
       c.cards.push({ type: "memory", title: "From your Viewing Memory", items: items.map((i) => ({ summary: i.summary, at: i.wallClock, contentTimeMs: i.contentTimeMs })) });
+      return;
+    }
+    case "open_content": {
+      const r = await c.call("content.open", { query: intent.query });
+      await c.app.record({ type: "content_opened", contentId: r.contentId, contentTimeMs: 0, summary: `Opened ${r.title}`, entityIds: [], payload: { kind: r.kind } });
+      c.speech.push(`Opening ${r.title}.`);
+      c.cards.push({ type: "text", title: r.title, body: `${r.kind === "narrative" ? "Film" : "Match"} · ${formatMs(r.durationMs)}` });
       return;
     }
     case "spoilers":

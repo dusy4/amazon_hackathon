@@ -40,6 +40,13 @@ export function resolveEntities(index: ContentIndex, text: string, atMs: number)
   const team = teamIn(index, t);
   const out: Resolution[] = [];
 
+  // Narrative titles: characters and objects by name or provider alias ("Theo", "the inspector", "the map").
+  for (const e of index.entities) {
+    if (e.type !== "character" && e.type !== "object" && e.type !== "person") continue;
+    const hit = [e.name, ...e.aliases].find((n) => new RegExp(`\\b${n.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(t));
+    if (hit) out.push({ entity: e, matchedBy: hit === e.name ? "name" : `alias “${hit}”`, confidence: hit === e.name ? 1 : 0.9 });
+  }
+
   for (const p of players) if (new RegExp(`\\b${p.name.toLowerCase()}\\b`).test(t)) out.push({ entity: p, matchedBy: "name", confidence: 1 });
 
   const numRe = /(?:#|\bnumber\s+|\bno\.?\s*)(\d{1,2}|[a-z]+)\b/g;

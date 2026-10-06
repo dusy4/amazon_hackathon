@@ -19,9 +19,26 @@ export class PlaybackSession {
   spoilerMode: SpoilerMode = "strict";
   accessibility = { captions: false, describeVisuals: false };
 
+  /** Title the session state above belongs to; boundaries of other titles are kept per title. */
+  contentId: string | null = null;
+  private boundaries = new Map<string, number>();
+
   constructor(sessionId: string, userId: string) {
     this.sessionId = sessionId;
     this.userId = userId;
+  }
+
+  /** Switching titles: references and the spoiler boundary are per title, so park them and restore. */
+  setContent(contentId: string | null) {
+    if (!contentId || contentId === this.contentId) return false;
+    if (this.contentId) this.boundaries.set(this.contentId, this.watchedUpToMs);
+    this.contentId = contentId;
+    this.watchedUpToMs = this.boundaries.get(contentId) ?? 0;
+    this.activeRef = null;
+    this.refHistory = [];
+    this.activeEntityId = null;
+    this.lastSeekTargetMs = null;
+    return true;
   }
 
   observePosition(positionMs: number, isPlaying: boolean) {

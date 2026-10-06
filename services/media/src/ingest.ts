@@ -1,7 +1,9 @@
 /**
  * Ingestion: provider feed + transcript (+ optional OCR) → unified semantic timeline → index.
  *
- * Input  data/content/<id>/provider.json, commentary.json (or an Amazon Transcribe result JSON)
+ * Input  data/content/<id>/provider.json, commentary.json | dialogue.json (or an Amazon Transcribe result JSON)
+ *        provider.json kind "sports_match" (roster/events/replays/scoreboard) or "narrative"
+ *        (characters/objects/scenes/beats/signs/presence).
  * Output data/index/<id>.json (ContentIndex: entities, event/replay/window segments with embeddings)
  *
  * This file is the local equivalent of the v2 pre-indexing flow
@@ -138,18 +140,106 @@ function leadInMs(type: string) {
   return type === "goal" ? 5000 : type === "replay" ? 0 : type === "save" || type === "shot" ? 3000 : 1500;
 }
 
-export async function buildIndex(contentDir: string, embedder: Embedder = defaultEmbedder(), transcribePath?: string) {
-  const feed: ProviderFeed = JSON.parse(readFileSync(join(contentDir, "provider.json"), "utf8"));
-  let transcript: TranscriptLine[];
-  let transcriptSource: string;
-  if (transcribePath) {
-    transcript = parseTranscribeResult(JSON.parse(readFileSync(transcribePath, "utf8")));
-    transcriptSource = "amazon-transcribe";
-  } else {
-    const c = JSON.parse(readFileSync(join(contentDir, "commentary.json"), "utf8"));
-    transcript = c.lines;
-    transcriptSource = "commentary-script";
+interface NarrativeFeed {
+  contentId: string;
+  title: string;
+  kind: "narrative";
+  durationMs: number;
+  media: string;
+  source: string;
+  characters: { id: string; name: string; role: string; aliases: string[]; description: string; appearance?: string }[];
+  objects: { id: string; name: string; aliases: string[] }[];
+  scenes: { id: string; number: number; title: string; location: string; startMs: number; endMs: number; characters: string[]; objects: string[]; description: string }[];
+  beats: { id: string; type: string; sceneId: string; startMs: number; endMs: number; description: string; characters: string[]; objects: string[] }[];
+  signs: { startMs: number; endMs: number; text: string; kind?: string }[];
+  presence: { startMs: number; endMs: number; characterId: string; name: string }[];
+}
+
+const characterId = (id: string) => `character:${id}`;
+const objectId = (id: string) => `object:${id}`;
+
+function loadTranscript(contentDir: string, transcribePath?: string): { transcript: TranscriptLine[]; transcriptSource: string } {
+  if (transcribePath) return { transcript: parseTranscribeResult(JSON.parse(readFileSync(transcribePath, "utf8"))), transcriptSource: "amazon-transcribe" };
+  const dialogue = join(contentDir, "dialogue.json");
+  if (existsSync(dialogue)) return { transcript: JSON.parse(readFileSync(dialogue, "utf8")).lines, transcriptSource: "dialogue-script" };
+  return { transcript: JSON.parse(readFileSync(join(contentDir, "commentary.json"), "utf8")).lines, transcriptSource: "commentary-script" };
+}
+
+/** Narrative titles: scenes + story beats + dialogue windows, grounded on characters and objects. */
+async function buildNarrativeIndex(feed: NarrativeFeed, transcript: TranscriptLine[], transcriptSource: string, embedder: Embedder): Promise<ContentIndex> {
+  const entities: Entity[] = [
+    ...feed.characters.map((c) => ({ id: characterId(c.id), type: "character" as const, name: c.name, role: c.role, aliases: c.aliases, description: c.appearance ? `${c.description} Appearance: ${c.appearance}.` : c.description })),
+    ...feed.objects.map((o) => ({ id: objectId(o.id), type: "object" as const, name: o.name, aliases: o.aliases })),
+  ];
+  const nameOf = (id: string) => feed.characters.find((c) => c.id === id)?.name ?? id;
+  // Speaker ids in the transcript are character ids; names go into the text so lexical search finds them.
+  const tx = (a: number, b: number) =>
+    transcript
+      .filter((l) => overlap(a, b, l.startMs, l.endMs))
+      .map((l) => `${nameOf(l.speaker)}: ${l.text}`)
+      .join(" ");
+  const screen = (a: number, b: number) => [...new Set(feed.signs.filter((s) => overlap(a, b, s.startMs, s.endMs)).map((s) => s.text))];
+  const ids = (chars: string[], objs: string[]) => [...chars.map(characterId), ...objs.map(objectId)];
+  const prov: Segment["provenance"] = [
+    { source: "provider-feed", confidence: 1, epistemicType: "provider_metadata", privacy: "content_metadata", spoilerScope: "safe_before_playhead" },
+    { source: transcriptSource, confidence: 1, epistemicType: "observed", privacy: "content_metadata" },
+  ];
+
+  const events: ProviderEvent[] = [
+    ...feed.scenes.map((sc) => ({ id: sc.id, type: "scene", startMs: sc.startMs, endMs: sc.endMs, description: sc.description, players: [], entityIds: ids(sc.characters, sc.objects), sceneId: sc.id, title: sc.title })),
+    ...feed.beats.map((b) => ({ id: b.id, type: "beat", startMs: b.startMs, endMs: b.endMs, description: b.description, players: [], entityIds: ids(b.characters, b.objects), sceneId: b.sceneId, title: b.type })),
+  ].sort((a, b) => a.startMs - b.startMs);
+
+  const segments: Segment[] = [];
+  for (const sc of feed.scenes) {
+    const transcriptText = tx(sc.startMs, sc.endMs);
+    segments.push({
+      id: `seg-${sc.id}`, contentId: feed.contentId, kind: "event", startMs: sc.startMs, endMs: sc.endMs, eventId: sc.id, eventType: "scene",
+      label: `Scene ${sc.number} — ${sc.title}`,
+      text: [`Scene ${sc.number}: ${sc.title}`, sc.location, sc.description, `With ${sc.characters.map(nameOf).join(" and ")}`, ...screen(sc.startMs, sc.endMs), transcriptText].join(". "),
+      transcript: transcriptText, entityIds: ids(sc.characters, sc.objects), screenText: screen(sc.startMs, sc.endMs), provenance: prov,
+    });
   }
+  for (const b of feed.beats) {
+    const transcriptText = tx(b.startMs, b.endMs);
+    const sc = feed.scenes.find((s) => s.id === b.sceneId);
+    segments.push({
+      id: `seg-${b.id}`, contentId: feed.contentId, kind: "event", startMs: b.startMs, endMs: b.endMs, eventId: b.id, eventType: "beat",
+      label: b.description,
+      text: [b.description, b.type, sc ? `${sc.title}, ${sc.location}` : "", b.objects.map((o) => feed.objects.find((x) => x.id === o)?.name ?? o).join(", "), transcriptText].join(". "),
+      transcript: transcriptText, entityIds: ids(b.characters, b.objects), screenText: screen(b.startMs, b.endMs), provenance: prov,
+    });
+  }
+  const WIN = 8000;
+  for (let s = 0; s < feed.durationMs; s += WIN) {
+    const e = Math.min(feed.durationMs, s + WIN);
+    const transcriptText = tx(s, e);
+    if (!transcriptText) continue;
+    const here = [...new Set(feed.presence.filter((p) => overlap(s, e, p.startMs, p.endMs)).map((p) => p.characterId))];
+    segments.push({
+      id: `seg-win-${s}`, contentId: feed.contentId, kind: "window", startMs: s, endMs: e, label: `${formatMs(s)}–${formatMs(e)}`,
+      text: [transcriptText, `On screen: ${here.map(nameOf).join(", ")}`].join(". "),
+      transcript: transcriptText, entityIds: here.map(characterId), screenText: screen(s, e), provenance: prov,
+    });
+  }
+  const vectors = await embedder.embed(segments.map((s) => s.text), "index");
+  segments.forEach((s, i) => (s.embedding = vectors[i]));
+  segments.sort((a, b) => a.startMs - b.startMs);
+  return {
+    contentId: feed.contentId, title: feed.title, kind: feed.kind, durationMs: feed.durationMs, media: feed.media,
+    builtAt: new Date().toISOString(), embeddingModel: embedder.model, embeddingDim: embedder.dim,
+    sources: { provider: feed.source, transcript: transcriptSource, screenText: "provider-sign-feed", embeddings: embedder.model },
+    entities, events, transcript, segments, scoreboard: [], possession: [], touches: [], teams: [],
+    signs: feed.signs,
+    presence: feed.presence.map((p) => ({ startMs: p.startMs, endMs: p.endMs, entityId: characterId(p.characterId), name: p.name })),
+  };
+}
+
+export async function buildIndex(contentDir: string, embedder: Embedder = defaultEmbedder(), transcribePath?: string) {
+  const raw = JSON.parse(readFileSync(join(contentDir, "provider.json"), "utf8"));
+  const { transcript, transcriptSource } = loadTranscript(contentDir, transcribePath);
+  if (raw.kind === "narrative") return buildNarrativeIndex(raw as NarrativeFeed, transcript, transcriptSource, embedder);
+  const feed: ProviderFeed = raw;
 
   const entities = buildEntities(feed);
   const tx = (a: number, b: number) =>

@@ -2,7 +2,7 @@ import "dotenv/config";
 import { ingest } from "./ingest.ts";
 
 const args = process.argv.slice(2);
-const contentId = args.find((a) => !a.startsWith("--")) ?? "harbor-v-northgate";
+const contentId = args.find((a, i) => !a.startsWith("--") && args[i - 1] !== "--transcribe") ?? "harbor-v-northgate";
 const tIdx = args.indexOf("--transcribe");
 const transcribe = tIdx >= 0 ? args[tIdx + 1] : undefined;
 

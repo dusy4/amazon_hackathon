@@ -17,7 +17,8 @@ let spoilerMode = "strict";
 let voiceReplies = true;
 let currentTurn = null;
 
-const SUGGESTIONS = [
+const SUGGESTIONS = {
+  sports_match: [
   "Go back to the replay of the last goal",
   "Three seconds earlier",
   "Half speed",
@@ -35,13 +36,30 @@ const SUGGESTIONS = [
   "Who was the player I asked about?",
   "Back to live",
   "Rewind to the replay of the last goal, start three seconds before it, play it slower, repeat it twice, clip it, and send it to my phone",
-];
+  "Watch The Keeper's Key",
+  ],
+  narrative: [
+    "Who is this?",
+    "Read that",
+    "What did she just say?",
+    "Go back to the previous scene with Theo",
+    "Go to the scene where Mara finds the letter",
+    "Who is the inspector?",
+    "Show every scene with Hale",
+    "The second one",
+    "I looked away, catch me up",
+    "Three seconds earlier",
+    "Clip the scene where Theo shows the map and send it to my phone",
+    "Spoilers off",
+    "Switch to the match",
+  ],
+};
 
 // ------------------------------------------------------------------ websocket / player bridge
 function connect() {
   ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`);
   ws.onopen = () => {
-    ws.send(JSON.stringify({ type: "hello", role: "player", deviceId, deviceKind: "web" }));
+    ws.send(JSON.stringify({ type: "hello", role: "player", deviceId, deviceKind: "web", contentId: new URLSearchParams(location.search).get("content") ?? undefined }));
     setChip("chip-conn", "player bridge: connected", true);
   };
   ws.onclose = () => {
@@ -91,7 +109,9 @@ async function loadTimeline(contentId) {
     fetch("/api/health").then((r) => r.json()),
   ]);
   timeline = tl;
+  watchedUpToMs = 0;
   const c = content.find((x) => x.contentId === contentId);
+  renderSuggestions(c?.kind);
   $("title").textContent = c ? `${c.title} · transcript: ${c.sources.transcript} · screen text: ${c.sources.screenText}` : contentId;
   setChip("chip-embed", `embeddings: ${c?.embeddingModel ?? "?"}`, true);
   setChip("chip-interp", `interpreter: ${health.interpreter}`, true);
@@ -99,7 +119,22 @@ async function loadTimeline(contentId) {
   track.querySelectorAll(".mark,.span").forEach((n) => n.remove());
   const pct = (ms) => `${(ms / tl.durationMs) * 100}%`;
   for (const e of tl.events) {
-    if (e.type === "replay") {
+    if (e.type === "scene") {
+      const s = document.createElement("div");
+      s.className = "span scene";
+      s.style.left = pct(e.startMs);
+      s.style.width = pct(e.endMs - e.startMs);
+      s.textContent = e.title ?? "";
+      s.title = `${fmt(e.startMs)} ${e.title}: ${e.description}`;
+      track.prepend(s);
+    } else if (e.type === "beat") {
+      const m = document.createElement("div");
+      m.className = "mark beat";
+      m.style.left = pct(e.startMs);
+      m.textContent = "◆";
+      m.title = `${fmt(e.startMs)} ${e.description}`;
+      track.appendChild(m);
+    } else if (e.type === "replay") {
       const s = document.createElement("div");
       s.className = "span replay";
       s.style.left = pct(e.startMs);
@@ -159,13 +194,17 @@ $("ask").addEventListener("submit", (e) => {
   e.preventDefault();
   ask($("q").value);
 });
-for (const s of SUGGESTIONS) {
-  const b = document.createElement("button");
-  b.textContent = s;
-  b.dataset.focus = "";
-  b.addEventListener("click", () => ask(s, "suggestion"));
-  $("suggest").appendChild(b);
+function renderSuggestions(kind) {
+  $("suggest").replaceChildren();
+  for (const s of SUGGESTIONS[kind] ?? SUGGESTIONS.sports_match) {
+    const b = document.createElement("button");
+    b.textContent = s;
+    b.dataset.focus = "";
+    b.addEventListener("click", () => ask(s, "suggestion"));
+    $("suggest").appendChild(b);
+  }
 }
+renderSuggestions("sports_match");
 
 // Browser speech recognition (client-side STT) — labelled as such in the pipeline.
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;

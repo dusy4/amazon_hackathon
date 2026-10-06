@@ -34,6 +34,8 @@ export interface Entity {
   team?: string;
   number?: number;
   role?: string;
+  /** Narrative titles: one-line who/what description from the provider. */
+  description?: string;
 }
 
 export interface ProviderEvent {
@@ -51,6 +53,10 @@ export interface ProviderEvent {
   assist?: { team: string; number: number; name: string };
   method?: string;
   rate?: number;
+  /** Narrative titles: characters/objects involved (sports events use `players`). */
+  entityIds?: string[];
+  sceneId?: string;
+  title?: string;
 }
 
 export interface TranscriptLine {
@@ -104,7 +110,13 @@ export interface ContentIndex {
   possession: { startMs: number; endMs: number; team: string; number: number; name: string }[];
   touches: { ms: number; team: string; number: number; name: string }[];
   teams: { id: string; name: string; short: string; side: "home" | "away" }[];
+  /** Narrative titles: on-screen text (signs, letters, maps) with visibility windows. */
+  signs?: { startMs: number; endMs: number; text: string; kind?: string }[];
+  /** Narrative titles: who is on screen when (the narrative analogue of possession). */
+  presence?: { startMs: number; endMs: number; entityId: string; name: string }[];
 }
+
+export const isNarrative = (index: Pick<ContentIndex, "kind"> | undefined | null) => index?.kind === "narrative";
 
 // ---------------------------------------------------------------------------------------------
 // Player state + wire protocol (web player and Fire OS player both implement this)
@@ -137,7 +149,7 @@ export type PlayerCommand = z.infer<typeof PlayerCommandSchema>;
 
 /** Messages over the /ws socket. */
 export type WireMessage =
-  | { type: "hello"; role: "player" | "ui" | "companion"; deviceId: string; deviceKind?: PlayerState["deviceKind"] }
+  | { type: "hello"; role: "player" | "ui" | "companion"; deviceId: string; deviceKind?: PlayerState["deviceKind"]; contentId?: string }
   | { type: "command"; id: string; command: PlayerCommand }
   | { type: "ack"; id: string; ok: boolean; error?: string; state?: PlayerState }
   | { type: "state"; state: PlayerState }
@@ -187,7 +199,7 @@ export interface ContextEnvelope {
     playback: Pick<PlayerState, "positionMs" | "durationMs" | "paused" | "rate" | "loop" | "deviceKind"> | null;
     activeReference: GroundedReference | null;
     activeEntity: { id: string; name: string } | null;
-    currentEntities: { id: string; name: string; why: string }[];
+    currentEntities: { id: string; name: string; why: string; appearance?: string }[];
     transcriptWindow: { startMs: number; text: string }[];
     screenText: string | null;
     spoilerBoundaryMs: number;
@@ -227,7 +239,8 @@ export type ActionEventType =
   | "moments_listed"
   | "clip_created"
   | "clip_shared"
-  | "memory_query";
+  | "memory_query"
+  | "content_opened";
 
 export interface ActionEvent {
   id: string;

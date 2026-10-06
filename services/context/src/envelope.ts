@@ -41,6 +41,18 @@ export async function buildEnvelope(i: EnvelopeInput): Promise<ContextEnvelope> 
       .filter((l) => l.startMs <= pos && l.startMs > pos - 20000)
       .map((l) => ({ startMs: l.startMs, text: l.text }));
     screenText = index.scoreboard.find((s) => s.startMs <= pos && pos < s.endMs)?.text ?? null;
+    if (index.kind === "narrative") {
+      const speaking = index.transcript.find((l) => l.startMs <= pos && pos < l.endMs + 800);
+      for (const p of (index.presence ?? []).filter((p) => p.startMs <= pos && pos < p.endMs))
+        currentEntities.push({
+          id: p.entityId,
+          name: p.name,
+          why: speaking && p.entityId === `character:${speaking.speaker}` ? "speaking now" : "on screen",
+          appearance: index.entities.find((e) => e.id === p.entityId)?.description?.split("Appearance: ")[1],
+        });
+      currentEntities.sort((a, b) => Number(b.why === "speaking now") - Number(a.why === "speaking now"));
+      screenText = (index.signs ?? []).filter((s) => s.startMs <= pos && pos < s.endMs).map((s) => s.text).join(" · ") || null;
+    }
   }
   const activeEntity = session.activeEntityId && index ? index.entities.find((e) => e.id === session.activeEntityId) : undefined;
   const recent = await i.memory.recent(session.userId, 6);

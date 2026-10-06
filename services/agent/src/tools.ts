@@ -9,7 +9,7 @@ import { join } from "node:path";
 import QRCode from "qrcode";
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { type ClipRecord, type ShareRecord, entityIdForPlayer, formatMs } from "../../../packages/contracts/src/index.ts";
+import { type ClipRecord, type ContentIndex, type ShareRecord, entityIdForPlayer, formatMs, isNarrative } from "../../../packages/contracts/src/index.ts";
 import { clipAttribution, renderClip, toMediaConvertInput } from "../../media/src/clip.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
@@ -53,7 +53,34 @@ export function registerTools(server: McpServer, app: AppContext) {
   server.registerTool(
     "player.seek",
     { title: "Seek", description: "Seek the active player to an absolute position in milliseconds.", inputSchema: { positionMs: z.number().min(0) } },
-    wrap(async ({ positionMs }: { positionMs: number }) => app.bridge.send({ cmd: "seek", positionMs: Math.round(positionMs) })),
+    wrap(async ({ positionMs }: { positionMs: number }) => {
+      const s = await app.bridge.send({ cmd: "seek", positionMs: Math.round(positionMs) });
+      app.sessions.get().lastSeekTargetMs = Math.round(positionMs);
+      return s;
+    }),
+  );
+  server.registerTool(
+    "player.seek_relative",
+    {
+      title: "Seek relative",
+      description:
+        "Move by deltaMs (negative = earlier). from='grounded' (default) moves relative to the last grounded moment / last seek target, " +
+        "e.g. 'start three seconds before it' = -3000; from='position' moves relative to the current playhead, e.g. 'skip back 10 seconds'.",
+      inputSchema: { deltaMs: z.number(), from: z.enum(["grounded", "position"]).optional() },
+    },
+    wrap(async ({ deltaMs, from }: { deltaMs: number; from?: "grounded" | "position" }) => {
+      const session = app.sessions.get();
+      const here = app.bridge.state()?.positionMs ?? 0;
+      const active = session.activeMoment;
+      const base = from === "position" ? here : (session.lastSeekTargetMs ?? active?.startMs ?? here);
+      const target = Math.max(0, Math.round(base + deltaMs));
+      const s = await app.bridge.send({ cmd: "seek", positionMs: target });
+      session.lastSeekTargetMs = target;
+      // The grounded moment now starts here, so "clip it" / "repeat it" use the adjusted start.
+      if (from !== "position" && active) session.ground({ kind: "moment", label: active.label, moment: { ...active, startMs: target } });
+      await app.record({ type: "relative_seek", contentId: app.currentIndex()?.contentId ?? null, contentTimeMs: target, summary: `Moved ${deltaMs / 1000}s`, entityIds: [], payload: { base } });
+      return { ...s, baseMs: base, targetMs: target };
+    }),
   );
   server.registerTool("player.play", { title: "Play", description: "Resume playback.", inputSchema: {} }, wrap(async () => app.bridge.send({ cmd: "play" })));
   server.registerTool("player.pause", { title: "Pause", description: "Pause playback.", inputSchema: {} }, wrap(async () => app.bridge.send({ cmd: "pause" })));
@@ -106,7 +133,10 @@ export function registerTools(server: McpServer, app: AppContext) {
         "Returns grounded segments (startMs/endMs), not just text. Respects the spoiler boundary unless respectSpoilers=false.",
       inputSchema: {
         query: z.string().describe("natural-language description of the moment"),
-        eventTypes: z.array(z.string()).optional().describe("goal, replay, save, shot, yellow_card, foul, corner, header, free_kick, celebration, kickoff, tackle, interception, clearance, final_whistle"),
+        eventTypes: z
+          .array(z.string())
+          .optional()
+          .describe("sports: goal, replay, save, shot, yellow_card, foul, corner, header, free_kick, celebration, kickoff, tackle, interception, clearance, final_whistle; narrative: scene, beat"),
         entityIds: z.array(z.string()).optional(),
         entityNames: z.array(z.string()).optional().describe("names/numbers to resolve into entityIds, e.g. 'Silva', '#9 Northgate'"),
         replayOfEventId: z.string().optional(),
@@ -158,6 +188,20 @@ export function registerTools(server: McpServer, app: AppContext) {
       const session = app.sessions.get();
       const pos = app.bridge.state()?.positionMs ?? 0;
       const to = session.spoilerMode === "strict" ? Math.min(toMs, Math.max(session.watchedUpToMs, pos)) : toMs;
+      if (isNarrative(idx)) {
+        const beats = idx.events.filter((e) => e.type === "beat" && e.startMs >= fromMs && e.startMs <= to);
+        const scenes = idx.events.filter((e) => e.type === "scene" && e.endMs > fromMs && e.startMs <= to);
+        const summary = beats.length
+          ? `${beats.map((b) => b.description).join(". ")}.`
+          : scenes.length
+            ? `${scenes.map((s) => s.description).join(" ")}`
+            : `Nothing happened between ${formatMs(fromMs)} and ${formatMs(to)}.`;
+        const highlights = beats.map((b) => {
+          const seg = idx.segments.find((s) => s.eventId === b.id)!;
+          return { eventId: b.id, eventType: "beat", startMs: seg.startMs, endMs: seg.endMs, label: seg.label };
+        });
+        return { fromMs, toMs: to, events: [...scenes, ...beats].sort((a, b) => a.startMs - b.startMs).map((e) => ({ id: e.id, type: e.type, atMs: e.startMs, description: e.type === "scene" ? `Scene: ${e.title}` : e.description })), highlights, summary };
+      }
       const weight: Record<string, number> = { goal: 10, yellow_card: 6, save: 5, shot: 4, header: 3, foul: 2, corner: 1, final_whistle: 8 };
       const evs = idx.events
         .filter((e) => e.startMs >= fromMs && e.startMs <= to && weight[e.type])
@@ -171,7 +215,7 @@ export function registerTools(server: McpServer, app: AppContext) {
         .filter((e) => e.type === "goal")
         .map((e) => {
           const seg = idx.segments.find((s) => s.eventId === e.id)!;
-          return { eventId: e.id, startMs: seg.startMs, endMs: seg.endMs, label: seg.label };
+          return { eventId: e.id, eventType: "goal", startMs: seg.startMs, endMs: seg.endMs, label: seg.label };
         });
       const summary =
         evs.length === 0
@@ -188,14 +232,15 @@ export function registerTools(server: McpServer, app: AppContext) {
     {
       title: "Identify (Viewing Lens)",
       description:
-        "Identify a player on screen: the ball carrier at a time, or a given entity. Facts are bounded by the spoiler boundary. " +
-        "Source: provider tracking feed + roster (no face recognition is used for this synthetic match).",
-      inputSchema: { target: z.enum(["ball_carrier", "entity"]), entityId: z.string().optional(), atMs: z.number().optional() },
+        "Identify who is on screen: the ball carrier (sports), the person speaking / on screen (narrative), or a given entity. " +
+        "Facts are bounded by the spoiler boundary. Source: provider tracking/presence feed + cast list (no face recognition is used for the synthetic titles).",
+      inputSchema: { target: z.enum(["ball_carrier", "on_screen", "entity"]), entityId: z.string().optional(), atMs: z.number().optional() },
     },
-    wrap(async ({ target, entityId, atMs }: { target: "ball_carrier" | "entity"; entityId?: string; atMs?: number }) => {
+    wrap(async ({ target, entityId, atMs }: { target: "ball_carrier" | "on_screen" | "entity"; entityId?: string; atMs?: number }) => {
       const idx = requireIndex(app);
       const session = app.sessions.get();
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      if (isNarrative(idx)) return identifyCharacter(idx, target === "entity" ? entityId : undefined, at, session.spoilerMode === "strict" ? Math.max(session.watchedUpToMs, at) : Infinity);
       let id = entityId;
       let source = "roster";
       if (target === "ball_carrier") {
@@ -238,6 +283,12 @@ export function registerTools(server: McpServer, app: AppContext) {
     wrap(async ({ atMs }: { atMs?: number }) => {
       const idx = requireIndex(app);
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      if (isNarrative(idx)) {
+        const visible = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs);
+        // Close-ups (letters, maps) are what the viewer is looking at; scene signs come after.
+        visible.sort((a, b) => Number(a.kind === "sign") - Number(b.kind === "sign"));
+        return { atMs: at, text: visible.map((s) => s.text).join(" · ") || null, items: visible, source: idx.sources.screenText };
+      }
       const sb = idx.scoreboard.find((s) => s.startMs <= at && at < s.endMs);
       const minute = Math.floor((at / idx.durationMs) * 90);
       return { atMs: at, text: sb?.text ?? null, clock: `${minute}'`, home: sb?.home, away: sb?.away, source: idx.sources.screenText };
@@ -249,7 +300,26 @@ export function registerTools(server: McpServer, app: AppContext) {
     { title: "Transcript window", description: "Commentary/dialogue lines between fromMs and toMs.", inputSchema: { fromMs: z.number(), toMs: z.number() } },
     wrap(async ({ fromMs, toMs }: { fromMs: number; toMs: number }) => {
       const idx = requireIndex(app);
-      return { source: idx.sources.transcript, lines: idx.transcript.filter((l) => l.endMs >= fromMs && l.startMs <= toMs) };
+      const speakerName = (sp: string) => idx.entities.find((e) => e.id === `character:${sp}`)?.name ?? sp;
+      return { source: idx.sources.transcript, lines: idx.transcript.filter((l) => l.endMs >= fromMs && l.startMs <= toMs).map((l) => ({ ...l, speakerName: speakerName(l.speaker) })) };
+    }),
+  );
+
+  // ---------------------------------------------------------------- catalogue
+  server.registerTool(
+    "content.open",
+    {
+      title: "Open a title",
+      description: "Load an indexed title on the active player (by contentId, or by a spoken description such as 'the match' or 'the keeper's key').",
+      inputSchema: { contentId: z.string().optional(), query: z.string().optional(), positionMs: z.number().min(0).optional() },
+    },
+    wrap(async ({ contentId, query, positionMs }: { contentId?: string; query?: string; positionMs?: number }) => {
+      const idx = app.store.get(contentId) ?? (query ? app.findContent(query) : undefined);
+      if (!idx) throw new Error(`No indexed title matches “${contentId ?? query}”. Available: ${app.store.list().map((c) => c.title).join(", ")}`);
+      app.currentContentId = idx.contentId;
+      const state = await app.bridge.send({ cmd: "load", contentId: idx.contentId, url: `/media/${idx.contentId}/${idx.media}`, positionMs }, 15000);
+      app.sessions.get().setContent(idx.contentId);
+      return { contentId: idx.contentId, title: idx.title, kind: idx.kind, durationMs: idx.durationMs, state };
     }),
   );
 
@@ -334,6 +404,41 @@ export function registerTools(server: McpServer, app: AppContext) {
 }
 
 export const TOOL_NAMES = [
-  "player.get_state", "player.seek", "player.play", "player.pause", "player.set_speed", "player.play_segment", "player.loop", "player.clear_loop",
+  "player.get_state", "player.seek", "player.seek_relative", "player.play", "player.pause", "player.set_speed", "player.play_segment", "player.loop", "player.clear_loop",
   "entities.resolve", "moments.search", "moments.summarize", "lens.identify", "lens.read_text", "transcript.window", "memory.search", "clip.create", "share.send",
+  "content.open",
 ] as const;
+
+/** Narrative Viewing Lens: who is speaking / on screen, with spoiler-bounded facts from the cast list and timeline. */
+function identifyCharacter(idx: ContentIndex, entityId: string | undefined, at: number, boundary: number) {
+  let id = entityId;
+  let source = "cast list";
+  if (!id) {
+    const speaking = idx.transcript.find((l) => l.startMs <= at && at < l.endMs + 800);
+    const present = (idx.presence ?? []).filter((p) => p.startMs <= at && at < p.endMs);
+    if (speaking && present.some((p) => p.entityId === `character:${speaking.speaker}`)) {
+      id = `character:${speaking.speaker}`;
+      source = "dialogue speaker + provider presence";
+    } else if (present[0]) {
+      const lastSpoke = [...idx.transcript].reverse().find((l) => l.startMs <= at && present.some((p) => p.entityId === `character:${l.speaker}`));
+      id = lastSpoke ? `character:${lastSpoke.speaker}` : present[0].entityId;
+      source = "provider presence";
+    }
+  }
+  const e = idx.entities.find((x) => x.id === id);
+  if (!e) throw new Error("Nobody is on screen right now.");
+  const scenes = idx.events.filter((ev) => ev.type === "scene" && ev.startMs <= boundary && ev.entityIds?.includes(e.id));
+  const speaker = e.id.replace(/^character:/, "");
+  const lastLine = [...idx.transcript].reverse().find((l) => l.speaker === speaker && l.startMs <= boundary);
+  const onScreen = (idx.presence ?? []).filter((p) => p.startMs <= at && at < p.endMs && p.entityId !== e.id).map((p) => p.name);
+  return {
+    entity: { id: e.id, type: e.type, name: e.name, role: e.role, description: e.description },
+    facts: [
+      e.description ?? null,
+      scenes.length ? `in ${scenes.length} scene${scenes.length > 1 ? "s" : ""} so far (${scenes.map((s) => s.title).join(", ")})` : null,
+      lastLine ? `last said: “${lastLine.text}”` : null,
+      onScreen.length ? `on screen with ${onScreen.join(" and ")}` : null,
+    ].filter(Boolean),
+    provenance: { source, epistemicType: "provider_metadata", confidence: 1, spoilerScope: "safe_before_playhead", observedAtMs: at },
+  };
+}

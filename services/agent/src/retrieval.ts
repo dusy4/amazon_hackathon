@@ -1,13 +1,19 @@
 /**
- * Hybrid moment retrieval (v2 "Semantic retrieval architecture").
+ * Hybrid moment retrieval (v3).
  *
- *   finalScore = semantic + lexical + entityMatch + eventMatch, then temporal constraints/ordering.
+ *   1. Structural filters: event type, replay-of, entity, before/after — deterministic.
+ *   2. Three ranked channels: dense embeddings (semantic), BM25 (exact names, numbers, sign text),
+ *      entity overlap. Fused with Reciprocal Rank Fusion (Cormack et al., SIGIR 2009; k = 60), which
+ *      works on ranks and so avoids mixing cosine and BM25 score scales.
+ *   3. Optional cross-encoder rerank of the fused top-N (Cohere Rerank 3.5 on Bedrock).
+ *   4. Spoiler boundary and temporal ordering.
  *
  * Temporal relations ("the last goal", "the save before the second goal", "the second goal")
  * are deterministic filters and orderings — the embedding model is never asked to do relative time.
  */
 import type { ContentIndex, Moment, Segment } from "../../../packages/contracts/src/index.ts";
 import { type Embedder, embedderFor } from "../../media/src/embeddings.ts";
+import { type Reranker, defaultReranker } from "../../media/src/rerank.ts";
 import { Bm25, cosine } from "../../media/src/text.ts";
 
 export interface MomentQuery {
@@ -33,11 +39,16 @@ export interface MomentSearchResult {
   moments: Moment[];
   /** Number of matches hidden by the spoiler boundary. */
   hiddenBySpoilerBoundary: number;
+  /** Relevance-ordered queries: the single best match overall lies past the spoiler boundary. */
+  bestMatchHidden: boolean;
+  reranker: string | null;
   embeddingModel: string;
   constraints: Record<string, unknown>;
 }
 
-const W = { semantic: 0.35, lexical: 0.35, entity: 0.15, event: 0.15 };
+const RRF_K = 60;
+const CHANNEL_WEIGHT = { semantic: 1, lexical: 1, entity: 0.5 };
+const RERANK_TOP_N = 20;
 
 /** Reference time of a segment for temporal comparisons: the event itself, not its lead-in. */
 function eventTime(index: ContentIndex, s: Segment) {
@@ -48,6 +59,7 @@ function eventTime(index: ContentIndex, s: Segment) {
 export class MomentRetriever {
   private bm25 = new Map<string, Bm25>();
   private embedders = new Map<string, Embedder>();
+  constructor(private reranker: Reranker | null = defaultReranker()) {}
 
   private bm25For(index: ContentIndex) {
     let b = this.bm25.get(index.contentId);
@@ -69,7 +81,7 @@ export class MomentRetriever {
     const [qv] = q.query ? await this.embedderForIndex(index).embed([q.query], "query") : [[]];
     const hasStructure = !!(q.eventTypes?.length || q.replayOfEventId || q.entityIds?.length);
 
-    let scored = index.segments
+    const candidates = index.segments
       .map((s, i) => ({ s, i }))
       .filter(({ s }) => {
         if (s.kind === "window" && (hasStructure || q.includeWindows === false) && !q.includeWindows) return false;
@@ -81,21 +93,55 @@ export class MomentRetriever {
         if (relation === "after" && !(t > anchor + 500)) return false;
         return true;
       })
-      .map(({ s, i }) => {
-        const semantic = qv.length && s.embedding ? Math.max(0, cosine(qv, s.embedding)) : 0;
-        const lexical = lexAll[i] / lexMax;
-        const entity = q.entityIds?.length ? s.entityIds.filter((id) => q.entityIds!.includes(id)).length / q.entityIds.length : 0;
-        const event = q.eventTypes?.length || q.replayOfEventId ? 1 : 0;
-        const score = W.semantic * semantic + W.lexical * lexical + W.entity * entity + W.event * event;
-        return { s, score, breakdown: { semantic: +semantic.toFixed(3), lexical: +lexical.toFixed(3), entity: +entity.toFixed(3), event } };
-      });
+      .map(({ s, i }) => ({
+        s,
+        semantic: qv.length && s.embedding ? Math.max(0, cosine(qv, s.embedding)) : 0,
+        lexical: lexAll[i] / lexMax,
+        entity: q.entityIds?.length ? s.entityIds.filter((id) => q.entityIds!.includes(id)).length / q.entityIds.length : 0,
+      }));
 
-    // Free-text queries without structure need a minimum relevance.
-    if (!hasStructure) scored = scored.filter((x) => x.score > 0.12);
+    // Reciprocal Rank Fusion over the channels that carry signal for this query.
+    const rrf = new Map<(typeof candidates)[number], number>();
+    const fuse = (channel: keyof typeof CHANNEL_WEIGHT, active: boolean) => {
+      if (!active) return;
+      const ranked = candidates.filter((c) => c[channel] > 0).sort((a, b) => b[channel] - a[channel]);
+      ranked.forEach((c, r) => rrf.set(c, (rrf.get(c) ?? 0) + CHANNEL_WEIGHT[channel] / (RRF_K + r + 1)));
+    };
+    fuse("semantic", qv.length > 0);
+    fuse("lexical", !!q.query);
+    fuse("entity", !!q.entityIds?.length);
+
+    let scored = candidates.map((c) => ({
+      s: c.s,
+      score: rrf.get(c) ?? 0,
+      breakdown: { semantic: +c.semantic.toFixed(3), lexical: +c.lexical.toFixed(3), entity: +c.entity.toFixed(3), rrf: +(rrf.get(c) ?? 0).toFixed(4) } as Record<string, number>,
+    }));
+
+    // Free-text queries without structure need some evidence: a lexical hit or real semantic similarity.
+    if (!hasStructure) scored = scored.filter((x) => x.breakdown.lexical > 0 || x.breakdown.semantic >= 0.35);
+
+    let rerankedBy: string | null = null;
+    const wantsRelevance = (q.order ?? (q.ordinal ? "chronological" : relation === "before" ? "nearest" : "relevance")) === "relevance";
+    if (this.reranker && q.query && wantsRelevance && scored.length > 1) {
+      const top = [...scored].sort((a, b) => b.score - a.score).slice(0, RERANK_TOP_N);
+      try {
+        const rs = await this.reranker.score(q.query, top.map((x) => `${x.s.label}. ${x.s.text}`));
+        top.forEach((x, i) => {
+          x.breakdown.rerank = +rs[i].toFixed(3);
+          x.score = 1 + rs[i]; // reranked items always outrank the unreranked tail
+        });
+        rerankedBy = this.reranker.model;
+      } catch (e) {
+        rerankedBy = `failed: ${(e as Error).message.slice(0, 80)}`;
+      }
+    }
 
     const boundary = q.spoilerBoundaryMs;
-    const visible = boundary == null ? scored : scored.filter((x) => eventTime(index, x.s) <= boundary + 1000);
+    const isVisible = (x: (typeof scored)[number]) => boundary == null || eventTime(index, x.s) <= boundary + 1000;
+    const visible = scored.filter(isVisible);
     const hidden = scored.length - visible.length;
+    const best = [...scored].sort((a, b) => b.score - a.score)[0];
+    const bestMatchHidden = wantsRelevance && !!best && !isVisible(best);
 
     const chrono = [...visible].sort((a, b) => a.s.startMs - b.s.startMs);
     let ordered: typeof visible;
@@ -124,13 +170,15 @@ export class MomentRetriever {
       startMs: s.startMs,
       endMs: s.endMs,
       label: s.label,
-      score: +score.toFixed(3),
+      score: +score.toFixed(4),
       scoreBreakdown: breakdown,
       entityIds: s.entityIds,
     }));
     return {
       moments,
       hiddenBySpoilerBoundary: hidden,
+      bestMatchHidden,
+      reranker: rerankedBy,
       embeddingModel: index.embeddingModel,
       constraints: { relation, anchorMs: anchor, eventTypes: q.eventTypes, entityIds: q.entityIds, replayOfEventId: q.replayOfEventId, ordinal: q.ordinal, spoilerBoundaryMs: boundary },
     };
