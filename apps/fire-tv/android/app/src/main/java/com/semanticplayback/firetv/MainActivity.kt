@@ -1,6 +1,8 @@
 package com.semanticplayback.firetv
 
 import android.app.AlertDialog
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -117,7 +119,23 @@ class MainActivity : AppCompatActivity() {
         ws?.send(JSONObject().put("type", "state").put("state", controller.state()).toString())
     }
 
+    private var voice: MediaPlayer? = null
+
+    /** Spoken reply via the server's Amazon Polly endpoint (same voice as the web TV). */
+    private fun speak(text: String) {
+        if (text.isBlank()) return
+        voice?.release()
+        voice = MediaPlayer().apply {
+            setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANT).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
+            setDataSource("$server/api/tts?text=" + java.net.URLEncoder.encode(text, "UTF-8"))
+            setOnPreparedListener { it.start() }
+            setOnErrorListener { _, _, _ -> true }
+            prepareAsync()
+        }
+    }
+
     private fun showOverlay(o: JSONObject) {
+        speak(o.optString("speech"))
         findViewById<TextView>(R.id.speech).text = o.optString("speech")
         val cards = o.optJSONArray("cards")
         val lines = mutableListOf<String>()
@@ -161,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         ws?.close(1000, "bye")
         session.release()
         player.release()
+        voice?.release()
         super.onDestroy()
     }
 

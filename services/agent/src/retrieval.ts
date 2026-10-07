@@ -14,7 +14,7 @@
 import type { ContentIndex, Moment, Segment } from "../../../packages/contracts/src/index.ts";
 import { type Embedder, embedderFor } from "../../media/src/embeddings.ts";
 import { type Reranker, defaultReranker } from "../../media/src/rerank.ts";
-import { Bm25, cosine } from "../../media/src/text.ts";
+import { Bm25, cosine, tokenize } from "../../media/src/text.ts";
 
 export interface MomentQuery {
   query: string;
@@ -42,6 +42,8 @@ export interface MomentSearchResult {
   /** Relevance-ordered queries: the single best match overall lies past the spoiler boundary. */
   bestMatchHidden: boolean;
   reranker: string | null;
+  /** Set when a retrieval channel failed and results come from the remaining channels. */
+  degraded?: string;
   embeddingModel: string;
   constraints: Record<string, unknown>;
 }
@@ -56,9 +58,23 @@ function eventTime(index: ContentIndex, s: Segment) {
   return ev ? ev.startMs : s.startMs;
 }
 
+/** The transcript line inside a segment that shares the most terms with the query (empty if none). */
+function bestLine(index: ContentIndex, s: Segment, query: string): string | undefined {
+  const qt = new Set(tokenize(query));
+  if (!qt.size) return undefined;
+  let best: { text: string; n: number } | undefined;
+  for (const l of index.transcript) {
+    if (l.endMs < s.startMs || l.startMs > s.endMs) continue;
+    const n = tokenize(l.text).filter((t) => qt.has(t)).length;
+    if (n && (!best || n > best.n)) best = { text: l.text, n };
+  }
+  return best?.text.slice(0, 200);
+}
+
 export class MomentRetriever {
   private bm25 = new Map<string, Bm25>();
   private embedders = new Map<string, Embedder>();
+  private queryCache = new Map<string, number[]>();
   constructor(private reranker: Reranker | null = defaultReranker()) {}
 
   private bm25For(index: ContentIndex) {
@@ -73,12 +89,47 @@ export class MomentRetriever {
     return e;
   }
 
+  /**
+   * Hard filters (event type, entity) come from the agent's reading of the request and can be wrong for a
+   * given title. If a filter leaves nothing to rank, relax it (event types first, then entities) and say so,
+   * instead of returning an empty result the agent would keep retrying.
+   */
   async search(index: ContentIndex, q: MomentQuery, playheadMs: number): Promise<MomentSearchResult> {
+    const first = await this.searchOnce(index, q, playheadMs);
+    if (first.moments.length || first.hiddenBySpoilerBoundary || q.replayOfEventId) return first;
+    const relaxed: string[] = [];
+    let cur = q;
+    for (const key of ["eventTypes", "entityIds"] as const) {
+      if (!cur[key]?.length) continue;
+      cur = { ...cur, [key]: undefined };
+      relaxed.push(key);
+      const r = await this.searchOnce(index, cur, playheadMs);
+      if (r.moments.length || r.hiddenBySpoilerBoundary) return { ...r, constraints: { ...r.constraints, relaxed, requested: { eventTypes: q.eventTypes, entityIds: q.entityIds } } };
+    }
+    return first;
+  }
+
+  private async searchOnce(index: ContentIndex, q: MomentQuery, playheadMs: number): Promise<MomentSearchResult> {
     const anchor = q.anchorMs ?? playheadMs;
     const relation = q.relation ?? "any";
     const lexAll = this.bm25For(index).score(q.query || "");
     const lexMax = Math.max(1e-9, ...lexAll);
-    const [qv] = q.query ? await this.embedderForIndex(index).embed([q.query], "query") : [[]];
+    // Semantic channel: a failing embedding call (quota, network) degrades to lexical + entity, visibly.
+    let qv: number[] = [];
+    let degraded: string | undefined;
+    if (q.query) {
+      const key = `${index.embeddingModel}|${q.query}`;
+      const hit = this.queryCache.get(key);
+      if (hit) qv = hit;
+      else
+        try {
+          [qv] = await this.embedderForIndex(index).embed([q.query], "query");
+          this.queryCache.set(key, qv);
+          if (this.queryCache.size > 500) this.queryCache.delete(this.queryCache.keys().next().value!);
+        } catch (e) {
+          degraded = `semantic channel unavailable (${(e as Error).message.slice(0, 80)}); ranked by keywords + entities`;
+        }
+    }
     const hasStructure = !!(q.eventTypes?.length || q.replayOfEventId || q.entityIds?.length);
 
     const candidates = index.segments
@@ -118,7 +169,11 @@ export class MomentRetriever {
     }));
 
     // Free-text queries without structure need some evidence: a lexical hit or real semantic similarity.
-    if (!hasStructure) scored = scored.filter((x) => x.breakdown.lexical > 0 || x.breakdown.semantic >= 0.35);
+    // Cosine scales differ per embedding model, so the semantic bar is relative to the best candidate.
+    if (!hasStructure) {
+      const top = Math.max(0, ...scored.map((x) => x.breakdown.semantic));
+      scored = scored.filter((x) => x.breakdown.lexical > 0 || (top > 0 && x.breakdown.semantic >= 0.6 * top));
+    }
 
     let rerankedBy: string | null = null;
     const wantsRelevance = (q.order ?? (q.ordinal ? "chronological" : relation === "before" ? "nearest" : "relevance")) === "relevance";
@@ -173,6 +228,10 @@ export class MomentRetriever {
       score: +score.toFixed(4),
       scoreBreakdown: breakdown,
       entityIds: s.entityIds,
+      // Evidence lets the agent verify a match instead of trusting a label: what the moment is and the
+      // spoken line that best matches the request.
+      description: index.events.find((e) => e.id === s.eventId)?.description?.slice(0, 240),
+      evidence: bestLine(index, s, q.query),
     }));
     return {
       moments,
@@ -180,6 +239,7 @@ export class MomentRetriever {
       bestMatchHidden,
       reranker: rerankedBy,
       embeddingModel: index.embeddingModel,
+      ...(degraded ? { degraded } : {}),
       constraints: { relation, anchorMs: anchor, eventTypes: q.eventTypes, entityIds: q.entityIds, replayOfEventId: q.replayOfEventId, ordinal: q.ordinal, spoilerBoundaryMs: boundary },
     };
   }

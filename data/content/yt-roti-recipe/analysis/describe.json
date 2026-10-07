@@ -1,0 +1,159 @@
+{
+ "model": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+ "items": [
+  {
+   "i": 0,
+   "title": "Introduction to Roti/Paratha making",
+   "description": "The host introduces making roti or paratha and notes that some countries call it roti while others call it paratha.",
+   "type": "intro",
+   "people": []
+  },
+  {
+   "i": 1,
+   "title": "Listing required ingredients",
+   "description": "The host lists the ingredients needed: all purpose flour, salt, sugar, lukewarm water, and oil.",
+   "type": "ingredient",
+   "people": []
+  },
+  {
+   "i": 2,
+   "title": "Mixing dry ingredients",
+   "description": "The host measures flour, sugar, and salt, then mixes them together nicely.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 3,
+   "title": "Adding water to dough",
+   "description": "The host adds lukewarm water gradually to the dry mixture, using just as much as needed.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 4,
+   "title": "Kneading the dough",
+   "description": "The host kneads the dough on the countertop, working it until it comes together.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 5,
+   "title": "Preparing to add oil",
+   "description": "The host indicates the dough is nearly done and prepares to add oil.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 6,
+   "title": "Adding oil to dough",
+   "description": "The host adds a teaspoon of oil to the dough and incorporates it.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 7,
+   "title": "Dough ready, using pastry mat",
+   "description": "The host states the dough is ready and begins using a pastry mat for further preparation.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 8,
+   "title": "Sprinkle flour and divide dough",
+   "description": "The cook sprinkles flour on a pastry mat and divides the dough into smaller balls.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 9,
+   "title": "Measure dough pieces",
+   "description": "Various dough portions are measured and displayed on screen with centimeter markings.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 10,
+   "title": "Roll dough thinly",
+   "description": "The dough is rolled out into thin roti shapes on the mat.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 11,
+   "title": "Brush oil and add flour",
+   "description": "The cook brushes oil onto the rolled dough, mentions oil or butter, and adds a little more flour.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 12,
+   "title": "Roll dough like cinnamon roll",
+   "description": "The dough is rolled up in a spiral, similar to a cinnamon roll, to create layers.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 13,
+   "title": "Oil and rest dough",
+   "description": "A little oil is added on top, the dough is covered, and left to rest for about thirty minutes.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 14,
+   "title": "Rest dough then prepare",
+   "description": "The dough rests for 30‑35 minutes before the cook proceeds to make the rotis.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 15,
+   "title": "Make and roll rotis",
+   "description": "The cook shapes the rested dough into rotis and rolls them as thin as possible.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 16,
+   "title": "Measure dough dimensions",
+   "description": "The video shows on-screen text indicating various dough sizes in centimeters while the narrator says 'Ensure'.",
+   "type": "step",
+   "people": []
+  },
+  {
+   "i": 17,
+   "title": "Heat the pan",
+   "description": "The narrator instructs to make sure the pan is hot before cooking, with on-screen text 'you start'.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 18,
+   "title": "Cook roti with oil",
+   "description": "The narrator says to cook both sides and add oil, while a spatula is visible.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 19,
+   "title": "Roti is ready",
+   "description": "The narrator declares the roti is ready, with on-screen text 'AUTION' possibly indicating completion.",
+   "type": "result",
+   "people": []
+  },
+  {
+   "i": 20,
+   "title": "Serve the soft roti",
+   "description": "The narrator says the roti is soft and can be enjoyed with curry or as a wrap, while on-screen text shows 'with any curry'.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 21,
+   "title": "End of video",
+   "description": "The video ends with a thank-you screen prompting viewers to like, comment, and share.",
+   "type": "outro",
+   "people": []
+  }
+ ]
+}

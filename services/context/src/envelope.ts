@@ -80,6 +80,7 @@ export async function buildEnvelope(i: EnvelopeInput): Promise<ContextEnvelope> 
       screenText,
       spoilerBoundaryMs: boundary,
       spoilerMode: session.spoilerMode,
+      momentTypes: (index?.events ?? []).reduce<Record<string, number>>((m, e) => ((m[e.type] = (m[e.type] ?? 0) + 1), m), {}),
     },
     ambient: {
       recentActions: recent.map((e) => ({ type: e.type, summary: e.summary, at: e.wallClock })),

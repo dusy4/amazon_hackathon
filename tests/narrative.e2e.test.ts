@@ -90,7 +90,7 @@ describe("narrative title", () => {
   });
 
   it("switching back to the match restores sports behaviour", async () => {
-    const t = await say("Switch to the match");
+    const t = await say("Switch to Harbor City vs Northgate");
     expect(player.state.contentId).toBe("harbor-v-northgate");
     expect(t.speech).toBe("Opening Harbor City FC vs Northgate United.");
   });

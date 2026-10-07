@@ -78,7 +78,7 @@ export class OpenRouterChat implements ChatModel {
               : m,
         ),
       ],
-      tools: tools.map((t) => ({ type: "function", function: { name: toWire(t.name), description: t.description, parameters: t.parameters } })),
+      ...(tools.length ? { tools: tools.map((t) => ({ type: "function", function: { name: toWire(t.name), description: t.description, parameters: t.parameters } })) } : {}),
     };
     // Free models are rate limited per minute: retry 429s with backoff (Retry-After when given).
     let res: Response | undefined;
@@ -134,7 +134,7 @@ export class BedrockChat implements ChatModel {
         modelId: this.modelId,
         system: [{ text: system }],
         messages: br,
-        toolConfig: { tools: tools.map((t) => ({ toolSpec: { name: toWire(t.name), description: t.description, inputSchema: { json: t.parameters as never } } })) },
+        ...(tools.length ? { toolConfig: { tools: tools.map((t) => ({ toolSpec: { name: toWire(t.name), description: t.description, inputSchema: { json: t.parameters as never } } })) } } : {}),
         inferenceConfig: { maxTokens: 800, temperature: 0 },
       }),
     );

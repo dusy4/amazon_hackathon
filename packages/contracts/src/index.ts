@@ -116,7 +116,11 @@ export interface ContentIndex {
   presence?: { startMs: number; endMs: number; entityId: string; name: string }[];
 }
 
-export const isNarrative = (index: Pick<ContentIndex, "kind"> | undefined | null) => index?.kind === "narrative";
+/**
+ * Timeline titles without a sports provider feed: authored narratives and real-world videos ingested from
+ * footage. They share presence-based identification, on-screen text and beat/segment summaries.
+ */
+export const isNarrative = (index: Pick<ContentIndex, "kind"> | undefined | null) => index?.kind === "narrative" || index?.kind === "video";
 
 // ---------------------------------------------------------------------------------------------
 // Player state + wire protocol (web player and Fire OS player both implement this)
@@ -173,6 +177,8 @@ export interface Moment {
   score: number;
   scoreBreakdown: Record<string, number>;
   entityIds: string[];
+  description?: string;
+  evidence?: string;
 }
 
 export interface GroundedReference {
@@ -204,6 +210,8 @@ export interface ContextEnvelope {
     screenText: string | null;
     spoilerBoundaryMs: number;
     spoilerMode: SpoilerMode;
+    /** Moment types that exist in this title (valid moments.search eventTypes) with counts. */
+    momentTypes: Record<string, number>;
   };
   ambient: {
     recentActions: { type: string; summary: string; at: string }[];

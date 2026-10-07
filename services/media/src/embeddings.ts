@@ -87,11 +87,51 @@ export class NovaEmbedder implements Embedder {
   }
 }
 
+/**
+ * Learned text embeddings through OpenRouter's embeddings API (SP_EMBEDDINGS=openrouter), used while the
+ * AWS account cannot invoke Nova Multimodal Embeddings. Model ids are stored as "openrouter:<model>".
+ */
+export class OpenRouterEmbedder implements Embedder {
+  readonly model: string;
+  dim = 0;
+  constructor(private modelId = process.env.OPENROUTER_EMBED_MODEL ?? "nvidia/nemotron-3-embed-1b:free") {
+    this.model = `openrouter:${modelId}`;
+  }
+
+  async embed(texts: string[], purpose: EmbeddingPurpose): Promise<number[][]> {
+    const out: number[][] = [];
+    // Asymmetric retrieval models expect a query/passage hint; harmless for symmetric ones.
+    const input = process.env.OPENROUTER_EMBED_PREFIX === "0" ? texts : texts.map((t) => (purpose === "query" ? `query: ${t}` : `passage: ${t}`));
+    for (let i = 0; i < input.length; i += 32) {
+      for (let attempt = 0; ; attempt++) {
+        const res = await fetch("https://openrouter.ai/api/v1/embeddings", {
+          method: "POST",
+          headers: { authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`, "content-type": "application/json" },
+          body: JSON.stringify({ model: this.modelId, input: input.slice(i, i + 32) }),
+          signal: AbortSignal.timeout(60000),
+        });
+        const j = (await res.json()) as any;
+        if (res.ok && j.data) {
+          for (const d of j.data.sort((a: any, b: any) => a.index - b.index)) out.push(d.embedding);
+          break;
+        }
+        if (attempt >= 4 || res.status !== 429) throw new Error(`OpenRouter embeddings ${res.status}: ${j.error?.message ?? "error"}`);
+        await new Promise((r) => setTimeout(r, 2000 * 2 ** attempt));
+      }
+    }
+    this.dim = out[0]?.length ?? 0;
+    return out;
+  }
+}
+
 export function embedderFor(model: string, dim: number): Embedder {
   if (model === "local-hash-v1") return new LocalHashEmbedder(dim);
+  if (model.startsWith("openrouter:")) return new OpenRouterEmbedder(model.slice("openrouter:".length));
   return new NovaEmbedder(dim as 1024, model);
 }
 
 export function defaultEmbedder(): Embedder {
-  return process.env.SP_EMBEDDINGS === "nova" ? new NovaEmbedder() : new LocalHashEmbedder();
+  if (process.env.SP_EMBEDDINGS === "nova") return new NovaEmbedder();
+  if (process.env.SP_EMBEDDINGS === "openrouter") return new OpenRouterEmbedder();
+  return new LocalHashEmbedder();
 }

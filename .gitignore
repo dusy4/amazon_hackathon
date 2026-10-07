@@ -39,3 +39,4 @@ artifacts/
 data/clips/
 data/memory/
 data/content/*/*.mp4
+data/content/*/analysis/proxy.mp4

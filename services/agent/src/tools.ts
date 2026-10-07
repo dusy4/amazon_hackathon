@@ -11,6 +11,8 @@ import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type ClipRecord, type ContentIndex, type ShareRecord, entityIdForPlayer, formatMs, isNarrative } from "../../../packages/contracts/src/index.ts";
 import { clipAttribution, renderClip, toMediaConvertInput } from "../../media/src/clip.ts";
+import { keyframe } from "../../media/src/ingest-video.ts";
+import { analyzeFrame } from "../../media/src/rekognition.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
 
@@ -189,7 +191,8 @@ export function registerTools(server: McpServer, app: AppContext) {
       const pos = app.bridge.state()?.positionMs ?? 0;
       const to = session.spoilerMode === "strict" ? Math.min(toMs, Math.max(session.watchedUpToMs, pos)) : toMs;
       if (isNarrative(idx)) {
-        const beats = idx.events.filter((e) => e.type === "beat" && e.startMs >= fromMs && e.startMs <= to);
+        // Story beats (authored films) or described segments (real footage): everything but scene headers.
+        const beats = idx.events.filter((e) => e.type !== "scene" && e.startMs >= fromMs && e.startMs <= to);
         const scenes = idx.events.filter((e) => e.type === "scene" && e.endMs > fromMs && e.startMs <= to);
         const summary = beats.length
           ? `${beats.map((b) => b.description).join(". ")}.`
@@ -198,7 +201,7 @@ export function registerTools(server: McpServer, app: AppContext) {
             : `Nothing happened between ${formatMs(fromMs)} and ${formatMs(to)}.`;
         const highlights = beats.map((b) => {
           const seg = idx.segments.find((s) => s.eventId === b.id)!;
-          return { eventId: b.id, eventType: "beat", startMs: seg.startMs, endMs: seg.endMs, label: seg.label };
+          return { eventId: b.id, eventType: b.type, startMs: seg.startMs, endMs: seg.endMs, label: seg.label };
         });
         return { fromMs, toMs: to, events: [...scenes, ...beats].sort((a, b) => a.startMs - b.startMs).map((e) => ({ id: e.id, type: e.type, atMs: e.startMs, description: e.type === "scene" ? `Scene: ${e.title}` : e.description })), highlights, summary };
       }
@@ -240,6 +243,7 @@ export function registerTools(server: McpServer, app: AppContext) {
       const idx = requireIndex(app);
       const session = app.sessions.get();
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      if (idx.kind === "video") return liveIdentify(idx, app.store.mediaPath(idx), at, target === "entity" ? entityId : undefined, session.spoilerMode === "strict" ? Math.max(session.watchedUpToMs, at) : Infinity);
       if (isNarrative(idx)) return identifyCharacter(idx, target === "entity" ? entityId : undefined, at, session.spoilerMode === "strict" ? Math.max(session.watchedUpToMs, at) : Infinity);
       let id = entityId;
       let source = "roster";
@@ -283,6 +287,12 @@ export function registerTools(server: McpServer, app: AppContext) {
     wrap(async ({ atMs }: { atMs?: number }) => {
       const idx = requireIndex(app);
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      if (idx.kind === "video") {
+        // Live OCR on the frame on screen now (Rekognition DetectText).
+        const f = await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at);
+        const items = f.text.map((t) => ({ text: t.text, kind: "on-screen text", confidence: t.confidence }));
+        return { atMs: at, text: items.map((i) => i.text).join(" · ") || null, items, source: "amazon-rekognition DetectText (live frame)" };
+      }
       if (isNarrative(idx)) {
         const visible = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs);
         // Close-ups (letters, maps) are what the viewer is looking at; scene signs come after.
@@ -302,6 +312,36 @@ export function registerTools(server: McpServer, app: AppContext) {
       const idx = requireIndex(app);
       const speakerName = (sp: string) => idx.entities.find((e) => e.id === `character:${sp}`)?.name ?? sp;
       return { source: idx.sources.transcript, lines: idx.transcript.filter((l) => l.endMs >= fromMs && l.startMs <= toMs).map((l) => ({ ...l, speakerName: speakerName(l.speaker) })) };
+    }),
+  );
+
+  server.registerTool(
+    "lens.describe",
+    {
+      title: "Describe what is on screen (audio description)",
+      description:
+        "What is happening at a time: live Rekognition analysis of the frame on screen (objects, on-screen text, recognised public figures) " +
+        "plus the indexed description of the current moment and what was just said. Use for 'what's happening', 'describe this', 'what am I looking at'.",
+      inputSchema: { atMs: z.number().optional() },
+    },
+    wrap(async ({ atMs }: { atMs?: number }) => {
+      const idx = requireIndex(app);
+      const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      const seg = idx.segments.find((s) => s.kind !== "window" && s.startMs <= at && at < s.endMs) ?? idx.segments.find((s) => s.startMs <= at && at < s.endMs);
+      const said = idx.transcript.filter((l) => l.endMs >= at - 12000 && l.startMs <= at).map((l) => l.text).join(" ");
+      let frame: Awaited<ReturnType<typeof analyzeFrame>> | null = null;
+      try {
+        frame = await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at);
+      } catch {
+        /* synthetic titles or no AWS: the indexed moment still answers */
+      }
+      return {
+        atMs: at,
+        moment: seg ? { label: seg.label, startMs: seg.startMs, endMs: seg.endMs, description: idx.events.find((e) => e.id === seg.eventId)?.description } : null,
+        justSaid: said,
+        frame: frame && { labels: frame.labels.map((l) => l.name), text: frame.text.map((t) => t.text), publicFigures: frame.celebrities.filter((c) => c.confidence >= 85).map((c) => ({ name: c.name, confidence: c.confidence })) },
+        sources: { frame: frame ? "amazon-rekognition (live frame)" : null, moment: idx.sources.descriptions ?? idx.sources.provider, transcript: idx.sources.transcript },
+      };
     }),
   );
 
@@ -406,8 +446,37 @@ export function registerTools(server: McpServer, app: AppContext) {
 export const TOOL_NAMES = [
   "player.get_state", "player.seek", "player.seek_relative", "player.play", "player.pause", "player.set_speed", "player.play_segment", "player.loop", "player.clear_loop",
   "entities.resolve", "moments.search", "moments.summarize", "lens.identify", "lens.read_text", "transcript.window", "memory.search", "clip.create", "share.send",
-  "content.open",
+  "content.open", "lens.describe",
 ] as const;
+
+/** Real footage Viewing Lens: Rekognition on the frame on screen now, enriched with the title's index. */
+async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, entityId: string | undefined, boundary: number) {
+  const f = await analyzeFrame(keyframe(mediaPath, at), at);
+  const known = (id: string) => idx.entities.find((e) => e.id === id);
+  let entity: { id: string; type: string; name: string; role?: string; description?: string } | null = null;
+  let source = "amazon-rekognition RecognizeCelebrities (live frame)";
+  const celeb = [...f.celebrities].filter((c) => c.confidence >= 85).sort((a, b) => b.confidence - a.confidence)[0];
+  if (entityId && known(entityId)) {
+    const e = known(entityId)!;
+    entity = { id: e.id, type: e.type, name: e.name, description: e.description };
+    source = "title index";
+  } else if (celeb) {
+    const id = `person:${celeb.name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+    entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
+  }
+  const seen = entity ? idx.events.filter((ev) => ev.startMs <= boundary && ev.entityIds?.includes(entity!.id)) : [];
+  return {
+    entity,
+    facts: [
+      celeb && entity?.name === celeb.name ? `recognised by Amazon Rekognition with ${celeb.confidence}% confidence` : null,
+      celeb?.urls[0] ? `profile: https://${celeb.urls[0].replace(/^https?:\/\//, "")}` : null,
+      seen.length ? `in ${seen.length} moment${seen.length > 1 ? "s" : ""} so far (${seen.slice(-3).map((s) => s.title).join("; ")})` : null,
+      !entity ? `no recognised public figure on screen; I can see: ${f.labels.slice(0, 6).map((l) => l.name).join(", ") || "nothing distinctive"}` : null,
+    ].filter(Boolean),
+    observed: { labels: f.labels.map((l) => l.name), text: f.text.map((t) => t.text), publicFigures: f.celebrities.map((c) => ({ name: c.name, confidence: c.confidence })) },
+    provenance: { source, epistemicType: "observed", confidence: celeb ? celeb.confidence / 100 : 0.5, spoilerScope: "safe_before_playhead", observedAtMs: at },
+  };
+}
 
 /** Narrative Viewing Lens: who is speaking / on screen, with spoiler-bounded facts from the cast list and timeline. */
 function identifyCharacter(idx: ContentIndex, entityId: string | undefined, at: number, boundary: number) {

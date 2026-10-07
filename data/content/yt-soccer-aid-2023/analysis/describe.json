@@ -1,0 +1,817 @@
+{
+ "model": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+ "items": [
+  {
+   "i": 0,
+   "title": "Opening at Old Trafford",
+   "description": "The video opens at Old Trafford, highlighting the Soccer Aid event as it marks the first appearance in three years.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 1,
+   "title": "Williams Redknapp McClure return",
+   "description": "Bobby Williams, Harry Redknapp, Vicky McClure, Robbie Williams and Zavon Hines appear, marking their return after last year's Soccer Aid.",
+   "type": "talk",
+   "people": [
+    "Bobby Williams",
+    "Harry redknapp",
+    "Vicky McClure",
+    "Robbie Williams",
+    "Harry Redknapp",
+    "Zavon Hines"
+   ]
+  },
+  {
+   "i": 2,
+   "title": "Maisie Adam gives ball away",
+   "description": "Maisie Adam, who married yesterday, gives the ball away early in the match while Bobby Williams, Harry Redknapp and Vicky McClure watch.",
+   "type": "action",
+   "people": [
+    "Bobby Williams",
+    "Harry redknapp",
+    "Vicky McClure",
+    "Maisie Adam"
+   ]
+  },
+  {
+   "i": 3,
+   "title": "Foster beaten, England leads",
+   "description": "Ben Foster fails to stop a shot, giving England a lead, while Francesco Totti, Hernán Crespo and David James are shown on screen.",
+   "type": "chance",
+   "people": [
+    "Ben Foster",
+    "Totti",
+    "Crespo",
+    "David James"
+   ]
+  },
+  {
+   "i": 4,
+   "title": "Totti Crespo James shown",
+   "description": "Francesco Totti, Hernán Crespo and David James appear as England leads 2-1.",
+   "type": "reveal",
+   "people": [
+    "Totti",
+    "Crespo",
+    "David James"
+   ]
+  },
+  {
+   "i": 5,
+   "title": "Funds raised for Unicef",
+   "description": "The match highlights a £750 donation to Unicef while referencing Totti, Crespo and David James.",
+   "type": "result",
+   "people": [
+    "Totti",
+    "Crespo",
+    "David James"
+   ]
+  },
+  {
+   "i": 6,
+   "title": "Brian McFadden raises funds",
+   "description": "Brian McFadden is praised for raising £11,000 for Unicef during the show.",
+   "type": "talk",
+   "people": [
+    "Brian McFadden"
+   ]
+  },
+  {
+   "i": 7,
+   "title": "Fletcher advantage play",
+   "description": "Darren Fletcher gains advantage as Foxy Malone challenges him, while Brian McFadden and Jonathan Cyprien are noted.",
+   "type": "action",
+   "people": [
+    "Brian McFadden",
+    "Foxy Malone",
+    "Darren Fletcher",
+    "Jonathan Cyprien"
+   ]
+  },
+  {
+   "i": 8,
+   "title": "Advantage play and near miss",
+   "description": "Referee plays advantage after Foxy Malone challenges a player, Darren Fletcher assists, and Macy Adam nearly scores.",
+   "type": "chance",
+   "people": [
+    "Foxy Malone",
+    "Darren Fletcher",
+    "Macy Adam",
+    "Jonathan Cyprien"
+   ]
+  },
+  {
+   "i": 9,
+   "title": "Near miss reaction",
+   "description": "Commentary reacts to Macy Adam's close chance, calling it a near wedding gift.",
+   "type": "chance",
+   "people": [
+    "Macy Adam"
+   ]
+  },
+  {
+   "i": 10,
+   "title": "Gary Neville introduces boys to Old Trafford",
+   "description": "Gary Neville comments on the atmosphere and introduces the boys to Old Trafford after Macy Adam's near miss.",
+   "type": "dialogue",
+   "people": [
+    "Macy Adam",
+    "Gary Neville"
+   ]
+  },
+  {
+   "i": 11,
+   "title": "Gary Neville discusses Jill Scott and Lionesses",
+   "description": "Gary Neville talks about Jill Scott being signed by Soccerway, her European championship win, and mentions Jamaica.",
+   "type": "talk",
+   "people": [
+    "Gary Neville",
+    "Jill Scott"
+   ]
+  },
+  {
+   "i": 12,
+   "title": "Billy Joe DuPree mentioned",
+   "description": "Commentary references Billy Joe DuPree while discussing a gym anecdote.",
+   "type": "talk",
+   "people": [
+    "Billy Joe DuPree"
+   ]
+  },
+  {
+   "i": 13,
+   "title": "David James scores after 5k",
+   "description": "After a 5k run, David James releases the ball, slips it past Davey James and scores.",
+   "type": "goal",
+   "people": [
+    "David James",
+    "Davey James"
+   ]
+  },
+  {
+   "i": 14,
+   "title": "Usain Bolt scores first goal",
+   "description": "Usain Bolt, the world's fastest man, scores the first goal of Shot Parade 2023 after a 5k run.",
+   "type": "goal",
+   "people": [
+    "Usain Bolt",
+    "David James",
+    "Davey James"
+   ]
+  },
+  {
+   "i": 15,
+   "title": "Usain Bolt celebrated as Manchester United fan",
+   "description": "Commentary celebrates Usain Bolt's goal, noting he is a Manchester United fan who scored at Old Trafford.",
+   "type": "celebration",
+   "people": [
+    "Usain Bolt",
+    "David James",
+    "Bill Kenney"
+   ]
+  },
+  {
+   "i": 16,
+   "title": "Fan scores at Old Trafford, celebrates",
+   "description": "A Manchester United fan scores at Old Trafford and celebrates with a trademark move, joined by Patrice Evra and Usain Bolt.",
+   "type": "goal",
+   "people": [
+    "Patrice Evra",
+    "Usain Bolt"
+   ]
+  },
+  {
+   "i": 17,
+   "title": "Player scores past David James",
+   "description": "A player slots the ball past goalkeeper David James after a trademark celebration with Manchester United Legends.",
+   "type": "goal",
+   "people": [
+    "David James"
+   ]
+  },
+  {
+   "i": 18,
+   "title": "Ball slips past David James",
+   "description": "The ball is slipped past goalkeeper David James following a hamstring injury mention.",
+   "type": "goal",
+   "people": [
+    "David James"
+   ]
+  },
+  {
+   "i": 19,
+   "title": "Wilshere curls, Cahill headers, Foster claims",
+   "description": "Jack Wilshere curls the ball toward Jill Scott, Gary Cahill heads it, and Ben Foster makes a claim, while Sir Mo Farah replaces Bugsy Malone.",
+   "type": "action",
+   "people": [
+    "David James",
+    "Jack Wilshere",
+    "Jill Scott",
+    "Gary Cahill",
+    "Ben Foster",
+    "Sir Mo Farah",
+    "Bugsy Malone"
+   ]
+  },
+  {
+   "i": 20,
+   "title": "Wilshere to Scott, Cahill heads",
+   "description": "Jack Wilshere curls the ball toward Jill Scott as Gary Cahill heads it and Ben Foster makes a claim.",
+   "type": "action",
+   "people": [
+    "Jack Wilshere",
+    "Jill Scott",
+    "Gary Cahill",
+    "Ben Foster"
+   ]
+  },
+  {
+   "i": 21,
+   "title": "Wilshere curls, Cahill heads, Evra Bolt appear",
+   "description": "Jack Wilshere curls toward Jill Scott, Gary Cahill heads the ball, while Patrice Evra and Usain Bolt appear on screen.",
+   "type": "action",
+   "people": [
+    "Jack Wilshere",
+    "Jill Scott",
+    "Gary Cahill",
+    "Ben Foster",
+    "Carney",
+    "Christian Jones",
+    "Walter Jones",
+    "Jonathan Cyprien",
+    "Teddy Williams",
+    "Patrice Evra",
+    "Usain Bolt"
+   ]
+  },
+  {
+   "i": 22,
+   "title": "Cahill defended by Carney and Wilshire",
+   "description": "Gary Cahill is challenged by Carney and Wilshire as Jack Wilshere receives a great ball from Tossi Beck Nanny.",
+   "type": "action",
+   "people": [
+    "Gary Cahill",
+    "Carney",
+    "Wilshire",
+    "Jack Wilshere"
+   ]
+  },
+  {
+   "i": 23,
+   "title": "Beck Nanny tests James, Austin reacts",
+   "description": "Tossi Beck Nanny plays a ball that tests goalkeeper David James, prompting a reaction from Austin.",
+   "type": "save",
+   "people": [
+    "Tossi Beck Nanny",
+    "David James",
+    "Austin"
+   ]
+  },
+  {
+   "i": 24,
+   "title": "David James makes a decent stop",
+   "description": "David James makes a decent stop on a shot, while Austin reacts.",
+   "type": "save",
+   "people": [
+    "David James",
+    "Austin"
+   ]
+  },
+  {
+   "i": 25,
+   "title": "Gilligan's run and David James stop",
+   "description": "David James makes a stop as Gilligan attempts a run, with commentators referencing Billy Joe DuPree and Carlos Hyde.",
+   "type": "chance",
+   "people": [
+    "David James",
+    "Austin",
+    "Gilligan",
+    "Billy Joe DuPree",
+    "Carlos Hyde"
+   ]
+  },
+  {
+   "i": 26,
+   "title": "Gilligan's run and trick attempt",
+   "description": "Gilligan makes a run, attempts a trick to get past a defender, while commentators note the effort.",
+   "type": "action",
+   "people": [
+    "Gilligan",
+    "Mo Gilligan",
+    "Samo",
+    "totty"
+   ]
+  },
+  {
+   "i": 27,
+   "title": "Player continues attack",
+   "description": "A player continues the attack, attempting to finish the play.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 28,
+   "title": "Fletcher praised as England threat",
+   "description": "Commentators note Fletcher will be a thorn for England, mention Everett's fitness and David Jones involvement.",
+   "type": "talk",
+   "people": [
+    "Fletcher",
+    "Everett",
+    "David Jones"
+   ]
+  },
+  {
+   "i": 29,
+   "title": "Deflection leads to James save",
+   "description": "Everett's shot takes a deflection, David Jones is involved, but David James makes a save.",
+   "type": "save",
+   "people": [
+    "Everett",
+    "David Jones",
+    "David James",
+    "Edwards"
+   ]
+  },
+  {
+   "i": 30,
+   "title": "Carney fouled, free kick awarded",
+   "description": "Karen Carney is knocked down outside the box, winning a free kick for England after a deflection and James correction.",
+   "type": "foul",
+   "people": [
+    "David James",
+    "Edwards",
+    "Grennan",
+    "Karen Carney"
+   ]
+  },
+  {
+   "i": 31,
+   "title": "Carney wins free kick after foul",
+   "description": "Karen Carney is fouled by Claflin, earning a dangerous free kick for England.",
+   "type": "foul",
+   "people": [
+    "Grennan",
+    "Karen Carney",
+    "Claflin",
+    "Sakurai",
+    "Kyle"
+   ]
+  },
+  {
+   "i": 32,
+   "title": "England wins free kick near penalty",
+   "description": "Claflin gives away a free kick to England after a clumsy challenge on Sakurai, with Mr Sun observing the incident.",
+   "type": "free_kick",
+   "people": [
+    "Claflin",
+    "Sakurai",
+    "Mr Sun"
+   ]
+  },
+  {
+   "i": 33,
+   "title": "Butterfield appears as England presses",
+   "description": "After the free kick, Wilshire and teammates crowd the penalty edge while Butterfield is identified as the player involved.",
+   "type": "build_up",
+   "people": [
+    "Mr Sun",
+    "Wilshire",
+    "Butterfield"
+   ]
+  },
+  {
+   "i": 34,
+   "title": "Goalkeeper discussion as Butterfield noted",
+   "description": "Wilshire and England players press near the box while the commentator references Butterfield and other goalkeepers' involvement.",
+   "type": "talk",
+   "people": [
+    "Wilshire",
+    "Butterfield"
+   ]
+  },
+  {
+   "i": 35,
+   "title": "Gary Cahill comments on first touch",
+   "description": "Gary Cahill is shown discussing the player's first touch after the goalkeeper's involvement.",
+   "type": "talk",
+   "people": [
+    "Gary Cahill"
+   ]
+  },
+  {
+   "i": 36,
+   "title": "Leon Edwards devastated as ball slices past",
+   "description": "Kipper and Ace anticipate a cross, but the ball slices past Leon Edwards, who looks devastated.",
+   "type": "shot",
+   "people": [
+    "Kipper",
+    "Ace",
+    "Leon Edwards"
+   ]
+  },
+  {
+   "i": 37,
+   "title": "Butterfield scores to equalize 1-1",
+   "description": "Ace of Butterfield finishes the cross into the net, making the score 1-1 after Leon Edwards is beaten.",
+   "type": "goal",
+   "people": [
+    "Ace",
+    "Butterfield",
+    "Leon Edwards"
+   ]
+  },
+  {
+   "i": 38,
+   "title": "Hiddleston advances after Butterfield goal",
+   "description": "Following Butterfield's goal, Wilshire attempts a clearance and Hiddleston pursues a lovely ball forward.",
+   "type": "action",
+   "people": [
+    "Ace",
+    "Butterfield",
+    "Wilshire",
+    "Hiddleston"
+   ]
+  },
+  {
+   "i": 39,
+   "title": "Hiddleston continues the attack",
+   "description": "Hiddleston keeps possession and moves forward after the previous play.",
+   "type": "action",
+   "people": [
+    "Hiddleston"
+   ]
+  },
+  {
+   "i": 40,
+   "title": "Paul Scholes watches Hiddleston's play",
+   "description": "Paul Scholes is seen observing as Tom Hiddleston moves forward with a lovely ball and attempts a pass involving a girl.",
+   "type": "action",
+   "people": [
+    "Paul Scholes",
+    "Hiddleston"
+   ]
+  },
+  {
+   "i": 41,
+   "title": "Stormzy comments on Paul Scholes' halftime situation",
+   "description": "Stormzy is shown laughing while noting that the team is one nil down at halftime, with Paul Scholes mentioned.",
+   "type": "dialogue",
+   "people": [
+    "Stormzy",
+    "Paul Scholes"
+   ]
+  },
+  {
+   "i": 42,
+   "title": "Paul Scholes scores; Redknapp, Stormzy, Cove react",
+   "description": "Paul Scholes scores for Soccer Aid, while Harry Redknapp, Stormzy and Cove react as the play restarts.",
+   "type": "goal",
+   "people": [
+    "Paul Scholes",
+    "Harry Redknapp",
+    "Stormzy",
+    "Cove"
+   ]
+  },
+  {
+   "i": 43,
+   "title": "Tom Grant's ball leads to Leon's clearance attempt",
+   "description": "Tom Grant delivers a brilliant ball, Leon tries to knock it out but it falls short, setting up a chance for Paul Scholes.",
+   "type": "action",
+   "people": [
+    "Paul Scholes",
+    "Harry Redknapp",
+    "Stormzy",
+    "Cove",
+    "Tom Grant",
+    "Leon"
+   ]
+  },
+  {
+   "i": 44,
+   "title": "Scholes scores outside‑foot goal for 2‑1 lead",
+   "description": "Paul Scholes strikes the ball with the outside of his foot into the net, putting England ahead 2‑1.",
+   "type": "goal",
+   "people": [
+    "Tom Grant",
+    "Leon",
+    "Paul Scholes"
+   ]
+  },
+  {
+   "i": 45,
+   "title": "England goes 2‑1 up with outside‑foot strike",
+   "description": "An unnamed player scores with an outside‑foot shot, giving England a 2‑1 lead.",
+   "type": "goal",
+   "people": []
+  },
+  {
+   "i": 46,
+   "title": "Robbie Keane praised after England's 2‑1 lead",
+   "description": "Robbie Keane is highlighted as the action returns to him following England's 2‑1 advantage.",
+   "type": "talk",
+   "people": [
+    "Robbie Keane"
+   ]
+  },
+  {
+   "i": 47,
+   "title": "Pochettino, Melanie C and Keane see Ireland level",
+   "description": "Mauricio Pochettino and Melanie C appear as Robbie Keane notes the Irish side has leveled the match.",
+   "type": "talk",
+   "people": [
+    "Robbie Keane",
+    "Robbie King",
+    "Mauricio Pochettino",
+    "Melanie C"
+   ]
+  },
+  {
+   "i": 48,
+   "title": "Robbie King scores screamer",
+   "description": "Robbie King scores an absolute screamer, bringing World XI level with England at 2-2.",
+   "type": "goal",
+   "people": [
+    "Robbie King"
+   ]
+  },
+  {
+   "i": 49,
+   "title": "Evra squares off Kino",
+   "description": "Patrice Evra wins the ball and squares it off, focusing on his next move.",
+   "type": "action",
+   "people": [
+    "Patrice Evra",
+    "Jonathan Cyprien"
+   ]
+  },
+  {
+   "i": 50,
+   "title": "Evra squares ball Robbie key",
+   "description": "Patrice Evra wins the ball and squares it off, followed by a comment about Robbie Keane's involvement.",
+   "type": "action",
+   "people": [
+    "Patrice Evra",
+    "Robbie Keane"
+   ]
+  },
+  {
+   "i": 51,
+   "title": "Robbie key praises Martin Compston",
+   "description": "Robbie Keane comments that Martin Compston delivered a strong hit and is a great player.",
+   "type": "dialogue",
+   "people": [
+    "Robbie Keane",
+    "Martin Compston"
+   ]
+  },
+  {
+   "i": 52,
+   "title": "Martin Compston stays fit Edwards quick",
+   "description": "Martin Compston is noted for staying fit since retiring, while goalkeeper Edwards rushes out quickly to deny a shot at Tom's feet.",
+   "type": "save",
+   "people": [
+    "Martin Compston",
+    "Edwards",
+    "Tom"
+   ]
+  },
+  {
+   "i": 53,
+   "title": "Cahill clears Bobby Keen strikes",
+   "description": "Edwards rushes out, Cahill clears the ball, and Bobby Keen strikes again after the rebound.",
+   "type": "action",
+   "people": [
+    "Edwards",
+    "Jermaine",
+    "Cahill",
+    "Bobby Keen"
+   ]
+  },
+  {
+   "i": 54,
+   "title": "World XI takes lead via Cahill",
+   "description": "After Cahill's clearance and Bobby Keen's strike, World XI scores to go ahead 3-2 against England.",
+   "type": "goal",
+   "people": [
+    "Cahill",
+    "Bobby Keen"
+   ]
+  },
+  {
+   "i": 55,
+   "title": "Robbie Keane assists Noah",
+   "description": "Robbie Keane delivers a lovely pass to Noah, setting up World XI's latest goal.",
+   "type": "action",
+   "people": [
+    "Robbie Keane",
+    "Noah"
+   ]
+  },
+  {
+   "i": 56,
+   "title": "Noah Bet levels pass, Irishman dinks",
+   "description": "Noah bet receives a delivery and levels the ball, then the Irishman executes a delicate dink.",
+   "type": "action",
+   "people": [
+    "Noah bet",
+    "Hiddleston"
+   ]
+  },
+  {
+   "i": 57,
+   "title": "Irishman dinks, Embrace celebrates",
+   "description": "After the Irishman's dink, Embrace finishes the play and celebrates the goal.",
+   "type": "celebration",
+   "people": [
+    "Irishman",
+    "Embrace"
+   ]
+  },
+  {
+   "i": 58,
+   "title": "Embrace celebrates finish",
+   "description": "Embrace is highlighted as the player who finishes the move and celebrates the outcome.",
+   "type": "celebration",
+   "people": [
+    "Embrace"
+   ]
+  },
+  {
+   "i": 59,
+   "title": "Embrace expresses love for Soccer Aid",
+   "description": "Embrace states that he absolutely loves being involved in Soccer Aid every single year.",
+   "type": "talk",
+   "people": [
+    "Embrace",
+    "Vitali"
+   ]
+  },
+  {
+   "i": 60,
+   "title": "Chuck reacts, Force heads ball",
+   "description": "Chuck sees the action, Force throws his head at the ball, producing a quick reaction.",
+   "type": "action",
+   "people": [
+    "Chuck",
+    "Force"
+   ]
+  },
+  {
+   "i": 61,
+   "title": "Ball carried loose after touch",
+   "description": "Following the best touch, the ball runs loose and is carried away by a player.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 62,
+   "title": "Ken eyes record, aims for win",
+   "description": "The player has five on his mind, aiming to finish the play and secure the record, with Ken likely to win.",
+   "type": "action",
+   "people": [
+    "Ken"
+   ]
+  },
+  {
+   "i": 63,
+   "title": "Ken Saturday tops Soccer Aid scoring",
+   "description": "Ken Saturday is identified as the player who has scored the most goals in Soccer Aid history.",
+   "type": "reveal",
+   "people": [
+    "Ken Saturday",
+    "Kevin Trapp"
+   ]
+  },
+  {
+   "i": 64,
+   "title": "Ken Saturday named top scorer",
+   "description": "Ken Saturday is announced as the new highest goal scorer in Soccer Aid and expresses delight at the achievement.",
+   "type": "award",
+   "people": [
+    "Ken Saturday"
+   ]
+  },
+  {
+   "i": 65,
+   "title": "Ken Saturday scores past Clarence",
+   "description": "Ken Saturday scores a lovely goal, getting past Dutch legend Clarence, and his performance is praised.",
+   "type": "goal",
+   "people": [
+    "Ken Saturday",
+    "Clarence"
+   ]
+  },
+  {
+   "i": 66,
+   "title": "Ken Saturday goal after Farah pass",
+   "description": "After a loose pass by Mo Farah, Ken Saturday scores past Clarence, finishing a strong run.",
+   "type": "goal",
+   "people": [
+    "Ken Saturday",
+    "Clarence",
+    "Mo Farah"
+   ]
+  },
+  {
+   "i": 67,
+   "title": "Ken Saturday scores past Paddy McGinnis",
+   "description": "Ken Saturday slots the ball past Paddy McGinnis Kim setona following a run, with Mo Farah involved earlier in the play.",
+   "type": "goal",
+   "people": [
+    "Ken Saturday",
+    "Mo Farah",
+    "Paddy McGinnis Kim setona"
+   ]
+  },
+  {
+   "i": 68,
+   "title": "Ken Saturday desires victory",
+   "description": "Ken Saturday states that what he really wants is victory after scoring the goal.",
+   "type": "talk",
+   "people": [
+    "Ken Saturday"
+   ]
+  },
+  {
+   "i": 69,
+   "title": "Scarlet Douglas replaces Alex Brooker",
+   "description": "Scarlet Douglas comes on to replace Alex Brooker, who is described as one hell of a fella.",
+   "type": "substitution",
+   "people": [
+    "Scarlet Douglas",
+    "Alex Brooker"
+   ]
+  },
+  {
+   "i": 70,
+   "title": "Scarlet Douglas praised after substitution",
+   "description": "Scarlet Douglas is celebrated after entering the match, while Alex Brooker is again praised as a great player.",
+   "type": "celebration",
+   "people": [
+    "Scarlet Douglas",
+    "Alex Brooker"
+   ]
+  },
+  {
+   "i": 71,
+   "title": "World 11 celebrate with Mauricio Pochettino",
+   "description": "The World 11 team celebrates their fifth straight win, led by Mauricio Pochettino, with Scarlet Douglas and Alex Brooker noted in the festivities.",
+   "type": "celebration",
+   "people": [
+    "Scarlet Douglas",
+    "Alex Brooker",
+    "Mauricio Pochettino"
+   ]
+  },
+  {
+   "i": 72,
+   "title": "World XI Celebration",
+   "description": "The World XI team celebrates their victory, led by Maurizio, while on-screen prompts encourage donations to Soccer Aid.",
+   "type": "celebration",
+   "people": [
+    "Kaylyn Kyle",
+    "Heather O'Reilly",
+    "Sam Claflin"
+   ]
+  },
+  {
+   "i": 73,
+   "title": "Donation Thank You",
+   "description": "Dermot O'Leary thanks viewers for raising £6,905 for UNICEF and expresses gratitude for the support.",
+   "type": "talk",
+   "people": [
+    "Dermot O'Leary"
+   ]
+  },
+  {
+   "i": 74,
+   "title": "Thank Players and Staff",
+   "description": "Dermot O'Leary and Robbie Williams thank the players, managers, and coaching teams, urging further donations.",
+   "type": "talk",
+   "people": [
+    "Dermot O'Leary",
+    "Robbie Williams"
+   ]
+  },
+  {
+   "i": 75,
+   "title": "Donation Reminder",
+   "description": "Miriam Aïda, Robbie Williams, and Dermot O'Leary remind viewers that donations go to UNICEF and can be made until midday July 11, 2023.",
+   "type": "talk",
+   "people": [
+    "Miriam Aïda",
+    "Robbie Williams",
+    "Dermot O'Leary"
+   ]
+  },
+  {
+   "i": 76,
+   "title": "Partnership Sponsorship",
+   "description": "On-screen shows partnership logos with Primark and WeShop, reinforcing the donation call-to-action.",
+   "type": "advertisement",
+   "people": []
+  }
+ ]
+}

@@ -1,13 +1,13 @@
 {
   "summary": {
     "label": "openrouter:nvidia/nemotron-3-super-120b-a12b:free (rules fast path)",
-    "at": "2026-10-06T23:25:57.033Z",
-    "cases": 20,
-    "passRate": 1,
-    "seekHitRate": 1,
-    "R1@IoU0.5": 0.867,
-    "R1@IoU0.7": 0.867,
-    "medianMs": 7863
+    "at": "2026-10-07T00:49:02.991Z",
+    "cases": 35,
+    "passRate": 0.914,
+    "seekHitRate": 0.893,
+    "R1@IoU0.5": 0.643,
+    "R1@IoU0.7": 0.571,
+    "medianMs": 11883
   },
   "rows": [
     {
@@ -15,265 +15,463 @@
       "pass": true,
       "detail": "in ev-16",
       "iou": 1,
-      "ms": 7767,
+      "ms": 6443,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"keeper denied header\",\"eventTypes\":[\"save\"],\"limit\":5}",
+        "player.seek {\"positionMs\":124600}"
       ],
-      "speech": "I’ve taken you back to the save where Brandt denied Lindqvist’s header attempt—playing from around 124.6 seconds into the match."
+      "speech": "Going back to the keeper's save on Lindqvist's header."
     },
     {
       "id": "m-equaliser",
       "pass": true,
-      "detail": "in ev-18",
+      "detail": "in ev-20",
       "iou": 1,
-      "ms": 14489,
+      "ms": 17308,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "entities.resolve",
-        "player.seek"
+        "moments.search {\"query\":\"replay\",\"eventTypes\":[\"replay\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":152000}"
       ],
-      "speech": "Here’s the equaliser — Okafor’s goal making it 1‑1."
+      "speech": "Here’s the replay of Okafor’s equaliser."
     },
     {
       "id": "m-silva-header",
       "pass": true,
       "detail": "in ev-27",
       "iou": 1,
-      "ms": 20635,
+      "ms": 8848,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "moments.search",
-        "moments.search",
-        "player.get_state",
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"Silva header\",\"entityNames\":[\"Silva\"],\"eventTypes\":[\"header\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":199000}"
       ],
-      "speech": "I’ve rewound to Silva’s header goal at 3:19 in the match. Playback is now set there."
+      "speech": "Rewound to Silva's header goal at 3 minutes 19 seconds."
     },
     {
       "id": "m-levelled",
       "pass": true,
       "detail": "in ev-18",
       "iou": 1,
-      "ms": 6646,
+      "ms": 6856,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"Okafor levelled it\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Okafor\"],\"limit\":5}",
+        "player.seek {\"positionMs\":141000}"
       ],
-      "speech": "I've taken you to Okafor's equaliser goal, making it 1‑1."
+      "speech": "I’ve taken you to the moment Okafor equalised for Northgate, making it 1‑1. The goal is now playing."
     },
     {
       "id": "m-woodwork",
       "pass": true,
       "detail": "in ev-22",
       "iou": 1,
-      "ms": 7863,
+      "ms": 16303,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"Silva hit the woodwork\",\"entityNames\":[\"Silva\"],\"eventTypes\":[\"shot\"],\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":175000}"
       ],
-      "speech": "Silva hit the woodwork on a shot that struck the post at about 2 minutes 55 seconds into the match. I’ve jumped to that moment for you."
+      "speech": "Silva hit the woodwork—he cut inside from the wing and struck the post—at about 2 minutes 55 seconds into the match."
     },
     {
       "id": "m-booking-defender",
       "pass": true,
       "detail": "in ev-07",
       "iou": 1,
-      "ms": 10123,
+      "ms": 19381,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "entities.resolve",
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"yellow card\",\"eventTypes\":[\"yellow_card\"],\"respectSpoilers\":true,\"limit\":10}",
+        "moments.search {\"query\":\"yellow card Northgate defender\",\"entityNames\":[\"Reyes\",\"#4 Northgate\"],\"eventTypes\":[\"yellow_card\"],\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":58000}"
       ],
-      "speech": "Here’s the booking for Northgate defender Reyes – I’ve jumped to the yellow card at 58 seconds into the match."
+      "speech": "I found the yellow card for Northgate defender Reyes (#4) at 58 seconds and jumped to that moment. You can now see the booking incident."
     },
     {
       "id": "m-replay-opener",
       "pass": true,
       "detail": "in ev-12",
       "iou": 1,
-      "ms": 18806,
+      "ms": 12181,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"replay of the opener\",\"eventTypes\":[\"replay\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":100000}"
       ],
-      "speech": "Showing the replay of Harbor City's opening goal by Silva."
+      "speech": "Showing the replay of the opening goal."
     },
     {
       "id": "m-slowmo-winner",
       "pass": true,
       "detail": "in ev-29",
       "iou": 1,
-      "ms": 18313,
+      "ms": 10842,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek",
-        "player.set_speed"
+        "moments.search {\"query\":\"replay\",\"eventTypes\":[\"replay\"],\"entityNames\":[\"Silva\"],\"limit\":5}",
+        "player.seek {\"positionMs\":210000}"
       ],
-      "speech": "I've jumped to the slow‑motion replay of Silva's winning goal and set playback to half speed."
+      "speech": "Here's the slow‑motion replay of Silva's winning goal."
     },
     {
       "id": "m-spoiler",
       "pass": true,
       "detail": "guarded",
       "iou": null,
-      "ms": 8816,
+      "ms": 32352,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search"
+        "moments.search {\"query\":\"equaliser\",\"eventTypes\":[\"goal\"],\"limit\":5}",
+        "moments.search {\"query\":\"equaliser\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Okafor\",\"Northgate\"],\"limit\":5}",
+        "moments.search {\"query\":\"Okafor goal\",\"eventTypes\":[\"goal\"],\"limit\":5}"
       ],
-      "speech": "The equaliser hasn’t happened yet—it comes later in the match. If you’d like to see it, I can turn spoilers off for you. Just let me know!"
+      "speech": "The equaliser hasn't happened yet in the match. Would you like to turn spoilers off to see future events?"
     },
     {
       "id": "m-who-scored-first",
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 4287,
+      "ms": 6429,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search"
+        "moments.search {\"query\":\"first goal\",\"eventTypes\":[\"goal\"],\"order\":\"first\",\"limit\":1,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":88000}"
       ],
-      "speech": "Silva scored the first goal for Harbor City FC, making it 1‑0."
+      "speech": "Silva (#7) scored the first goal for Harbor City. It happened at 1 minute 28 seconds into the match."
     },
     {
       "id": "m-multistep",
       "pass": true,
       "detail": "in ev-29",
-      "iou": 0,
-      "ms": 14633,
+      "iou": 1,
+      "ms": 39874,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek",
-        "player.set_speed"
+        "moments.search {\"query\":\"replay\",\"eventTypes\":[\"replay\"],\"relation\":\"before\",\"anchorMs\":215000,\"order\":\"nearest\",\"limit\":1,\"respectSpoilers\":true}",
+        "player.seek_relative {\"deltaMs\":-3000,\"from\":\"grounded\"}",
+        "player.set_speed {\"rate\":0.5}",
+        "player.seek {\"positionMs\":210000}",
+        "player.seek {\"positionMs\":207000}"
       ],
-      "speech": "Going to the replay of Silva’s third goal, three seconds before it, and playing at half speed."
+      "speech": "Going to three seconds before the replay of Silva's goal, playing at half speed."
     },
     {
       "id": "m-score",
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 1745,
+      "ms": 5028,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
-      "tools": [],
-      "speech": "The current score is Harbor City FC 2, Northgate United 1."
+      "tools": [
+        "lens.read_text {\"atMs\":215000}"
+      ],
+      "speech": "The score is Harbor City FC 2, Northgate United 1. The match is in the 78th minute."
     },
     {
       "id": "n-reads-note",
       "pass": true,
       "detail": "in bt-3",
       "iou": 1,
-      "ms": 6209,
+      "ms": 7975,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"girl reads the note\",\"eventTypes\":[\"scene\",\"beat\"],\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":45555}"
       ],
-      "speech": "I've jumped to the scene where Mara reads the note."
+      "speech": "Okay, I've jumped to the part where Mara reads the note."
     },
     {
       "id": "n-dig-key",
       "pass": true,
       "detail": "in bt-6",
       "iou": 1,
-      "ms": 6413,
+      "ms": 11883,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"dig up the key\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":117944}"
       ],
-      "speech": "They dig up the key at about 1 minute 58 seconds into the story—Mara finds the brass key in a tin box under the signal post. I’ve jumped to that moment for you."
+      "speech": "They dig up the key at about 1 minute and 58 seconds into the story. I’ve jumped to that moment for you."
     },
     {
       "id": "n-docks-argument",
       "pass": true,
-      "detail": "in bt-4",
+      "detail": "in sc-3",
       "iou": 1,
-      "ms": 10792,
+      "ms": 12296,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"argument down by the boats\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":56443}"
       ],
-      "speech": "I found the argument down by the boats and jumped to that scene."
+      "speech": "I’ve jumped to the argument down by the boats where Mara confronts Theo about the missing key at the pier. The scene is now playing from that point."
     },
     {
       "id": "n-brother-admits",
       "pass": true,
       "detail": "in bt-7",
       "iou": 1,
-      "ms": 17383,
+      "ms": 16861,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"brother admits he wrote it\",\"contentId\":\"keepers-key\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":123613}"
       ],
-      "speech": "Jumped to the moment where Theo admits he wrote the letter."
+      "speech": "Jumped to where Theo admits he wrote the letter."
     },
     {
       "id": "n-lamp",
       "pass": true,
-      "detail": "in bt-8",
+      "detail": "in sc-7",
       "iou": 1,
-      "ms": 5697,
+      "ms": 7672,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"lamp finally comes on\",\"contentId\":\"keepers-key\",\"limit\":5}",
+        "player.seek {\"positionMs\":151807}"
       ],
-      "speech": "I've jumped to the scene where Mara turns the brass key and the lighthouse lamp finally comes on."
+      "speech": "I’ve jumped to the scene where Mara turns the key and the lighthouse lamp finally comes on. You’re now at the start of Scene 7 — The light."
     },
     {
       "id": "n-prev-inspector",
       "pass": true,
       "detail": "in sc-6",
-      "iou": 0,
-      "ms": 7047,
+      "iou": 1,
+      "ms": 15707,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"inspector\",\"eventTypes\":[\"scene\"],\"entityNames\":[\"Inspector Ada Hale\"],\"limit\":5}",
+        "player.seek {\"positionMs\":131432}"
       ],
-      "speech": "Going back to the scene with Inspector Hale where they discuss the key and the light."
+      "speech": "I jumped to the previous scene with Inspector Hale—Scene 6, where she returns and Mara shows her the key."
     },
     {
       "id": "n-who-cap",
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 4340,
+      "ms": 5191,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "lens.identify"
+        "lens.identify {\"target\":\"on_screen\",\"atMs\":140000}"
       ],
-      "speech": "The woman wearing the cap is Inspector Ada Hale, the navy inspector with the gold badge."
+      "speech": "The woman wearing the cap is Inspector Ada Hale – the navy inspector with a gold badge on her cap, grey hair, and a dark grey coat."
     },
     {
       "id": "n-spoiler-key",
       "pass": true,
       "detail": "guarded",
       "iou": null,
-      "ms": 5821,
+      "ms": 7283,
       "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
       "tools": [
-        "moments.search"
+        "moments.search {\"query\":\"find the key\"}"
       ],
-      "speech": "I’m sorry, but the moment where they find the key hasn’t happened yet in your viewing. If you’d like to see it now, you can turn spoilers off. Would you like me to do that?"
+      "speech": "The moment where they find the key hasn't happened yet in your viewing. Would you like to turn spoilers off to see it?"
+    },
+    {
+      "id": "r-roti-ingredients",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.85,
+      "ms": 4036,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"ingredients\",\"eventTypes\":[\"ingredient\"]}",
+        "player.seek {\"positionMs\":8808}"
+      ],
+      "speech": "Going back to the ingredients part."
+    },
+    {
+      "id": "r-roti-rest",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.53,
+      "ms": 13562,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"let the dough rest\",\"eventTypes\":[\"step\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":114314}"
+      ],
+      "speech": "I found the part where they let the dough rest—it starts at about 1 minute and 54 seconds into the video. I’ve jumped there for you."
+    },
+    {
+      "id": "r-roti-pan",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.39,
+      "ms": 8050,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"cook it in the pan\"}",
+        "player.seek {\"positionMs\":164464}"
+      ],
+      "speech": "Here’s the part where they cook the roti in the pan—starting at the point they add oil and cook both sides."
+    },
+    {
+      "id": "f-bridge-breakup",
+      "pass": false,
+      "detail": "pos 383125",
+      "iou": 0,
+      "ms": 46646,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"break-up on the bridge\",\"order\":\"first\",\"limit\":5}",
+        "moments.search {\"query\":\"break up bridge\",\"order\":\"first\",\"limit\":10}",
+        "moments.search {\"query\":\"bridge\",\"order\":\"first\",\"limit\":10}",
+        "player.seek {\"positionMs\":383125}"
+      ],
+      "speech": "I've gone to the heartbroken confrontation scene."
+    },
+    {
+      "id": "f-thom-sorry",
+      "pass": false,
+      "detail": "pos 560000",
+      "iou": 0,
+      "ms": 22433,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Thom apologizes to her\",\"entityNames\":[\"Thom\"],\"respectSpoilers\":true,\"limit\":5}",
+        "moments.search {\"query\":\"Thom says sorry\",\"entityNames\":[\"Thom\"],\"respectSpoilers\":true,\"limit\":10}",
+        "moments.search {\"query\":\"Thom apologizes to Celia\",\"entityNames\":[\"Thom\",\"Celia\"],\"respectSpoilers\":true,\"limit\":10}"
+      ],
+      "speech": "I couldn’t find a moment where Thom apologizes to Celia in the portion you’ve watched so far (up to about 9 minutes 20 seconds). If you’d like to see later parts of the film, you can turn spoilers off and I’ll look again."
+    },
+    {
+      "id": "f-two-minutes",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.68,
+      "ms": 6282,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"there are two minutes left\"}",
+        "player.seek {\"positionMs\":338916}"
+      ],
+      "speech": "Rewound to the moment they say \"Two minutes left!\" in Tears of Steel."
+    },
+    {
+      "id": "f-overwrite-done",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.32,
+      "ms": 21555,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"memory overwrite complete\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":537708}"
+      ],
+      "speech": "The memory overwrite is declared complete at about 8 minutes 58 seconds into the video (around 537 708 ms). I’ve jumped to that moment for you."
+    },
+    {
+      "id": "t-what-is-free",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.42,
+      "ms": 27990,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"explains what free software means\",\"eventTypes\":[\"explanation\"],\"limit\":5}",
+        "moments.search {\"query\":\"what free software means\",\"limit\":10}",
+        "moments.search {\"query\":\"defining free software\",\"eventTypes\":[\"talk\"],\"limit\":5}",
+        "player.seek {\"positionMs\":90840}"
+      ],
+      "speech": "I've gone back to where Richard Stallman defines free software, explaining the four essential freedoms."
+    },
+    {
+      "id": "t-amazon",
+      "pass": false,
+      "detail": "pos 261360",
+      "iou": 0,
+      "ms": 11375,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Amazon\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":261360}"
+      ],
+      "speech": "He talks about Amazon at about 4 minutes 21 seconds into the talk, where he cites it as an example of proprietary software that can spy on users. (He mentions it again a bit later at around 4 minutes 43 seconds.)"
+    },
+    {
+      "id": "t-schools",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.17,
+      "ms": 14063,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"schools teaching software\",\"respectSpoilers\":true,\"limit\":5}",
+        "player.seek {\"positionMs\":615040}"
+      ],
+      "speech": "Jumped to the segment where Stallman advocates teaching free software in schools."
+    },
+    {
+      "id": "s-bolt-goal",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.29,
+      "ms": 5558,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Usain Bolt goal\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Usain Bolt\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":141600}"
+      ],
+      "speech": "Showing Usain Bolt's goal."
+    },
+    {
+      "id": "s-scholes",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.22,
+      "ms": 33484,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Paul Scholes goal England ahead\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Paul Scholes\"],\"limit\":5,\"respectSpoilers\":true}",
+        "player.seek {\"positionMs\":459360}"
+      ],
+      "speech": "Paul Scholes put England ahead with his outside‑foot goal at about 7 minutes 39 seconds into the match, giving England a 2‑1 lead."
+    },
+    {
+      "id": "s-keane-level",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0,
+      "ms": 16497,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Robbie Keane equaliser\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Robbie Keane\"],\"respectSpoilers\":true,\"limit\":5}",
+        "moments.search {\"query\":\"Robbie Keane equaliser goal\",\"entityNames\":[\"Robbie Keane\"],\"respectSpoilers\":true,\"limit\":10}",
+        "moments.search {\"query\":\"goal\",\"eventTypes\":[\"goal\"],\"respectSpoilers\":true,\"limit\":20}",
+        "player.seek {\"positionMs\":489360}"
+      ],
+      "speech": "Rewound to Robbie Keane's equaliser, where Ireland levelled the match."
+    },
+    {
+      "id": "s-spoiler-keane",
+      "pass": true,
+      "detail": "guarded",
+      "iou": null,
+      "ms": 5750,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "moments.search {\"query\":\"Robbie Keane goal\",\"eventTypes\":[\"goal\"],\"entityNames\":[\"Robbie Keane\"],\"limit\":5,\"respectSpoilers\":true}"
+      ],
+      "speech": "That Robbie Keane goal hasn't happened yet for you. Would you like to turn spoilers off so I can show it to you?"
+    },
+    {
+      "id": "s-who-live",
+      "pass": true,
+      "detail": "",
+      "iou": null,
+      "ms": 6093,
+      "interpreter": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+      "tools": [
+        "lens.identify {\"target\":\"on_screen\",\"atMs\":150000}",
+        "lens.describe {\"atMs\":150000}"
+      ],
+      "speech": "It's Usain Bolt—he's just scored the first goal of Shot Parade 2023 after that 5k run."
     }
   ]
 }

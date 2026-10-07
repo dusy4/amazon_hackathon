@@ -1,0 +1,3351 @@
+[
+ {
+  "atMs": 4458,
+  "labels": [
+   {
+    "name": "Green",
+    "confidence": 98
+   },
+   {
+    "name": "Gray",
+    "confidence": 97
+   },
+   {
+    "name": "Lighting",
+    "confidence": 94
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 13666,
+  "labels": [
+   {
+    "name": "Outdoors",
+    "confidence": 95
+   },
+   {
+    "name": "Anime",
+    "confidence": 75
+   },
+   {
+    "name": "Nature",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 21708,
+  "labels": [
+   {
+    "name": "Architecture",
+    "confidence": 98
+   },
+   {
+    "name": "Building",
+    "confidence": 98
+   },
+   {
+    "name": "Factory",
+    "confidence": 98
+   },
+   {
+    "name": "City",
+    "confidence": 94
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 83
+   }
+  ],
+  "text": [
+   {
+    "text": "This film is supported by",
+    "confidence": 100
+   },
+   {
+    "text": "the Netherlands Film Fund",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 32625,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Romantic",
+    "confidence": 97
+   },
+   {
+    "name": "Body Part",
+    "confidence": 76
+   },
+   {
+    "name": "Hand",
+    "confidence": 76
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Max Ehrich",
+    "id": "2oF1nI6m",
+    "confidence": 81,
+    "urls": [
+     "www.wikidata.org/wiki/Q3302089"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 43667,
+  "labels": [
+   {
+    "name": "Lighting",
+    "confidence": 100
+   },
+   {
+    "name": "Concert",
+    "confidence": 94
+   },
+   {
+    "name": "Crowd",
+    "confidence": 94
+   },
+   {
+    "name": "Person",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "40 YEARS LATER",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 50375,
+  "labels": [
+   {
+    "name": "Electronics",
+    "confidence": 100
+   },
+   {
+    "name": "Hardware",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 93
+   },
+   {
+    "name": "Printed Circuit Board",
+    "confidence": 92
+   }
+  ],
+  "text": [
+   {
+    "text": "- -",
+    "confidence": 85
+   },
+   {
+    "text": "KEY RESTORE",
+    "confidence": 98
+   },
+   {
+    "text": "SONY",
+    "confidence": 93
+   },
+   {
+    "text": "91",
+    "confidence": 97
+   },
+   {
+    "text": "5",
+    "confidence": 96
+   },
+   {
+    "text": "2",
+    "confidence": 98
+   },
+   {
+    "text": "OV",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 59062,
+  "labels": [
+   {
+    "name": "Food",
+    "confidence": 98
+   },
+   {
+    "name": "Food Presentation",
+    "confidence": 98
+   },
+   {
+    "name": "Water",
+    "confidence": 79
+   },
+   {
+    "name": "Medication",
+    "confidence": 79
+   },
+   {
+    "name": "Pill",
+    "confidence": 79
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 69271,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 84
+   }
+  ],
+  "text": [
+   {
+    "text": "TEARS OF STEEL",
+    "confidence": 92
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 78104,
+  "labels": [
+   {
+    "name": "Indoors",
+    "confidence": 96
+   },
+   {
+    "name": "Person",
+    "confidence": 82
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 87271,
+  "labels": [
+   {
+    "name": "Transportation",
+    "confidence": 93
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 93
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 90
+   },
+   {
+    "name": "Nature",
+    "confidence": 73
+   },
+   {
+    "name": "Snow",
+    "confidence": 73
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 97416,
+  "labels": [
+   {
+    "name": "Outdoors",
+    "confidence": 96
+   },
+   {
+    "name": "Nature",
+    "confidence": 95
+   },
+   {
+    "name": "War",
+    "confidence": 93
+   },
+   {
+    "name": "Aircraft",
+    "confidence": 90
+   },
+   {
+    "name": "Transportation",
+    "confidence": 90
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 90
+   },
+   {
+    "name": "Spaceship",
+    "confidence": 82
+   },
+   {
+    "name": "Snow",
+    "confidence": 73
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 109562,
+  "labels": [
+   {
+    "name": "Aircraft",
+    "confidence": 92
+   },
+   {
+    "name": "Spaceship",
+    "confidence": 92
+   },
+   {
+    "name": "Transportation",
+    "confidence": 92
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 92
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 83
+   },
+   {
+    "name": "Nature",
+    "confidence": 82
+   },
+   {
+    "name": "Car",
+    "confidence": 82
+   },
+   {
+    "name": "Person",
+    "confidence": 79
+   },
+   {
+    "name": "Snow",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 125812,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Sad",
+    "confidence": 100
+   },
+   {
+    "name": "Crying",
+    "confidence": 99
+   },
+   {
+    "name": "Festival",
+    "confidence": 74
+   },
+   {
+    "name": "Hanukkah Menorah",
+    "confidence": 74
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 139104,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 95
+   },
+   {
+    "name": "Glove",
+    "confidence": 95
+   },
+   {
+    "name": "Indoors",
+    "confidence": 95
+   },
+   {
+    "name": "Head",
+    "confidence": 94
+   },
+   {
+    "name": "Face",
+    "confidence": 93
+   },
+   {
+    "name": "Accessories",
+    "confidence": 70
+   },
+   {
+    "name": "Bag",
+    "confidence": 70
+   },
+   {
+    "name": "Handbag",
+    "confidence": 70
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 148083,
+  "labels": [
+   {
+    "name": "Clothing",
+    "confidence": 92
+   },
+   {
+    "name": "Glove",
+    "confidence": 92
+   },
+   {
+    "name": "Gun",
+    "confidence": 89
+   },
+   {
+    "name": "Weapon",
+    "confidence": 89
+   },
+   {
+    "name": "Person",
+    "confidence": 89
+   },
+   {
+    "name": "Taking Cover",
+    "confidence": 89
+   },
+   {
+    "name": "Shooting",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "TANGO",
+    "confidence": 92
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 162583,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   },
+   {
+    "name": "Man",
+    "confidence": 96
+   },
+   {
+    "name": "Smoke",
+    "confidence": 96
+   },
+   {
+    "name": "Hugging",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 177771,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Lamp",
+    "confidence": 100
+   },
+   {
+    "name": "Table Lamp",
+    "confidence": 99
+   },
+   {
+    "name": "Coat",
+    "confidence": 98
+   },
+   {
+    "name": "Jacket",
+    "confidence": 98
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Photo Frame",
+    "confidence": 89
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 186375,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Lamp",
+    "confidence": 96
+   },
+   {
+    "name": "Chair",
+    "confidence": 94
+   },
+   {
+    "name": "Furniture",
+    "confidence": 94
+   },
+   {
+    "name": "Performer",
+    "confidence": 90
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 90
+   },
+   {
+    "name": "Art",
+    "confidence": 88
+   },
+   {
+    "name": "Painting",
+    "confidence": 88
+   },
+   {
+    "name": "Indoors",
+    "confidence": 81
+   },
+   {
+    "name": "Interior Design",
+    "confidence": 81
+   },
+   {
+    "name": "Head",
+    "confidence": 81
+   },
+   {
+    "name": "Face",
+    "confidence": 78
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 194000,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 99
+   },
+   {
+    "name": "Lamp",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Man",
+    "confidence": 94
+   },
+   {
+    "name": "Female",
+    "confidence": 93
+   },
+   {
+    "name": "Woman",
+    "confidence": 93
+   },
+   {
+    "name": "Cup",
+    "confidence": 86
+   },
+   {
+    "name": "Smoke",
+    "confidence": 76
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 202583,
+  "labels": [
+   {
+    "name": "Gun",
+    "confidence": 100
+   },
+   {
+    "name": "Weapon",
+    "confidence": 100
+   },
+   {
+    "name": "Shooting",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Female",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Woman",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Man",
+    "confidence": 94
+   },
+   {
+    "name": "Cup",
+    "confidence": 93
+   },
+   {
+    "name": "Head",
+    "confidence": 93
+   },
+   {
+    "name": "Lamp",
+    "confidence": 82
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 210291,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 85
+   },
+   {
+    "name": "Worker",
+    "confidence": 85
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 218166,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 98
+   },
+   {
+    "name": "Happy",
+    "confidence": 98
+   },
+   {
+    "name": "Head",
+    "confidence": 98
+   },
+   {
+    "name": "Adult",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Man",
+    "confidence": 94
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 92
+   },
+   {
+    "name": "Clothing",
+    "confidence": 91
+   },
+   {
+    "name": "Glove",
+    "confidence": 91
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 78
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 228500,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Angry",
+    "confidence": 99
+   },
+   {
+    "name": "Shouting",
+    "confidence": 97
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Man",
+    "confidence": 97
+   },
+   {
+    "name": "Painting",
+    "confidence": 88
+   },
+   {
+    "name": "Female",
+    "confidence": 87
+   },
+   {
+    "name": "Woman",
+    "confidence": 87
+   },
+   {
+    "name": "Surprised",
+    "confidence": 73
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Pejman Hadadi",
+    "id": "349R0q",
+    "confidence": 82,
+    "urls": [
+     "www.wikidata.org/wiki/Q7161005"
+    ]
+   },
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 244000,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Female",
+    "confidence": 98
+   },
+   {
+    "name": "Woman",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "People",
+    "confidence": 80
+   },
+   {
+    "name": "Angry",
+    "confidence": 79
+   },
+   {
+    "name": "Smoke",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   },
+   {
+    "name": "Milo de Angelis",
+    "id": "128ed5s",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q3858037"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 263416,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 97
+   },
+   {
+    "name": "Car",
+    "confidence": 79
+   },
+   {
+    "name": "Transportation",
+    "confidence": 79
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 79
+   },
+   {
+    "name": "Pedestrian",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 273500,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Teen",
+    "confidence": 99
+   },
+   {
+    "name": "Chasing",
+    "confidence": 86
+   },
+   {
+    "name": "Clothing",
+    "confidence": 82
+   },
+   {
+    "name": "Coat",
+    "confidence": 82
+   },
+   {
+    "name": "Hand",
+    "confidence": 81
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Marko Jevtović",
+    "id": "1DA4LO",
+    "confidence": 87,
+    "urls": [
+     "www.wikidata.org/wiki/Q16730286"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 276833,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Teen",
+    "confidence": 99
+   },
+   {
+    "name": "Black Hair",
+    "confidence": 99
+   },
+   {
+    "name": "Hair",
+    "confidence": 99
+   },
+   {
+    "name": "Running",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 284812,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Bag",
+    "confidence": 99
+   },
+   {
+    "name": "Car",
+    "confidence": 95
+   },
+   {
+    "name": "Transportation",
+    "confidence": 95
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 95
+   },
+   {
+    "name": "Backpack",
+    "confidence": 81
+   },
+   {
+    "name": "Backpacking",
+    "confidence": 76
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 293021,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 86
+   },
+   {
+    "name": "Person",
+    "confidence": 86
+   },
+   {
+    "name": "Smoke Pipe",
+    "confidence": 85
+   },
+   {
+    "name": "Alcohol",
+    "confidence": 85
+   },
+   {
+    "name": "Beverage",
+    "confidence": 85
+   },
+   {
+    "name": "Face",
+    "confidence": 83
+   },
+   {
+    "name": "Adult",
+    "confidence": 83
+   },
+   {
+    "name": "Male",
+    "confidence": 83
+   },
+   {
+    "name": "Man",
+    "confidence": 83
+   },
+   {
+    "name": "Drinking",
+    "confidence": 73
+   },
+   {
+    "name": "Clothing",
+    "confidence": 70
+   },
+   {
+    "name": "Glove",
+    "confidence": 70
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 299604,
+  "labels": [
+   {
+    "name": "Car",
+    "confidence": 81
+   },
+   {
+    "name": "Transportation",
+    "confidence": 81
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 81
+   },
+   {
+    "name": "Headlight",
+    "confidence": 79
+   },
+   {
+    "name": "Robot",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 306646,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 98
+   },
+   {
+    "name": "Performer",
+    "confidence": 71
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 315271,
+  "labels": [
+   {
+    "name": "Neighborhood",
+    "confidence": 100
+   },
+   {
+    "name": "City",
+    "confidence": 100
+   },
+   {
+    "name": "Condo",
+    "confidence": 100
+   },
+   {
+    "name": "Street",
+    "confidence": 100
+   },
+   {
+    "name": "Urban",
+    "confidence": 100
+   },
+   {
+    "name": "Car",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 96
+   },
+   {
+    "name": "Head",
+    "confidence": 91
+   },
+   {
+    "name": "Bicycle",
+    "confidence": 90
+   },
+   {
+    "name": "High Rise",
+    "confidence": 90
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 89
+   },
+   {
+    "name": "Face",
+    "confidence": 86
+   }
+  ],
+  "text": [
+   {
+    "text": "\"LOOK CELIA,",
+    "confidence": 90
+   },
+   {
+    "text": "OUR PASSIONS",
+    "confidence": 90
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 324229,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Body Part",
+    "confidence": 95
+   },
+   {
+    "name": "Jaw",
+    "confidence": 95
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 333708,
+  "labels": [
+   {
+    "name": "Festival",
+    "confidence": 73
+   },
+   {
+    "name": "Hanukkah Menorah",
+    "confidence": 73
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 342687,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Man",
+    "confidence": 94
+   },
+   {
+    "name": "Angry",
+    "confidence": 87
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Olle Jönsson",
+    "id": "g6J2B",
+    "confidence": 84,
+    "urls": [
+     "www.wikidata.org/wiki/Q5896072"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 349583,
+  "labels": [
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Teen",
+    "confidence": 99
+   },
+   {
+    "name": "Body Part",
+    "confidence": 98
+   },
+   {
+    "name": "Hand",
+    "confidence": 98
+   },
+   {
+    "name": "Holding Hands",
+    "confidence": 96
+   },
+   {
+    "name": "Head",
+    "confidence": 87
+   },
+   {
+    "name": "Face",
+    "confidence": 85
+   },
+   {
+    "name": "Conversation",
+    "confidence": 84
+   },
+   {
+    "name": "Bag",
+    "confidence": 76
+   },
+   {
+    "name": "Handbag",
+    "confidence": 76
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Marko Jevtović",
+    "id": "1DA4LO",
+    "confidence": 80,
+    "urls": [
+     "www.wikidata.org/wiki/Q16730286"
+    ]
+   },
+   {
+    "name": "Lydia Jane Powell",
+    "id": "c71d41",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q26931540"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 357417,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Female",
+    "confidence": 97
+   },
+   {
+    "name": "Woman",
+    "confidence": 97
+   },
+   {
+    "name": "Conversation",
+    "confidence": 96
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 365542,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Lady",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 98
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Female",
+    "confidence": 96
+   },
+   {
+    "name": "Woman",
+    "confidence": 96
+   },
+   {
+    "name": "Cup",
+    "confidence": 79
+   },
+   {
+    "name": "Handbag",
+    "confidence": 75
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 372479,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Female",
+    "confidence": 97
+   },
+   {
+    "name": "Woman",
+    "confidence": 97
+   },
+   {
+    "name": "Alcohol",
+    "confidence": 75
+   },
+   {
+    "name": "Beverage",
+    "confidence": 75
+   },
+   {
+    "name": "Smoke",
+    "confidence": 74
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 379563,
+  "labels": [
+   {
+    "name": "Clapperboard",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "ERROR!!!",
+    "confidence": 97
+   },
+   {
+    "text": "OR!!!",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 386646,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Photography",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Gun",
+    "confidence": 85
+   },
+   {
+    "name": "Shooting",
+    "confidence": 85
+   },
+   {
+    "name": "Weapon",
+    "confidence": 85
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Grégory Lemarchal",
+    "id": "3tU1L9n",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q297453",
+     "www.imdb.com/name/nm1747757"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 394583,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 96
+   },
+   {
+    "name": "Person",
+    "confidence": 96
+   },
+   {
+    "name": "Face",
+    "confidence": 95
+   },
+   {
+    "name": "Gun",
+    "confidence": 87
+   },
+   {
+    "name": "Weapon",
+    "confidence": 87
+   },
+   {
+    "name": "Shooting",
+    "confidence": 87
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 404042,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Smoke",
+    "confidence": 91
+   },
+   {
+    "name": "Gun",
+    "confidence": 77
+   },
+   {
+    "name": "Weapon",
+    "confidence": 77
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 412667,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Crying",
+    "confidence": 96
+   },
+   {
+    "name": "Sad",
+    "confidence": 96
+   },
+   {
+    "name": "Photography",
+    "confidence": 91
+   },
+   {
+    "name": "Crossbow",
+    "confidence": 86
+   },
+   {
+    "name": "Weapon",
+    "confidence": 86
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Véronique Ovaldé",
+    "id": "2tt3Ii3i",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q3564349"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 420875,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 95
+   },
+   {
+    "name": "Male",
+    "confidence": 95
+   },
+   {
+    "name": "Man",
+    "confidence": 95
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 429833,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 98
+   },
+   {
+    "name": "Smoke Pipe",
+    "confidence": 95
+   },
+   {
+    "name": "Cosmetics",
+    "confidence": 95
+   },
+   {
+    "name": "Head",
+    "confidence": 92
+   },
+   {
+    "name": "Face",
+    "confidence": 90
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 437687,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Smoke",
+    "confidence": 79
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Damson Idris",
+    "id": "e12d20",
+    "confidence": 84,
+    "urls": [
+     "www.wikidata.org/wiki/Q30218855",
+     "www.imdb.com/name/nm5072010"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 451208,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 100
+   },
+   {
+    "name": "Crying",
+    "confidence": 97
+   },
+   {
+    "name": "Sad",
+    "confidence": 97
+   },
+   {
+    "name": "Performer",
+    "confidence": 91
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 91
+   },
+   {
+    "name": "Accessories",
+    "confidence": 82
+   },
+   {
+    "name": "Glasses",
+    "confidence": 82
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 461500,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 95
+   },
+   {
+    "name": "Male",
+    "confidence": 95
+   },
+   {
+    "name": "Man",
+    "confidence": 95
+   },
+   {
+    "name": "Gun",
+    "confidence": 88
+   },
+   {
+    "name": "Weapon",
+    "confidence": 88
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 465062,
+  "labels": [
+   {
+    "name": "Road",
+    "confidence": 98
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 90
+   },
+   {
+    "name": "Festival",
+    "confidence": 85
+   },
+   {
+    "name": "Hanukkah Menorah",
+    "confidence": 85
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 473646,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Female",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Woman",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 90
+   },
+   {
+    "name": "Man",
+    "confidence": 90
+   },
+   {
+    "name": "Head",
+    "confidence": 88
+   },
+   {
+    "name": "Face",
+    "confidence": 73
+   },
+   {
+    "name": "Box",
+    "confidence": 71
+   },
+   {
+    "name": "Package",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 482229,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Man",
+    "confidence": 97
+   },
+   {
+    "name": "Clothing",
+    "confidence": 92
+   },
+   {
+    "name": "Coat",
+    "confidence": 92
+   },
+   {
+    "name": "Performer",
+    "confidence": 76
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 76
+   },
+   {
+    "name": "Sad",
+    "confidence": 75
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Damson Idris",
+    "id": "e12d20",
+    "confidence": 78,
+    "urls": [
+     "www.wikidata.org/wiki/Q30218855",
+     "www.imdb.com/name/nm5072010"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 488542,
+  "labels": [
+   {
+    "name": "Basketball",
+    "confidence": 96
+   },
+   {
+    "name": "Person",
+    "confidence": 96
+   },
+   {
+    "name": "Playing Basketball",
+    "confidence": 96
+   },
+   {
+    "name": "Sport",
+    "confidence": 96
+   },
+   {
+    "name": "Adult",
+    "confidence": 88
+   },
+   {
+    "name": "Male",
+    "confidence": 88
+   },
+   {
+    "name": "Man",
+    "confidence": 88
+   },
+   {
+    "name": "Worker",
+    "confidence": 77
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 495500,
+  "labels": [
+   {
+    "name": "Dungeon",
+    "confidence": 74
+   },
+   {
+    "name": "Head",
+    "confidence": 72
+   },
+   {
+    "name": "Person",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 502646,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Angry",
+    "confidence": 78
+   },
+   {
+    "name": "Shouting",
+    "confidence": 78
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 511875,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 94
+   },
+   {
+    "name": "Face",
+    "confidence": 94
+   },
+   {
+    "name": "Clothing",
+    "confidence": 88
+   },
+   {
+    "name": "Coat",
+    "confidence": 88
+   },
+   {
+    "name": "Bag",
+    "confidence": 82
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 522646,
+  "labels": [],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 532562,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 95
+   },
+   {
+    "name": "Male",
+    "confidence": 95
+   },
+   {
+    "name": "Man",
+    "confidence": 95
+   },
+   {
+    "name": "Photography",
+    "confidence": 89
+   },
+   {
+    "name": "Happy",
+    "confidence": 72
+   },
+   {
+    "name": "Smile",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 545271,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 90
+   },
+   {
+    "name": "Hugging",
+    "confidence": 80
+   },
+   {
+    "name": "Romantic",
+    "confidence": 79
+   },
+   {
+    "name": "Kissing",
+    "confidence": 72
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 88,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 558562,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Anders Jansson",
+    "id": "3Tw7OE2",
+    "confidence": 79,
+    "urls": [
+     "www.wikidata.org/wiki/Q4753826",
+     "www.imdb.com/name/nm1162194"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 567833,
+  "labels": [
+   {
+    "name": "Lamp",
+    "confidence": 100
+   },
+   {
+    "name": "Table Lamp",
+    "confidence": 99
+   },
+   {
+    "name": "Indoors",
+    "confidence": 96
+   },
+   {
+    "name": "Interior Design",
+    "confidence": 96
+   },
+   {
+    "name": "Person",
+    "confidence": 96
+   },
+   {
+    "name": "Head",
+    "confidence": 94
+   },
+   {
+    "name": "Face",
+    "confidence": 93
+   },
+   {
+    "name": "Chess",
+    "confidence": 86
+   },
+   {
+    "name": "Game",
+    "confidence": 86
+   },
+   {
+    "name": "Smoke",
+    "confidence": 83
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Teki Latex",
+    "id": "9sa6mt",
+    "confidence": 89,
+    "urls": [
+     "www.wikidata.org/wiki/Q2310322",
+     "www.imdb.com/name/nm1908295"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 579688,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Worker",
+    "confidence": 99
+   },
+   {
+    "name": "Bridge",
+    "confidence": 82
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Derek de Lint",
+    "id": "2rS5sh",
+    "confidence": 82,
+    "urls": [
+     "www.wikidata.org/wiki/Q1200141",
+     "www.imdb.com/name/nm0513190"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 591104,
+  "labels": [
+   {
+    "name": "Architecture",
+    "confidence": 83
+   },
+   {
+    "name": "Building",
+    "confidence": 83
+   },
+   {
+    "name": "Factory",
+    "confidence": 83
+   },
+   {
+    "name": "Manufacturing",
+    "confidence": 83
+   },
+   {
+    "name": "Art",
+    "confidence": 82
+   },
+   {
+    "name": "Graphics",
+    "confidence": 82
+   }
+  ],
+  "text": [
+   {
+    "text": "Written and Directed by",
+    "confidence": 100
+   },
+   {
+    "text": "IAN HUBERT",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 597833,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 85
+   },
+   {
+    "name": "Art",
+    "confidence": 73
+   },
+   {
+    "name": "Animal",
+    "confidence": 72
+   },
+   {
+    "name": "Cat",
+    "confidence": 72
+   },
+   {
+    "name": "Mammal",
+    "confidence": 72
+   },
+   {
+    "name": "Pet",
+    "confidence": 72
+   },
+   {
+    "name": "Graphics",
+    "confidence": 72
+   },
+   {
+    "name": "Anime",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 605979,
+  "labels": [
+   {
+    "name": "Aircraft",
+    "confidence": 90
+   },
+   {
+    "name": "Airplane",
+    "confidence": 90
+   },
+   {
+    "name": "Transportation",
+    "confidence": 90
+   },
+   {
+    "name": "Vehicle",
+    "confidence": 90
+   }
+  ],
+  "text": [
+   {
+    "text": "Cast",
+    "confidence": 100
+   },
+   {
+    "text": "Old Thom DEREK DE LINT",
+    "confidence": 100
+   },
+   {
+    "text": "Barley SERGIO HASSELBAINK",
+    "confidence": 100
+   },
+   {
+    "text": "Captain ROGIER SCHIPPERS",
+    "confidence": 99
+   },
+   {
+    "text": "Thom VANJA RUKAVINA",
+    "confidence": 100
+   },
+   {
+    "text": "Celia DENISE REBERGEN",
+    "confidence": 100
+   },
+   {
+    "text": "Djenghis JODY ВНЕ",
+    "confidence": 99
+   },
+   {
+    "text": "Tech head CHRIS HALEY",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 613688,
+  "labels": [
+   {
+    "name": "Robot",
+    "confidence": 99
+   },
+   {
+    "name": "Advertisement",
+    "confidence": 78
+   },
+   {
+    "name": "Person",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "MANGO ARTISTS",
+    "confidence": 100
+   },
+   {
+    "text": "Lighting and compositing",
+    "confidence": 99
+   },
+   {
+    "text": "Concept art and storyboards",
+    "confidence": 99
+   },
+   {
+    "text": "ANDREAS GORALCZYK",
+    "confidence": 99
+   },
+   {
+    "text": "DAVID REVOY",
+    "confidence": 100
+   },
+   {
+    "text": "Layout, compositing and animation",
+    "confidence": 99
+   },
+   {
+    "text": "Character rigging and animation",
+    "confidence": 100
+   },
+   {
+    "text": "FRANCESCO SIDDI",
+    "confidence": 100
+   },
+   {
+    "text": "JEREMY DAVIDSON",
+    "confidence": 100
+   },
+   {
+    "text": "Character design and modeling, lighting",
+    "confidence": 100
+   },
+   {
+    "text": "Environment design and modeling",
+    "confidence": 100
+   },
+   {
+    "text": "NICOLÒ ZUBBINI",
+    "confidence": 97
+   },
+   {
+    "text": "KJARTAN TYSDAL",
+    "confidence": 99
+   },
+   {
+    "text": "Production assistance and environment modeling",
+    "confidence": 99
+   },
+   {
+    "text": "Keying, plate cleanup and roto",
+    "confidence": 99
+   },
+   {
+    "text": "ROB TUYTEL",
+    "confidence": 99
+   },
+   {
+    "text": "ROMAN VOLODIN",
+    "confidence": 100
+   },
+   {
+    "text": "Matchmoving, keying and compositing",
+    "confidence": 99
+   },
+   {
+    "text": "SEBASTIAN KOENIG",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 622979,
+  "labels": [],
+  "text": [
+   {
+    "text": "All CG and VFX realised entirely with",
+    "confidence": 99
+   },
+   {
+    "text": "blender",
+    "confidence": 98
+   },
+   {
+    "text": "www.blender.org",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 639083,
+  "labels": [
+   {
+    "name": "CAD Diagram",
+    "confidence": 94
+   },
+   {
+    "name": "Diagram",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "Sound recordist",
+    "confidence": 99
+   },
+   {
+    "text": "Set Construction",
+    "confidence": 100
+   },
+   {
+    "text": "Victor Dekker",
+    "confidence": 99
+   },
+   {
+    "text": "Seab Deuling",
+    "confidence": 100
+   },
+   {
+    "text": "Hanneke Kraaij",
+    "confidence": 100
+   },
+   {
+    "text": "Scientist extras",
+    "confidence": 99
+   },
+   {
+    "text": "Daan van 't Einde",
+    "confidence": 99
+   },
+   {
+    "text": "Props",
+    "confidence": 100
+   },
+   {
+    "text": "Koen Martens",
+    "confidence": 99
+   },
+   {
+    "text": "Runner",
+    "confidence": 99
+   },
+   {
+    "text": "Femke Hoeben",
+    "confidence": 100
+   },
+   {
+    "text": "Campbell Barton",
+    "confidence": 100
+   },
+   {
+    "text": "Rob Tuytel",
+    "confidence": 100
+   },
+   {
+    "text": "Set dresser",
+    "confidence": 99
+   },
+   {
+    "text": "Make-up and hair",
+    "confidence": 100
+   },
+   {
+    "text": "Rik van Os",
+    "confidence": 100
+   },
+   {
+    "text": "Sanne Kiwitz",
+    "confidence": 99
+   },
+   {
+    "text": "ACTIVE",
+    "confidence": 98
+   },
+   {
+    "text": "Set costumer",
+    "confidence": 100
+   },
+   {
+    "text": "Catering",
+    "confidence": 100
+   },
+   {
+    "text": "Lisa Lind",
+    "confidence": 100
+   },
+   {
+    "text": "Dolce Vita",
+    "confidence": 100
+   },
+   {
+    "text": "Cafe Nel",
+    "confidence": 100
+   },
+   {
+    "text": "Green screen studio",
+    "confidence": 100
+   },
+   {
+    "text": "Amsterdam Studios - Dik van der Stroom",
+    "confidence": 91
+   },
+   {
+    "text": "SPECIAL THANKS",
+    "confidence": 99
+   },
+   {
+    "text": "Dries van Osten",
+    "confidence": 100
+   },
+   {
+    "text": "Rob Debrichy",
+    "confidence": 100
+   },
+   {
+    "text": "SPECIAL THANKS TO BLENDER DEVELOPERS",
+    "confidence": 100
+   },
+   {
+    "text": "Smoke simulation",
+    "confidence": 99
+   },
+   {
+    "text": "Motion tracking",
+    "confidence": 100
+   },
+   {
+    "text": "Daniel Genrich and Miika Hämäläinen",
+    "confidence": 100
+   },
+   {
+    "text": "Keir Mierle",
+    "confidence": 94
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 653208,
+  "labels": [],
+  "text": [
+   {
+    "text": "C-ROBOT",
+    "confidence": 99
+   },
+   {
+    "text": "Premium sponsor",
+    "confidence": 100
+   },
+   {
+    "text": "Google",
+    "confidence": 100
+   },
+   {
+    "text": "E",
+    "confidence": 94
+   },
+   {
+    "text": "Development sponsor",
+    "confidence": 100
+   },
+   {
+    "text": "David Jeske",
+    "confidence": 99
+   },
+   {
+    "text": "Main sponsors",
+    "confidence": 100
+   },
+   {
+    "text": "NVIDIA",
+    "confidence": 99
+   },
+   {
+    "text": "C-BARIN LINK. ACTIVE",
+    "confidence": 92
+   },
+   {
+    "text": "Hewlett-Packard Workstations",
+    "confidence": 99
+   },
+   {
+    "text": "Camalot AV Services",
+    "confidence": 100
+   },
+   {
+    "text": "BlenderGuru",
+    "confidence": 100
+   },
+   {
+    "text": "Platinum sponsor",
+    "confidence": 99
+   },
+   {
+    "text": "Florian Х. Huber",
+    "confidence": 88
+   },
+   {
+    "text": "Gold sponsors",
+    "confidence": 99
+   },
+   {
+    "text": "Adrian Kauz Marx Olivier Chouinard Lionel Allorge . Allan Brito NEUERO",
+    "confidence": 97
+   },
+   {
+    "text": "Ludovic Gilbon Recreation Globe (Thailand)",
+    "confidence": 99
+   },
+   {
+    "text": "MovieStream Marco Fanciulli",
+    "confidence": 100
+   },
+   {
+    "text": "David Hunkeler Enrico Pertile (in memory) Champlain College FIREHOUSE",
+    "confidence": 99
+   },
+   {
+    "text": "BlenderCN.org TabletMod.com Allesandro Sala Peter Rehley Mike Pan",
+    "confidence": 99
+   },
+   {
+    "text": "Dierk Dohmann Frank Stimmel Daniel Coik Oleksandr Shcherbyna",
+    "confidence": 99
+   },
+   {
+    "text": "Benoit Bolsee",
+    "confidence": 99
+   },
+   {
+    "text": "Dalai",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 660458,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 86
+   }
+  ],
+  "text": [
+   {
+    "text": "Kishimoto Andre Linden Andre Moeller André Postier Andrea Bruni Andrea Campagnol Andrea Cervetti Andrea Ferrari Andrea Ferroni",
+    "confidence": 99
+   },
+   {
+    "text": "Andrea Micheli Andrea Nall Andrea Weikert Andrea Zagli Andreas Atteneder Andreas Boehrnsen Andreas Breuer Andreas Busch Andreas",
+    "confidence": 99
+   },
+   {
+    "text": "Dumont Andreas Fischer Andreas Henzelmann Andreas Jörg Andreas Kruse Andreas Martin Andreas Mattijat Andreas Rieger Andreas",
+    "confidence": 99
+   },
+   {
+    "text": "Thiel Andres Olmedilla Andrew Buttery Andrew Curry Andrew Enyart Andrew Fenn Andrew Gray-Spence Andrew Reaser Andrew Sinclair",
+    "confidence": 99
+   },
+   {
+    "text": "Andrew Wharton Andrey Izrantsev Andy Kittner Andy Palatka Angel Rodriguez Angela Guenette Angelo Borraccino Anthony Barbieri",
+    "confidence": 100
+   },
+   {
+    "text": "Anthony Edlin Anthony Perlas Anthony Ramahay Anthony Salvi Anthony Wade Antoine Agthe Antoine Mariette Antoine Sierro Anton",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 668500,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 89
+   },
+   {
+    "name": "Advertisement",
+    "confidence": 79
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 72
+   }
+  ],
+  "text": [
+   {
+    "text": "Ed van der Veen Edgar Caspersen Eduard Zell Eduardo Gutiérrez Sanmartin Eduardo Teixeira Edward Helwig Edwin Hernandez Eelco",
+    "confidence": 98
+   },
+   {
+    "text": "Stuijt Eike Heuer Ejner Fergo Elijah Shoemake Ellina Petukhova Elliot Saba Emiliano Maximiano Emilie Lourdin Emilio Molina",
+    "confidence": 99
+   },
+   {
+    "text": "Emmanuel Bultot Emmanuel Garette Enrico Cerica Enrico Targetti Eolo Perfido Eric Gentry Eric Hall Eric Svärd Erick Nyandu Kabongo",
+    "confidence": 99
+   },
+   {
+    "text": "Erik Josué Castillo Erik Möller Erik Navis Erik Paetz Erik Ulijn Erik van Schaaik Erik van Weezep Ernst Puff Erwann Doceul Erwin Lee",
+    "confidence": 99
+   },
+   {
+    "text": "Erwin Vanderhoydonks Etienne Colas Etienne Lauvergnier Etienne Savard Ettienne Peters Euan de Kock",
+    "confidence": 99
+   },
+   {
+    "text": "Everton Schneider Evgeny",
+    "confidence": 99
+   },
+   {
+    "text": "Fabian Binternagel Fabian",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 678708,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 90
+   }
+  ],
+  "text": [
+   {
+    "text": "Kalle Max Hofmann Kamiyama Masashi Karel De Bruijn Karl Stein Karl Wagner Karsten Dambekalns Karsten Hoehne Kasper Holst Kay",
+    "confidence": 100
+   },
+   {
+    "text": "Garbrecht Kay Thust Kazuma Hatta Kees Veling Keith Blackard Keith Hill Keith Sogge Ken Fallon Ken Loge Ken Nign Kenneth Offer",
+    "confidence": 99
+   },
+   {
+    "text": "Kent Kristensen Kent Mein Kerry Torchia Kevan Harriman Kevin Finnegan Kevin Roy Kevin Unhammer Khodom Outhaithavy Kim Jin-",
+    "confidence": 99
+   },
+   {
+    "text": "hoon Kim Karim Kjell Magne Fauske Klaus Ornezeder Kolja Lubitz Konrad Kleine Kris Provoost Krister Viirsaar Kristoffer Strömblad",
+    "confidence": 99
+   },
+   {
+    "text": "Kristopher Gray Kristopher Prioux Kyron de Haas",
+    "confidence": 100
+   },
+   {
+    "text": "Lachlunn Valente Lance Flavell Larry Snyder Lars Brubaker Lars Jensen Lars Nord Laura Waite Laurens Keek Laurent",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 689333,
+  "labels": [
+   {
+    "name": "Light",
+    "confidence": 87
+   },
+   {
+    "name": "Text",
+    "confidence": 86
+   },
+   {
+    "name": "Advertisement",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "Macpherson Philip Myers Philipp Hemmer Philipp Kammerer Philipp Kistner Philipp Oeser Philipp Spitzer Philippe Casteleyn Philippe",
+    "confidence": 99
+   },
+   {
+    "text": "Entzmann Philippe Guillemot Philippe Marlin Philippe Page Philippe Piatkiewitz Philippe Roubal Philippe Van Hecke Photini Drummer",
+    "confidence": 99
+   },
+   {
+    "text": "Pierre Bornancin Pierre Dumas Pierre Prégardien Piotr Podlach",
+    "confidence": 99
+   },
+   {
+    "text": "Quentin Nerden Quimey Stordeur",
+    "confidence": 99
+   },
+   {
+    "text": "Racquel Mansilungan Radu Coc Rafael Garcia Moreno Rafael Rangel Rafael Rios Saavedra Rafael Solon Goraieb Rainer Müller Ralf Bilger",
+    "confidence": 99
+   },
+   {
+    "text": "Ralf Cremer Ralf Hölzemer Ralf Tepler Ralph Little Randall Breeden Rasmus Lerchedahl",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 702083,
+  "labels": [
+   {
+    "name": "Light",
+    "confidence": 95
+   },
+   {
+    "name": "Advertisement",
+    "confidence": 90
+   },
+   {
+    "name": "Poster",
+    "confidence": 90
+   },
+   {
+    "name": "Traffic Light",
+    "confidence": 81
+   },
+   {
+    "name": "Text",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "Blender Foundation",
+    "confidence": 100
+   },
+   {
+    "text": "Netherlands Film Fund",
+    "confidence": 100
+   },
+   {
+    "text": "European Regional Development Fund of the European Committee",
+    "confidence": 100
+   },
+   {
+    "text": "Ministry of Economic Affairs, Agriculture and Innovation",
+    "confidence": 100
+   },
+   {
+    "text": "City of Amsterdam",
+    "confidence": 99
+   },
+   {
+    "text": "Province Noord-Holland",
+    "confidence": 100
+   },
+   {
+    "text": "Produced by",
+    "confidence": 100
+   },
+   {
+    "text": "Blender Institute",
+    "confidence": 100
+   },
+   {
+    "text": "Licensed as Creative Commons Attribution 3.0",
+    "confidence": 100
+   },
+   {
+    "text": "www.tearsofsteel.org",
+    "confidence": 97
+   },
+   {
+    "text": "FILM",
+    "confidence": 94
+   },
+   {
+    "text": "blenderfoundation",
+    "confidence": 96
+   },
+   {
+    "text": "blenderinstitute",
+    "confidence": 99
+   },
+   {
+    "text": "blender",
+    "confidence": 99
+   },
+   {
+    "text": "AMSTERDAM",
+    "confidence": 88
+   },
+   {
+    "text": "FONDS",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 719500,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 729917,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 84
+   },
+   {
+    "name": "Head",
+    "confidence": 78
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 732274,
+  "labels": [
+   {
+    "name": "Green",
+    "confidence": 98
+   },
+   {
+    "name": "Gray",
+    "confidence": 97
+   },
+   {
+    "name": "Lighting",
+    "confidence": 94
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ }
+]

@@ -16,6 +16,7 @@ import type { WireMessage } from "../../../packages/contracts/src/index.ts";
 import { AppContext } from "./app-context.ts";
 import { mountMcp } from "./mcp.ts";
 import { Orchestrator } from "./orchestrator.ts";
+import { POLLY_VOICE, synthesize } from "./tts.ts";
 
 /** Best LAN address for QR codes / phones: prefer private home-network ranges over VPN/overlay ranges. */
 function lanIp() {
@@ -71,6 +72,19 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
     if (req.body?.spoilerMode === "strict" || req.body?.spoilerMode === "full") s.spoilerMode = req.body.spoilerMode;
     if (typeof req.body?.watchedUpToMs === "number") s.extendBoundary(req.body.watchedUpToMs);
     res.json({ spoilerMode: s.spoilerMode, watchedUpToMs: s.watchedUpToMs });
+  });
+  http.get("/api/tts", async (req, res) => {
+    const text = String(req.query.text ?? "").trim();
+    if (!text) return void res.status(400).end();
+    const t0 = Date.now();
+    try {
+      const audio = await synthesize(text);
+      if (req.query.turnId)
+        app.emit({ type: "trace", turnId: String(req.query.turnId), trace: { kind: "action", label: `spoken reply (${audio.length} B mp3)`, component: `amazon-polly:generative:${POLLY_VOICE}`, ms: Date.now() - t0 } });
+      res.type("audio/mpeg").send(Buffer.from(audio));
+    } catch (e) {
+      res.status(502).json({ error: (e as Error).message });
+    }
   });
   http.get("/api/shares", (_req, res) => res.json(app.shares));
   http.get("/api/memory", async (_req, res) => res.json(await app.memory.recent(app.sessions.get().userId, 50)));

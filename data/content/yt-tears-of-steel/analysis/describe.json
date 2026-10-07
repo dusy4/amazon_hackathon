@@ -1,0 +1,669 @@
+{
+ "model": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+ "items": [
+  {
+   "i": 0,
+   "title": "Opening establishing shot",
+   "description": "The scene shows green and gray lighting, setting an outdoor atmosphere.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 1,
+   "title": "Outdoor nature establishing",
+   "description": "An outdoor anime‑style nature scene is shown.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 2,
+   "title": "Thom called a jerk",
+   "description": "A character tells Thom he's a jerk while standing in an urban factory setting.",
+   "type": "dialogue",
+   "people": [
+    "Thom"
+   ]
+  },
+  {
+   "i": 3,
+   "title": "Celia and Thom discuss fears",
+   "description": "Celia and Thom talk about their passions and Thom admits he's freaked out by his robot hand.",
+   "type": "dialogue",
+   "people": [
+    "Celia",
+    "Thom"
+   ]
+  },
+  {
+   "i": 4,
+   "title": "Thom admits fear after time jump",
+   "description": "Thom says he has nightmares of being chased by robotic claws, as the text '40 YEARS LATER' appears.",
+   "type": "dialogue",
+   "people": [
+    "Thom"
+   ]
+  },
+  {
+   "i": 5,
+   "title": "Robot memory locked",
+   "description": "A voice announces the robot's memory is synced and locked, shown with technical on‑screen text.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 6,
+   "title": "Comment on freaky scene",
+   "description": "A character remarks that the scene is pretty freaky while food‑related imagery is shown.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 7,
+   "title": "Film title card",
+   "description": "The words 'TEARS OF STEEL' appear on screen.",
+   "type": "title",
+   "people": []
+  },
+  {
+   "i": 8,
+   "title": "Indoor person scene",
+   "description": "An indoor setting shows a person standing or moving. No dialogue or text is present.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 9,
+   "title": "Snowy outdoor vehicle scene",
+   "description": "A snowy outdoor landscape features a vehicle traveling through the scenery. No dialogue or text appears.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 10,
+   "title": "Snowy war aircraft outdoors",
+   "description": "A snowy outdoor scene depicts war with aircraft and spaceships visible. No dialogue or text is present.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 11,
+   "title": "Derek questions about being down there",
+   "description": "Derek de Lint asks, 'Shouldn't you be down there? I heard you guys talking last night.' He speaks to another person in a snowy outdoor setting.",
+   "type": "dialogue",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 12,
+   "title": "Derek says it's not his fault",
+   "description": "Derek de Lint states, 'It's not my fault, you know.' He is indoors, wearing gloves and clothing.",
+   "type": "dialogue",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 13,
+   "title": "Person takes cover shooting with TANGO text",
+   "description": "A person takes cover and shoots a gun while the on-screen text 'TANGO' appears. The scene includes smoke and weaponry.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 14,
+   "title": "Derek hugs someone amidst smoke",
+   "description": "Derek de Lint hugs another person amid smoke, showing an emotional moment. No dialogue or text is present.",
+   "type": "other",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 16,
+   "title": "Derek de Lint smiles at table",
+   "description": "Derek de Lint, an adult male, sits at a table with a lamp, smiling.",
+   "type": "establishing",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 17,
+   "title": "Derek de Lint performs solo indoors",
+   "description": "Derek de Lint, a performer, stands indoors near a chair and lamp, engaged in a solo performance.",
+   "type": "solo_performance",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 18,
+   "title": "Derek de Lint asks Barley readiness",
+   "description": "Derek de Lint, an adult male, asks Barley if she is ready while smiling.",
+   "type": "dialogue",
+   "people": [
+    "Barley",
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 19,
+   "title": "Female prepares weapon for mission",
+   "description": "An adult female holds a gun, stating they have ten minutes and that all systems are go.",
+   "type": "action",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 20,
+   "title": "Worker urges team to move",
+   "description": "A person shouts encouragement, urging others to move quickly.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 21,
+   "title": "Male celebrates enthusiastically",
+   "description": "An adult male expresses joy and celebrates, urging others to go.",
+   "type": "celebration",
+   "people": []
+  },
+  {
+   "i": 22,
+   "title": "Male shouts at Thom about her",
+   "description": "An adult male, appearing angry, tells Thom not to worry and points out a nearby female.",
+   "type": "dialogue",
+   "people": [
+    "Thom",
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 23,
+   "title": "Male advises tenderness toward her",
+   "description": "An adult male advises someone to be tender and honest with a female, reminding her what love is.",
+   "type": "talk",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 24,
+   "title": "Street scene with cars and pedestrians",
+   "description": "A street shows cars, vehicles, and pedestrians moving through an urban area.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 25,
+   "title": "Teen boy smiling while chasing",
+   "description": "A teenage boy with a happy expression smiles as he appears to be chasing something.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 26,
+   "title": "Teen boy smiling",
+   "description": "A teenage boy with black hair shows a happy smile.",
+   "type": "reaction",
+   "people": []
+  },
+  {
+   "i": 27,
+   "title": "Person with bag near car",
+   "description": "A smiling person carrying a bag stands near a car and vehicle.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 28,
+   "title": "Man drinking from pipe",
+   "description": "An adult male man holds a smoke pipe and appears to be drinking.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 29,
+   "title": "Robot scolds Thom",
+   "description": "A robot announces memory overwrite and calls Thom a jerk, then apologizes.",
+   "type": "dialogue",
+   "people": [
+    "Thom"
+   ]
+  },
+  {
+   "i": 30,
+   "title": "Performer apologizes",
+   "description": "A solo performer says sorry after the robot's comment.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 31,
+   "title": "Speaker urges Celia",
+   "description": "A person tells Celia to follow their passions while standing in an urban street with bicycles and high-rise buildings.",
+   "type": "dialogue",
+   "people": [
+    "Celia"
+   ]
+  },
+  {
+   "i": 32,
+   "title": "Discussing passions and robotics",
+   "description": "A male adult speaks about following passions, mentions robotics, and says he wants to be awesome in space.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 33,
+   "title": "Festival scene with menorah",
+   "description": "The camera shows a festival setting featuring a Hanukkah menorah.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 34,
+   "title": "Urging Thom to speed up",
+   "description": "An angry male adult tells someone to speed up, referencing Thom and two minutes left.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 35,
+   "title": "Teen boy mentions robot hand",
+   "description": "A teenage boy asks why the other won't admit being freaked out by his robot hand.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 36,
+   "title": "Woman admits past mistakes",
+   "description": "An adult female woman tells Celia she was young and a dick, but that doesn't justify destroying the world.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 37,
+   "title": "Woman questions destructive actions",
+   "description": "An adult female woman states that past behavior isn't a reason to destroy the world and questions his motives.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 38,
+   "title": "Woman shouts abort cut",
+   "description": "An adult female woman holding a drink and smoke exclaims 'Abort! Cut! Whoaaa!'.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 39,
+   "title": "Clapperboard shows error text",
+   "description": "A clapperboard appears on screen displaying the text 'ERROR!!!' and 'OR!!!'.",
+   "type": "reveal",
+   "people": []
+  },
+  {
+   "i": 40,
+   "title": "Heartbroken confrontation with a gun",
+   "description": "A character expresses heartbreak and accusation toward another, holding a gun.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 41,
+   "title": "Threat to crush opponent",
+   "description": "A character threatens to crush another while aiming a gun.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 42,
+   "title": "Apologetic admission",
+   "description": "A character apologizes while smoke surrounds them and they hold a gun.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 43,
+   "title": "Praise for improvisation",
+   "description": "A character, crying and sad, compliments an improvisation while holding a crossbow.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 44,
+   "title": "Denial of responsibility",
+   "description": "An adult male character insists it's not their fault this time.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 45,
+   "title": "Call for silence on set",
+   "description": "A performer urges everyone to be quiet because they're out of time, holding a smoke pipe.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 46,
+   "title": "Smoky close‑up",
+   "description": "A close‑up of a person's face filled with smoke, no spoken words.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 47,
+   "title": "Mixed emotional expression",
+   "description": "A performer shows both happy smiling and crying sad expressions while wearing accessories.",
+   "type": "other",
+   "people": []
+  },
+  {
+   "i": 48,
+   "title": "Man holding a gun",
+   "description": "An adult male is shown holding a gun, facing the camera with a serious expression.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 49,
+   "title": "Outdoor festival with menorah",
+   "description": "A roadside outdoor festival features a Hanukkah menorah visible among the crowd.",
+   "type": "establishing",
+   "people": []
+  },
+  {
+   "i": 50,
+   "title": "Man and woman with package",
+   "description": "A male and female adult stand together holding a box or package.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 51,
+   "title": "Male performer in coat",
+   "description": "An adult male wearing a coat performs a solo act, likely a musical or theatrical piece.",
+   "type": "performance",
+   "people": []
+  },
+  {
+   "i": 52,
+   "title": "Man playing basketball",
+   "description": "An adult male is shown playing basketball outdoors, dribbling the ball.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 53,
+   "title": "Person shouts 'Come on!'",
+   "description": "A person in a dungeon environment shouts 'Come on!' while looking determined.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 54,
+   "title": "Person shouts about memory overwrite",
+   "description": "A person shouts 'RAAAAAAAAH! Memory overwrite, 90%.' displaying an angry/happy expression.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 55,
+   "title": "Urgent warning to captain",
+   "description": "A person says 'Captain! We have to abort!' while wearing a coat and carrying a bag.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 56,
+   "title": "Celia hears the world changed",
+   "description": "Celia is told that the world has changed.",
+   "type": "dialogue",
+   "people": [
+    "Celia"
+   ]
+  },
+  {
+   "i": 57,
+   "title": "Derek smiles, says we can too",
+   "description": "Derek de Lint, seen smiling, says maybe we can too.",
+   "type": "reaction",
+   "people": [
+    "Derek de Lint"
+   ]
+  },
+  {
+   "i": 58,
+   "title": "Memory overwrite declared during hug",
+   "description": "A character declares memory overwrite complete while hugging and kissing.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 59,
+   "title": "Speaker notes a lesson to learn",
+   "description": "A speaker notes there is a lesson to be learned from the situation.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 60,
+   "title": "Comment on chess, things could be worse",
+   "description": "Someone remarks things could have been worse while near a lamp and a chess set.",
+   "type": "dialogue",
+   "people": []
+  },
+  {
+   "i": 61,
+   "title": "Worker stands on a bridge",
+   "description": "A worker is seen standing on a bridge.",
+   "type": "action",
+   "people": []
+  },
+  {
+   "i": 62,
+   "title": "On‑screen credits name Ian Hubert",
+   "description": "On‑screen text credits Ian Hubert as writer and director.",
+   "type": "slide",
+   "people": [
+    "IAN HUBERT"
+   ]
+  },
+  {
+   "i": 63,
+   "title": "Cat appears with artistic graphics",
+   "description": "A cat is seen alongside artistic graphics and anime‑style visuals.",
+   "type": "reveal",
+   "people": []
+  },
+  {
+   "i": 64,
+   "title": "Cast credits for main characters",
+   "description": "The segment shows the cast credits listing actors such as Derek De Lint as Old Thom, Sergio Hasselbaink as Barley, and others.",
+   "type": "slide",
+   "people": [
+    "Derek De Lint",
+    "Sergio Hasselbaink",
+    "Rogier Schippers",
+    "Vanja Rukavina",
+    "Denise Rebergen",
+    "Jody ВНЕ",
+    "Chris Haley"
+   ]
+  },
+  {
+   "i": 65,
+   "title": "Credits for lighting concept art animation",
+   "description": "The segment displays credits for lighting and compositing by Andreas Goralczyk and David Revoy, concept art and storyboards, and character rigging by Francesco Siddi.",
+   "type": "slide",
+   "people": [
+    "Andreas Goralczyk",
+    "David Revoy",
+    "Francesco Siddi"
+   ]
+  },
+  {
+   "i": 66,
+   "title": "Blender software credit",
+   "description": "The segment states that all CG and VFX were realized entirely with Blender, referencing www.blender.org.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 67,
+   "title": "Credits for sound set and props",
+   "description": "The segment shows credits for sound recordist Victor Dekker, set construction by Seab Deuling and Hanneke Kraaij, scientist extras, and props by Daan van 't Einde.",
+   "type": "slide",
+   "people": [
+    "Victor Dekker",
+    "Seab Deuling",
+    "Hanneke Kraaij",
+    "Daan van 't Einde"
+   ]
+  },
+  {
+   "i": 68,
+   "title": "Sponsor credits Google NVIDIA",
+   "description": "The segment lists premium sponsor Google, development sponsor David Jeske, and main sponsor NVIDIA for the C-ROBOT project.",
+   "type": "slide",
+   "people": [
+    "David Jeske"
+   ]
+  },
+  {
+   "i": 69,
+   "title": "Contributor names list",
+   "description": "The segment displays a long list of contributor names, many with variations of Andreas, Andrea, Andrew, etc.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 70,
+   "title": "Contributor names list continued",
+   "description": "The segment continues showing contributor names starting with Ed van der Veen and others.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 71,
+   "title": "Contributor names list further",
+   "description": "The segment shows additional contributor names including Karel De Bruijn and Karl Stein.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 72,
+   "title": "Rolling credits list of names",
+   "description": "The screen displays a long list of names, many beginning with Philipp, Philippe, Pierre, Quentin, Racquel, Radu, Rafael, Rainer, Ralf, Ralph, Randall, and Rasmus, appearing as part of the film's credits.",
+   "type": "slide",
+   "people": [
+    "Macpherson",
+    "Philip",
+    "Myers",
+    "Philipp",
+    "Hemmer",
+    "Philipp",
+    "Kammerer",
+    "Philipp",
+    "Kistner",
+    "Philipp",
+    "Oeser",
+    "Philipp",
+    "Spitzer",
+    "Philippe",
+    "Casteleyn",
+    "Philippe",
+    "Entzmann",
+    "Philippe",
+    "Guillemot",
+    "Philippe",
+    "Marlin",
+    "Philippe",
+    "Page",
+    "Philippe",
+    "Piatkiewitz",
+    "Philippe",
+    "Roubal",
+    "Philippe",
+    "Van",
+    "Hecke",
+    "Photini",
+    "Drummer",
+    "Pierre",
+    "Bornancin",
+    "Pierre",
+    "Dumas",
+    "Pierre",
+    "Prégardien",
+    "Piotr",
+    "Podlach",
+    "Quentin",
+    "Nerden",
+    "Quimey",
+    "Stordeur",
+    "Racquel",
+    "Mansilungan",
+    "Radu",
+    "Coc",
+    "Rafael",
+    "Garcia",
+    "Moreno",
+    "Rafael",
+    "Rangel",
+    "Rafael",
+    "Rios",
+    "Saavedra",
+    "Rafael",
+    "Solon",
+    "Goraieb",
+    "Rainer",
+    "Müller",
+    "Ralf",
+    "Bilger",
+    "Ralf",
+    "Cremer",
+    "Ralf",
+    "Hölzemer",
+    "Ralf",
+    "Tepler",
+    "Ralph",
+    "Little",
+    "Randall",
+    "Breeden",
+    "Rasmus",
+    "Lerchedahl"
+   ]
+  },
+  {
+   "i": 73,
+   "title": "Funding logos and text",
+   "description": "On-screen text shows the Blender Foundation, Netherlands Film Fund, European Regional Development Fund, Ministry of Economic Affairs, Agriculture and Innovation, City of Amsterdam, Province Noord-Holland, Produced by, and Blender Institute.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 74,
+   "title": "Close‑up of a person's face",
+   "description": "A close‑up view focuses on a person's face and head, with no additional text or labels.",
+   "type": "reveal",
+   "people": []
+  },
+  {
+   "i": 75,
+   "title": "Person's head in frame",
+   "description": "The frame shows a person's head, again without any on‑screen text or spoken words.",
+   "type": "reveal",
+   "people": []
+  },
+  {
+   "i": 76,
+   "title": "Green and gray lighting scene",
+   "description": "The scene is illuminated with green and gray lighting, highlighting the environment without any visible figures or text.",
+   "type": "other",
+   "people": []
+  }
+ ]
+}

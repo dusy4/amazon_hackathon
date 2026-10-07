@@ -21,6 +21,8 @@ interface Case {
   playheadMs: number;
   utterance: string;
   targets?: string[];
+  /** Real footage: ground truth is a time window taken from the human captions, not from our own index. */
+  window?: [number, number];
   offsetMs?: number;
   rate?: number;
   speech?: string;
@@ -51,6 +53,8 @@ for (const c of golden.cases.filter((x) => !only || x.id.includes(only))) {
   await player.playTo(c.playheadMs);
   const before = player.state.positionMs;
 
+  // Free-tier LLMs are rate limited per minute: pace the cases (EVAL_PACE_MS, default 4 s).
+  await new Promise((r) => setTimeout(r, Number(process.env.EVAL_PACE_MS ?? 4000)));
   const t = await srv.orchestrator.handle(c.utterance, { inputSource: "eval" });
   const pos = player.state.positionMs;
   let pass = false;
@@ -68,15 +72,24 @@ for (const c of golden.cases.filter((x) => !only || x.id.includes(only))) {
     const landed = s.activeMoment;
     if (landed) iou = Math.max(...segs.map((g) => Math.max(0, Math.min(g.endMs, landed.endMs) - Math.max(g.startMs, landed.startMs)) / (Math.max(g.endMs, landed.endMs) - Math.min(g.startMs, landed.startMs))));
     detail = hit ? `in ${hit.eventId}` : `pos ${pos}`;
+  } else if (c.window) {
+    const [a, z] = c.window;
+    // A spoken time inside the window also answers a "when …?" question ("about 8 minutes 58 seconds").
+    const m = t.speech.match(/(\d+)\s*(?:minutes?|min)\D{0,12}?(\d+)?\s*(?:seconds?|s)?/i) ?? t.speech.match(/(\d+):(\d{2})/);
+    const saidMs = m ? (Number(m[1]) * 60 + Number(m[2] ?? 0)) * 1000 : NaN;
+    pass = (pos >= a - 2000 && pos <= z) || (saidMs >= a - 2000 && saidMs <= z + 1000);
+    const landed = s.activeMoment;
+    if (landed) iou = Math.max(0, Math.min(z, landed.endMs) - Math.max(a, landed.startMs)) / (Math.max(z, landed.endMs) - Math.min(a, landed.startMs));
+    detail = pass ? "in window" : `pos ${pos}`;
   } else if (c.speech) {
     pass = new RegExp(c.speech, "i").test(t.speech);
   }
-  const tools = t.trace.filter((x) => x.kind === "tool_call").map((x) => x.label);
+  const tools = t.trace.filter((x) => x.kind === "tool_call").map((x) => `${x.label} ${JSON.stringify(x.data)}`);
   rows.push({ id: c.id, pass, detail, iou: iou == null ? null : +iou.toFixed(2), ms: t.durationMs, interpreter: t.interpreter, tools, speech: t.speech });
   console.log(`${pass ? "PASS" : "FAIL"}  ${c.id.padEnd(22)} ${String(t.durationMs).padStart(6)}ms  ${t.interpreter.padEnd(28)} ${detail.padEnd(10)} ${t.speech.slice(0, 90)}`);
 }
 
-const seek = rows.filter((r) => golden.cases.find((c) => c.id === r.id)?.targets);
+const seek = rows.filter((r) => { const c = golden.cases.find((x) => x.id === r.id); return c?.targets || c?.window; });
 const ious = seek.map((r) => r.iou as number | null).filter((x): x is number => x != null);
 const summary = {
   label: srv.orchestrator.interpreterName,

@@ -1,0 +1,287 @@
+[
+ {
+  "startMs": 0,
+  "endMs": 2802,
+  "confidence": 99.57264709472656
+ },
+ {
+  "startMs": 2836,
+  "endMs": 4537,
+  "confidence": 99.57264709472656
+ },
+ {
+  "startMs": 4571,
+  "endMs": 8775,
+  "confidence": 99.97151184082031
+ },
+ {
+  "startMs": 8808,
+  "endMs": 10944,
+  "confidence": 76.05009460449219
+ },
+ {
+  "startMs": 10977,
+  "endMs": 11911,
+  "confidence": 76.05009460449219
+ },
+ {
+  "startMs": 11945,
+  "endMs": 12645,
+  "confidence": 96.82476043701172
+ },
+ {
+  "startMs": 12679,
+  "endMs": 13646,
+  "confidence": 93.31075286865234
+ },
+ {
+  "startMs": 13680,
+  "endMs": 15615,
+  "confidence": 93.31075286865234
+ },
+ {
+  "startMs": 15648,
+  "endMs": 17317,
+  "confidence": 89.29370880126953
+ },
+ {
+  "startMs": 17350,
+  "endMs": 19319,
+  "confidence": 89.29370880126953
+ },
+ {
+  "startMs": 19352,
+  "endMs": 21421,
+  "confidence": 94.98628997802734
+ },
+ {
+  "startMs": 21454,
+  "endMs": 29462,
+  "confidence": 94.98628997802734
+ },
+ {
+  "startMs": 29496,
+  "endMs": 33600,
+  "confidence": 73.71800994873047
+ },
+ {
+  "startMs": 33633,
+  "endMs": 35835,
+  "confidence": 73.71800994873047
+ },
+ {
+  "startMs": 35869,
+  "endMs": 39806,
+  "confidence": 88.58204650878906
+ },
+ {
+  "startMs": 39839,
+  "endMs": 43710,
+  "confidence": 88.58204650878906
+ },
+ {
+  "startMs": 43743,
+  "endMs": 45378,
+  "confidence": 99.84089660644531
+ },
+ {
+  "startMs": 45412,
+  "endMs": 48381,
+  "confidence": 99.11408996582031
+ },
+ {
+  "startMs": 48415,
+  "endMs": 51751,
+  "confidence": 99.07503509521484
+ },
+ {
+  "startMs": 51785,
+  "endMs": 54487,
+  "confidence": 97.62678527832031
+ },
+ {
+  "startMs": 54521,
+  "endMs": 58191,
+  "confidence": 97.62678527832031
+ },
+ {
+  "startMs": 58224,
+  "endMs": 60060,
+  "confidence": 96.43901062011719
+ },
+ {
+  "startMs": 60093,
+  "endMs": 62028,
+  "confidence": 81.45511627197266
+ },
+ {
+  "startMs": 62062,
+  "endMs": 63496,
+  "confidence": 81.45511627197266
+ },
+ {
+  "startMs": 63530,
+  "endMs": 64697,
+  "confidence": 99.87296295166016
+ },
+ {
+  "startMs": 64731,
+  "endMs": 65899,
+  "confidence": 99.87008666992188
+ },
+ {
+  "startMs": 65932,
+  "endMs": 67767,
+  "confidence": 99.5980453491211
+ },
+ {
+  "startMs": 67801,
+  "endMs": 70070,
+  "confidence": 99.5980453491211
+ },
+ {
+  "startMs": 70103,
+  "endMs": 71571,
+  "confidence": 96.43610382080078
+ },
+ {
+  "startMs": 71604,
+  "endMs": 72806,
+  "confidence": 71.44996643066406
+ },
+ {
+  "startMs": 72839,
+  "endMs": 73573,
+  "confidence": 68.40218353271484
+ },
+ {
+  "startMs": 73606,
+  "endMs": 74774,
+  "confidence": 68.40218353271484
+ },
+ {
+  "startMs": 74808,
+  "endMs": 75642,
+  "confidence": 76.28742218017578
+ },
+ {
+  "startMs": 75675,
+  "endMs": 76743,
+  "confidence": 88.55572509765625
+ },
+ {
+  "startMs": 76776,
+  "endMs": 80213,
+  "confidence": 99.53961181640625
+ },
+ {
+  "startMs": 80246,
+  "endMs": 86419,
+  "confidence": 84.05328369140625
+ },
+ {
+  "startMs": 86453,
+  "endMs": 97997,
+  "confidence": 84.05328369140625
+ },
+ {
+  "startMs": 98031,
+  "endMs": 103203,
+  "confidence": 86.7876205444336
+ },
+ {
+  "startMs": 103236,
+  "endMs": 114280,
+  "confidence": 75.86945343017578
+ },
+ {
+  "startMs": 114314,
+  "endMs": 115915,
+  "confidence": 75.86945343017578
+ },
+ {
+  "startMs": 115949,
+  "endMs": 118485,
+  "confidence": 99.33568572998047
+ },
+ {
+  "startMs": 118518,
+  "endMs": 123890,
+  "confidence": 99.33568572998047
+ },
+ {
+  "startMs": 123923,
+  "endMs": 125725,
+  "confidence": 74.28131866455078
+ },
+ {
+  "startMs": 125758,
+  "endMs": 132298,
+  "confidence": 74.28131866455078
+ },
+ {
+  "startMs": 132332,
+  "endMs": 133533,
+  "confidence": 92.70987701416016
+ },
+ {
+  "startMs": 133566,
+  "endMs": 151951,
+  "confidence": 98.32233428955078
+ },
+ {
+  "startMs": 151985,
+  "endMs": 155355,
+  "confidence": 98.32233428955078
+ },
+ {
+  "startMs": 155388,
+  "endMs": 158258,
+  "confidence": 99.53863525390625
+ },
+ {
+  "startMs": 158291,
+  "endMs": 160927,
+  "confidence": 99.53863525390625
+ },
+ {
+  "startMs": 160960,
+  "endMs": 164430,
+  "confidence": 99.2745361328125
+ },
+ {
+  "startMs": 164464,
+  "endMs": 169302,
+  "confidence": 94.95095825195312
+ },
+ {
+  "startMs": 169335,
+  "endMs": 175341,
+  "confidence": 79.74281311035156
+ },
+ {
+  "startMs": 175375,
+  "endMs": 184951,
+  "confidence": 79.74281311035156
+ },
+ {
+  "startMs": 184984,
+  "endMs": 193726,
+  "confidence": 99.93114471435547
+ },
+ {
+  "startMs": 193760,
+  "endMs": 196362,
+  "confidence": 97.12019348144531
+ },
+ {
+  "startMs": 196529,
+  "endMs": 196629,
+  "confidence": 95.79232025146484
+ },
+ {
+  "startMs": 196996,
+  "endMs": 202202,
+  "confidence": 95.79232025146484
+ }
+]

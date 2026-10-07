@@ -1,0 +1,3498 @@
+[
+ {
+  "atMs": 4180,
+  "labels": [
+   {
+    "name": "Electronics",
+    "confidence": 95
+   },
+   {
+    "name": "Screen",
+    "confidence": 95
+   },
+   {
+    "name": "Computer Hardware",
+    "confidence": 91
+   },
+   {
+    "name": "Hardware",
+    "confidence": 91
+   },
+   {
+    "name": "Monitor",
+    "confidence": 91
+   },
+   {
+    "name": "Crowd",
+    "confidence": 90
+   },
+   {
+    "name": "Person",
+    "confidence": 90
+   },
+   {
+    "name": "TV",
+    "confidence": 83
+   },
+   {
+    "name": "People",
+    "confidence": 80
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "X = independently organized TED event",
+    "confidence": 94
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 13320,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 97
+   },
+   {
+    "name": "Face",
+    "confidence": 96
+   },
+   {
+    "name": "Chair",
+    "confidence": 82
+   },
+   {
+    "name": "Furniture",
+    "confidence": 82
+   }
+  ],
+  "text": [
+   {
+    "text": "RICHARDSTALLMAN",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 22160,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Cinema",
+    "confidence": 100
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Furniture",
+    "confidence": 98
+   },
+   {
+    "name": "Indoors",
+    "confidence": 96
+   },
+   {
+    "name": "Theater",
+    "confidence": 96
+   },
+   {
+    "name": "Crowd",
+    "confidence": 83
+   },
+   {
+    "name": "Electronics",
+    "confidence": 71
+   },
+   {
+    "name": "Screen",
+    "confidence": 71
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 33780,
+  "labels": [
+   {
+    "name": "White Board",
+    "confidence": 97
+   },
+   {
+    "name": "Text",
+    "confidence": 72
+   }
+  ],
+  "text": [
+   {
+    "text": "A computer is universal",
+    "confidence": 99
+   },
+   {
+    "text": "Get next instruction",
+    "confidence": 99
+   },
+   {
+    "text": "display the",
+    "confidence": 98
+   },
+   {
+    "text": "text",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 49280,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Cinema",
+    "confidence": 100
+   },
+   {
+    "name": "Indoors",
+    "confidence": 99
+   },
+   {
+    "name": "Theater",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Crowd",
+    "confidence": 93
+   },
+   {
+    "name": "Audience",
+    "confidence": 80
+   },
+   {
+    "name": "Screen",
+    "confidence": 76
+   },
+   {
+    "name": "Stage",
+    "confidence": 71
+   }
+  ],
+  "text": [
+   {
+    "text": "A computer is universal",
+    "confidence": 99
+   },
+   {
+    "text": "Get next instruction",
+    "confidence": 98
+   },
+   {
+    "text": "read the file",
+    "confidence": 95
+   },
+   {
+    "text": "text",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 65320,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 95
+   },
+   {
+    "name": "Laughing",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "Orders",
+    "confidence": 86
+   },
+   {
+    "text": "from",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 78680,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 86
+   },
+   {
+    "name": "Book",
+    "confidence": 85
+   },
+   {
+    "name": "Comics",
+    "confidence": 85
+   },
+   {
+    "name": "Publication",
+    "confidence": 85
+   },
+   {
+    "name": "Text",
+    "confidence": 80
+   },
+   {
+    "name": "Face",
+    "confidence": 71
+   },
+   {
+    "name": "Head",
+    "confidence": 71
+   }
+  ],
+  "text": [
+   {
+    "text": "The program controls the users",
+    "confidence": 100
+   },
+   {
+    "text": "program",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 87300,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Female",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Woman",
+    "confidence": 99
+   },
+   {
+    "name": "Electronics",
+    "confidence": 96
+   },
+   {
+    "name": "Screen",
+    "confidence": 96
+   },
+   {
+    "name": "People",
+    "confidence": 92
+   },
+   {
+    "name": "Computer Hardware",
+    "confidence": 90
+   },
+   {
+    "name": "Monitor",
+    "confidence": 90
+   },
+   {
+    "name": "Lighting",
+    "confidence": 83
+   },
+   {
+    "name": "Shoe",
+    "confidence": 78
+   },
+   {
+    "name": "Head",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "Freedoms 0, 1,2, 3",
+    "confidence": 92
+   },
+   {
+    "text": "program",
+    "confidence": 97
+   },
+   {
+    "text": "00:16:",
+    "confidence": 95
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 99680,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Laughing",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 95
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 95
+   },
+   {
+    "name": "Adult",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Man",
+    "confidence": 94
+   },
+   {
+    "name": "People",
+    "confidence": 83
+   }
+  ],
+  "text": [
+   {
+    "text": "LIBRE not GRATIS",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 114880,
+  "labels": [
+   {
+    "name": "Chart",
+    "confidence": 100
+   },
+   {
+    "name": "Plot",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 97
+   },
+   {
+    "name": "Architecture",
+    "confidence": 89
+   },
+   {
+    "name": "Building",
+    "confidence": 89
+   },
+   {
+    "name": "Hospital",
+    "confidence": 89
+   },
+   {
+    "name": "Book",
+    "confidence": 84
+   },
+   {
+    "name": "Comics",
+    "confidence": 84
+   },
+   {
+    "name": "Publication",
+    "confidence": 84
+   },
+   {
+    "name": "Body Part",
+    "confidence": 80
+   },
+   {
+    "name": "Hand",
+    "confidence": 80
+   },
+   {
+    "name": "Plan",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "Install this in 500 computers",
+    "confidence": 100
+   },
+   {
+    "text": "4x4=16",
+    "confidence": 92
+   },
+   {
+    "text": "Freedom 0",
+    "confidence": 99
+   },
+   {
+    "text": "Run it",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 125720,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 89
+   }
+  ],
+  "text": [
+   {
+    "text": "Freedom 1 - change 1 it",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 139740,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "{",
+    "confidence": 94
+   },
+   {
+    "text": "printf (\"Hello,",
+    "confidence": 98
+   },
+   {
+    "text": "world!\\n\");",
+    "confidence": 90
+   },
+   {
+    "text": "101110101011",
+    "confidence": 91
+   },
+   {
+    "text": "Source",
+    "confidence": 100
+   },
+   {
+    "text": "Executable",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 153280,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 97
+   },
+   {
+    "name": "Mobile Phone",
+    "confidence": 97
+   },
+   {
+    "name": "Face",
+    "confidence": 97
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 96
+   },
+   {
+    "name": "Crowd",
+    "confidence": 92
+   },
+   {
+    "name": "Audience",
+    "confidence": 75
+   },
+   {
+    "name": "Lecture",
+    "confidence": 75
+   }
+  ],
+  "text": [
+   {
+    "text": "main()",
+    "confidence": 91
+   },
+   {
+    "text": "printf (\"Hello,",
+    "confidence": 97
+   },
+   {
+    "text": "101110101011",
+    "confidence": 92
+   },
+   {
+    "text": "Source",
+    "confidence": 99
+   },
+   {
+    "text": "Executable",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 166860,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   },
+   {
+    "name": "Man",
+    "confidence": 96
+   },
+   {
+    "name": "Performer",
+    "confidence": 96
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 96
+   },
+   {
+    "name": "Happy",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "program",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 180940,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 89
+   },
+   {
+    "name": "Face",
+    "confidence": 82
+   },
+   {
+    "name": "Head",
+    "confidence": 82
+   },
+   {
+    "name": "Person",
+    "confidence": 82
+   }
+  ],
+  "text": [
+   {
+    "text": "Not a programmer?",
+    "confidence": 89
+   },
+   {
+    "text": "د.",
+    "confidence": 91
+   },
+   {
+    "text": "int main(void)",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 195440,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 94
+   },
+   {
+    "name": "Face",
+    "confidence": 92
+   },
+   {
+    "name": "Crowd",
+    "confidence": 74
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 207420,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Laughing",
+    "confidence": 97
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 215300,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Crowd",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 97
+   },
+   {
+    "name": "Head",
+    "confidence": 97
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   },
+   {
+    "name": "Man",
+    "confidence": 96
+   },
+   {
+    "name": "Performer",
+    "confidence": 94
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 94
+   },
+   {
+    "name": "Audience",
+    "confidence": 92
+   },
+   {
+    "name": "Lecture",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "Freedom 2",
+    "confidence": 100
+   },
+   {
+    "text": "Redistribute it",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 225440,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Crowd",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Audience",
+    "confidence": 97
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 95
+   },
+   {
+    "name": "Head",
+    "confidence": 95
+   },
+   {
+    "name": "Face",
+    "confidence": 94
+   },
+   {
+    "name": "Mobile Phone",
+    "confidence": 79
+   },
+   {
+    "name": "Speech",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "Freedom 3",
+    "confidence": 99
+   },
+   {
+    "text": "Redistribute",
+    "confidence": 99
+   },
+   {
+    "text": "with changes",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 236880,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 88
+   },
+   {
+    "name": "White Board",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "Users control the program",
+    "confidence": 100
+   },
+   {
+    "text": "program",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 252720,
+  "labels": [
+   {
+    "name": "Animal",
+    "confidence": 98
+   },
+   {
+    "name": "Bird",
+    "confidence": 98
+   },
+   {
+    "name": "Penguin",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "program",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 265080,
+  "labels": [
+   {
+    "name": "Chart",
+    "confidence": 98
+   },
+   {
+    "name": "Diagram",
+    "confidence": 98
+   },
+   {
+    "name": "Plan",
+    "confidence": 98
+   },
+   {
+    "name": "Plot",
+    "confidence": 98
+   },
+   {
+    "name": "Text",
+    "confidence": 80
+   }
+  ],
+  "text": [
+   {
+    "text": "Amazon",
+    "confidence": 89
+   },
+   {
+    "text": "Amazone",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 276100,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 90
+   },
+   {
+    "name": "Footwear",
+    "confidence": 90
+   },
+   {
+    "name": "Shoe",
+    "confidence": 90
+   },
+   {
+    "name": "Electronics",
+    "confidence": 89
+   },
+   {
+    "name": "Monitor",
+    "confidence": 89
+   },
+   {
+    "name": "Screen",
+    "confidence": 89
+   },
+   {
+    "name": "Speaker",
+    "confidence": 88
+   },
+   {
+    "name": "Head",
+    "confidence": 83
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 81
+   },
+   {
+    "name": "Face",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "FORBIDDEN",
+    "confidence": 98
+   },
+   {
+    "text": "00:13",
+    "confidence": 90
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 97,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 293400,
+  "labels": [
+   {
+    "name": "Page",
+    "confidence": 99
+   },
+   {
+    "name": "Text",
+    "confidence": 99
+   },
+   {
+    "name": "White Board",
+    "confidence": 87
+   },
+   {
+    "name": "Chart",
+    "confidence": 73
+   },
+   {
+    "name": "Flow Chart",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "PS3",
+    "confidence": 99
+   },
+   {
+    "text": "This will downgrade",
+    "confidence": 100
+   },
+   {
+    "text": "your system. Proceed?",
+    "confidence": 98
+   },
+   {
+    "text": "YES",
+    "confidence": 99
+   },
+   {
+    "text": "* Use on the net won't work anymore.",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 304120,
+  "labels": [
+   {
+    "name": "Page",
+    "confidence": 99
+   },
+   {
+    "name": "Text",
+    "confidence": 99
+   },
+   {
+    "name": "White Board",
+    "confidence": 90
+   },
+   {
+    "name": "Chart",
+    "confidence": 73
+   },
+   {
+    "name": "Flow Chart",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "PS3",
+    "confidence": 99
+   },
+   {
+    "text": "This will downgrade",
+    "confidence": 100
+   },
+   {
+    "text": "your system. Proceed?",
+    "confidence": 98
+   },
+   {
+    "text": "YES",
+    "confidence": 99
+   },
+   {
+    "text": "* Use on the net won't work anymore.",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 313640,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "People",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "MICROSOFT",
+    "confidence": 96
+   },
+   {
+    "text": "WINDOWS",
+    "confidence": 99
+   },
+   {
+    "text": "user's",
+    "confidence": 94
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 332220,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Performer",
+    "confidence": 97
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 97
+   },
+   {
+    "name": "Adult",
+    "confidence": 93
+   },
+   {
+    "name": "Male",
+    "confidence": 93
+   },
+   {
+    "name": "Man",
+    "confidence": 93
+   }
+  ],
+  "text": [
+   {
+    "text": "Proprietary malware",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 347580,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Indoors",
+    "confidence": 93
+   },
+   {
+    "name": "Stage",
+    "confidence": 92
+   },
+   {
+    "name": "Crowd",
+    "confidence": 90
+   },
+   {
+    "name": "Theater",
+    "confidence": 89
+   },
+   {
+    "name": "Cinema",
+    "confidence": 83
+   },
+   {
+    "name": "Audience",
+    "confidence": 76
+   },
+   {
+    "name": "Head",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "STORE",
+    "confidence": 98
+   },
+   {
+    "text": "2 more users.",
+    "confidence": 97
+   },
+   {
+    "text": "20 $ please",
+    "confidence": 91
+   },
+   {
+    "text": "They abuse for profit",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 360400,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 94
+   },
+   {
+    "name": "Head",
+    "confidence": 79
+   },
+   {
+    "name": "Face",
+    "confidence": 78
+   },
+   {
+    "name": "Text",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "proprietary",
+    "confidence": 99
+   },
+   {
+    "text": "USER",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 374200,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Performer",
+    "confidence": 98
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 98
+   },
+   {
+    "name": "Animal",
+    "confidence": 75
+   },
+   {
+    "name": "Bird",
+    "confidence": 75
+   },
+   {
+    "name": "People",
+    "confidence": 72
+   }
+  ],
+  "text": [
+   {
+    "text": "proprietary",
+    "confidence": 97
+   },
+   {
+    "text": "user",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 386960,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 88
+   },
+   {
+    "name": "Architecture",
+    "confidence": 85
+   },
+   {
+    "name": "Building",
+    "confidence": 85
+   },
+   {
+    "name": "Castle",
+    "confidence": 85
+   },
+   {
+    "name": "Fortress",
+    "confidence": 85
+   },
+   {
+    "name": "Art",
+    "confidence": 82
+   },
+   {
+    "name": "Drawing",
+    "confidence": 78
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 397360,
+  "labels": [],
+  "text": [
+   {
+    "text": "GNU",
+    "confidence": 100
+   },
+   {
+    "text": "GNU",
+    "confidence": 100
+   },
+   {
+    "text": "LINUX",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 410840,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Performer",
+    "confidence": 97
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 97
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   },
+   {
+    "name": "Man",
+    "confidence": 96
+   },
+   {
+    "name": "Head",
+    "confidence": 95
+   },
+   {
+    "name": "Face",
+    "confidence": 95
+   }
+  ],
+  "text": [
+   {
+    "text": "GNU",
+    "confidence": 100
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "LINUX",
+    "confidence": 93
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 426720,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   },
+   {
+    "name": "Man",
+    "confidence": 96
+   },
+   {
+    "name": "Happy",
+    "confidence": 95
+   },
+   {
+    "name": "Finger",
+    "confidence": 94
+   },
+   {
+    "name": "Hand",
+    "confidence": 94
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 91
+   },
+   {
+    "name": "Beard",
+    "confidence": 90
+   },
+   {
+    "name": "Smile",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "Distributions",
+    "confidence": 100
+   },
+   {
+    "text": "Mostly free",
+    "confidence": 100
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "GNU",
+    "confidence": 98
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "= non free programs",
+    "confidence": 97
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 441600,
+  "labels": [
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 98
+   },
+   {
+    "name": "Face",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "Distributions",
+    "confidence": 100
+   },
+   {
+    "text": "Mostly free",
+    "confidence": 100
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "= non free programs",
+    "confidence": 97
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 458960,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 98
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Furniture",
+    "confidence": 98
+   },
+   {
+    "name": "Cinema",
+    "confidence": 93
+   },
+   {
+    "name": "Indoors",
+    "confidence": 93
+   },
+   {
+    "name": "Theater",
+    "confidence": 93
+   },
+   {
+    "name": "Stage",
+    "confidence": 93
+   },
+   {
+    "name": "Crowd",
+    "confidence": 72
+   },
+   {
+    "name": "Face",
+    "confidence": 71
+   }
+  ],
+  "text": [
+   {
+    "text": "Small sacrifices for freedom",
+    "confidence": 100
+   },
+   {
+    "text": "WATCH OUT",
+    "confidence": 99
+   },
+   {
+    "text": "NON FREE",
+    "confidence": 99
+   },
+   {
+    "text": "SPOT",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 474280,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Head",
+    "confidence": 97
+   },
+   {
+    "name": "Face",
+    "confidence": 96
+   },
+   {
+    "name": "People",
+    "confidence": 93
+   },
+   {
+    "name": "Clothing",
+    "confidence": 78
+   },
+   {
+    "name": "T-Shirt",
+    "confidence": 78
+   }
+  ],
+  "text": [
+   {
+    "text": "Non free",
+    "confidence": 100
+   },
+   {
+    "text": "applications",
+    "confidence": 100
+   },
+   {
+    "text": "GNU",
+    "confidence": 99
+   },
+   {
+    "text": "= non free programs",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 488820,
+  "labels": [
+   {
+    "name": "Chair",
+    "confidence": 94
+   },
+   {
+    "name": "Furniture",
+    "confidence": 94
+   },
+   {
+    "name": "Gauge",
+    "confidence": 75
+   }
+  ],
+  "text": [
+   {
+    "text": "non-free Javascript program",
+    "confidence": 92
+   },
+   {
+    "text": "Server",
+    "confidence": 99
+   },
+   {
+    "text": "your browser",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 507120,
+  "labels": [
+   {
+    "name": "Chair",
+    "confidence": 93
+   },
+   {
+    "name": "Furniture",
+    "confidence": 93
+   },
+   {
+    "name": "Electronics",
+    "confidence": 85
+   },
+   {
+    "name": "Hardware",
+    "confidence": 85
+   },
+   {
+    "name": "Text",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "Service as a Software Substitute",
+    "confidence": 99
+   },
+   {
+    "text": "Input Data",
+    "confidence": 98
+   },
+   {
+    "text": "Program",
+    "confidence": 99
+   },
+   {
+    "text": "google",
+    "confidence": 99
+   },
+   {
+    "text": "in Server",
+    "confidence": 99
+   },
+   {
+    "text": "your browser",
+    "confidence": 99
+   },
+   {
+    "text": "Results",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 521300,
+  "labels": [
+   {
+    "name": "Chair",
+    "confidence": 93
+   },
+   {
+    "name": "Furniture",
+    "confidence": 93
+   },
+   {
+    "name": "Electronics",
+    "confidence": 86
+   },
+   {
+    "name": "Hardware",
+    "confidence": 86
+   },
+   {
+    "name": "Text",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "Service as a Software Substitute",
+    "confidence": 99
+   },
+   {
+    "text": "Input Data",
+    "confidence": 98
+   },
+   {
+    "text": "Program",
+    "confidence": 99
+   },
+   {
+    "text": "google",
+    "confidence": 99
+   },
+   {
+    "text": "in Server",
+    "confidence": 99
+   },
+   {
+    "text": "your browser",
+    "confidence": 99
+   },
+   {
+    "text": "Results",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 533040,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Performer",
+    "confidence": 98
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 98
+   },
+   {
+    "name": "Happy",
+    "confidence": 93
+   },
+   {
+    "name": "Crowd",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "Priority ?",
+    "confidence": 97
+   },
+   {
+    "text": "Web servers",
+    "confidence": 100
+   },
+   {
+    "text": "or your",
+    "confidence": 100
+   },
+   {
+    "text": "machine",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 544140,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 93
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 93
+   },
+   {
+    "name": "People",
+    "confidence": 92
+   },
+   {
+    "name": "Adult",
+    "confidence": 89
+   },
+   {
+    "name": "Male",
+    "confidence": 89
+   },
+   {
+    "name": "Man",
+    "confidence": 89
+   },
+   {
+    "name": "Body Part",
+    "confidence": 79
+   },
+   {
+    "name": "Finger",
+    "confidence": 79
+   },
+   {
+    "name": "Hand",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "Priority ?",
+    "confidence": 97
+   },
+   {
+    "text": "Web servers",
+    "confidence": 100
+   },
+   {
+    "text": "or your",
+    "confidence": 100
+   },
+   {
+    "text": "machine",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 555200,
+  "labels": [
+   {
+    "name": "Cartoon",
+    "confidence": 95
+   }
+  ],
+  "text": [
+   {
+    "text": "$",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 571620,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Couch",
+    "confidence": 97
+   },
+   {
+    "name": "Furniture",
+    "confidence": 97
+   },
+   {
+    "name": "Crowd",
+    "confidence": 96
+   },
+   {
+    "name": "Cinema",
+    "confidence": 92
+   },
+   {
+    "name": "Indoors",
+    "confidence": 91
+   },
+   {
+    "name": "Theater",
+    "confidence": 91
+   },
+   {
+    "name": "Audience",
+    "confidence": 83
+   },
+   {
+    "name": "Stage",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "OPEN SOURCE",
+    "confidence": 100
+   },
+   {
+    "text": "OPEN SOURCE",
+    "confidence": 99
+   },
+   {
+    "text": "OPEN SOURCE",
+    "confidence": 99
+   },
+   {
+    "text": "OPEN SOURCE",
+    "confidence": 98
+   },
+   {
+    "text": "OPEN SOURCE",
+    "confidence": 98
+   },
+   {
+    "text": "TV NEWS",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 590520,
+  "labels": [
+   {
+    "name": "Chart",
+    "confidence": 93
+   },
+   {
+    "name": "Plot",
+    "confidence": 93
+   },
+   {
+    "name": "Text",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "Free software",
+    "confidence": 100
+   },
+   {
+    "text": "Open source",
+    "confidence": 100
+   },
+   {
+    "text": "activists",
+    "confidence": 100
+   },
+   {
+    "text": "boosters",
+    "confidence": 100
+   },
+   {
+    "text": "We would like",
+    "confidence": 100
+   },
+   {
+    "text": "We demand",
+    "confidence": 99
+   },
+   {
+    "text": "BETTER QUALITY",
+    "confidence": 99
+   },
+   {
+    "text": "FREEDOM",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 602620,
+  "labels": [
+   {
+    "name": "Chart",
+    "confidence": 93
+   },
+   {
+    "name": "Plot",
+    "confidence": 93
+   },
+   {
+    "name": "Text",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "Free software",
+    "confidence": 100
+   },
+   {
+    "text": "Open source",
+    "confidence": 100
+   },
+   {
+    "text": "activists",
+    "confidence": 100
+   },
+   {
+    "text": "boosters",
+    "confidence": 100
+   },
+   {
+    "text": "We would like",
+    "confidence": 100
+   },
+   {
+    "text": "We demand",
+    "confidence": 99
+   },
+   {
+    "text": "BETTER QUALITY",
+    "confidence": 99
+   },
+   {
+    "text": "FREEDOM",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 609880,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 92
+   },
+   {
+    "name": "Male",
+    "confidence": 92
+   },
+   {
+    "name": "Man",
+    "confidence": 92
+   },
+   {
+    "name": "Head",
+    "confidence": 91
+   },
+   {
+    "name": "Face",
+    "confidence": 89
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 623380,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Cinema",
+    "confidence": 92
+   },
+   {
+    "name": "Indoors",
+    "confidence": 91
+   },
+   {
+    "name": "Theater",
+    "confidence": 91
+   },
+   {
+    "name": "Stage",
+    "confidence": 88
+   },
+   {
+    "name": "Crowd",
+    "confidence": 78
+   },
+   {
+    "name": "Monitor",
+    "confidence": 77
+   },
+   {
+    "name": "Audience",
+    "confidence": 70
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 641720,
+  "labels": [
+   {
+    "name": "Handwriting",
+    "confidence": 96
+   },
+   {
+    "name": "Text",
+    "confidence": 96
+   },
+   {
+    "name": "White Board",
+    "confidence": 85
+   }
+  ],
+  "text": [
+   {
+    "text": "non free software:",
+    "confidence": 88
+   },
+   {
+    "text": "secret secret",
+    "confidence": 95
+   },
+   {
+    "text": "Secret secret",
+    "confidence": 86
+   },
+   {
+    "text": "secret secret",
+    "confidence": 98
+   },
+   {
+    "text": "free software:",
+    "confidence": 98
+   },
+   {
+    "text": "main ()",
+    "confidence": 98
+   },
+   {
+    "text": "{ printf",
+    "confidence": 96
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 656740,
+  "labels": [
+   {
+    "name": "Handwriting",
+    "confidence": 96
+   },
+   {
+    "name": "Text",
+    "confidence": 96
+   },
+   {
+    "name": "White Board",
+    "confidence": 85
+   }
+  ],
+  "text": [
+   {
+    "text": "non free software:",
+    "confidence": 89
+   },
+   {
+    "text": "secret secret",
+    "confidence": 95
+   },
+   {
+    "text": "secret secret",
+    "confidence": 98
+   },
+   {
+    "text": "free software:",
+    "confidence": 98
+   },
+   {
+    "text": "main ()",
+    "confidence": 98
+   },
+   {
+    "text": "{ printf",
+    "confidence": 95
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 671760,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Cinema",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Furniture",
+    "confidence": 98
+   },
+   {
+    "name": "Indoors",
+    "confidence": 97
+   },
+   {
+    "name": "Theater",
+    "confidence": 97
+   },
+   {
+    "name": "Stage",
+    "confidence": 84
+   },
+   {
+    "name": "Mobile Phone",
+    "confidence": 70
+   },
+   {
+    "name": "Phone",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "Thanks, I'll share",
+    "confidence": 99
+   },
+   {
+    "text": "it in the class.",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 682600,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Furniture",
+    "confidence": 98
+   },
+   {
+    "name": "Indoors",
+    "confidence": 96
+   },
+   {
+    "name": "Theater",
+    "confidence": 96
+   },
+   {
+    "name": "Cinema",
+    "confidence": 95
+   },
+   {
+    "name": "Monitor",
+    "confidence": 75
+   },
+   {
+    "name": "Screen",
+    "confidence": 75
+   },
+   {
+    "name": "Crowd",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "Thanks, I'll share",
+    "confidence": 99
+   },
+   {
+    "text": "it in the class.",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 82,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 691220,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Electrical Device",
+    "confidence": 79
+   },
+   {
+    "name": "Microphone",
+    "confidence": 79
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 705620,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 75
+   }
+  ],
+  "text": [
+   {
+    "text": "USER'S",
+    "confidence": 98
+   },
+   {
+    "text": "MANUAL",
+    "confidence": 99
+   },
+   {
+    "text": "WE",
+    "confidence": 99
+   },
+   {
+    "text": "WON'T",
+    "confidence": 99
+   },
+   {
+    "text": "TELL",
+    "confidence": 99
+   },
+   {
+    "text": "YOU",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 720320,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Man",
+    "confidence": 99
+   },
+   {
+    "name": "Performer",
+    "confidence": 98
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "USER'S",
+    "confidence": 87
+   },
+   {
+    "text": "MANUAL",
+    "confidence": 99
+   },
+   {
+    "text": "WE",
+    "confidence": 100
+   },
+   {
+    "text": "WON'T",
+    "confidence": 99
+   },
+   {
+    "text": "TELL",
+    "confidence": 98
+   },
+   {
+    "text": "YOU",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 734420,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Beard",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 95
+   },
+   {
+    "name": "Male",
+    "confidence": 95
+   },
+   {
+    "name": "Man",
+    "confidence": 95
+   },
+   {
+    "name": "People",
+    "confidence": 85
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 745960,
+  "labels": [
+   {
+    "name": "Nature",
+    "confidence": 92
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 92
+   },
+   {
+    "name": "Snow",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "PRESS",
+    "confidence": 94
+   },
+   {
+    "text": "ASSOCIATION",
+    "confidence": 96
+   },
+   {
+    "text": "ASSEMBLY",
+    "confidence": 98
+   },
+   {
+    "text": "FREE",
+    "confidence": 99
+   },
+   {
+    "text": "SOFTWARE",
+    "confidence": 97
+   },
+   {
+    "text": "SPEECH",
+    "confidence": 98
+   },
+   {
+    "text": "PRIVACY",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 756220,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 100
+   },
+   {
+    "name": "Cinema",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 98
+   },
+   {
+    "name": "Furniture",
+    "confidence": 98
+   },
+   {
+    "name": "Indoors",
+    "confidence": 98
+   },
+   {
+    "name": "Theater",
+    "confidence": 98
+   },
+   {
+    "name": "Stage",
+    "confidence": 96
+   },
+   {
+    "name": "Crowd",
+    "confidence": 79
+   },
+   {
+    "name": "Monitor",
+    "confidence": 75
+   }
+  ],
+  "text": [
+   {
+    "text": "PRESS",
+    "confidence": 97
+   },
+   {
+    "text": "ASSOCIATION",
+    "confidence": 96
+   },
+   {
+    "text": "ASSEMBLY",
+    "confidence": 94
+   },
+   {
+    "text": "FREE",
+    "confidence": 97
+   },
+   {
+    "text": "SOFTWARE",
+    "confidence": 95
+   },
+   {
+    "text": "SPEECH",
+    "confidence": 98
+   },
+   {
+    "text": "PRIVACY",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 764660,
+  "labels": [
+   {
+    "name": "Nature",
+    "confidence": 92
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 92
+   },
+   {
+    "name": "Snow",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "PRESS",
+    "confidence": 96
+   },
+   {
+    "text": "ASSOCIATION",
+    "confidence": 96
+   },
+   {
+    "text": "ASSEMBLY",
+    "confidence": 98
+   },
+   {
+    "text": "FREE",
+    "confidence": 99
+   },
+   {
+    "text": "SOFTWARE",
+    "confidence": 97
+   },
+   {
+    "text": "SPEECH",
+    "confidence": 98
+   },
+   {
+    "text": "PRIVACY",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 778180,
+  "labels": [
+   {
+    "name": "Performer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "Stage",
+    "confidence": 100
+   },
+   {
+    "name": "Cinema",
+    "confidence": 100
+   },
+   {
+    "name": "Indoors",
+    "confidence": 99
+   },
+   {
+    "name": "Theater",
+    "confidence": 99
+   },
+   {
+    "name": "Couch",
+    "confidence": 99
+   },
+   {
+    "name": "Furniture",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 98
+   },
+   {
+    "name": "Crowd",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "Persuade schools",
+    "confidence": 100
+   },
+   {
+    "text": "and governments",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 797360,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Performer",
+    "confidence": 99
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 99
+   },
+   {
+    "name": "People",
+    "confidence": 81
+   }
+  ],
+  "text": [],
+  "celebrities": [
+   {
+    "name": "Richard Stallman",
+    "id": "2u0zA5K",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q7439",
+     "www.imdb.com/name/nm1128476"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 810360,
+  "labels": [
+   {
+    "name": "Lighting",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Solo Performance",
+    "confidence": 100
+   },
+   {
+    "name": "People",
+    "confidence": 99
+   },
+   {
+    "name": "Electronics",
+    "confidence": 94
+   },
+   {
+    "name": "Monitor",
+    "confidence": 94
+   },
+   {
+    "name": "Screen",
+    "confidence": 94
+   },
+   {
+    "name": "Speaker",
+    "confidence": 93
+   },
+   {
+    "name": "Crowd",
+    "confidence": 91
+   },
+   {
+    "name": "Moon",
+    "confidence": 79
+   },
+   {
+    "name": "Outdoors",
+    "confidence": 79
+   },
+   {
+    "name": "Audience",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "00:03:58",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 816623,
+  "labels": [
+   {
+    "name": "Text",
+    "confidence": 91
+   }
+  ],
+  "text": [
+   {
+    "text": "For more information on TEDx, visit",
+    "confidence": 100
+   },
+   {
+    "text": "www.ted.com/tedx",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ }
+]

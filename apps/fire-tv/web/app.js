@@ -53,6 +53,20 @@ const SUGGESTIONS = {
     "Spoilers off",
     "Switch to the match",
   ],
+  // Real footage (Rekognition + captions + LLM-described segments): no title-specific wording.
+  video: [
+    "What's happening right now?",
+    "Who is this?",
+    "Read the text on screen",
+    "What did they just say?",
+    "Go back to the last time this happened",
+    "Three seconds earlier",
+    "Play it slower",
+    "I looked away, catch me up",
+    "Clip that and send it to my phone",
+    "Spoilers off",
+    "What else can I watch?",
+  ],
 };
 
 // ------------------------------------------------------------------ websocket / player bridge
@@ -274,13 +288,22 @@ function onTurn(turn) {
   clearTimeout(toast._t);
   toast._t = setTimeout(() => (toast.hidden = true), 9000);
   renderCards(turn.cards);
-  if (voiceReplies && "speechSynthesis" in window) {
+  if (voiceReplies) speak(turn.speech, turn.turnId);
+  refreshMemory();
+}
+
+// Spoken replies: Amazon Polly (generative) via the server; the browser voice only if Polly is unreachable.
+let replyAudio = null;
+function speak(text, turnId) {
+  replyAudio?.pause();
+  replyAudio = new Audio(`/api/tts?text=${encodeURIComponent(text)}&turnId=${turnId ?? ""}`);
+  replyAudio.play().catch(() => {
+    if (!("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(turn.speech);
+    const u = new SpeechSynthesisUtterance(text);
     u.rate = 1.05;
     speechSynthesis.speak(u);
-  }
-  refreshMemory();
+  });
 }
 
 function renderCards(cards) {

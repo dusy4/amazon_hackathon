@@ -34,6 +34,24 @@ Try: “Rewind to the replay of the last goal, start three seconds before it, pl
 | Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` — **live-verified 2026-10-06** |
 | Send to phone | companion web app push + QR/deep link | Alexa Send to Phone (future) |
 
+## Real footage
+
+```bash
+bash scripts/fetch-videos.sh            # Creative-Commons test videos (see data/content/ATTRIBUTION.md)
+npm run ingest:video -- yt-roti-recipe  # S3 → Rekognition Video shots → Rekognition per keyframe → captions → LLM descriptions → embeddings
+```
+Intermediate results are cached in `data/content/<id>/analysis/` (re-running is free).
+
+## Evals
+
+```bash
+npm run eval            # golden set (evals/golden.json) through the full stack with the configured interpreter
+SP_LLM= npm run eval    # rules-only baseline
+npm run eval -- s-      # only cases whose id contains "s-"
+```
+Seek cases pass when the player lands inside the target segment (synthetic titles) or the caption-derived
+time window (real footage); results land in `evals/results/`.
+
 ## AWS setup
 
 ```bash

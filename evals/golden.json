@@ -1,25 +1,330 @@
 {
-  "description": "Golden set for Semantic Playback. Each case: setup (title, playhead, spoiler mode) → utterance → expectation. 'targets' are acceptable event ids; a seek case passes when the player ends inside one of their segments. Paraphrases are deliberate: they test understanding, not phrasing.",
-  "cases": [
-    { "id": "m-keeper-header", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "take me back to when the keeper denied the header", "targets": ["ev-16", "ev-15"] },
-    { "id": "m-equaliser", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "show me the equaliser again", "targets": ["ev-18", "ev-20"] },
-    { "id": "m-silva-header", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "rewind to Silva's header", "targets": ["ev-27", "ev-29"] },
-    { "id": "m-levelled", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "the moment Okafor levelled it", "targets": ["ev-18", "ev-20"] },
-    { "id": "m-woodwork", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "where did Silva hit the woodwork", "targets": ["ev-22"] },
-    { "id": "m-booking-defender", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "show the booking for the Northgate defender", "targets": ["ev-07", "ev-06"] },
-    { "id": "m-replay-opener", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "replay of the opener please", "targets": ["ev-12"] },
-    { "id": "m-slowmo-winner", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "go to the slow-mo of the winner", "targets": ["ev-29"] },
-    { "id": "m-spoiler", "content": "harbor-v-northgate", "playheadMs": 120000, "utterance": "show me the equaliser", "expect": "spoiler" },
-    { "id": "m-who-scored-first", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "who scored the first goal?", "speech": "Silva" },
-    { "id": "m-multistep", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "go back to the replay of the last goal, three seconds earlier, at half speed", "targets": ["ev-29"], "offsetMs": -3000, "rate": 0.5 },
-    { "id": "m-score", "content": "harbor-v-northgate", "playheadMs": 215000, "utterance": "what's the score right now?", "speech": "2.*1|two.*one" },
-    { "id": "n-reads-note", "content": "keepers-key", "playheadMs": 170000, "utterance": "go to the bit where the girl reads the note", "targets": ["bt-3", "bt-2"] },
-    { "id": "n-dig-key", "content": "keepers-key", "playheadMs": 170000, "utterance": "when do they dig up the key", "targets": ["bt-6", "sc-5"] },
-    { "id": "n-docks-argument", "content": "keepers-key", "playheadMs": 170000, "utterance": "the argument down by the boats", "targets": ["bt-4", "sc-3"] },
-    { "id": "n-brother-admits", "content": "keepers-key", "playheadMs": 170000, "utterance": "jump to where the brother admits he wrote it", "targets": ["bt-7"] },
-    { "id": "n-lamp", "content": "keepers-key", "playheadMs": 170000, "utterance": "the part where the lamp finally comes on", "targets": ["bt-8", "sc-7"] },
-    { "id": "n-prev-inspector", "content": "keepers-key", "playheadMs": 160000, "utterance": "previous scene with the inspector", "targets": ["sc-6"] },
-    { "id": "n-who-cap", "content": "keepers-key", "playheadMs": 140000, "utterance": "who's the woman in the cap?", "speech": "Hale" },
-    { "id": "n-spoiler-key", "content": "keepers-key", "playheadMs": 60000, "utterance": "skip to where they find the key", "expect": "spoiler" }
-  ]
+ "description": "Golden set for Semantic Playback. Each case: setup (title, playhead, spoiler mode) \u2192 utterance \u2192 expectation. 'targets' are acceptable event ids; a seek case passes when the player ends inside one of their segments. Paraphrases are deliberate: they test understanding, not phrasing.",
+ "cases": [
+  {
+   "id": "m-keeper-header",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "take me back to when the keeper denied the header",
+   "targets": [
+    "ev-16",
+    "ev-15"
+   ]
+  },
+  {
+   "id": "m-equaliser",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "show me the equaliser again",
+   "targets": [
+    "ev-18",
+    "ev-20"
+   ]
+  },
+  {
+   "id": "m-silva-header",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "rewind to Silva's header",
+   "targets": [
+    "ev-27",
+    "ev-29"
+   ]
+  },
+  {
+   "id": "m-levelled",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "the moment Okafor levelled it",
+   "targets": [
+    "ev-18",
+    "ev-20"
+   ]
+  },
+  {
+   "id": "m-woodwork",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "where did Silva hit the woodwork",
+   "targets": [
+    "ev-22"
+   ]
+  },
+  {
+   "id": "m-booking-defender",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "show the booking for the Northgate defender",
+   "targets": [
+    "ev-07",
+    "ev-06"
+   ]
+  },
+  {
+   "id": "m-replay-opener",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "replay of the opener please",
+   "targets": [
+    "ev-12"
+   ]
+  },
+  {
+   "id": "m-slowmo-winner",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "go to the slow-mo of the winner",
+   "targets": [
+    "ev-29"
+   ]
+  },
+  {
+   "id": "m-spoiler",
+   "content": "harbor-v-northgate",
+   "playheadMs": 120000,
+   "utterance": "show me the equaliser",
+   "expect": "spoiler"
+  },
+  {
+   "id": "m-who-scored-first",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "who scored the first goal?",
+   "speech": "Silva"
+  },
+  {
+   "id": "m-multistep",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "go back to the replay of the last goal, three seconds earlier, at half speed",
+   "targets": [
+    "ev-29"
+   ],
+   "offsetMs": -3000,
+   "rate": 0.5
+  },
+  {
+   "id": "m-score",
+   "content": "harbor-v-northgate",
+   "playheadMs": 215000,
+   "utterance": "what's the score right now?",
+   "speech": "2.*1|two.*one"
+  },
+  {
+   "id": "n-reads-note",
+   "content": "keepers-key",
+   "playheadMs": 170000,
+   "utterance": "go to the bit where the girl reads the note",
+   "targets": [
+    "bt-3",
+    "bt-2"
+   ]
+  },
+  {
+   "id": "n-dig-key",
+   "content": "keepers-key",
+   "playheadMs": 170000,
+   "utterance": "when do they dig up the key",
+   "targets": [
+    "bt-6",
+    "sc-5"
+   ]
+  },
+  {
+   "id": "n-docks-argument",
+   "content": "keepers-key",
+   "playheadMs": 170000,
+   "utterance": "the argument down by the boats",
+   "targets": [
+    "bt-4",
+    "sc-3"
+   ]
+  },
+  {
+   "id": "n-brother-admits",
+   "content": "keepers-key",
+   "playheadMs": 170000,
+   "utterance": "jump to where the brother admits he wrote it",
+   "targets": [
+    "bt-7"
+   ]
+  },
+  {
+   "id": "n-lamp",
+   "content": "keepers-key",
+   "playheadMs": 170000,
+   "utterance": "the part where the lamp finally comes on",
+   "targets": [
+    "bt-8",
+    "sc-7"
+   ]
+  },
+  {
+   "id": "n-prev-inspector",
+   "content": "keepers-key",
+   "playheadMs": 160000,
+   "utterance": "previous scene with the inspector",
+   "targets": [
+    "sc-6"
+   ]
+  },
+  {
+   "id": "n-who-cap",
+   "content": "keepers-key",
+   "playheadMs": 140000,
+   "utterance": "who's the woman in the cap?",
+   "speech": "Hale"
+  },
+  {
+   "id": "n-spoiler-key",
+   "content": "keepers-key",
+   "playheadMs": 60000,
+   "utterance": "skip to where they find the key",
+   "expect": "spoiler"
+  },
+  {
+   "id": "r-roti-ingredients",
+   "content": "yt-roti-recipe",
+   "playheadMs": 190000,
+   "utterance": "go back to the part with the ingredients",
+   "window": [
+    8000,
+    16000
+   ]
+  },
+  {
+   "id": "r-roti-rest",
+   "content": "yt-roti-recipe",
+   "playheadMs": 190000,
+   "utterance": "when do they let the dough rest?",
+   "window": [
+    115000,
+    131000
+   ]
+  },
+  {
+   "id": "r-roti-pan",
+   "content": "yt-roti-recipe",
+   "playheadMs": 190000,
+   "utterance": "show me where they cook it in the pan",
+   "window": [
+    155000,
+    183000
+   ]
+  },
+  {
+   "id": "f-bridge-breakup",
+   "content": "yt-tears-of-steel",
+   "playheadMs": 560000,
+   "utterance": "go back to the break-up on the bridge at the start",
+   "window": [
+    20000,
+    48000
+   ]
+  },
+  {
+   "id": "f-thom-sorry",
+   "content": "yt-tears-of-steel",
+   "playheadMs": 560000,
+   "utterance": "the part where Thom finally apologises to her",
+   "window": [
+    383000,
+    412000
+   ]
+  },
+  {
+   "id": "f-two-minutes",
+   "content": "yt-tears-of-steel",
+   "playheadMs": 560000,
+   "utterance": "rewind to when they say there are two minutes left",
+   "window": [
+    336000,
+    346000
+   ]
+  },
+  {
+   "id": "f-overwrite-done",
+   "content": "yt-tears-of-steel",
+   "playheadMs": 560000,
+   "utterance": "when does the memory overwrite complete?",
+   "window": [
+    530000,
+    545000
+   ]
+  },
+  {
+   "id": "t-what-is-free",
+   "content": "yt-tedx-free-software",
+   "playheadMs": 800000,
+   "utterance": "go back to where he explains what free software means",
+   "window": [
+    88000,
+    130000
+   ]
+  },
+  {
+   "id": "t-amazon",
+   "content": "yt-tedx-free-software",
+   "playheadMs": 800000,
+   "utterance": "when does he talk about Amazon?",
+   "window": [
+    280000,
+    300000
+   ]
+  },
+  {
+   "id": "t-schools",
+   "content": "yt-tedx-free-software",
+   "playheadMs": 800000,
+   "utterance": "the part about schools teaching software",
+   "window": [
+    600000,
+    700000
+   ]
+  },
+  {
+   "id": "s-bolt-goal",
+   "content": "yt-soccer-aid-2023",
+   "playheadMs": 790000,
+   "utterance": "show me Usain Bolt's goal",
+   "window": [
+    130000,
+    165000
+   ]
+  },
+  {
+   "id": "s-scholes",
+   "content": "yt-soccer-aid-2023",
+   "playheadMs": 790000,
+   "utterance": "when did Paul Scholes put England ahead?",
+   "window": [
+    440000,
+    470000
+   ]
+  },
+  {
+   "id": "s-keane-level",
+   "content": "yt-soccer-aid-2023",
+   "playheadMs": 790000,
+   "utterance": "rewind to Robbie Keane's equaliser",
+   "window": [
+    480000,
+    510000
+   ]
+  },
+  {
+   "id": "s-spoiler-keane",
+   "content": "yt-soccer-aid-2023",
+   "playheadMs": 300000,
+   "utterance": "show me Robbie Keane's goal",
+   "expect": "spoiler"
+  },
+  {
+   "id": "s-who-live",
+   "content": "yt-soccer-aid-2023",
+   "playheadMs": 150000,
+   "utterance": "who's this?",
+   "speech": "Bolt"
+  }
+ ]
 }

@@ -1,0 +1,495 @@
+{
+ "model": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+ "items": [
+  {
+   "i": 0,
+   "title": "Opening credits and TEDx intro",
+   "description": "The video opens with a transcript credit showing the transcriber and reviewer, accompanied by an on‑screen note that the event is an independently organized TEDx event.",
+   "type": "intro",
+   "people": []
+  },
+  {
+   "i": 1,
+   "title": "Stallman introduces free software concept",
+   "description": "Richard Stallman speaks on stage, stating that free software is the first battle for cyberspace liberation and asks who controls the computer.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 2,
+   "title": "Stallman questions computer control",
+   "description": "He continues asking who really controls the computer, suggesting it could be a big company, and asks what a computer is.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 3,
+   "title": "Defining a computer as universal machine",
+   "description": "Stallman explains that a computer is a universal machine that executes any computation given by a program, fetching and carrying out instructions.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 4,
+   "title": "Programs give computers instructions",
+   "description": "He describes how a program provides instructions that the computer follows, enabling it to perform any task when the right program is written.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 5,
+   "title": "Stallman warns about hidden instruction sources",
+   "description": "Stallman notes that although a computer seems to follow user commands, it may actually be executing instructions imposed by a company, limiting user control.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 6,
+   "title": "Two possibilities: user control vs program control",
+   "description": "He explains that software either empowers users or subjugates them, with no middle ground.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 7,
+   "title": "Stallman introduces the four essential freedoms",
+   "description": "He states that for users to control a program they must have the four essential freedoms, which are shown on screen.",
+   "type": "reveal",
+   "people": []
+  },
+  {
+   "i": 8,
+   "title": "Defining free software",
+   "description": "Richard Stallman explains the four essential freedoms, distinguishes free software from gratis, and introduces the term Libre.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 9,
+   "title": "Freedom zero explained",
+   "description": "Stallman states that freedom zero is the right to run a program for any purpose.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 10,
+   "title": "Freedom one introduced",
+   "description": "He defines freedom one as the ability to study and modify source code, then asks what source code is.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 11,
+   "title": "Source vs executable",
+   "description": "Stallman describes source code as readable text and executable as unreadable numbers.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 12,
+   "title": "Need source to modify",
+   "description": "He argues that without source code, studying and changing a program is extremely hard.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 13,
+   "title": "Individual control via source",
+   "description": "Stallman says having source lets each user copy and modify software for personal use.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 14,
+   "title": "Collective control needed",
+   "description": "He states that non‑programmers also need collective control to adapt software.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 15,
+   "title": "Group adaptation of software",
+   "description": "Stallman explains that groups can collaborate, with programmers implementing changes for the group’s needs.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 16,
+   "title": "Stallman explains freedom to use software",
+   "description": "Richard Stallman says others can use the software any way they wish, emphasizing the freedom to run it for any purpose.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 17,
+   "title": "Stallman defines Freedom 2: redistribute copies",
+   "description": "He explains that freedom two allows users to redistribute exact copies of the software, showing on‑screen text 'Freedom 2' and 'Redistribute it'.",
+   "type": "slide",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 18,
+   "title": "Stallman defines Freedom 3: redistribute modified versions",
+   "description": "He states freedom three lets users share modified copies, with on‑screen text 'Freedom 3', 'Redistribute' and 'with changes'.",
+   "type": "slide",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 19,
+   "title": "Users control vs program controls",
+   "description": "The speaker explains that with all freedoms users control the software; lacking any freedom lets the program and developer control users.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 20,
+   "title": "Proprietary software as unjust power",
+   "description": "The speaker argues that non‑free software gives developers unjust power over users, labeling it proprietary and calling for its removal.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 21,
+   "title": "Proprietary software can snoop users",
+   "description": "The speaker says proprietary software may spy on users, citing Amazon as an example shown on screen.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 22,
+   "title": "Stallman warns of software tracking and deletion",
+   "description": "He notes proprietary software can snoop, track, restrict, and remotely delete books, laughing as he shows a 'FORBIDDEN' slide.",
+   "type": "slide",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 23,
+   "title": "Examples of harmful upgrades and deletions",
+   "description": "He cites Amazon deleting Orwell's book and Sony forcing PS3 upgrades that disable functionality, shown on screen.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 24,
+   "title": "Sony forced software change",
+   "description": "Stallman explains that Sony can forcibly change software remotely, as illustrated by a PS3 warning screen.",
+   "type": "explanation",
+   "people": []
+  },
+  {
+   "i": 25,
+   "title": "Microsoft back door and NSA",
+   "description": "Stallman says Microsoft can change Windows remotely and shares bugs with the NSA to attack users.",
+   "type": "explanation",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 26,
+   "title": "Proprietary software power abuse",
+   "description": "Stallman describes how proprietary software owners exploit power to insert malicious features, not out of sadism.",
+   "type": "explanation",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 27,
+   "title": "Profit from user power",
+   "description": "Stallman says companies exploit software power for profit, not malice, citing on‑screen store prompts.",
+   "type": "explanation",
+   "people": []
+  },
+  {
+   "i": 28,
+   "title": "Conferences on user exploitation",
+   "description": "Stallman notes firms hold conferences to share tactics for exploiting users via proprietary software power.",
+   "type": "explanation",
+   "people": []
+  },
+  {
+   "i": 29,
+   "title": "Software for suckers",
+   "description": "Stallman labels proprietary software as malware and calls it 'software for suckers'.",
+   "type": "explanation",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 30,
+   "title": "Join the free world",
+   "description": "Stallman invites listeners to join the free software movement instead of abandoning computers.",
+   "type": "explanation",
+   "people": []
+  },
+  {
+   "i": 31,
+   "title": "Announcing GNU OS",
+   "description": "Stallman recalls his 1983 announcement to create a free operating system named GNU.",
+   "type": "explanation",
+   "people": []
+  },
+  {
+   "i": 32,
+   "title": "GNU almost complete, Linux fills kernel",
+   "description": "Richard Stallman explains that GNU was nearly complete in 1992, lacking only a kernel, which Linus Torvalds provided by releasing Linux, creating the first full GNU/Linux system.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman",
+    "Linus Torvalds"
+   ]
+  },
+  {
+   "i": 33,
+   "title": "Many GNU/Linux variants called distributions",
+   "description": "Stallman notes that GNU/Linux has over a thousand variants, known as distributions, and warns that freedom is not guaranteed.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 34,
+   "title": "Most distros add non‑free software for convenience",
+   "description": "Stallman says most GNU/Linux distributions include non‑free software for convenience, urging users to verify which distros are fully free.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 35,
+   "title": "Freedom requires small sacrifices",
+   "description": "Stallman argues that preserving freedom may need sacrifices, citing Lexington as an example of a big sacrifice, but notes most are small and manageable.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 36,
+   "title": "To stay free, avoid non‑free applications",
+   "description": "Stallman says wanting freedom may require giving up non‑free applications and accepting inconveniences.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 37,
+   "title": "Block non‑free JavaScript with LibreJS",
+   "description": "Stallman warns that websites send non‑free JavaScript to browsers and recommends installing LibreJS to block it.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 38,
+   "title": "Cloud computing hides what servers do",
+   "description": "Stallman describes how servers offer to compute your data in the cloud, hiding the process from users.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 39,
+   "title": "Service as a software substitute removes control",
+   "description": "Stallman urges users to examine cloud services, which act as software substitutes that relinquish computing control.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 40,
+   "title": "Stallman stresses freeing personal computers",
+   "description": "Richard Stallman argues that while many web servers run free software, personal computers should be freed first.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 41,
+   "title": "Stallman calls for advancing user freedom",
+   "description": "Stallman says personal computers and people deserve freedom, calling for progress toward that goal.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 42,
+   "title": "Stallman identifies corporate control as obstacle",
+   "description": "Stallman describes big companies profiting from user control as an obstacle to advancing free software.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 43,
+   "title": "Stallman critiques media's open source framing",
+   "description": "Stallman criticizes mainstream media for using \"open source\" to avoid discussing the ethical issues of free software.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 44,
+   "title": "Stallman contrasts freedom vs. better quality",
+   "description": "Stallman contrasts free software activists' ethical stance with open source advocates' focus on practical improvements.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 45,
+   "title": "Stallman urges talking about freedom",
+   "description": "Stallman insists that preserving freedom requires discussing freedom itself, not just practical benefits.",
+   "type": "slide",
+   "people": []
+  },
+  {
+   "i": 46,
+   "title": "Stallman likens non‑free software to tobacco",
+   "description": "Stallman urges saying \"free software\" and criticizes schools teaching non‑free software as akin to encouraging tobacco use.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 47,
+   "title": "Stallman advocates free software in schools",
+   "description": "Stallman argues schools should teach free software to foster independent, cooperative citizens in a free society.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 48,
+   "title": "Free vs nonfree software learning",
+   "description": "Stallman explains that studying free software lets students understand how it works, while nonfree software hides its knowledge, preventing learning.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 49,
+   "title": "Education requires free software",
+   "description": "He argues schools must use free software to uphold the spirit of education and hints at an even more important reason.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 50,
+   "title": "Sharing source code like cookies",
+   "description": "Stallman says sharing programs in class should be like sharing cookies, requiring source code sharing so others can learn.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 51,
+   "title": "Share source code for learning",
+   "description": "He reiterates that sharing source code enables other people to learn from the program.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 52,
+   "title": "Only free software in class",
+   "description": "Stallman states students should bring only free software to class, except for reverse engineering, to set a good example.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 53,
+   "title": "Hardware secrecy blocks free software",
+   "description": "He notes manufacturers withhold hardware information, making it shocking that they sell products without telling users how to use them.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 54,
+   "title": "Reverse engineering hidden hardware",
+   "description": "Stallman explains users must study binary code to understand hardware when manufacturers refuse to share usage details.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 55,
+   "title": "Document hardware for free software",
+   "description": "He urges examining binaries and documenting hardware so others can write free programs to operate it.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 56,
+   "title": "Human rights interdependence",
+   "description": "Stallman says each new activity can bring new human rights that depend on each other, and losing one makes it harder to maintain the others.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 57,
+   "title": "Free software as human right",
+   "description": "Stallman argues that because computing is important in society, the freedoms of free software are among the human rights that must be protected.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 58,
+   "title": "Protecting free software rights",
+   "description": "Stallman states that society must establish and protect the freedoms of free software and asks how to help.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 59,
+   "title": "Ways to support free software",
+   "description": "Stallman lists actions: writing free software, organizing campaigns, persuading schools and governments to adopt free software, helping users install or use it, and spreading its philosophical ideas.",
+   "type": "talk",
+   "people": []
+  },
+  {
+   "i": 60,
+   "title": "Free software and Internet freedoms",
+   "description": "Stallman says moving to free software is the first step in liberating cyberspace, but also stresses the need for network neutrality and an end to general surveillance.",
+   "type": "talk",
+   "people": [
+    "Richard Stallman"
+   ]
+  },
+  {
+   "i": 61,
+   "title": "Audience applause",
+   "description": "Applause is heard as Stallman finishes his point about software and Internet freedoms.",
+   "type": "applause",
+   "people": []
+  },
+  {
+   "i": 62,
+   "title": "TEDx info screen",
+   "description": "The screen shows text encouraging viewers to visit the TEDx website for more information.",
+   "type": "slide",
+   "people": []
+  }
+ ]
+}

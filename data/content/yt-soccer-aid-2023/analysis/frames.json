@@ -1,0 +1,5516 @@
+[
+ {
+  "atMs": 5440,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 100
+   },
+   {
+    "name": "Female",
+    "confidence": 100
+   },
+   {
+    "name": "Woman",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Smile",
+    "confidence": 99
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 97
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 96
+   },
+   {
+    "name": "Laughing",
+    "confidence": 82
+   }
+  ],
+  "text": [
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "i",
+    "confidence": 91
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Janica Kostelić",
+    "id": "4ys3Tp4P",
+    "confidence": 78,
+    "urls": [
+     "www.wikidata.org/wiki/Q10091",
+     "www.imdb.com/name/nm2202715"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 16560,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Happy",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Man",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Robbie Williams",
+    "id": "4xQ4pL7w",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q47875",
+     "www.imdb.com/name/nm0005560"
+    ]
+   },
+   {
+    "name": "Harry Redknapp",
+    "id": "43yd0pK",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q221349"
+    ]
+   },
+   {
+    "name": "Zavon Hines",
+    "id": "1SO7ND4E",
+    "confidence": 95,
+    "urls": [
+     "www.wikidata.org/wiki/Q1061973"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 27920,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "03:17",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "9",
+    "confidence": 95
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 40720,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "04:12",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text TEN to 70848",
+    "confidence": 92
+   },
+   {
+    "text": "To donate E10",
+    "confidence": 86
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 96
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 50940,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 84
+   },
+   {
+    "name": "Child",
+    "confidence": 84
+   },
+   {
+    "name": "Male",
+    "confidence": 84
+   },
+   {
+    "name": "Adult",
+    "confidence": 74
+   },
+   {
+    "name": "Man",
+    "confidence": 74
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 98
+   },
+   {
+    "text": "04:22",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 97
+   },
+   {
+    "text": "donate online and fall term",
+    "confidence": 88
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "David James",
+    "id": "1SF5wo1p",
+    "confidence": 96,
+    "urls": [
+     "www.wikidata.org/wiki/Q10598",
+     "www.imdb.com/name/nm1668257"
+    ]
+   },
+   {
+    "name": "Rikki Rockett",
+    "id": "3wR6eR6Z",
+    "confidence": 85,
+    "urls": [
+     "www.wikidata.org/wiki/Q2524895",
+     "www.imdb.com/name/nm0734254"
+    ]
+   },
+   {
+    "name": "Johann Wilhelm Ritter",
+    "id": "S0nS7u",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q58868"
+    ]
+   },
+   {
+    "name": "Jason Worilds",
+    "id": "1oE8D5C",
+    "confidence": 87,
+    "urls": [
+     "www.wikidata.org/wiki/Q6163815"
+    ]
+   },
+   {
+    "name": "Magda Szubanski",
+    "id": "Bs6H85",
+    "confidence": 80,
+    "urls": [
+     "www.wikidata.org/wiki/Q2482522",
+     "www.imdb.com/name/nm0844294"
+    ]
+   },
+   {
+    "name": "Thaddeus Lewis",
+    "id": "3Zm6DX6A",
+    "confidence": 81,
+    "urls": [
+     "www.wikidata.org/wiki/Q2364738"
+    ]
+   },
+   {
+    "name": "Yue Minjun",
+    "id": "4uW2uq6",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q1132877"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 57480,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "08:41",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 86
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 96
+   },
+   {
+    "text": "SOCCE",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 64760,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "16:47",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 72480,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 93
+   },
+   {
+    "name": "Footwear",
+    "confidence": 93
+   },
+   {
+    "name": "Shoe",
+    "confidence": 93
+   },
+   {
+    "name": "Head",
+    "confidence": 82
+   },
+   {
+    "name": "Face",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "16:54",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 92
+   },
+   {
+    "text": "Vitalit",
+    "confidence": 90
+   },
+   {
+    "text": "3",
+    "confidence": 90
+   },
+   {
+    "text": "haring the be",
+    "confidence": 99
+   },
+   {
+    "text": "61",
+    "confidence": 87
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Jason Worilds",
+    "id": "1oE8D5C",
+    "confidence": 78,
+    "urls": [
+     "www.wikidata.org/wiki/Q6163815"
+    ]
+   },
+   {
+    "name": "Jonathan Cyprien",
+    "id": "1iB8mY1",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q6272870",
+     "www.imdb.com/name/nm5527349"
+    ]
+   },
+   {
+    "name": "Michael Madsen",
+    "id": "jT4mw0",
+    "confidence": 79,
+    "urls": [
+     "www.wikidata.org/wiki/Q220584",
+     "www.imdb.com/name/nm0000514"
+    ]
+   },
+   {
+    "name": "A. J. Klein",
+    "id": "1Mg5Dd7F",
+    "confidence": 85,
+    "urls": [
+     "www.wikidata.org/wiki/Q4647935"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 81340,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "17:03",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 97
+   },
+   {
+    "text": "p at ao.com",
+    "confidence": 91
+   },
+   {
+    "text": "The destination electricals",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Jonathan Cyprien",
+    "id": "1iB8mY1",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q6272870",
+     "www.imdb.com/name/nm5527349"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 91540,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 98
+   },
+   {
+    "name": "Sport",
+    "confidence": 98
+   },
+   {
+    "name": "Ball",
+    "confidence": 97
+   },
+   {
+    "name": "Baseball",
+    "confidence": 97
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 97
+   },
+   {
+    "name": "Soccer",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "19:16",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 103180,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 98
+   },
+   {
+    "name": "Baseball",
+    "confidence": 98
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "19:28",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "ULTRR",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 119600,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "22:48",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "stv",
+    "confidence": 91
+   },
+   {
+    "text": "stv",
+    "confidence": 90
+   },
+   {
+    "text": "stv",
+    "confidence": 90
+   },
+   {
+    "text": "stv",
+    "confidence": 85
+   },
+   {
+    "text": "stv",
+    "confidence": 88
+   },
+   {
+    "text": "stv",
+    "confidence": 96
+   },
+   {
+    "text": "tv",
+    "confidence": 93
+   },
+   {
+    "text": "stv",
+    "confidence": 93
+   },
+   {
+    "text": "stv",
+    "confidence": 96
+   },
+   {
+    "text": "stv",
+    "confidence": 87
+   },
+   {
+    "text": "stv",
+    "confidence": 93
+   },
+   {
+    "text": "stv",
+    "confidence": 97
+   },
+   {
+    "text": "stv",
+    "confidence": 86
+   },
+   {
+    "text": "stv",
+    "confidence": 88
+   },
+   {
+    "text": "24",
+    "confidence": 96
+   },
+   {
+    "text": "9",
+    "confidence": 92
+   },
+   {
+    "text": "10",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 129660,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   }
+  ],
+  "text": [
+   {
+    "text": "22:58",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 88
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 93
+   },
+   {
+    "text": "AID",
+    "confidence": 98
+   },
+   {
+    "text": "stv",
+    "confidence": 95
+   },
+   {
+    "text": "stv",
+    "confidence": 94
+   },
+   {
+    "text": "S.V",
+    "confidence": 95
+   },
+   {
+    "text": "stv",
+    "confidence": 91
+   },
+   {
+    "text": "stv",
+    "confidence": 97
+   },
+   {
+    "text": "stv",
+    "confidence": 89
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Billy Joe DuPree",
+    "id": "2pL5lQ",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q4845647",
+     "www.imdb.com/name/nm2979084"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 135660,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 98
+   },
+   {
+    "name": "Sport",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 97
+   },
+   {
+    "name": "Footwear",
+    "confidence": 97
+   },
+   {
+    "name": "Shoe",
+    "confidence": 97
+   },
+   {
+    "name": "Soccer",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "23:44",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-0 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text WENTY to 70818",
+    "confidence": 85
+   },
+   {
+    "text": "FUTURE",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 146740,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Man",
+    "confidence": 97
+   },
+   {
+    "name": "Clothing",
+    "confidence": 88
+   },
+   {
+    "name": "Footwear",
+    "confidence": 88
+   },
+   {
+    "name": "Shoe",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "23:55",
+    "confidence": 100
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   },
+   {
+    "text": "unicef",
+    "confidence": 100
+   },
+   {
+    "text": "itv",
+    "confidence": 99
+   },
+   {
+    "text": "stv",
+    "confidence": 94
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Usain Bolt",
+    "id": "iz0pd1",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q1189",
+     "www.imdb.com/name/nm3118048"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 155260,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Clothing",
+    "confidence": 98
+   },
+   {
+    "name": "Shirt",
+    "confidence": 98
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 94
+   },
+   {
+    "name": "Body Part",
+    "confidence": 78
+   },
+   {
+    "name": "Neck",
+    "confidence": 78
+   }
+  ],
+  "text": [
+   {
+    "text": "24:03",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 97
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 100
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "David James",
+    "id": "1SF5wo1p",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q10598",
+     "www.imdb.com/name/nm1668257"
+    ]
+   },
+   {
+    "name": "La Parka",
+    "id": "D38fH",
+    "confidence": 83,
+    "urls": [
+     "www.wikidata.org/wiki/Q3605478",
+     "www.imdb.com/name/nm0849970"
+    ]
+   },
+   {
+    "name": "Bill Kenney",
+    "id": "1Ze7y4",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q4909710"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 163520,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 80
+   },
+   {
+    "name": "Child",
+    "confidence": 80
+   },
+   {
+    "name": "Male",
+    "confidence": 80
+   }
+  ],
+  "text": [
+   {
+    "text": "24:11",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "unicef",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Patrice Evra",
+    "id": "4m1IH4N",
+    "confidence": 97,
+    "urls": [
+     "www.wikidata.org/wiki/Q1916"
+    ]
+   },
+   {
+    "name": "Usain Bolt",
+    "id": "iz0pd1",
+    "confidence": 98,
+    "urls": [
+     "www.wikidata.org/wiki/Q1189",
+     "www.imdb.com/name/nm3118048"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 173820,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 183900,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 97
+   },
+   {
+    "name": "Footwear",
+    "confidence": 97
+   },
+   {
+    "name": "Shoe",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 98
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 87
+   },
+   {
+    "text": "Y",
+    "confidence": 89
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 198140,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 96
+   },
+   {
+    "name": "Boy",
+    "confidence": 94
+   },
+   {
+    "name": "Child",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 94
+   },
+   {
+    "name": "Clothing",
+    "confidence": 84
+   },
+   {
+    "name": "Footwear",
+    "confidence": 84
+   },
+   {
+    "name": "Shoe",
+    "confidence": 84
+   },
+   {
+    "name": "Shorts",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "26:35",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 97
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 95
+   },
+   {
+    "text": "19",
+    "confidence": 97
+   },
+   {
+    "text": "8",
+    "confidence": 98
+   },
+   {
+    "text": "10",
+    "confidence": 99
+   },
+   {
+    "text": "ODI",
+    "confidence": 86
+   },
+   {
+    "text": "PR",
+    "confidence": 95
+   },
+   {
+    "text": "DIMAR",
+    "confidence": 95
+   },
+   {
+    "text": "DI",
+    "confidence": 87
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Billy Joe DuPree",
+    "id": "2pL5lQ",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q4845647",
+     "www.imdb.com/name/nm2979084"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 211560,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 77
+   },
+   {
+    "name": "Footwear",
+    "confidence": 77
+   },
+   {
+    "name": "Shoe",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "26:48",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 99
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "donate",
+    "confidence": 99
+   },
+   {
+    "text": "E20",
+    "confidence": 93
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "COULD",
+    "confidence": 97
+   },
+   {
+    "text": "EZO COULD BUY A KIT CONTAINING ESSENTIAL 90 PLIES TO HELP 4 CH' DREN TO LEARN AND PLAY",
+    "confidence": 89
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Bill Bergey",
+    "id": "3KN2sY5J",
+    "confidence": 85,
+    "urls": [
+     "www.wikidata.org/wiki/Q4908121"
+    ]
+   },
+   {
+    "name": "Bill Kenney",
+    "id": "1Ze7y4",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q4909710"
+    ]
+   },
+   {
+    "name": "Bill Bergey",
+    "id": "3KN2sY5J",
+    "confidence": 87,
+    "urls": [
+     "www.wikidata.org/wiki/Q4908121"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 218480,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Football",
+    "confidence": 94
+   },
+   {
+    "name": "Sport",
+    "confidence": 94
+   },
+   {
+    "name": "Soccer",
+    "confidence": 92
+   },
+   {
+    "name": "Ball",
+    "confidence": 90
+   },
+   {
+    "name": "Rugby",
+    "confidence": 90
+   },
+   {
+    "name": "Rugby Ball",
+    "confidence": 90
+   },
+   {
+    "name": "Clothing",
+    "confidence": 73
+   },
+   {
+    "name": "Footwear",
+    "confidence": 73
+   },
+   {
+    "name": "Shoe",
+    "confidence": 73
+   },
+   {
+    "name": "Head",
+    "confidence": 72
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 92
+   },
+   {
+    "text": "EVRA",
+    "confidence": 97
+   },
+   {
+    "text": "24",
+    "confidence": 100
+   },
+   {
+    "text": "BOLT",
+    "confidence": 95
+   },
+   {
+    "text": "unicef",
+    "confidence": 87
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "La Parka",
+    "id": "D38fH",
+    "confidence": 82,
+    "urls": [
+     "www.wikidata.org/wiki/Q3605478",
+     "www.imdb.com/name/nm0849970"
+    ]
+   },
+   {
+    "name": "Christian Jones",
+    "id": "2Qb8OD5",
+    "confidence": 95,
+    "urls": [
+     "www.wikidata.org/wiki/Q16233894"
+    ]
+   },
+   {
+    "name": "Walter Jones",
+    "id": "2tM3qB",
+    "confidence": 98,
+    "urls": [
+     "www.wikidata.org/wiki/Q2063058"
+    ]
+   },
+   {
+    "name": "La Parka",
+    "id": "D38fH",
+    "confidence": 81,
+    "urls": [
+     "www.wikidata.org/wiki/Q3605478",
+     "www.imdb.com/name/nm0849970"
+    ]
+   },
+   {
+    "name": "Freddie Williams II",
+    "id": "3no6e8",
+    "confidence": 80,
+    "urls": [
+     "www.wikidata.org/wiki/Q5496825"
+    ]
+   },
+   {
+    "name": "Jonathan Cyprien",
+    "id": "1iB8mY1",
+    "confidence": 90,
+    "urls": [
+     "www.wikidata.org/wiki/Q6272870",
+     "www.imdb.com/name/nm5527349"
+    ]
+   },
+   {
+    "name": "Michael Madsen",
+    "id": "jT4mw0",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q220584",
+     "www.imdb.com/name/nm0000514"
+    ]
+   },
+   {
+    "name": "Mirza Ghalib",
+    "id": "2Vz1L6j",
+    "confidence": 80,
+    "urls": [
+     "www.wikidata.org/wiki/Q107000"
+    ]
+   },
+   {
+    "name": "Teddy Williams",
+    "id": "1DA1I1f",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q7694112"
+    ]
+   },
+   {
+    "name": "Jack Kamen",
+    "id": "GI3g6",
+    "confidence": 84,
+    "urls": [
+     "www.wikidata.org/wiki/Q3157226",
+     "www.imdb.com/name/nm0436535"
+    ]
+   },
+   {
+    "name": "Freddie Williams II",
+    "id": "3no6e8",
+    "confidence": 75,
+    "urls": [
+     "www.wikidata.org/wiki/Q5496825"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 231560,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   },
+   {
+    "name": "Ball",
+    "confidence": 96
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 96
+   },
+   {
+    "name": "Helmet",
+    "confidence": 90
+   }
+  ],
+  "text": [
+   {
+    "text": "itv itv itv ity",
+    "confidence": 97
+   },
+   {
+    "text": "33:31",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "Text TWENTY to",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 88
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 242700,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Helmet",
+    "confidence": 87
+   },
+   {
+    "name": "Clothing",
+    "confidence": 87
+   },
+   {
+    "name": "Footwear",
+    "confidence": 87
+   },
+   {
+    "name": "Shoe",
+    "confidence": 87
+   }
+  ],
+  "text": [
+   {
+    "text": "itv itv",
+    "confidence": 93
+   },
+   {
+    "text": "Call 0330 1234",
+    "confidence": 97
+   },
+   {
+    "text": "ENG WXI",
+    "confidence": 100
+   },
+   {
+    "text": "33:42",
+    "confidence": 100
+   },
+   {
+    "text": "COURTHOUSE REDS",
+    "confidence": 89
+   },
+   {
+    "text": "24",
+    "confidence": 93
+   },
+   {
+    "text": "10",
+    "confidence": 95
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 247740,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "WHY WOULDN'T",
+    "confidence": 97
+   },
+   {
+    "text": "34:09",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "WHY WOULDN'T YOU?",
+    "confidence": 98
+   },
+   {
+    "text": "WOULDN'T YOU?",
+    "confidence": 98
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "10",
+    "confidence": 93
+   },
+   {
+    "text": "24",
+    "confidence": 97
+   },
+   {
+    "text": "8",
+    "confidence": 95
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 255340,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Shoving",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 100
+   },
+   {
+    "name": "Female",
+    "confidence": 100
+   },
+   {
+    "name": "Woman",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Footwear",
+    "confidence": 98
+   },
+   {
+    "name": "Shoe",
+    "confidence": 98
+   },
+   {
+    "name": "Face",
+    "confidence": 82
+   }
+  ],
+  "text": [
+   {
+    "text": "34:16",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 97
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "NSP",
+    "confidence": 98
+   },
+   {
+    "text": "WeSho",
+    "confidence": 88
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Maria Borodakova",
+    "id": "32EW9KL",
+    "confidence": 75,
+    "urls": [
+     "www.wikidata.org/wiki/Q798501"
+    ]
+   },
+   {
+    "name": "Justin Ellis",
+    "id": "2WE1Dr",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q16842635"
+    ]
+   },
+   {
+    "name": "Dan Halldorson",
+    "id": "2527c1",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q5213632"
+    ]
+   },
+   {
+    "name": "Billy Joe DuPree",
+    "id": "2pL5lQ",
+    "confidence": 94,
+    "urls": [
+     "www.wikidata.org/wiki/Q4845647",
+     "www.imdb.com/name/nm2979084"
+    ]
+   },
+   {
+    "name": "Carlos Hyde",
+    "id": "3Xg9Vi",
+    "confidence": 97,
+    "urls": [
+     "www.wikidata.org/wiki/Q2939370"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 265580,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 94
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "RA",
+    "confidence": 97
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 97
+   },
+   {
+    "text": "34:51",
+    "confidence": 100
+   },
+   {
+    "text": "W",
+    "confidence": 89
+   },
+   {
+    "text": "-",
+    "confidence": 91
+   },
+   {
+    "text": "-",
+    "confidence": 90
+   },
+   {
+    "text": "JLTPA",
+    "confidence": 87
+   },
+   {
+    "text": "-",
+    "confidence": 91
+   },
+   {
+    "text": "ULTRA",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 275160,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Helmet",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "ao.com",
+    "confidence": 97
+   },
+   {
+    "text": "AO, let's go!",
+    "confidence": 94
+   },
+   {
+    "text": "AO, let's",
+    "confidence": 90
+   },
+   {
+    "text": "38:39",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 288060,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 92
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 92
+   }
+  ],
+  "text": [
+   {
+    "text": "FORCED FROM THEIR HOMES",
+    "confidence": 94
+   },
+   {
+    "text": "38:51",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 97
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 303240,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Boy",
+    "confidence": 97
+   },
+   {
+    "name": "Child",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Clothing",
+    "confidence": 96
+   },
+   {
+    "name": "Footwear",
+    "confidence": 96
+   },
+   {
+    "name": "Shoe",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 96
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 313800,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "PRIMARK",
+    "confidence": 93
+   },
+   {
+    "text": "RK",
+    "confidence": 98
+   },
+   {
+    "text": "45:45",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "PRIMARK",
+    "confidence": 98
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "PRIMARK",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 323280,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 98
+   },
+   {
+    "name": "Child",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 94
+   },
+   {
+    "name": "Footwear",
+    "confidence": 94
+   },
+   {
+    "name": "Shoe",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 93
+   },
+   {
+    "text": "8",
+    "confidence": 89
+   },
+   {
+    "text": "KYLE",
+    "confidence": 97
+   },
+   {
+    "text": "6",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Karen Carney",
+    "id": "1f3XI1N",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q10889",
+     "www.imdb.com/name/nm7320045"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 330620,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "46:32",
+    "confidence": 100
+   },
+   {
+    "text": "THE BEST",
+    "confidence": 99
+   },
+   {
+    "text": "STATSports",
+    "confidence": 95
+   },
+   {
+    "text": "STATSports",
+    "confidence": 97
+   },
+   {
+    "text": "COURTHOUSE REES",
+    "confidence": 95
+   },
+   {
+    "text": "COMPARE YOURSELF TO THE CEST",
+    "confidence": 96
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Jason Worilds",
+    "id": "1oE8D5C",
+    "confidence": 78,
+    "urls": [
+     "www.wikidata.org/wiki/Q6163815"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 342160,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   }
+  ],
+  "text": [
+   {
+    "text": "49:30",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 0-1 WXI",
+    "confidence": 98
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "To donate E30",
+    "confidence": 87
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "W WeShop",
+    "confidence": 88
+   },
+   {
+    "text": "W WeShop",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 354840,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Child",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Happy",
+    "confidence": 98
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 97
+   },
+   {
+    "name": "Shoving",
+    "confidence": 96
+   },
+   {
+    "name": "Clothing",
+    "confidence": 96
+   },
+   {
+    "name": "Footwear",
+    "confidence": 96
+   },
+   {
+    "name": "Shoe",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "49:43",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 1-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "3",
+    "confidence": 96
+   },
+   {
+    "text": "17",
+    "confidence": 98
+   },
+   {
+    "text": "10",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Thomas Cranmer",
+    "id": "3eP3KQ1T",
+    "confidence": 88,
+    "urls": [
+     "www.wikidata.org/wiki/Q199894"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 365720,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Shoving",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Adult",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Man",
+    "confidence": 97
+   },
+   {
+    "name": "Boy",
+    "confidence": 93
+   },
+   {
+    "name": "Child",
+    "confidence": 93
+   },
+   {
+    "name": "Happy",
+    "confidence": 92
+   }
+  ],
+  "text": [
+   {
+    "text": "49:54",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 1-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Gary Cahill",
+    "id": "pY2fQ",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q223827"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 379080,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "W WeShop",
+    "confidence": 89
+   },
+   {
+    "text": "WeShop",
+    "confidence": 98
+   },
+   {
+    "text": "W WeShop",
+    "confidence": 96
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 392020,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Child",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 86
+   },
+   {
+    "name": "Footwear",
+    "confidence": 86
+   },
+   {
+    "name": "Shoe",
+    "confidence": 86
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 97
+   },
+   {
+    "text": "donate online and fullterms",
+    "confidence": 90
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 406740,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "52:33",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 1-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AD",
+    "confidence": 93
+   },
+   {
+    "text": "Vitality",
+    "confidence": 95
+   },
+   {
+    "text": "Health insurance with Vit",
+    "confidence": 94
+   },
+   {
+    "text": "3",
+    "confidence": 88
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 418840,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 99
+   },
+   {
+    "name": "Footwear",
+    "confidence": 99
+   },
+   {
+    "name": "Shoe",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 98
+   },
+   {
+    "name": "Tennis",
+    "confidence": 98
+   },
+   {
+    "name": "Tennis Ball",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "Life insurance",
+    "confidence": 98
+   },
+   {
+    "text": "52:45",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 1-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 96
+   },
+   {
+    "text": "Life insurance wit tality",
+    "confidence": 97
+   },
+   {
+    "text": "Life insu",
+    "confidence": 99
+   },
+   {
+    "text": "20",
+    "confidence": 88
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Walter Jones",
+    "id": "2tM3qB",
+    "confidence": 89,
+    "urls": [
+     "www.wikidata.org/wiki/Q2063058"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 425960,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   }
+  ],
+  "text": [
+   {
+    "text": "52:52",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 2-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 97
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Paul Scholes",
+    "id": "10hR1t",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q45613"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 434740,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Laughing",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 98
+   },
+   {
+    "name": "Child",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Female",
+    "confidence": 91
+   },
+   {
+    "name": "Woman",
+    "confidence": 91
+   }
+  ],
+  "text": [
+   {
+    "text": "53:01",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 2-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "To donate E40",
+    "confidence": 94
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 93
+   },
+   {
+    "text": "unic",
+    "confidence": 99
+   },
+   {
+    "text": "-",
+    "confidence": 96
+   },
+   {
+    "text": "de",
+    "confidence": 85
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Stormzy",
+    "id": "4lr9W6c",
+    "confidence": 96,
+    "urls": [
+     "www.wikidata.org/wiki/Q20055659",
+     "www.imdb.com/name/nm7055582"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 444600,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 94
+   },
+   {
+    "name": "Angry",
+    "confidence": 70
+   }
+  ],
+  "text": [
+   {
+    "text": "53:11",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "0 donate E20",
+    "confidence": 92
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Paul Scholes",
+    "id": "10hR1t",
+    "confidence": 99,
+    "urls": [
+     "www.wikidata.org/wiki/Q45613"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 454280,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 81
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 462640,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 88
+   },
+   {
+    "name": "Footwear",
+    "confidence": 88
+   },
+   {
+    "name": "Shoe",
+    "confidence": 88
+   },
+   {
+    "name": "Glove",
+    "confidence": 87
+   },
+   {
+    "name": "Hat",
+    "confidence": 84
+   },
+   {
+    "name": "Football",
+    "confidence": 82
+   },
+   {
+    "name": "Sport",
+    "confidence": 82
+   },
+   {
+    "name": "Sliding",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "Text FORTY to 7081B",
+    "confidence": 95
+   },
+   {
+    "text": "To donate E40",
+    "confidence": 94
+   },
+   {
+    "text": "6",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 472020,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Child",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Footwear",
+    "confidence": 98
+   },
+   {
+    "name": "Shoe",
+    "confidence": 98
+   },
+   {
+    "name": "Bracelet",
+    "confidence": 93
+   },
+   {
+    "name": "Jewelry",
+    "confidence": 93
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "18",
+    "confidence": 99
+   },
+   {
+    "text": "8",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 483740,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   }
+  ],
+  "text": [
+   {
+    "text": "64:01",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-1 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "VISIT THERABODY.COM",
+    "confidence": 85
+   },
+   {
+    "text": "Therabody",
+    "confidence": 99
+   },
+   {
+    "text": "ABODY.COM",
+    "confidence": 98
+   },
+   {
+    "text": "3",
+    "confidence": 92
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 492360,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 94
+   },
+   {
+    "name": "Female",
+    "confidence": 94
+   },
+   {
+    "name": "Woman",
+    "confidence": 94
+   },
+   {
+    "name": "Male",
+    "confidence": 88
+   },
+   {
+    "name": "Man",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "64:10",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-2 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "APEX",
+    "confidence": 96
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Mauricio Pochettino",
+    "id": "4ji8LH1i",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q313000",
+     "www.imdb.com/name/nm1167021"
+    ]
+   },
+   {
+    "name": "Melanie C",
+    "id": "43w9As",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q151830",
+     "www.imdb.com/name/nm0004822"
+    ]
+   },
+   {
+    "name": "Martin Freeman",
+    "id": "2JG5h3e",
+    "confidence": 84,
+    "urls": [
+     "www.wikidata.org/wiki/Q309486",
+     "www.imdb.com/name/nm0293509"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 499820,
+  "labels": [
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 98
+   },
+   {
+    "name": "Hugging",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "64:17",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-2 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 98
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 510900,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Ball",
+    "confidence": 98
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 98
+   },
+   {
+    "name": "Clothing",
+    "confidence": 98
+   },
+   {
+    "name": "Footwear",
+    "confidence": 98
+   },
+   {
+    "name": "Shoe",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 100
+   },
+   {
+    "text": "VISIT THERABODY.C",
+    "confidence": 86
+   },
+   {
+    "text": "11",
+    "confidence": 93
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Jonathan Cyprien",
+    "id": "1iB8mY1",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q6272870",
+     "www.imdb.com/name/nm5527349"
+    ]
+   },
+   {
+    "name": "Bill Kenney",
+    "id": "1Ze7y4",
+    "confidence": 87,
+    "urls": [
+     "www.wikidata.org/wiki/Q4909710"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 521400,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Child",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Footwear",
+    "confidence": 98
+   },
+   {
+    "name": "Shoe",
+    "confidence": 98
+   },
+   {
+    "name": "Glove",
+    "confidence": 97
+   },
+   {
+    "name": "Bracelet",
+    "confidence": 84
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 85
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 530200,
+  "labels": [
+   {
+    "name": "Clothing",
+    "confidence": 100
+   },
+   {
+    "name": "Glove",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Ball",
+    "confidence": 97
+   },
+   {
+    "name": "Football",
+    "confidence": 97
+   },
+   {
+    "name": "Soccer",
+    "confidence": 97
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 97
+   },
+   {
+    "name": "Sport",
+    "confidence": 97
+   },
+   {
+    "name": "Footwear",
+    "confidence": 96
+   },
+   {
+    "name": "Shoe",
+    "confidence": 96
+   },
+   {
+    "name": "Baseball",
+    "confidence": 92
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 92
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 98
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 543480,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   },
+   {
+    "name": "Ball",
+    "confidence": 76
+   },
+   {
+    "name": "Baseball",
+    "confidence": 76
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "WHY WOU N'T YOU?",
+    "confidence": 97
+   },
+   {
+    "text": "67:07",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-2 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "WHY WOULDN'T YOU?",
+    "confidence": 99
+   },
+   {
+    "text": "WHY WOULDN'T YOU?",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "10",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 561040,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "69:44",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 2-2 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "She's Blazing Down th Wing",
+    "confidence": 98
+   },
+   {
+    "text": "She's",
+    "confidence": 98
+   },
+   {
+    "text": "She's Blazing Dov the Wing",
+    "confidence": 99
+   },
+   {
+    "text": "99",
+    "confidence": 98
+   },
+   {
+    "text": "10",
+    "confidence": 93
+   },
+   {
+    "text": "و",
+    "confidence": 90
+   },
+   {
+    "text": "BY",
+    "confidence": 89
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Bill Bergey",
+    "id": "3KN2sY5J",
+    "confidence": 81,
+    "urls": [
+     "www.wikidata.org/wiki/Q4908121"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 574620,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 99
+   },
+   {
+    "name": "Boy",
+    "confidence": 99
+   },
+   {
+    "name": "Child",
+    "confidence": 99
+   },
+   {
+    "name": "Male",
+    "confidence": 99
+   },
+   {
+    "name": "Happy",
+    "confidence": 98
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 98
+   },
+   {
+    "name": "Shoving",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "69:58",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-3 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 98
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 89
+   },
+   {
+    "text": "unice",
+    "confidence": 88
+   },
+   {
+    "text": "itv",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Patrice Evra",
+    "id": "4m1IH4N",
+    "confidence": 87,
+    "urls": [
+     "www.wikidata.org/wiki/Q1916"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 582500,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 91
+   },
+   {
+    "name": "Male",
+    "confidence": 91
+   },
+   {
+    "name": "Man",
+    "confidence": 91
+   }
+  ],
+  "text": [
+   {
+    "text": "70:06",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-3 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "-SOCCER AID",
+    "confidence": 94
+   },
+   {
+    "text": "unicef",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Robbie Keane",
+    "id": "1eJ0Tf7k",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q184612"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 590200,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Helmet",
+    "confidence": 91
+   },
+   {
+    "name": "Clothing",
+    "confidence": 76
+   },
+   {
+    "name": "Hat",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 97
+   },
+   {
+    "text": "She's Blazing Down the Wing",
+    "confidence": 100
+   },
+   {
+    "text": "azing Down the Wing",
+    "confidence": 90
+   },
+   {
+    "text": "10",
+    "confidence": 96
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Jonathan Cyprien",
+    "id": "1iB8mY1",
+    "confidence": 88,
+    "urls": [
+     "www.wikidata.org/wiki/Q6272870",
+     "www.imdb.com/name/nm5527349"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 597420,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Sliding",
+    "confidence": 90
+   },
+   {
+    "name": "Clothing",
+    "confidence": 89
+   },
+   {
+    "name": "Footwear",
+    "confidence": 89
+   },
+   {
+    "name": "Shoe",
+    "confidence": 89
+   },
+   {
+    "name": "Football",
+    "confidence": 71
+   },
+   {
+    "name": "Sport",
+    "confidence": 71
+   }
+  ],
+  "text": [
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AO",
+    "confidence": 96
+   },
+   {
+    "text": "6",
+    "confidence": 98
+   },
+   {
+    "text": "24",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 603640,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 95
+   },
+   {
+    "name": "Sliding",
+    "confidence": 95
+   },
+   {
+    "name": "Ball",
+    "confidence": 89
+   },
+   {
+    "name": "Baseball",
+    "confidence": 89
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 89
+   },
+   {
+    "name": "Sport",
+    "confidence": 89
+   },
+   {
+    "name": "Football",
+    "confidence": 71
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 99
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 615340,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 84
+   },
+   {
+    "name": "Footwear",
+    "confidence": 84
+   },
+   {
+    "name": "Shoe",
+    "confidence": 84
+   }
+  ],
+  "text": [
+   {
+    "text": "70:45",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-3 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 97
+   },
+   {
+    "text": "To donate",
+    "confidence": 90
+   },
+   {
+    "text": "Vitali",
+    "confidence": 96
+   },
+   {
+    "text": "with",
+    "confidence": 98
+   },
+   {
+    "text": "insurance",
+    "confidence": 98
+   },
+   {
+    "text": "Life",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCERAID",
+    "confidence": 91
+   },
+   {
+    "text": "Vitality",
+    "confidence": 88
+   },
+   {
+    "text": "Life insurance with Vitality",
+    "confidence": 98
+   },
+   {
+    "text": "ity",
+    "confidence": 98
+   },
+   {
+    "text": "24",
+    "confidence": 93
+   },
+   {
+    "text": "8",
+    "confidence": 92
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 630260,
+  "labels": [
+   {
+    "name": "Boy",
+    "confidence": 100
+   },
+   {
+    "name": "Child",
+    "confidence": 100
+   },
+   {
+    "name": "Male",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Clothing",
+    "confidence": 100
+   },
+   {
+    "name": "Glove",
+    "confidence": 100
+   },
+   {
+    "name": "Footwear",
+    "confidence": 100
+   },
+   {
+    "name": "Shoe",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 96
+   },
+   {
+    "name": "Soccer",
+    "confidence": 96
+   },
+   {
+    "name": "Sport",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 98
+   },
+   {
+    "text": "USE REDS",
+    "confidence": 97
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "i",
+    "confidence": 94
+   },
+   {
+    "text": "nefits of healthy",
+    "confidence": 87
+   },
+   {
+    "text": "Sharing the",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 640420,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 100
+   },
+   {
+    "name": "Baseball",
+    "confidence": 100
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Clothing",
+    "confidence": 98
+   },
+   {
+    "name": "Glove",
+    "confidence": 98
+   },
+   {
+    "name": "Football",
+    "confidence": 92
+   },
+   {
+    "name": "Soccer",
+    "confidence": 86
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 647780,
+  "labels": [
+   {
+    "name": "Football",
+    "confidence": 100
+   },
+   {
+    "name": "Soccer",
+    "confidence": 100
+   },
+   {
+    "name": "Sport",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Ball",
+    "confidence": 88
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "79:57",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 2-3 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text-THIRTY to 70818",
+    "confidence": 99
+   },
+   {
+    "text": "To donate E30",
+    "confidence": 87
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "on",
+    "confidence": 86
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 654960,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Laughing",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 99
+   }
+  ],
+  "text": [
+   {
+    "text": "80:04",
+    "confidence": 100
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AO",
+    "confidence": 96
+   },
+   {
+    "text": "-",
+    "confidence": 90
+   },
+   {
+    "text": "unicef",
+    "confidence": 100
+   },
+   {
+    "text": "itv stv",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Kevin Trapp",
+    "id": "4ia8Ck9U",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q118207",
+     "www.imdb.com/name/nm0458951"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 664520,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Shoving",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 97
+   },
+   {
+    "name": "Child",
+    "confidence": 97
+   },
+   {
+    "name": "Male",
+    "confidence": 97
+   },
+   {
+    "name": "Head",
+    "confidence": 82
+   },
+   {
+    "name": "Face",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "80:13",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Call 0330 1234 442",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "AM",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 675220,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Face",
+    "confidence": 98
+   },
+   {
+    "name": "Happy",
+    "confidence": 92
+   },
+   {
+    "name": "Shoving",
+    "confidence": 89
+   }
+  ],
+  "text": [
+   {
+    "text": "80:24",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "To donate Е30",
+    "confidence": 87
+   },
+   {
+    "text": "9",
+    "confidence": 98
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Martin Compston",
+    "id": "27Yv5Hu",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q984495",
+     "www.imdb.com/name/nm1161994"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 688460,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 99
+   },
+   {
+    "name": "Football",
+    "confidence": 98
+   },
+   {
+    "name": "Sport",
+    "confidence": 98
+   },
+   {
+    "name": "Soccer",
+    "confidence": 98
+   },
+   {
+    "name": "Ball",
+    "confidence": 84
+   },
+   {
+    "name": "Baseball",
+    "confidence": 84
+   },
+   {
+    "name": "Baseball (Ball)",
+    "confidence": 84
+   },
+   {
+    "name": "Accessories",
+    "confidence": 79
+   },
+   {
+    "name": "Bag",
+    "confidence": 79
+   },
+   {
+    "name": "Handbag",
+    "confidence": 79
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 87
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 700100,
+  "labels": [
+   {
+    "name": "Ball",
+    "confidence": 99
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer Ball",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Boy",
+    "confidence": 92
+   },
+   {
+    "name": "Child",
+    "confidence": 92
+   },
+   {
+    "name": "Male",
+    "confidence": 92
+   },
+   {
+    "name": "Person",
+    "confidence": 92
+   }
+  ],
+  "text": [
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 99
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 98
+   },
+   {
+    "text": "donate online and full terms",
+    "confidence": 99
+   },
+   {
+    "text": "SOCCER AO",
+    "confidence": 94
+   },
+   {
+    "text": "4",
+    "confidence": 94
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Mo Farah",
+    "id": "33lI2sQ",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q1671"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 708340,
+  "labels": [
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Football",
+    "confidence": 99
+   },
+   {
+    "name": "Sport",
+    "confidence": 99
+   },
+   {
+    "name": "Soccer",
+    "confidence": 99
+   },
+   {
+    "name": "Helmet",
+    "confidence": 72
+   }
+  ],
+  "text": [
+   {
+    "text": "82:19",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "itv.com/socceraid or",
+    "confidence": 98
+   },
+   {
+    "text": "stv.tv/socceraid",
+    "confidence": 97
+   },
+   {
+    "text": "VISIT THERABODY.COM",
+    "confidence": 99
+   },
+   {
+    "text": "VI",
+    "confidence": 94
+   },
+   {
+    "text": "IT THERABODY.COM",
+    "confidence": 97
+   },
+   {
+    "text": "10",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 718140,
+  "labels": [
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   },
+   {
+    "name": "Boy",
+    "confidence": 96
+   },
+   {
+    "name": "Child",
+    "confidence": 96
+   },
+   {
+    "name": "Male",
+    "confidence": 96
+   }
+  ],
+  "text": [
+   {
+    "text": "82:29",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 98
+   },
+   {
+    "text": "14",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Alex Brooker",
+    "id": "3EP5Id3Y",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q4716738",
+     "www.imdb.com/name/nm5441406"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 726180,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 99
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 98
+   },
+   {
+    "name": "Adult",
+    "confidence": 98
+   },
+   {
+    "name": "Female",
+    "confidence": 98
+   },
+   {
+    "name": "Woman",
+    "confidence": 98
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 86
+   }
+  ],
+  "text": [
+   {
+    "text": "82:37",
+    "confidence": 99
+   },
+   {
+    "text": "ENG 2-4 WXI",
+    "confidence": 100
+   },
+   {
+    "text": "Text TWENTY to 70818",
+    "confidence": 97
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "La Parka",
+    "id": "D38fH",
+    "confidence": 79,
+    "urls": [
+     "www.wikidata.org/wiki/Q3605478",
+     "www.imdb.com/name/nm0849970"
+    ]
+   },
+   {
+    "name": "Tetsuko Okuhira",
+    "id": "Qc5CJ0n",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q22128204"
+    ]
+   },
+   {
+    "name": "Kate Beaton",
+    "id": "3zW7ig",
+    "confidence": 79,
+    "urls": [
+     "www.wikidata.org/wiki/Q6375363",
+     "www.imdb.com/name/nm5345222"
+    ]
+   },
+   {
+    "name": "Mamoru Kishida",
+    "id": "1cj8dV6z",
+    "confidence": 78,
+    "urls": [
+     "www.wikidata.org/wiki/Q867037"
+    ]
+   },
+   {
+    "name": "Bill Kenney",
+    "id": "1Ze7y4",
+    "confidence": 89,
+    "urls": [
+     "www.wikidata.org/wiki/Q4909710"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 735680,
+  "labels": [
+   {
+    "name": "Hugging",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 83
+   },
+   {
+    "name": "Female",
+    "confidence": 83
+   },
+   {
+    "name": "Woman",
+    "confidence": 83
+   }
+  ],
+  "text": [
+   {
+    "text": "Text FORTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "To donate E40",
+    "confidence": 92
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Mauricio Pochettino",
+    "id": "4ji8LH1i",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q313000",
+     "www.imdb.com/name/nm1167021"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 751520,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 100
+   },
+   {
+    "name": "Triumphant",
+    "confidence": 100
+   }
+  ],
+  "text": [
+   {
+    "text": "Text THIRTY to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "To donate E30",
+    "confidence": 86
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 99
+   },
+   {
+    "text": "OR NICEF",
+    "confidence": 92
+   },
+   {
+    "text": "nice",
+    "confidence": 91
+   },
+   {
+    "text": "f",
+    "confidence": 94
+   },
+   {
+    "text": "un",
+    "confidence": 93
+   },
+   {
+    "text": "9",
+    "confidence": 97
+   },
+   {
+    "text": "10",
+    "confidence": 87
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Roberto Carlos",
+    "id": "4EH8aT",
+    "confidence": 85,
+    "urls": [
+     "www.wikidata.org/wiki/Q429039"
+    ]
+   },
+   {
+    "name": "Robbie Williams",
+    "id": "4xQ4pL7w",
+    "confidence": 83,
+    "urls": [
+     "www.wikidata.org/wiki/Q47875",
+     "www.imdb.com/name/nm0005560"
+    ]
+   },
+   {
+    "name": "Kaylyn Kyle",
+    "id": "45Zt7Jk",
+    "confidence": 93,
+    "urls": [
+     "www.wikidata.org/wiki/Q438113"
+    ]
+   },
+   {
+    "name": "Heather O'Reilly",
+    "id": "47Ty2v",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q271127"
+    ]
+   },
+   {
+    "name": "Sam Claflin",
+    "id": "29l6P3",
+    "confidence": 91,
+    "urls": [
+     "www.wikidata.org/wiki/Q366833",
+     "www.imdb.com/name/nm3510471"
+    ]
+   },
+   {
+    "name": "Alexandros Tziolis",
+    "id": "T33f7",
+    "confidence": 75,
+    "urls": [
+     "www.wikidata.org/wiki/Q313544"
+    ]
+   },
+   {
+    "name": "Richard Popcorn Wylie",
+    "id": "4qw9qd",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q7323526",
+     "www.imdb.com/name/nm3013486"
+    ]
+   },
+   {
+    "name": "Julyan Stone",
+    "id": "NZ3iy0g",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q2060762"
+    ]
+   },
+   {
+    "name": "Yusuf Estes",
+    "id": "2vm1tE",
+    "confidence": 80,
+    "urls": [
+     "www.wikidata.org/wiki/Q3123330"
+    ]
+   },
+   {
+    "name": "Wilson Simonal",
+    "id": "27aK0fK",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q328449",
+     "www.imdb.com/name/nm0800436"
+    ]
+   },
+   {
+    "name": "Kublai Khan",
+    "id": "1nd3SQ6C",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q7523"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 771240,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 100
+   },
+   {
+    "name": "Female",
+    "confidence": 100
+   },
+   {
+    "name": "Woman",
+    "confidence": 100
+   },
+   {
+    "name": "Laughing",
+    "confidence": 100
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 95
+   },
+   {
+    "name": "Coat",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "SOCCER",
+    "confidence": 99
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Robbie Williams",
+    "id": "4xQ4pL7w",
+    "confidence": 86,
+    "urls": [
+     "www.wikidata.org/wiki/Q47875",
+     "www.imdb.com/name/nm0005560"
+    ]
+   },
+   {
+    "name": "Dermot O'Leary",
+    "id": "431Lr2h",
+    "confidence": 92,
+    "urls": [
+     "www.wikidata.org/wiki/Q900928",
+     "www.imdb.com/name/nm0641581"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 786560,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 100
+   },
+   {
+    "name": "Female",
+    "confidence": 100
+   },
+   {
+    "name": "Woman",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Male",
+    "confidence": 98
+   },
+   {
+    "name": "Man",
+    "confidence": 98
+   },
+   {
+    "name": "Laughing",
+    "confidence": 94
+   }
+  ],
+  "text": [
+   {
+    "text": "Text TEN to 70818",
+    "confidence": 100
+   },
+   {
+    "text": "SOCCER AID",
+    "confidence": 94
+   },
+   {
+    "text": "NICEF 2023",
+    "confidence": 97
+   },
+   {
+    "text": "-",
+    "confidence": 91
+   },
+   {
+    "text": "SOCCER",
+    "confidence": 97
+   },
+   {
+    "text": "- -",
+    "confidence": 92
+   },
+   {
+    "text": "IDE",
+    "confidence": 89
+   },
+   {
+    "text": "TOTAL RAISED",
+    "confidence": 100
+   },
+   {
+    "text": "£14,619,005",
+    "confidence": 96
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Dermot O'Leary",
+    "id": "431Lr2h",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q900928",
+     "www.imdb.com/name/nm0641581"
+    ]
+   },
+   {
+    "name": "Robbie Williams",
+    "id": "4xQ4pL7w",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q47875",
+     "www.imdb.com/name/nm0005560"
+    ]
+   },
+   {
+    "name": "Sergey Shnurov",
+    "id": "4Ez4Bg9y",
+    "confidence": 77,
+    "urls": [
+     "www.wikidata.org/wiki/Q921496",
+     "www.imdb.com/name/nm1460167"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 795680,
+  "labels": [
+   {
+    "name": "Head",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 100
+   },
+   {
+    "name": "Face",
+    "confidence": 100
+   },
+   {
+    "name": "Happy",
+    "confidence": 100
+   },
+   {
+    "name": "Adult",
+    "confidence": 100
+   },
+   {
+    "name": "Female",
+    "confidence": 100
+   },
+   {
+    "name": "Woman",
+    "confidence": 100
+   },
+   {
+    "name": "Laughing",
+    "confidence": 98
+   },
+   {
+    "name": "Male",
+    "confidence": 95
+   },
+   {
+    "name": "Man",
+    "confidence": 95
+   },
+   {
+    "name": "Celebrating",
+    "confidence": 78
+   },
+   {
+    "name": "Smile",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "donate online and full terms",
+    "confidence": 97
+   },
+   {
+    "text": "-",
+    "confidence": 88
+   },
+   {
+    "text": "- -",
+    "confidence": 87
+   }
+  ],
+  "celebrities": [
+   {
+    "name": "Miriam Aïda",
+    "id": "16Qj7x",
+    "confidence": 95,
+    "urls": [
+     "www.wikidata.org/wiki/Q4934620"
+    ]
+   },
+   {
+    "name": "Robbie Williams",
+    "id": "4xQ4pL7w",
+    "confidence": 100,
+    "urls": [
+     "www.wikidata.org/wiki/Q47875",
+     "www.imdb.com/name/nm0005560"
+    ]
+   },
+   {
+    "name": "Dermot O'Leary",
+    "id": "431Lr2h",
+    "confidence": 93,
+    "urls": [
+     "www.wikidata.org/wiki/Q900928",
+     "www.imdb.com/name/nm0641581"
+    ]
+   },
+   {
+    "name": "Casey Neistat",
+    "id": "3Rr8ih6",
+    "confidence": 76,
+    "urls": [
+     "www.wikidata.org/wiki/Q5048547",
+     "www.imdb.com/name/nm2931325"
+    ]
+   }
+  ]
+ },
+ {
+  "atMs": 804510,
+  "labels": [
+   {
+    "name": "Advertisement",
+    "confidence": 98
+   },
+   {
+    "name": "Logo",
+    "confidence": 97
+   },
+   {
+    "name": "Poster",
+    "confidence": 82
+   },
+   {
+    "name": "Animal",
+    "confidence": 78
+   },
+   {
+    "name": "Canine",
+    "confidence": 78
+   },
+   {
+    "name": "Dog",
+    "confidence": 78
+   },
+   {
+    "name": "Mammal",
+    "confidence": 78
+   },
+   {
+    "name": "Pet",
+    "confidence": 78
+   }
+  ],
+  "text": [
+   {
+    "text": "IN PARTNERSHIP WITH",
+    "confidence": 100
+   },
+   {
+    "text": "PRIMARK®",
+    "confidence": 100
+   },
+   {
+    "text": "WeShop",
+    "confidence": 99
+   }
+  ],
+  "celebrities": []
+ }
+]

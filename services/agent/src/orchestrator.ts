@@ -441,7 +441,12 @@ async function runIntent(intent: Intent, c: SkillCtx) {
         } else if (intent.target === "pronoun" && c.session.activeEntityId?.startsWith("character:")) entityId = c.session.activeEntityId;
         const r = await c.call("lens.identify", entityId ? { target: "entity", entityId, atMs: pos(c) } : { target: "on_screen", atMs: pos(c) });
         const e = r.entity;
-        if (e.type === "character") c.session.activeEntityId = e.id;
+        if (!e) {
+          c.speech.push(cap(r.facts[0] ?? "I don't recognise anyone here."));
+          c.cards.push({ type: "text", title: "On screen", body: r.facts.join("\n") });
+          return;
+        }
+        if (e.type === "character" || e.type === "person") c.session.activeEntityId = e.id;
         c.session.ground({ kind: "entity", label: e.name, entityId: e.id, moment: c.session.activeMoment ?? undefined });
         await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked about ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
         c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}. ${r.facts[0] ? `${cap(r.facts[0])}` : ""}`.trim());

@@ -1,0 +1,998 @@
+[
+ {
+  "atMs": 4404,
+  "labels": [
+   {
+    "name": "Bread",
+    "confidence": 100
+   },
+   {
+    "name": "Food",
+    "confidence": 100
+   },
+   {
+    "name": "Food Presentation",
+    "confidence": 97
+   },
+   {
+    "name": "Pancake",
+    "confidence": 96
+   },
+   {
+    "name": "Crepe",
+    "confidence": 91
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 12228,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 98
+   },
+   {
+    "name": "Person",
+    "confidence": 85
+   },
+   {
+    "name": "Whisking",
+    "confidence": 81
+   }
+  ],
+  "text": [
+   {
+    "text": "salt, sugar,",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 22572,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 95
+   },
+   {
+    "name": "Cutlery",
+    "confidence": 85
+   },
+   {
+    "name": "Spoon",
+    "confidence": 85
+   }
+  ],
+  "text": [
+   {
+    "text": "under half a",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 32683,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 99
+   },
+   {
+    "name": "Person",
+    "confidence": 78
+   }
+  ],
+  "text": [
+   {
+    "text": "just as much",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 39806,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 100
+   },
+   {
+    "name": "Mashing Food",
+    "confidence": 79
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 47764,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 100
+   },
+   {
+    "name": "Person",
+    "confidence": 74
+   },
+   {
+    "name": "Cup",
+    "confidence": 70
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 55005,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 99
+   },
+   {
+    "name": "Mashing Food",
+    "confidence": 92
+   },
+   {
+    "name": "Clothing",
+    "confidence": 92
+   },
+   {
+    "name": "Glove",
+    "confidence": 92
+   }
+  ],
+  "text": [],
+  "celebrities": []
+ },
+ {
+  "atMs": 61478,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 97
+   }
+  ],
+  "text": [
+   {
+    "text": "is ready now",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 68168,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 99
+   },
+   {
+    "name": "Kneading Dough",
+    "confidence": 89
+   },
+   {
+    "name": "Blade",
+    "confidence": 89
+   },
+   {
+    "name": "Knife",
+    "confidence": 89
+   },
+   {
+    "name": "Weapon",
+    "confidence": 89
+   }
+  ],
+  "text": [
+   {
+    "text": "30.5cms",
+    "confidence": 87
+   },
+   {
+    "text": "33cms",
+    "confidence": 96
+   },
+   {
+    "text": "35.6cms",
+    "confidence": 95
+   },
+   {
+    "text": "1",
+    "confidence": 88
+   },
+   {
+    "text": "1°",
+    "confidence": 86
+   },
+   {
+    "text": "Ya",
+    "confidence": 86
+   },
+   {
+    "text": "Y",
+    "confidence": 91
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 75925,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 98
+   }
+  ],
+  "text": [
+   {
+    "text": "LIMNUO",
+    "confidence": 99
+   },
+   {
+    "text": "15.2cms",
+    "confidence": 96
+   },
+   {
+    "text": "20.3cms",
+    "confidence": 96
+   },
+   {
+    "text": "22.9cms",
+    "confidence": 97
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 98
+   },
+   {
+    "text": "27.9cms",
+    "confidence": 96
+   },
+   {
+    "text": "30.5cms",
+    "confidence": 98
+   },
+   {
+    "text": "-",
+    "confidence": 90
+   },
+   {
+    "text": "33cms",
+    "confidence": 98
+   },
+   {
+    "text": "Cms",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 83350,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 93
+   }
+  ],
+  "text": [
+   {
+    "text": "17.8cms",
+    "confidence": 95
+   },
+   {
+    "text": "in",
+    "confidence": 91
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 95
+   },
+   {
+    "text": "7",
+    "confidence": 87
+   },
+   {
+    "text": "Roll the dough",
+    "confidence": 100
+   },
+   {
+    "text": "-",
+    "confidence": 88
+   },
+   {
+    "text": "33cms",
+    "confidence": 97
+   },
+   {
+    "text": "35.6cms",
+    "confidence": 98
+   },
+   {
+    "text": "Cms",
+    "confidence": 98
+   },
+   {
+    "text": "1",
+    "confidence": 91
+   },
+   {
+    "text": "J",
+    "confidence": 94
+   },
+   {
+    "text": "4",
+    "confidence": 88
+   },
+   {
+    "text": "5",
+    "confidence": 95
+   },
+   {
+    "text": "6 7",
+    "confidence": 94
+   },
+   {
+    "text": "I",
+    "confidence": 85
+   },
+   {
+    "text": "I A I 2 10 I 11 I 12 J3 14 15 16 17 18 19 20 21 22 23° 24:25 26 27 28 29 30 31 32 33 34 35 36 37",
+    "confidence": 86
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 92242,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 92
+   },
+   {
+    "name": "Person",
+    "confidence": 81
+   },
+   {
+    "name": "Brush",
+    "confidence": 76
+   },
+   {
+    "name": "Device",
+    "confidence": 76
+   },
+   {
+    "name": "Tool",
+    "confidence": 76
+   }
+  ],
+  "text": [
+   {
+    "text": "15.2cm",
+    "confidence": 85
+   },
+   {
+    "text": "17.8cms",
+    "confidence": 94
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 93
+   },
+   {
+    "text": "27.9cms",
+    "confidence": 94
+   },
+   {
+    "text": "Cms",
+    "confidence": 98
+   },
+   {
+    "text": "1",
+    "confidence": 88
+   },
+   {
+    "text": "2 J",
+    "confidence": 85
+   },
+   {
+    "text": "4",
+    "confidence": 95
+   },
+   {
+    "text": "5",
+    "confidence": 93
+   },
+   {
+    "text": "1",
+    "confidence": 93
+   },
+   {
+    "text": "6",
+    "confidence": 93
+   },
+   {
+    "text": "a",
+    "confidence": 91
+   },
+   {
+    "text": "10",
+    "confidence": 96
+   },
+   {
+    "text": "12",
+    "confidence": 95
+   },
+   {
+    "text": "14",
+    "confidence": 97
+   },
+   {
+    "text": "/",
+    "confidence": 86
+   },
+   {
+    "text": "16",
+    "confidence": 90
+   },
+   {
+    "text": "17",
+    "confidence": 96
+   },
+   {
+    "text": "18",
+    "confidence": 96
+   },
+   {
+    "text": "20",
+    "confidence": 97
+   },
+   {
+    "text": "26",
+    "confidence": 97
+   },
+   {
+    "text": "27",
+    "confidence": 97
+   },
+   {
+    "text": "28",
+    "confidence": 95
+   },
+   {
+    "text": "29",
+    "confidence": 98
+   },
+   {
+    "text": "30",
+    "confidence": 97
+   },
+   {
+    "text": "31",
+    "confidence": 97
+   },
+   {
+    "text": "33",
+    "confidence": 96
+   },
+   {
+    "text": "34",
+    "confidence": 96
+   },
+   {
+    "text": "35",
+    "confidence": 89
+   },
+   {
+    "text": "36",
+    "confidence": 97
+   },
+   {
+    "text": "،",
+    "confidence": 89
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 106173,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 94
+   },
+   {
+    "name": "Kneading Dough",
+    "confidence": 77
+   }
+  ],
+  "text": [
+   {
+    "text": "DE",
+    "confidence": 94
+   },
+   {
+    "text": "...",
+    "confidence": 90
+   },
+   {
+    "text": "LIMNUO",
+    "confidence": 99
+   },
+   {
+    "text": "17.8cms",
+    "confidence": 95
+   },
+   {
+    "text": "20.3cms",
+    "confidence": 90
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 96
+   },
+   {
+    "text": "27.9cms",
+    "confidence": 97
+   },
+   {
+    "text": "Now I'll",
+    "confidence": 100
+   },
+   {
+    "text": "33cms",
+    "confidence": 96
+   },
+   {
+    "text": "35.6cms",
+    "confidence": 97
+   },
+   {
+    "text": "Cms",
+    "confidence": 98
+   },
+   {
+    "text": "4",
+    "confidence": 95
+   },
+   {
+    "text": "5",
+    "confidence": 93
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 119119,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 99
+   },
+   {
+    "name": "Food",
+    "confidence": 87
+   },
+   {
+    "name": "Food Presentation",
+    "confidence": 87
+   },
+   {
+    "name": "Kneading Dough",
+    "confidence": 85
+   }
+  ],
+  "text": [
+   {
+    "text": "SE",
+    "confidence": 95
+   },
+   {
+    "text": "Inches",
+    "confidence": 92
+   },
+   {
+    "text": "4",
+    "confidence": 92
+   },
+   {
+    "text": "5",
+    "confidence": 96
+   },
+   {
+    "text": "L",
+    "confidence": 96
+   },
+   {
+    "text": "LIMNUO",
+    "confidence": 99
+   },
+   {
+    "text": "8",
+    "confidence": 97
+   },
+   {
+    "text": "6",
+    "confidence": 97
+   },
+   {
+    "text": "15.2cms",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 128128,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 97
+   },
+   {
+    "name": "Kneading Dough",
+    "confidence": 75
+   }
+  ],
+  "text": [
+   {
+    "text": "LIMNUO",
+    "confidence": 99
+   },
+   {
+    "text": "10",
+    "confidence": 94
+   },
+   {
+    "text": "Cms",
+    "confidence": 98
+   },
+   {
+    "text": "1",
+    "confidence": 88
+   },
+   {
+    "text": "2",
+    "confidence": 94
+   },
+   {
+    "text": "4",
+    "confidence": 95
+   },
+   {
+    "text": "5",
+    "confidence": 94
+   },
+   {
+    "text": "7",
+    "confidence": 92
+   },
+   {
+    "text": "to 35 minutes",
+    "confidence": 100
+   },
+   {
+    "text": "/",
+    "confidence": 87
+   },
+   {
+    "text": "39 40 4",
+    "confidence": 96
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 142159,
+  "labels": [
+   {
+    "name": "Cooking",
+    "confidence": 92
+   },
+   {
+    "name": "Bread",
+    "confidence": 83
+   },
+   {
+    "name": "Food",
+    "confidence": 83
+   },
+   {
+    "name": "Pancake",
+    "confidence": 83
+   }
+  ],
+  "text": [
+   {
+    "text": "6",
+    "confidence": 91
+   },
+   {
+    "text": "10",
+    "confidence": 98
+   },
+   {
+    "text": "15.2cms",
+    "confidence": 86
+   },
+   {
+    "text": "22.9cms",
+    "confidence": 97
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 98
+   },
+   {
+    "text": "27.9cms",
+    "confidence": 97
+   },
+   {
+    "text": "30.5cms",
+    "confidence": 98
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 155138,
+  "labels": [
+   {
+    "name": "Bread",
+    "confidence": 100
+   },
+   {
+    "name": "Food",
+    "confidence": 100
+   },
+   {
+    "name": "Pancake",
+    "confidence": 99
+   },
+   {
+    "name": "Crepe",
+    "confidence": 93
+   }
+  ],
+  "text": [
+   {
+    "text": "LIMNUO",
+    "confidence": 99
+   },
+   {
+    "text": "17.8cms",
+    "confidence": 94
+   },
+   {
+    "text": "22.9cms",
+    "confidence": 97
+   },
+   {
+    "text": "25.4cms",
+    "confidence": 97
+   },
+   {
+    "text": "27.9cms",
+    "confidence": 96
+   },
+   {
+    "text": "30.5cms",
+    "confidence": 97
+   },
+   {
+    "text": "15",
+    "confidence": 96
+   },
+   {
+    "text": "33cms",
+    "confidence": 90
+   },
+   {
+    "text": ". 42 43",
+    "confidence": 89
+   },
+   {
+    "text": "35.6cms",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 161378,
+  "labels": [
+   {
+    "name": "Cooking Pan",
+    "confidence": 99
+   },
+   {
+    "name": "Cookware",
+    "confidence": 99
+   },
+   {
+    "name": "Bread",
+    "confidence": 97
+   },
+   {
+    "name": "Food",
+    "confidence": 97
+   },
+   {
+    "name": "Pancake",
+    "confidence": 92
+   },
+   {
+    "name": "Crepe",
+    "confidence": 78
+   }
+  ],
+  "text": [
+   {
+    "text": "you start",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 169920,
+  "labels": [
+   {
+    "name": "Cutlery",
+    "confidence": 94
+   },
+   {
+    "name": "Spoon",
+    "confidence": 94
+   },
+   {
+    "name": "Kitchen Utensil",
+    "confidence": 94
+   },
+   {
+    "name": "Spatula",
+    "confidence": 94
+   },
+   {
+    "name": "Bread",
+    "confidence": 76
+   },
+   {
+    "name": "Food",
+    "confidence": 76
+   },
+   {
+    "name": "Crepe",
+    "confidence": 73
+   },
+   {
+    "name": "Pancake",
+    "confidence": 73
+   }
+  ],
+  "text": [
+   {
+    "text": "-",
+    "confidence": 86
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 180180,
+  "labels": [
+   {
+    "name": "Bread",
+    "confidence": 99
+   },
+   {
+    "name": "Food",
+    "confidence": 99
+   },
+   {
+    "name": "Pancake",
+    "confidence": 93
+   },
+   {
+    "name": "Cutlery",
+    "confidence": 88
+   },
+   {
+    "name": "Spoon",
+    "confidence": 88
+   },
+   {
+    "name": "Crepe",
+    "confidence": 88
+   }
+  ],
+  "text": [
+   {
+    "text": "AUTION",
+    "confidence": 88
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 189372,
+  "labels": [
+   {
+    "name": "Food",
+    "confidence": 100
+   },
+   {
+    "name": "Food Presentation",
+    "confidence": 100
+   },
+   {
+    "name": "Bread",
+    "confidence": 97
+   },
+   {
+    "name": "Pancake",
+    "confidence": 80
+   }
+  ],
+  "text": [
+   {
+    "text": "with any curry",
+    "confidence": 100
+   }
+  ],
+  "celebrities": []
+ },
+ {
+  "atMs": 198026,
+  "labels": [
+   {
+    "name": "Forge",
+    "confidence": 99
+   },
+   {
+    "name": "Fireplace",
+    "confidence": 90
+   },
+   {
+    "name": "Indoors",
+    "confidence": 90
+   },
+   {
+    "name": "Person",
+    "confidence": 87
+   }
+  ],
+  "text": [
+   {
+    "text": "THANK YOU",
+    "confidence": 100
+   },
+   {
+    "text": "FOR WATCHING!",
+    "confidence": 100
+   },
+   {
+    "text": "Like",
+    "confidence": 100
+   },
+   {
+    "text": "Comment",
+    "confidence": 100
+   },
+   {
+    "text": "Share",
+    "confidence": 97
+   }
+  ],
+  "celebrities": []
+ }
+]
