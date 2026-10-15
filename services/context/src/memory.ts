@@ -94,9 +94,53 @@ export class DynamoViewingMemory implements ViewingMemory {
   }
 }
 
-export function createViewingMemory(dataDir: string): ViewingMemory {
-  if (process.env.SP_MEMORY === "dynamodb") {
-    return new DynamoViewingMemory(process.env.VIEWING_MEMORY_TABLE ?? "semantic-playback-viewing-memory");
+/**
+ * Primary store with a local fallback: if the primary (DynamoDB) fails — e.g. expired `aws login`
+ * credentials — the turn still completes against the local log and `backend` reports the degradation.
+ * Every event is also written locally so nothing is lost while the primary is down.
+ */
+export class FailoverViewingMemory implements ViewingMemory {
+  private lastError: string | null = null;
+  constructor(private primary: ViewingMemory, private fallback: ViewingMemory) {}
+
+  get backend() {
+    return this.lastError ? `${this.fallback.backend} (fallback: ${this.primary.backend} unavailable — ${this.lastError})` : this.primary.backend;
   }
-  return new FileViewingMemory(`${dataDir}/memory/events.jsonl`);
+
+  private async attempt<T>(fn: (m: ViewingMemory) => Promise<T>): Promise<T> {
+    try {
+      const r = await fn(this.primary);
+      this.lastError = null;
+      return r;
+    } catch (e) {
+      const msg = ((e as Error).message ?? String(e)).split("\n")[0].slice(0, 120);
+      if (msg !== this.lastError) console.warn(`[viewing-memory] ${this.primary.backend} failed, using ${this.fallback.backend}: ${msg}`);
+      this.lastError = msg;
+      return fn(this.fallback);
+    }
+  }
+
+  async append(e: ActionEvent) {
+    await this.fallback.append(e);
+    try {
+      await this.primary.append(e);
+      this.lastError = null;
+    } catch (err) {
+      this.lastError = ((err as Error).message ?? String(err)).split("\n")[0].slice(0, 120);
+    }
+  }
+  recent(userId: string, limit: number) {
+    return this.attempt((m) => m.recent(userId, limit));
+  }
+  search(q: MemoryQuery) {
+    return this.attempt((m) => m.search(q));
+  }
+}
+
+export function createViewingMemory(dataDir: string): ViewingMemory {
+  const local = new FileViewingMemory(`${dataDir}/memory/events.jsonl`);
+  if (process.env.SP_MEMORY === "dynamodb") {
+    return new FailoverViewingMemory(new DynamoViewingMemory(process.env.VIEWING_MEMORY_TABLE ?? "semantic-playback-viewing-memory"), local);
+  }
+  return local;
 }
