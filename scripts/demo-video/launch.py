@@ -75,8 +75,11 @@ def make_bg():
 
 
 BG = make_bg()
-TV_W, TV_H = 1456, 819
-TV_X, TV_Y = (W - TV_W) // 2, 132
+# Two synchronised layers: the Fire TV on the left, what happens under the hood on the right (Demo Video page).
+TV_W, TV_H = 1248, 702
+TV_X, TV_Y = 44, 132
+RAIL_X, RAIL_Y = TV_X + TV_W + 28, TV_Y
+RAIL_W, RAIL_H = W - RAIL_X - 44, TV_H
 SUB_Y = TV_Y + TV_H + 12  # burned-in subtitles live under the TV, never over the picture
 TV_MASK = Image.new("L", (TV_W, TV_H), 0)
 ImageDraw.Draw(TV_MASK).rounded_rectangle([0, 0, TV_W - 1, TV_H - 1], radius=20, fill=255)
@@ -92,6 +95,7 @@ def make_stage():
 
 
 STAGE = make_stage()
+RAIL_BG = None
 
 
 def text_img(lines, width, align="left"):
@@ -165,7 +169,7 @@ def subtitle_cards(speaker, text, dur):
     """Split one spoken line into <= 2-line subtitle cards, timed by length across the clip duration."""
     f, tag_f = font("semilight", 37), font("semibold", 22)
     tag, col = ("YOU", ORANGE) if speaker == "you" else ("FIRE TV", CYAN)
-    lines = wrap(text, f, 1500)
+    lines = wrap(text, f, TV_W - 140)
     chunks = [lines[i:i + 2] for i in range(0, len(lines), 2)]
     total = sum(len(" ".join(c)) for c in chunks) or 1
     out, t = [], 0.0
@@ -185,6 +189,117 @@ def subtitle_cards(speaker, text, dur):
         out.append((t, t + span, img))
         t += span
     return out
+
+
+VIOLET, GREY, GREEN = (150, 125, 255), (150, 160, 175), (95, 208, 104)
+TOOL_SERVICE = {"lens.identify": "Amazon Rekognition", "lens.read_text": "Amazon Rekognition", "lens.describe": "Amazon Rekognition",
+                "memory.search": "Amazon DynamoDB", "moments.search": "hybrid index", "moments.summarize": "hybrid index",
+                "clip.create": "ffmpeg", "share.send": "companion page", "content.open": "Fire TV", "transcript.window": "index"}
+
+
+def _fmt(ms):
+    s = int(round((ms or 0) / 1000))
+    return f"{s // 60}:{s % 60:02d}"
+
+
+def _result_text(name, d):
+    d = d or {}
+    if name.startswith("player.") or name == "content.open":
+        if "positionMs" in d:
+            return f"at {_fmt(d['positionMs'])} · {d.get('rate', 1)}× · {'paused' if d.get('paused') else 'playing'}"
+    if name == "moments.search":
+        top = d.get("top") or []
+        if top:
+            return f"{top[0]['label']} @ {_fmt(top[0]['startMs'])}"
+        if d.get("hiddenBySpoilerBoundary"):
+            return f"{d['hiddenBySpoilerBoundary']} match(es) hidden past the spoiler boundary"
+        return "no match"
+    if name == "lens.identify":
+        e = d.get("entity") or {}
+        conf = next((f for f in d.get("facts", []) if "confidence" in f), "")
+        src = (d.get("provenance") or {}).get("source", "")
+        return f"{e.get('name', 'nobody recognised')}" + (f" · {conf.split(' with ')[-1]}" if conf else " · shot keyframe" if "ingest" in src else "")
+    if name == "lens.read_text":
+        return d.get("text", "")
+    if name == "clip.create":
+        return f"{(d.get('endMs', 0) - d.get('startMs', 0)) / 1000:.0f} s clip · rendered in {d.get('renderMs', 0) / 1000:.1f} s"
+    if name == "share.send":
+        return "deep link pushed to the phone"
+    if name == "memory.search":
+        r = d.get("results") or []
+        return (r[0].get("summary", "") if r else "nothing yet") + " · DynamoDB"
+    if name == "moments.summarize":
+        return f"{len(d.get('highlights') or d.get('events') or [])} key moments, spoiler-bounded"
+    return ""
+
+
+def rail_rows(tr):
+    """Pipeline rows for one recorded turn: (ms, colour, title, detail, right-hand label), all from its real trace."""
+    steps, interp = tr["turn"]["trace"], tr["turn"]["interpreter"]
+    llm = not interp.startswith("rules")
+    rows = []
+    for i, st in enumerate(steps):
+        k, lab, ms, comp = st["kind"], st.get("label", ""), st.get("ms", 0), st.get("component", "")
+        if k == "context":
+            rc = (st.get("data") or {}).get("relevantCore") or {}
+            ref = (rc.get("activeReference") or {}).get("label")
+            pb = rc.get("playback") or {}
+            bits = [f"playing {_fmt(pb.get('positionMs'))}"] if pb else []
+            if ref:
+                bits.append(f"active: {ref}")
+            bits.append(f"spoilers up to {_fmt(rc.get('spoilerBoundaryMs'))}" if rc.get("spoilerMode") == "strict" else "spoilers off")
+            rows.append((ms, GREY, "Context Envelope", " · ".join(bits), f"{ms} ms"))
+        elif k == "intent" and comp == "router":
+            rows.append((ms, CYAN, "Router: no AI model call", lab.split("→")[0].strip().replace("“", "").replace("”", ""), ""))
+        elif k == "intent" and comp == "rules-parser" and llm:
+            rows.append((ms, VIOLET, "Router: LLM agent", "open-ended request · OpenRouter Nemotron 120B", ""))
+        elif k == "intent" and lab.startswith("LLM turn"):
+            what, took = (lab.split(": ", 1)[1].rsplit(" (", 1) + [""])[:2]
+            rows.append((ms, VIOLET, f"LLM decides: {what}", "model reasoning over the context + 20 MCP tools", took.rstrip(")")))
+        elif k == "intent" and lab.startswith("same goal"):
+            rows.append((ms, GREY, "Same goal, described earlier", lab.split("→ ", 1)[-1], ""))
+        elif k == "intent" and "(no model call)" in lab:
+            rows.append((ms, CYAN, "Exact maths, no model", lab.replace(" (no model call)", ""), ""))
+        elif k == "tool_call":
+            res = next((x for x in steps[i + 1:] if x["kind"] in ("tool_result", "error") and (x.get("label") == lab or x["kind"] == "error")), None)
+            took = (res.get("ms", ms) - ms) if res else 0
+            svc = TOOL_SERVICE.get(lab, "Fire TV" if lab.startswith("player.") else "")
+            rows.append((ms, ORANGE if svc.startswith("Amazon") else CYAN, f"{lab}" + (f"  ·  {svc}" if svc else ""),
+                         _result_text(lab, res.get("data") if res else None), f"{took} ms"))
+        elif k == "error":
+            rows.append((ms, ORANGE, "Spoiler guard" if "spoil" in lab.lower() else "Error", lab, ""))
+        elif k == "answer":
+            rows.append((ms, GREEN, "Answer, spoken by Amazon Polly", lab, f"{ms / 1000:.1f} s" if ms >= 1000 else f"{ms} ms"))
+    return rows
+
+
+def rail_row_img(colour, title, detail, right):
+    w, h = RAIL_W - 32, 74
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=(255, 255, 255, 14), outline=(255, 255, 255, 30), width=1)
+    d.rounded_rectangle([0, 0, 5, h - 1], radius=3, fill=colour + (255,))
+    ft, fd, fr = font("semibold", 22), font("regular", 18), font("mono", 18)
+    rw = int(d.textlength(right, font=fr)) if right else 0
+    def clip(text, f, width):
+        if d.textlength(text, font=f) <= width:
+            return text
+        while text and d.textlength(text + "…", font=f) > width:
+            text = text[:-1]
+        return text + "…"
+    d.text((18, 9), clip(title, ft, w - 40 - rw), font=ft, fill=WHITE + (255,))
+    if right:
+        d.text((w - 14 - rw, 12), right, font=fr, fill=BODY + (255,))
+    d.text((18, 42), clip(detail, fd, w - 32), font=fd, fill=(200, 208, 218, 255))
+    return img
+
+
+def make_rail_bg():
+    img = Image.new("RGBA", (RAIL_W, RAIL_H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, RAIL_W - 1, RAIL_H - 1], radius=20, fill=(10, 14, 20, 200), outline=(70, 82, 98, 255), width=2)
+    d.text((16, 14), "UNDER THE HOOD", font=font("semibold", 20), fill=ORANGE + (255,))
+    return img
 
 
 # ------------------------------------------------------------------ audio
@@ -386,8 +501,38 @@ class Beat:
             acc += b - a
         return None
 
+    def film_t(self, r):
+        """Film time of recording time r; a moment inside a cut lands where the footage resumes."""
+        acc = 0.0
+        for a, b in self.pieces:
+            if r < a:
+                return acc
+            if r <= b:
+                return acc + r - a
+            acc += b - a
+        return acc
+
+    def rec_t(self, t):
+        acc = 0.0
+        for a, b in self.pieces:
+            if t <= acc + (b - a):
+                return a + (t - acc)
+            acc += b - a
+        return self.pieces[-1][1]
+
     def prepare(self, tmp):
         self.caption = text_img([(self.kicker, font("semibold", 24), ORANGE, 8), (self.headline, font("light", 54), WHITE, 0)], 1100)
+        global RAIL_BG
+        if RAIL_BG is None:
+            RAIL_BG = make_rail_bg()
+        self.rail = []
+        for tr in self.sc["turns"]:
+            at, done = tr["atMs"] / 1000 + self.off, tr["doneMs"] / 1000 + self.off
+            if done < self.pieces[0][0] - 0.8 or at > self.pieces[-1][1]:
+                continue
+            rows = [(max(0.0, self.film_t(at + ms / 1000)), rail_row_img(c, ti, de, ri)) for ms, c, ti, de, ri in rail_rows(tr)]
+            self.rail.append({"start": max(0.0, self.film_t(at)), "at": at, "total": tr["doneMs"] - tr["atMs"], "rows": rows,
+                              "you": rail_row_img(ORANGE, "You said", f"“{tr['utterance']}”", "")})
         self.events, self.voice, self.subs = [], [], []
         cursor = 0.0
         sc_turns = self.sc["turns"]
@@ -441,6 +586,25 @@ class Beat:
     def audio(self):
         return self.voice
 
+    def draw_rail(self, img, t):
+        img.alpha_composite(RAIL_BG, (RAIL_X, RAIL_Y))
+        cur = next((r for r in reversed(self.rail) if r["start"] <= t), None)
+        if not cur:
+            put(img, text_img([("Listening for a request…", font("regular", 22), BODY, 0)], RAIL_W - 40), (RAIL_X + 16, RAIL_Y + 60), 0.9)
+            return
+        elapsed = min(cur["total"], max(0, int((self.rec_t(t) - cur["at"]) * 1000)))
+        clock = f"{elapsed:,} ms".replace(",", " ") if elapsed < 10000 else f"{elapsed / 1000:.1f} s"
+        clk = text_img([(clock, font("mono", 24), WHITE if elapsed < cur["total"] else GREEN, 0)], 220)
+        cw = int(ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(clock, font=font("mono", 24)))
+        put(img, clk, (RAIL_X + RAIL_W - 16 - cw, RAIL_Y + 10), 1.0)
+        shown = [(cur["start"], cur["you"])] + [r for r in cur["rows"] if r[0] <= t]
+        shown = shown[:1] + shown[1:][-6:]  # the request stays; the latest steps scroll
+        y = RAIL_Y + 52
+        for t0, row in shown:
+            a = ease((t - t0) / 0.25)
+            put(img, row, (RAIL_X + 16, y), a, (1 - a) * 10)
+            y += row.height + 8
+
     def zoom_at(self, t):
         if not self.zoom:
             return 1.0
@@ -488,11 +652,12 @@ class Beat:
         put(img, self.caption, (TV_X, 14), ease(t / 0.45), (1 - ease(t / 0.5)) * 14)
         sub = next((x for x in reversed(self.subs) if x[0] <= t < x[1]), None)
         if sub:
-            put(img, sub[2], ((W - sub[2].width) // 2, SUB_Y), min(1.0, (t - sub[0]) / 0.12, (sub[1] - t) / 0.12))
+            put(img, sub[2], (TV_X + (TV_W - sub[2].width) // 2, SUB_Y), min(1.0, (t - sub[0]) / 0.12, (sub[1] - t) / 0.12))
         cut = next((e for e in reversed(self.events) if e[1] == "cut" and e[0] <= t < e[0] + 3.2), None)
         if cut:
             put(img, cut[2], (TV_X + TV_W - cut[2].width - 22, TV_Y + 22), ease((t - cut[0]) / 0.3))
-        put(img, self.note, (TV_X + TV_W - self.note_w, 20), 0.85)
+        put(img, self.note, (W - 44 - self.note_w, 20), 0.85)
+        self.draw_rail(img, t)
         frame = img.convert("RGB")
         edge = min(t, self.dur - t)  # fade only into and out of the beat; cuts inside it are hard cuts
         return Image.blend(BG, frame, max(0.0, edge / 0.2)) if edge < 0.2 else frame
@@ -651,6 +816,8 @@ def main():
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
+    if os.environ.get("SP_SEGS"):  # preview: render only these segment indexes, e.g. SP_SEGS=4,6
+        segs = [segs[int(i)] for i in os.environ["SP_SEGS"].split(",")]
     os.makedirs(".tmp", exist_ok=True)
     with tempfile.TemporaryDirectory(dir=".tmp") as tmp:  # C: is nearly full; keep render scratch on the project drive
         for s in segs:
