@@ -135,10 +135,10 @@ def bubble(text):
 
 
 def pill(text):
-    f = font("semibold", 20)
+    f = font("semibold", 24)
     d0 = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
     bb = d0.textbbox((0, 0), text, font=f)
-    w, h = bb[2] - bb[0] + 36, 44
+    w, h = bb[2] - bb[0] + 40, 52
     img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     d.rounded_rectangle([0, 0, w - 1, h - 1], radius=22, fill=(17, 23, 31, 225), outline=(255, 153, 0, 160), width=2)
@@ -343,7 +343,7 @@ def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=False):
     if k > 0:  # the previous answer stays on the TV panel ~5 s after it is spoken: don't open a beat on it
         prev_done = sc["turns"][k - 1]["doneMs"] / 1000 + off
         if start < prev_done + 6.0:
-            start = max(start, turns[0]["atMs"] / 1000 + off - 0.05)
+            start = max(start, turns[0]["atMs"] / 1000 + off + 0.35)  # the panel has switched to the new request
     end = turns[-1]["doneMs"] / 1000 + off + post
     if last + 1 < len(sc["turns"]):  # stop before the next request appears on the TV (no leaking answers)
         end = min(end, sc["turns"][last + 1]["atMs"] / 1000 + off - 0.3)
@@ -405,7 +405,8 @@ class Beat:
             if s_done is not None:
                 reply = tr["turn"]["speech"]
                 sentences = reply.replace("! ", ". ").split(". ")
-                spoken = (". ".join(sentences[:2]).rstrip(".") + ".") if len(reply) > 160 else reply  # whole sentences only; full text is on the TV panel
+                # Long answers: the opening sentence and the latest point, whole sentences only (full text is on the TV panel).
+                spoken = (sentences[0].rstrip(".") + ". " + sentences[-1].rstrip(".") + ".") if len(reply) > 160 and len(sentences) > 2 else                     (". ".join(sentences[:2]).rstrip(".") + ".") if len(reply) > 160 else reply
                 clip = tts(spoken, "Ruth", tmp)
                 start = max(cursor + 0.15, s_done + 0.15)
                 self.voice.append((start, clip))
@@ -430,8 +431,8 @@ class Beat:
         self.dur = sum(b - a for a, b in self.pieces) + self.hold
         self.events.sort(key=lambda e: e[0])
         note = "Fire OS app · Android TV emulator · real time except where marked"
-        self.note = text_img([(note, font("regular", 18), MUTED, 0)], 900)
-        self.note_w = int(ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(note, font=font("regular", 18)))
+        self.note = text_img([(note, font("regular", 22), BODY, 0)], 900)
+        self.note_w = int(ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(note, font=font("regular", 22)))
 
     def audio(self):
         return self.voice
@@ -484,7 +485,7 @@ class Beat:
         sub = next((x for x in reversed(self.subs) if x[0] <= t < x[1]), None)
         if sub:
             put(img, sub[2], ((W - sub[2].width) // 2, SUB_Y), min(1.0, (t - sub[0]) / 0.12, (sub[1] - t) / 0.12))
-        cut = next((e for e in reversed(self.events) if e[1] == "cut" and e[0] <= t < e[0] + 2.4), None)
+        cut = next((e for e in reversed(self.events) if e[1] == "cut" and e[0] <= t < e[0] + 3.2), None)
         if cut:
             put(img, cut[2], (TV_X + TV_W - cut[2].width - 22, TV_Y + 22), ease((t - cut[0]) / 0.3))
         put(img, self.note, (TV_X + TV_W - self.note_w, 20), 0.85)
@@ -546,12 +547,14 @@ def arch_extra(img, t, a):
     box(120, 560, 420, 104, "It acts on the TV", "seek · play · slow · clip · share", 0.9)
     box(640, 330, 640, 104, "Context", "what's playing · who you mean · what you've seen", 1.3, True)
     box(640, 450, 640, 104, "Router", "simple asks: instant, no AI model call", 1.6, True)
-    box(640, 570, 640, 104, "LLM agent (open-ended asks)", "OpenRouter Nemotron 120B · Amazon Bedrock pending", 1.9, True)
+    box(640, 570, 640, 104, "LLM agent (open-ended asks)", "OpenRouter Nemotron 120B today · Bedrock-ready", 1.9, True)
     box(640, 690, 640, 104, "MCP tool server", "20 tools: search · lens · player · clip · memory", 2.2, True)
     for k, (n, s_) in enumerate([("Amazon Rekognition", "who and what is on screen"), ("Amazon Polly", "every spoken answer"),
                                  ("Amazon DynamoDB", "Viewing Memory"), ("Amazon S3", "media for analysis")]):
         box(1380, 330 + k * 120, 420, 104, n, s_, 2.6 + k * 0.25)
     line(540, 472, 640, 382, 1.1)
+    for k in range(3):  # Context → Router → (LLM agent) → MCP tools
+        line(960, 434 + k * 120, 960, 450 + k * 120, 1.5 + k * 0.3)
     line(1280, 742, 1380, 382, 2.8)
     line(1280, 742, 1380, 502, 2.9)
     line(1280, 742, 1380, 622, 3.0)
@@ -563,10 +566,16 @@ def main():
     f1, f2, s4, s5 = "f1-football", "f2-spoilers-memory", "s4-real-footage", "s5-any-video"
     his = MANIFEST[f1]["turns"][2]["turn"]
     top = next((s["data"].get("top") or [{}] for s in his["trace"] if s["kind"] == "tool_result" and s["label"] == "moments.search"), [{}])[0]
+    # The moment actually grounded (after collapsing repeated descriptions of the same goal), not the raw top hit.
+    seek_to = next((st for st in his["trace"] if st["kind"] == "action" and st["label"].startswith("seek")), None)
+    grounded = next((st["label"].split("→ ", 1)[1] for st in his["trace"] if st["label"].startswith("same goal, described earlier")), None)
+    if grounded and " @ " in grounded:
+        lab, at_ = grounded.rsplit(" @ ", 1)
+        top = {"label": lab, "startMs": sum(int(x) * m for x, m in zip(at_.split(":"), (60000, 1000)))}
     fmt = lambda ms: f"{int(ms // 60000)}:{int(ms // 1000 % 60):02d}"
     explainer = [
         ("Understand", ["“his goal” in context:", "who you just asked about"], ["his → Usain Bolt"]),
-        ("Ground", ["Search an index of the match", "built with Amazon Rekognition"], ["moments.search", f"→ {top.get('label', '')[:24]}", f"@ {fmt(top.get('startMs', 0))}"]),
+        ("Ground", ["Search an index of the match", "built with Amazon Rekognition"], ["moments.search", f"→ {top.get('label', '')[:30]}", f"@ {fmt(top.get('startMs', 0))}"]),
         ("Act", ["A precise command", "to the Fire TV player"], ["player.seek → player.play"]),
         ("Remember", ["A Viewing Memory event", "for follow-ups and recall"], ["Amazon DynamoDB", "semantic_seek"]),
     ]

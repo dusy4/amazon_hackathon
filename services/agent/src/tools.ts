@@ -196,11 +196,12 @@ export function registerTools(server: McpServer, app: AppContext) {
         // keep at most four, then tell them in order.
         const importance: Record<string, number> = { goal: 10, result: 8, save: 6, chance: 5, shot: 5, reveal: 5, foul: 3, free_kick: 3, celebration: 2, action: 1 };
         const all = idx.events.filter((e) => e.type !== "scene" && e.startMs >= fromMs && e.startMs <= to);
-        // One shot of a goal is often described two or three times (strike, replay, reaction): keep the
-        // first of any same-type moments within 30 s, so the recap names each moment once.
+        // One shot of a goal is often described two or three times (strike, replay, reaction): keep one of any
+        // same-type moments within 30 s, so the recap names each moment once. Ties go to the most recent:
+        // "catch me up" is about what just happened.
         const distinct = (es: typeof all) => es.filter((e, i) => !es.slice(0, i).some((p) => p.type === e.type && Math.abs(p.startMs - e.startMs) < 30_000));
         const ranked = all.some((e) => importance[e.type])
-          ? distinct([...all].sort((a, b) => (importance[b.type] ?? 0) - (importance[a.type] ?? 0) || a.startMs - b.startMs)).slice(0, 3)
+          ? distinct([...all].sort((a, b) => (importance[b.type] ?? 0) - (importance[a.type] ?? 0) || b.startMs - a.startMs)).slice(0, 3)
           : all.slice(-3);
         const beats = ranked.sort((a, b) => a.startMs - b.startMs);
         const scenes = idx.events.filter((e) => e.type === "scene" && e.endMs > fromMs && e.startMs <= to);

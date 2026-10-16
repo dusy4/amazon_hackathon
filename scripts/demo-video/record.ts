@@ -42,8 +42,8 @@ const SCENES: Scene[] = [
       { seek: 128000, play: true, untilMs: 143000 }, // the viewer watches Usain Bolt score, then he turns to camera
       { say: "Who's this?", holdMs: 4500 }, // the lens freezes the frame, answers, and play resumes
       { say: "Read the score", holdMs: 4500 },
-      { say: "Show me his goal", holdMs: 11000 }, // plays from the build-up: the ball goes in ~9 s later
-      { say: "Go back five seconds in slow motion", holdMs: 9000 }, // the strike again, at half speed
+      { say: "Show me his goal", holdMs: 13000 }, // plays from the build-up: the ball goes in ~9 s later
+      { say: "Go back five seconds in slow motion", holdMs: 11500 }, // the strike again, at half speed
       { say: "Normal speed", holdMs: 1500 },
       { say: "Clip that and send it to my phone", holdMs: 7000 },
     ],
@@ -52,10 +52,11 @@ const SCENES: Scene[] = [
     id: "f2-spoilers-memory",
     title: "Spoiler-safe, and it remembers",
     steps: [
-      { say: "Show me Robbie Keane's goal", holdMs: 7000 },
+      { seek: 222000, play: true, untilMs: 227000 }, // ordinary midfield play: nothing that could be mistaken for the goal
+      { say: "Show me Robbie Keane's goal", holdMs: 6000 },
       { say: "Spoilers off", holdMs: 1500 },
-      { say: "Show me Robbie Keane's goal", holdMs: 3000 }, // a long-range strike, ~2 s after the jump
-      { say: "Go back five seconds in slow motion", holdMs: 9500 },
+      { say: "Show me Robbie Keane's goal", holdMs: 4500 }, // a long-range strike: in the net ~2.5 s after the jump
+      { say: "Go back five seconds in slow motion", holdMs: 12000 },
       { say: "Normal speed", holdMs: 1000 },
       { say: "Spoilers on", holdMs: 2000 },
       { say: "I was away for 2 minutes, catch me up", holdMs: 9000 },
