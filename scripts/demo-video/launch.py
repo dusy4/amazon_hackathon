@@ -77,7 +77,7 @@ def make_bg():
 BG = make_bg()
 TV_W, TV_H = 1456, 819
 TV_X, TV_Y = (W - TV_W) // 2, 132
-SUB_Y = TV_Y + TV_H + 16  # burned-in subtitles live under the TV, never over the picture
+SUB_Y = TV_Y + TV_H + 12  # burned-in subtitles live under the TV, never over the picture
 TV_MASK = Image.new("L", (TV_W, TV_H), 0)
 ImageDraw.Draw(TV_MASK).rounded_rectangle([0, 0, TV_W - 1, TV_H - 1], radius=20, fill=255)
 
@@ -163,9 +163,9 @@ def wrap(text, f, width):
 
 def subtitle_cards(speaker, text, dur):
     """Split one spoken line into <= 2-line subtitle cards, timed by length across the clip duration."""
-    f, tag_f = font("semilight", 32), font("semibold", 20)
+    f, tag_f = font("semilight", 37), font("semibold", 22)
     tag, col = ("YOU", ORANGE) if speaker == "you" else ("FIRE TV", CYAN)
-    lines = wrap(text, f, 1440)
+    lines = wrap(text, f, 1500)
     chunks = [lines[i:i + 2] for i in range(0, len(lines), 2)]
     total = sum(len(" ".join(c)) for c in chunks) or 1
     out, t = [], 0.0
@@ -173,14 +173,14 @@ def subtitle_cards(speaker, text, dur):
         d0 = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
         tw = int(d0.textlength(tag, font=tag_f)) + 26
         lw = max(int(d0.textlength(l, font=f)) for l in c)
-        w, h = tw + lw + 24, 44 * len(c) + 14
+        w, h = tw + lw + 24, 47 * len(c) + 12
         img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         d = ImageDraw.Draw(img)
         d.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=(8, 11, 16, 215))
-        d.rounded_rectangle([12, 13, tw - 6, 39], radius=6, fill=col + (255,))
+        d.rounded_rectangle([12, 13, tw - 6, 41], radius=6, fill=col + (255,))
         d.text((12 + (tw - 18 - d0.textlength(tag, font=tag_f)) / 2, 14), tag, font=tag_f, fill=INK_DEEP + (255,))
         for k, l in enumerate(c):
-            d.text((tw + 6, 3 + 44 * k), l, font=f, fill=WHITE + (255,))
+            d.text((tw + 6, 1 + 47 * k), l, font=f, fill=WHITE + (255,))
         span = dur * len(" ".join(c)) / total
         out.append((t, t + span, img))
         t += span
@@ -333,7 +333,8 @@ class ColdOpen:
         dec.wait()
 
 
-def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=False):
+def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=()):
+    """gap_cut: turn indices after which idle footage up to the next request is cut (never the footage a request plays)."""
     """Recording-time pieces from turn k (to turn `until_turn`), with every long model wait inside cut out."""
     sc = MANIFEST[scene_id]
     off = sc.get("recordingStartOffsetMs", 1200) / 1000
@@ -348,16 +349,16 @@ def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=False):
     if last + 1 < len(sc["turns"]):  # stop before the next request appears on the TV (no leaking answers)
         end = min(end, sc["turns"][last + 1]["atMs"] / 1000 + off - 0.3)
     pieces, cur = [], start
-    prev_done = None
-    for tr in turns:
+    prev_done, prev_i = None, None
+    for i, tr in enumerate(turns, start=k):
         at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
-        if gap_cut and prev_done is not None and at - prev_done > 1.6:  # idle footage between two requests
+        if prev_i in gap_cut and prev_done is not None and at - prev_done > 1.6:  # idle footage between two requests
             pieces.append([cur, prev_done + 1.0])
             cur = at - 0.05
         if done - at > 6:
             pieces.append([cur, at + 3.0])
             cur = done - 0.8
-        prev_done = done
+        prev_done, prev_i = done, i
     pieces.append([cur, end])
     return pieces
 
@@ -394,6 +395,8 @@ class Beat:
         for tr in self.sc["turns"]:
             at, done = tr["atMs"] / 1000 + self.off, tr["doneMs"] / 1000 + self.off
             s_at, s_done = self.seg_t(at), self.seg_t(done)
+            if s_at is None and 0 <= self.pieces[0][0] - at <= 0.6:  # the beat opens just after the request: still voice it
+                s_at = 0.0
             if s_at is None and s_done is None:
                 continue
             if s_at is not None:
@@ -560,6 +563,7 @@ def arch_extra(img, t, a):
     line(1280, 742, 1380, 622, 3.0)
     line(1280, 742, 1380, 742, 3.1)
     line(640, 742, 540, 612, 3.4)
+    line(1250, 554, 1250, 690, 2.4)  # simple asks: Router straight to the tools, no model call
 
 
 def main():
@@ -622,7 +626,7 @@ def main():
                         ("Voices: Amazon Polly · Music: “Newer Wave” by Kevin MacLeod (incompetech.com), CC BY 4.0", font("regular", 22), BODY, 0)], 1760, "center")
 
     segs = [
-        ColdOpen(482.0, 6.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
+        ColdOpen(483.0, 7.0, ["You remember the moment.", "Your TV only knows the timestamp."]),
         Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=3.4, center=True),
         Beat(f1, window(f1, 0, pre=2.5, post=1.4), "Viewing Lens", "Ask who's on screen."),
         Beat(f1, window(f1, 1, pre=0.3, post=1.4), "Viewing Lens", "Read the scoreboard."),
@@ -632,7 +636,7 @@ def main():
         Beat(f1, window(f1, 5, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
         Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=8.0, extra=phone_extra),
         Beat(f2, window(f2, 0, pre=0.5, post=1.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
-        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=True), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
         Beat(f2, window(f2, 6, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
         Beat(f2, window(f2, 7, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
         Beat(s5, window(s5, 0, pre=3.0, post=3.0), "Any video", "A recipe: jump to the step you need."),

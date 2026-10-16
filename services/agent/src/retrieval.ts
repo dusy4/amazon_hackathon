@@ -123,9 +123,18 @@ export class MomentRetriever {
       if (hit) qv = hit;
       else
         try {
-          [qv] = await this.embedderForIndex(index).embed([q.query], "query");
-          this.queryCache.set(key, qv);
-          if (this.queryCache.size > 500) this.queryCache.delete(this.queryCache.keys().next().value!);
+          // A TV request can't wait on a slow embedding API (a free-tier call once took 30 s): after the budget,
+          // rank without the semantic channel. The late vector still lands in the cache for the next ask.
+          const budget = Number(process.env.SP_EMBED_BUDGET_MS ?? 2500);
+          const call = this.embedderForIndex(index).embed([q.query], "query").then(([v]) => {
+            this.queryCache.set(key, v);
+            if (this.queryCache.size > 500) this.queryCache.delete(this.queryCache.keys().next().value!);
+            return v;
+          });
+          call.catch(() => {});
+          const v = await Promise.race([call, new Promise<null>((r) => setTimeout(() => r(null), budget).unref?.())]);
+          if (!v) throw new Error(`embedding took longer than ${budget} ms`);
+          qv = v;
         } catch (e) {
           degraded = `semantic channel unavailable (${(e as Error).message.slice(0, 80)}); ranked by keywords + entities`;
         }

@@ -592,7 +592,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
         }
         if (e.type === "character" || e.type === "person") c.session.activeEntityId = e.id;
         c.session.ground({ kind: "entity", label: e.name, entityId: e.id, moment: c.session.activeMoment ?? undefined });
-        await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked about ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
+        await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `You asked who that was: ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
         // Spoken answer stays short: who, and how we know. Appearances and links are on the card.
         const how = (r.facts as string[]).find((f) => /^recognised/i.test(f));
         c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}.${how ? ` ${cap(how)}.` : ""}`.trim());
@@ -702,15 +702,18 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       return;
     }
     case "memory_query": {
-      const r = await c.call("memory.search", { query: intent.text, types: intent.types.length ? intent.types : undefined, limit: 5 });
+      const r = await c.call("memory.search", { query: intent.text, types: intent.types.length ? intent.types : undefined, limit: intent.types.length ? 50 : 5 });
       const items = r.results as { summary: string; wallClock: string; contentTimeMs: number | null }[];
+      // "the player I asked about" names a kind of memory (an identification): the latest one is meant, not the
+      // best wording match from an older session.
+      if (intent.types.length) items.sort((a, b) => Date.parse(b.wallClock) - Date.parse(a.wallClock));
       if (!items.length) {
         c.speech.push("I don't have anything like that in your viewing history yet.");
         return;
       }
       await c.app.record({ type: "memory_query", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked: ${intent.text}`, entityIds: [], payload: {} });
       c.speech.push(`${items[0].summary} — ${relTime(items[0].wallClock)}.`);
-      c.cards.push({ type: "memory", title: "From your Viewing Memory", items: items.map((i) => ({ summary: i.summary, at: i.wallClock, contentTimeMs: i.contentTimeMs })) });
+      c.cards.push({ type: "memory", title: "From your Viewing Memory", items: items.slice(0, 5).map((i) => ({ summary: i.summary, at: i.wallClock, contentTimeMs: i.contentTimeMs })) });
       return;
     }
     case "open_content": {

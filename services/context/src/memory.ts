@@ -72,7 +72,9 @@ export class DynamoViewingMemory implements ViewingMemory {
   private doc: DynamoDBDocumentClient;
   constructor(private table: string, region = process.env.AWS_REGION ?? "us-east-1") {
     this.backend = `dynamodb:${table}`;
-    this.doc = DynamoDBDocumentClient.from(new DynamoDBClient({ region }));
+    // Events carry optional fields (payload values, content time) that may be undefined: drop them rather than
+    // failing the write.
+    this.doc = DynamoDBDocumentClient.from(new DynamoDBClient({ region }), { marshallOptions: { removeUndefinedValues: true } });
   }
   async append(e: ActionEvent) {
     await this.doc.send(new PutCommand({ TableName: this.table, Item: { ...e, sk: `${e.wallClock}#${e.id}` } }));
@@ -126,7 +128,10 @@ export class FailoverViewingMemory implements ViewingMemory {
       await this.primary.append(e);
       this.lastError = null;
     } catch (err) {
-      this.lastError = ((err as Error).message ?? String(err)).split("\n")[0].slice(0, 120);
+      const msg = ((err as Error).message ?? String(err)).split("\n")[0].slice(0, 120);
+      // A failed write must be visible: reads keep working, so a silent failure looks like "memory forgot".
+      if (msg !== this.lastError) console.warn(`[viewing-memory] write to ${this.primary.backend} failed (kept locally): ${msg}`);
+      this.lastError = msg;
     }
   }
   recent(userId: string, limit: number) {
