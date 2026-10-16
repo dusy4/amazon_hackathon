@@ -502,7 +502,9 @@ async function runIntent(intent: Intent, c: SkillCtx) {
         if (e.type === "character" || e.type === "person") c.session.activeEntityId = e.id;
         c.session.ground({ kind: "entity", label: e.name, entityId: e.id, moment: c.session.activeMoment ?? undefined });
         await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Asked about ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
-        c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}. ${r.facts[0] ? `${cap(r.facts[0])}` : ""}`.trim());
+        // Spoken answer stays short: who, and how we know. Appearances and links are on the card.
+        const how = (r.facts as string[]).find((f) => /^recognised/i.test(f));
+        c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}.${how ? ` ${cap(how)}.` : ""}`.trim());
         c.cards.push({ type: "entity", title: e.name, subtitle: e.role, facts: [...r.facts, `source: ${r.provenance.source}`] });
         return;
       }
