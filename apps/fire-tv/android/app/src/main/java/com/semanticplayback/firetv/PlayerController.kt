@@ -12,7 +12,7 @@ import org.json.JSONObject
  * Mirrors apps/fire-tv/web/player.js: load, seek, play, pause, set_rate, play_segment, loop, clear_loop.
  * All methods run on the main thread (ExoPlayer's application looper).
  */
-class PlayerController(private val player: ExoPlayer, private val deviceId: String, private val serverBase: String) {
+class PlayerController(private val player: ExoPlayer, private val deviceId: String, private val serverBase: String, private val variant: String? = null) {
     var contentId: String? = null
         private set
     private var loopStart = 0L
@@ -67,7 +67,8 @@ class PlayerController(private val player: ExoPlayer, private val deviceId: Stri
                 val id = cmd.getString("contentId")
                 if (id != contentId) {
                     contentId = id
-                    val url = cmd.getString("url").let { if (it.startsWith("http")) it else serverBase + it }
+                    // Optional lighter rendition (ABR-style) for low-power devices: --es variant 480
+                    val url = cmd.getString("url").let { if (it.startsWith("http")) it else serverBase + it }.let { u -> if (variant != null) u + (if ("?" in u) "&" else "?") + "v=" + variant else u }
                     player.setMediaItem(MediaItem.fromUri(url))
                     player.prepare()
                 }

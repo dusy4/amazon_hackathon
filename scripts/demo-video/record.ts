@@ -11,7 +11,7 @@
  */
 import { spawn, execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve as resolvePath } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
@@ -77,14 +77,30 @@ async function post(path: string, body: unknown): Promise<any> {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-function startRecording(remote: string) {
-  // screenrecord stops at --time-limit (max 180 s) or when killed.
+/**
+ * Emulators: record on the host (`adb emu screenrecord`, fixed 30 fps, no in-guest encoder load).
+ * Real devices: in-device `screenrecord` (max 180 s).
+ */
+const EMULATOR = execFileSync("adb", ["get-serialno"]).toString().trim().startsWith("emulator-");
+
+function startRecording(remote: string, local: string) {
+  if (EMULATOR) {
+    execFileSync("adb", ["emu", "screenrecord", "start", "--fps", "30", "--bit-rate", "16000000", "--time-limit", "180", resolvePath(local.replace(/\.mp4$/, ".webm"))]);
+    return null;
+  }
   return spawn("adb", ["shell", "screenrecord", "--time-limit", "180", "--bit-rate", "8000000", remote], { stdio: "ignore" });
 }
 
-async function stopRecording(proc: ReturnType<typeof spawn>, remote: string, local: string) {
+async function stopRecording(proc: ReturnType<typeof spawn> | null, remote: string, local: string) {
+  if (EMULATOR) {
+    execFileSync("adb", ["emu", "screenrecord", "stop"]);
+    await sleep(2500); // host encoder finalises the webm
+    const webm = resolvePath(local.replace(/\.mp4$/, ".webm"));
+    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", webm, "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-pix_fmt", "yuv420p", "-r", "30", resolvePath(local)]);
+    return;
+  }
   execFileSync("adb", ["shell", "pkill", "-INT", "screenrecord"]);
-  await new Promise((r) => proc.on("close", r));
+  await new Promise((r) => proc!.on("close", r));
   await sleep(1500); // let the device finalise the mp4
   execFileSync("adb", ["pull", remote, local]);
   execFileSync("adb", ["shell", "rm", remote]);
@@ -102,7 +118,7 @@ const only = process.argv[3];
 const manifest: unknown[] = [];
 for (const scene of SCENES.filter((s) => !only || s.id.includes(only))) {
   const remote = `/sdcard/${scene.id}.mp4`;
-  const proc = startRecording(remote);
+  const proc = startRecording(remote, join(outDir, `${scene.id}.mp4`));
   await sleep(1200);
   const t0 = Date.now();
   const turns: unknown[] = [];

@@ -7,6 +7,7 @@
  *   /ws        player bridge + live trace stream
  */
 import "dotenv/config";
+import { existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { networkInterfaces } from "node:os";
 import { join, resolve } from "node:path";
@@ -46,6 +47,14 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
   http.use("/tv", express.static(join(root, "apps/fire-tv/web")));
   http.use("/phone", express.static(join(root, "apps/companion")));
   http.use("/shared", express.static(join(root, "apps/shared")));
+  // Lighter renditions for low-power players (e.g. `?v=480` → video.480.mp4 when present), like an ABR ladder rung.
+  http.get("/media/:contentId/:file", (req, res, next) => {
+    const v = typeof req.query.v === "string" && /^\d{3,4}$/.test(req.query.v) ? req.query.v : null;
+    if (!v) return next();
+    const alt = join(dataDir, "content", req.params.contentId, req.params.file.replace(/\.mp4$/, `.${v}.mp4`));
+    if (!existsSync(alt)) return next();
+    res.sendFile(alt);
+  });
   http.use("/media", express.static(join(dataDir, "content")));
   http.use("/clips", express.static(join(dataDir, "clips")));
   http.get("/", (_req, res) => res.redirect("/tv/"));

@@ -54,10 +54,19 @@ class MainActivity : AppCompatActivity() {
         status = findViewById(R.id.status)
         overlay = findViewById(R.id.overlay)
 
-        player = ExoPlayer.Builder(this).build()
+        // Prefer hardware-accelerated decoders: some images list the software decoder first, which drops
+        // 720p playback to a few fps. Fire TV hardware decoders are normally first anyway; this makes it explicit.
+        val hwFirst = androidx.media3.exoplayer.mediacodec.MediaCodecSelector { mimeType, secure, tunneling ->
+            androidx.media3.exoplayer.mediacodec.MediaCodecUtil.getDecoderInfos(mimeType, secure, tunneling)
+                .sortedByDescending { it.hardwareAccelerated }
+        }
+        val renderers = androidx.media3.exoplayer.DefaultRenderersFactory(this)
+            .setMediaCodecSelector(hwFirst)
+            .setEnableDecoderFallback(true)
+        player = ExoPlayer.Builder(this, renderers).build()
         findViewById<PlayerView>(R.id.player_view).player = player
         session = MediaSession.Builder(this, player).build()
-        controller = PlayerController(player, deviceId, server)
+        controller = PlayerController(player, deviceId, server, intent.getStringExtra("variant"))
         controller.onChange = { sendState() }
         player.addListener(object : androidx.media3.common.Player.Listener {
             override fun onEvents(p: androidx.media3.common.Player, events: androidx.media3.common.Player.Events) = sendState()

@@ -236,7 +236,7 @@ class Card:
         self.layer = text_layer(lines, width=1600, align="center" if self.center else "left")
 
     def audio_events(self):
-        return [(0.35, self.audio)] if self.audio is not None else []
+        return [(0.35, self.audio, "narr")] if self.audio is not None else []
 
     def frames(self):
         n = int(round(self.dur * FPS))
@@ -279,13 +279,15 @@ class Footage:
                 continue
             if s_at is not None:
                 self.events.append((s_at, "ask", bubble(tr["utterance"])))
-                self.audio.append((max(0, s_at - 1.3), tts(tr["utterance"], "Matthew", tmp)))
+                said = tts(tr["utterance"], "Matthew", tmp)
+                # the viewer finishes speaking as the request is sent
+                self.audio.append((max(0, s_at - len(said) / SR - 0.1), said, "viewer"))
             if s_done is not None:
                 self.events.append((s_done, "how", chip(how_line(tr["turn"]))))
                 reply = tr["turn"]["speech"]
                 first = reply.split(". ")
                 short = ". ".join(first[:2]) if len(reply) > 150 else reply
-                self.audio.append((s_done + 0.15, tts(short, "Ruth", tmp)))
+                self.audio.append((s_done + 0.15, tts(short, "Ruth", tmp), "reply"))
             # a cut inside this turn's wait: say so on screen
             for (a1, b1), (a2, b2) in zip(self.pieces, self.pieces[1:]):
                 if at <= b1 <= done and a2 <= done + 1:
@@ -349,7 +351,7 @@ class ColdOpen:
         self.shade = Image.fromarray(np.repeat(grad, W, 1).astype(np.uint8), "L")
 
     def audio_events(self):
-        return [(0.6, self.audio)]
+        return [(0.6, self.audio, "narr")]
 
     def frames(self):
         dec = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-ss", f"{self.start:.3f}", "-i", self.media, "-t", f"{self.dur:.3f}",
@@ -476,12 +478,12 @@ def main():
         Card("Ask who's on screen.", kicker="Viewing Lens", sub="Live Amazon Rekognition on the exact frame you asked about.", vo="Ask who's on screen."),
         Footage("f1-football", win("f1-football", 0, pre=6.0, post=4.5)),
         Card("Then just refer to it.", kicker="Conversational references", sub="“His goal” resolves to Usain Bolt — then to the exact moment.", vo="Then just refer to it."),
-        Footage("f1-football", win("f1-football", 1, post=4.2)),
+        Footage("f1-football", win("f1-football", 1, post=9.5)),
         Card("Every request becomes a grounded moment.", kicker="How it works", min_dur=9.0, top=True,
              vo="Every request becomes a grounded moment: understood in context, found in an index built with Amazon Rekognition, played on Fire TV, and remembered.",
              extra=lambda img, t, a: step_cards(img, t, a, explainer)),
         Card("Replay it your way.", kicker="Deterministic follow-ups", sub="Half speed, repeat twice — arithmetic on the grounded moment, no model call.", vo="Replay it your way."),
-        Footage("f1-football", win("f1-football", 2, pre=0.6, post=6.5, until_turn=3)),
+        Footage("f1-football", win("f1-football", 2, pre=0.6, post=12.0, until_turn=3)),
         Card("Share the moment.", kicker="Clip and share", sub="A server-side clip, pushed to your phone with a link back to the match.", vo="Share the moment."),
         Footage("f1-football", win("f1-football", 5, pre=1.0, post=3.2)),
         Card("", min_dur=4.2, extra=None),  # phone beat (filled below)
@@ -529,13 +531,27 @@ def main():
         # ---------- audio mix: music bed ducked under speech
         n = int(total * SR) + SR
         speech = np.zeros(n, dtype=np.float32)
-        t0 = 0.0
+        # One voice at a time: events keep their order, later ones wait for the previous to finish.
+        # A clip never runs past its own segment (it fades out; the text is on screen anyway).
+        cursor, t0 = 0.0, 0.0
         for s in segments:
-            for at, clip in s.audio_events():
-                i0 = int((t0 + at) * SR)
-                seg = clip[: max(0, n - i0)]
-                speech[i0:i0 + len(seg)] += seg * 0.95
-            t0 += s.dur
+            seg_end = t0 + s.dur
+            for at, clip, kind in sorted(s.audio_events(), key=lambda e: e[0]):
+                start = max(t0 + at, cursor + 0.15)
+                if kind == "reply" and start - (t0 + at) > 2.5:
+                    continue  # too late to still sound like an answer
+                room = int((seg_end - start) * SR)
+                if room < SR * 0.6:
+                    continue
+                c = clip[:room].copy()
+                if len(clip) > room:
+                    f = min(len(c), int(0.25 * SR))
+                    c[-f:] *= np.linspace(1, 0, f)
+                i0 = int(start * SR)
+                c = c[: max(0, n - i0)]
+                speech[i0:i0 + len(c)] += c * 0.95
+                cursor = start + len(c) / SR
+            t0 = seg_end
         env = np.convolve(np.abs(speech) > 0.02, np.ones(int(0.25 * SR)) / (0.25 * SR), mode="same")
         duck = 1 - 0.55 * np.clip(env * 3, 0, 1)
         bed = music_bed(total + 1)[:n] * duck
