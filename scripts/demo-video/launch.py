@@ -227,7 +227,7 @@ def _result_text(name, d):
         return "deep link pushed to the phone"
     if name == "memory.search":
         r = d.get("results") or []
-        return (r[0].get("summary", "") if r else "nothing yet") + " · DynamoDB"
+        return r[0].get("summary", "") if r else "nothing yet"
     if name == "moments.summarize":
         return f"{len(d.get('highlights') or d.get('events') or [])} key moments, spoiler-bounded"
     return ""
@@ -264,8 +264,8 @@ def rail_rows(tr):
             res = next((x for x in steps[i + 1:] if x["kind"] in ("tool_result", "error") and (x.get("label") == lab or x["kind"] == "error")), None)
             took = (res.get("ms", ms) - ms) if res else 0
             svc = TOOL_SERVICE.get(lab, "Fire TV" if lab.startswith("player.") else "")
-            rows.append((ms, ORANGE if svc.startswith("Amazon") else CYAN, f"{lab}" + (f"  ·  {svc}" if svc else ""),
-                         _result_text(lab, res.get("data") if res else None), f"{took} ms"))
+            out = _result_text(lab, res.get("data") if res else None)
+            rows.append((ms, ORANGE if svc.startswith("Amazon") else CYAN, lab, (f"{svc} → {out}" if svc and out else svc or out), f"{took} ms"))
         elif k == "error":
             rows.append((ms, ORANGE, "Spoiler guard" if "spoil" in lab.lower() else "Error", lab, ""))
         elif k == "answer":
@@ -273,13 +273,73 @@ def rail_rows(tr):
     return rows
 
 
+def draw_icon(kind, colour, size=44):
+    """Line icons drawn at 4x and downsampled: one per pipeline step type."""
+    S = size * 4
+    im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.ellipse([0, 0, S - 1, S - 1], fill=colour + (46,), outline=colour + (255,), width=6)
+    c, lw, col = S / 2, 11, WHITE + (255,)
+    def L(*pts): d.line(pts, fill=col, width=lw, joint="curve")
+    if kind == "mic":
+        d.rounded_rectangle([c - 18, c - 46, c + 18, c + 12], radius=18, outline=col, width=lw)
+        d.arc([c - 34, c - 30, c + 34, c + 30], 20, 160, fill=col, width=lw); L((c, c + 30), (c, c + 46)); L((c - 20, c + 46), (c + 20, c + 46))
+    elif kind == "stack":
+        for k in range(3):
+            y = c - 34 + k * 26
+            d.polygon([(c - 46, y), (c, y - 18), (c + 46, y), (c, y + 18)], outline=col, width=lw - 3)
+    elif kind == "fork":
+        L((c, c + 46), (c, c)); L((c, c), (c - 34, c - 38)); L((c, c), (c + 34, c - 38))
+        d.ellipse([c - 46, c - 52, c - 22, c - 28], fill=col); d.ellipse([c + 22, c - 52, c + 46, c - 28], fill=col)
+    elif kind == "spark":
+        d.polygon([(c, c - 52), (c + 14, c - 14), (c + 52, c), (c + 14, c + 14), (c, c + 52), (c - 14, c + 14), (c - 52, c), (c - 14, c - 14)], fill=col)
+    elif kind == "search":
+        d.ellipse([c - 44, c - 44, c + 16, c + 16], outline=col, width=lw); L((c + 10, c + 10), (c + 44, c + 44))
+    elif kind == "eye":
+        d.arc([c - 56, c - 40, c + 56, c + 60], 200, 340, fill=col, width=lw); d.arc([c - 56, c - 60, c + 56, c + 40], 20, 160, fill=col, width=lw)
+        d.ellipse([c - 16, c - 16, c + 16, c + 16], fill=col)
+    elif kind == "db":
+        d.ellipse([c - 40, c - 50, c + 40, c - 22], outline=col, width=lw - 2)
+        L((c - 40, c - 36), (c - 40, c + 36)); L((c + 40, c - 36), (c + 40, c + 36))
+        d.arc([c - 40, c + 22, c + 40, c + 50], 0, 180, fill=col, width=lw - 2); d.arc([c - 40, c - 8, c + 40, c + 20], 0, 180, fill=col, width=lw - 2)
+    elif kind == "play":
+        d.polygon([(c - 26, c - 40), (c + 40, c), (c - 26, c + 40)], fill=col)
+    elif kind == "clip":
+        d.ellipse([c - 46, c + 8, c - 14, c + 40], outline=col, width=lw - 2); d.ellipse([c + 14, c + 8, c + 46, c + 40], outline=col, width=lw - 2)
+        L((c - 22, c + 12), (c + 34, c - 46)); L((c + 22, c + 12), (c - 34, c - 46))
+    elif kind == "phone":
+        d.rounded_rectangle([c - 28, c - 50, c + 28, c + 50], radius=12, outline=col, width=lw); L((c - 8, c + 34), (c + 8, c + 34))
+    elif kind == "shield":
+        d.polygon([(c, c - 52), (c + 42, c - 34), (c + 34, c + 20), (c, c + 50), (c - 34, c + 20), (c - 42, c - 34)], outline=col, width=lw)
+    elif kind == "speaker":
+        d.polygon([(c - 46, c - 16), (c - 22, c - 16), (c + 6, c - 42), (c + 6, c + 42), (c - 22, c + 16), (c - 46, c + 16)], fill=col)
+        d.arc([c - 10, c - 30, c + 30, c + 30], 300, 60, fill=col, width=lw); d.arc([c - 10, c - 50, c + 50, c + 50], 300, 60, fill=col, width=lw)
+    elif kind == "calc":
+        L((c - 40, c - 20), (c + 40, c - 20)); L((c - 40, c + 20), (c + 40, c + 20)); L((c, c - 50), (c, c - 2))
+    elif kind == "layers":
+        d.rounded_rectangle([c - 44, c - 44, c + 20, c + 20], radius=8, outline=col, width=lw - 2); d.rounded_rectangle([c - 20, c - 20, c + 44, c + 44], radius=8, outline=col, width=lw - 2)
+    return im.resize((size, size), Image.LANCZOS)
+
+
+def icon_for(title):
+    t = title.lower()
+    for key, kind in (("you said", "mic"), ("llm decides", "spark"), ("router: llm", "spark"), ("router", "fork"), ("context envelope", "stack"),
+                      ("same goal", "layers"), ("exact maths", "calc"), ("rekognition", "eye"), ("dynamodb", "db"), ("moments.", "search"),
+                      ("clip.create", "clip"), ("share.send", "phone"), ("player.", "play"), ("content.open", "play"), ("spoiler", "shield"),
+                      ("answer", "speaker")):
+        if key in t:
+            return kind
+    return "layers"
+
+
 def rail_row_img(colour, title, detail, right):
-    w, h = RAIL_W - 32, 74
+    w, h = RAIL_W - 32, 78
     img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=(255, 255, 255, 14), outline=(255, 255, 255, 30), width=1)
-    d.rounded_rectangle([0, 0, 5, h - 1], radius=3, fill=colour + (255,))
+    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=14, fill=(255, 255, 255, 14), outline=(255, 255, 255, 30), width=1)
+    img.alpha_composite(draw_icon(icon_for(title + " " + detail.split(" → ")[0]), colour, 48), (12, (h - 48) // 2))
     ft, fd, fr = font("semibold", 22), font("regular", 18), font("mono", 18)
+    IX = 70  # text starts right of the icon
     rw = int(d.textlength(right, font=fr)) if right else 0
     def clip(text, f, width):
         if d.textlength(text, font=f) <= width:
@@ -287,10 +347,10 @@ def rail_row_img(colour, title, detail, right):
         while text and d.textlength(text + "…", font=f) > width:
             text = text[:-1]
         return text + "…"
-    d.text((18, 9), clip(title, ft, w - 40 - rw), font=ft, fill=WHITE + (255,))
+    d.text((IX, 10), clip(title, ft, w - IX - 24 - rw), font=ft, fill=WHITE + (255,))
     if right:
-        d.text((w - 14 - rw, 12), right, font=fr, fill=BODY + (255,))
-    d.text((18, 42), clip(detail, fd, w - 32), font=fd, fill=(200, 208, 218, 255))
+        d.text((w - 14 - rw, 13), right, font=fr, fill=BODY + (255,))
+    d.text((IX, 44), clip(detail, fd, w - IX - 14), font=fd, fill=(200, 208, 218, 255))
     return img
 
 
