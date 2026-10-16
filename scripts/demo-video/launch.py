@@ -270,8 +270,9 @@ def music_bed(seconds):
 
 # ------------------------------------------------------------------ segments
 class Card:
-    def __init__(self, headline, kicker=None, sub=None, dur=3.0, center=False, extra=None, top=False):
+    def __init__(self, headline, kicker=None, sub=None, dur=3.0, center=False, extra=None, top=False, sub_size=34):
         self.headline, self.kicker, self.sub, self.dur, self.center, self.extra, self.top = headline, kicker, sub, dur, center, extra, top
+        self.sub_size = sub_size
 
     def prepare(self, tmp):
         lines = []
@@ -280,7 +281,7 @@ class Card:
         if self.headline:
             lines.append((self.headline, font("light", 88 if len(self.headline) < 34 else 72), WHITE, 20))
         if self.sub:
-            lines.append((self.sub, font("semilight", 34), BODY, 0))
+            lines.append((self.sub, font("semilight", self.sub_size), ORANGE if self.sub_size > 40 else BODY, 0))
         self.layer = text_img(lines, 1600, "center" if self.center else "left")
 
     def audio(self):
@@ -344,7 +345,7 @@ def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=()):
     if k > 0:  # the previous answer stays on the TV panel ~5 s after it is spoken: don't open a beat on it
         prev_done = sc["turns"][k - 1]["doneMs"] / 1000 + off
         if start < prev_done + 6.0:
-            start = max(start, turns[0]["atMs"] / 1000 + off + 0.35)  # the panel has switched to the new request
+            start = max(start, turns[0]["atMs"] / 1000 + off + 0.6)  # the panel has switched to the new request
     end = turns[-1]["doneMs"] / 1000 + off + post
     if last + 1 < len(sc["turns"]):  # stop before the next request appears on the TV (no leaking answers)
         end = min(end, sc["turns"][last + 1]["atMs"] / 1000 + off - 0.3)
@@ -355,8 +356,8 @@ def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=()):
         if prev_i in gap_cut and prev_done is not None and at - prev_done > 1.6:  # idle footage between two requests
             pieces.append([cur, prev_done + 1.0])
             cur = at - 0.05
-        if done - at > 6:
-            pieces.append([cur, at + 3.0])
+        if done - at > 5:
+            pieces.append([cur, at + 2.5])
             cur = done - 0.8
         prev_done, prev_i = done, i
     pieces.append([cur, end])
@@ -395,7 +396,7 @@ class Beat:
         for tr in self.sc["turns"]:
             at, done = tr["atMs"] / 1000 + self.off, tr["doneMs"] / 1000 + self.off
             s_at, s_done = self.seg_t(at), self.seg_t(done)
-            if s_at is None and 0 <= self.pieces[0][0] - at <= 0.6:  # the beat opens just after the request: still voice it
+            if s_at is None and 0 <= self.pieces[0][0] - at <= 0.8:  # the beat opens just after the request: still voice it
                 s_at = 0.0
             if s_at is None and s_done is None:
                 continue
@@ -563,7 +564,10 @@ def arch_extra(img, t, a):
     line(1280, 742, 1380, 622, 3.0)
     line(1280, 742, 1380, 742, 3.1)
     line(640, 742, 540, 612, 3.4)
-    line(1250, 554, 1250, 690, 2.4)  # simple asks: Router straight to the tools, no model call
+    line(1300, 502, 1330, 502, 2.4)  # simple asks: Router straight to the tools, outside the LLM box
+    line(1330, 502, 1330, 742, 2.5)
+    line(1330, 742, 1282, 742, 2.6)
+    d.text((1338, 600), "no model", font=font("semibold", 20), fill=ORANGE + (int(255 * ease((t - 2.6) / 0.4) * a),))
 
 
 def main():
@@ -635,15 +639,15 @@ def main():
         Beat(f1, window(f1, 3, pre=0.4, post=1.2, until_turn=4), "Precise follow-ups", "Rewind it in slow motion."),
         Beat(f1, window(f1, 5, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
         Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=8.0, extra=phone_extra),
-        Beat(f2, window(f2, 0, pre=0.5, post=1.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
-        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 0, pre=0.5, post=0.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
+        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=4, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
         Beat(f2, window(f2, 6, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
         Beat(f2, window(f2, 7, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
         Beat(s5, window(s5, 0, pre=3.0, post=3.0), "Any video", "A recipe: jump to the step you need."),
         Beat(s5, window(s5, 1, pre=2.5, post=2.0), "Any video", "A talk: jump to the topic."),
         Beat(s4, window(s4, 1, pre=0.6, post=2.5), "Tears of Steel · Blender Foundation", "A film: rewind to a line of dialogue."),
         Card("Under the hood.", kicker="Architecture", dur=8.0, top=True, extra=arch_extra),
-        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=5.0, center=True,
+        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=5.0, center=True, sub_size=60,
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
