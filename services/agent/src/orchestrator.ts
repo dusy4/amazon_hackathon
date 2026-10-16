@@ -113,6 +113,7 @@ export class Orchestrator {
       devices: this.app.bridge.list().map((d) => ({ deviceId: d.deviceId, kind: d.kind })),
     });
     step({ kind: "context", label: "Context Envelope", component: "context-service", data: envelope });
+    const seekTargetBefore = session.lastSeekTargetMs;
     session.utterances.push(utterance);
 
     const intents = parseUtterance(utterance, this.app.store.list().map((c) => c.title));
@@ -184,7 +185,19 @@ export class Orchestrator {
     const result: TurnResult = { turnId, utterance, speech: speech.join(" "), cards, trace, interpreter, durationMs: Date.now() - t0 };
     step({ kind: "answer", label: result.speech, component: "orchestrator" });
     this.app.emit({ type: "turn", turn: result });
-    this.app.bridge.broadcast({ cmd: "overlay", overlay: { speech: result.speech, cards: cards.map(stripHeavy), steps: trace.filter((s) => s.kind === "tool_call").map((s) => s.label) } });
+    // If this turn moved the playhead, tell the TV where from/to so it can draw the jump.
+    const fromMs = envelope.relevantCore.playback?.positionMs;
+    const after = this.app.bridge.state();
+    // The jump target is where the agent seeked to this turn (not where playback has reached since).
+    const target = session.lastSeekTargetMs !== seekTargetBefore ? session.lastSeekTargetMs : null;
+    const moved = fromMs != null && target != null && Math.abs(target - fromMs) > 2000;
+    const jump = moved
+      ? { fromMs, toMs: target, durationMs: after?.durationMs || index?.durationMs || 0, label: session.activeMoment?.label ?? null }
+      : null;
+    this.app.bridge.broadcast({
+      cmd: "overlay",
+      overlay: { speech: result.speech, cards: cards.map(stripHeavy), steps: trace.filter((s) => s.kind === "tool_call").map((s) => s.label), jump, title: index?.title ?? null },
+    });
     return result;
   }
 }

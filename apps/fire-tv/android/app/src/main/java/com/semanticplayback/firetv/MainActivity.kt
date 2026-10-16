@@ -145,6 +145,8 @@ class MainActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.heard).text = t.optString("label")
                 findViewById<TextView>(R.id.speech).text = "Thinking…"
                 findViewById<TextView>(R.id.card).visibility = View.GONE
+                findViewById<View>(R.id.jump).visibility = View.GONE
+                findViewById<TextView>(R.id.turn_meta).text = "listening"
                 findViewById<TextView>(R.id.steps).text = ""
                 setThinking(true)
             }
@@ -207,6 +209,8 @@ class MainActivity : AppCompatActivity() {
             setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANT).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
             setDataSource("$server/api/tts?text=" + java.net.URLEncoder.encode(text, "UTF-8"))
             setOnPreparedListener { it.start() }
+            // Keep the answer on screen until it has been spoken, then a few seconds to read.
+            setOnCompletionListener { main.post { scheduleHide(5000) } }
             setOnErrorListener { _, _, _ -> true }
             prepareAsync()
         }
@@ -254,14 +258,29 @@ class MainActivity : AppCompatActivity() {
         // How it was done: the real MCP tool chain, interpreter and latency of this turn.
         val steps = o.optJSONArray("steps")
         val chain = (0 until (steps?.length() ?: 0)).joinToString(" → ") { steps!!.getString(it) }
-        val meta = lastTurn?.let { t -> "${t.optLong("durationMs")} ms · ${t.optString("interpreter").substringBefore(" (").substringAfterLast("/").substringBefore(":free")}" }
-        findViewById<TextView>(R.id.steps).text = listOfNotNull(chain.ifBlank { null }, meta).joinToString("  ·  ")
+        val meta = lastTurn?.let { t ->
+            val ms = t.optLong("durationMs")
+            val who = t.optString("interpreter").let { if (it.startsWith("rules")) "deterministic" else "LLM agent" }
+            (if (ms >= 1000) "%.1f s".format(ms / 1000.0) else "$ms ms") + " · " + who
+        }
+        findViewById<TextView>(R.id.steps).text = chain
+        findViewById<TextView>(R.id.turn_meta).text = meta ?: ""
+
+        // The semantic seek, visualised: where you were → the moment you meant.
+        val jumpView = findViewById<JumpStripView>(R.id.jump)
+        val j = o.optJSONObject("jump")
+        if (j != null) {
+            var momentEnd = j.optLong("toMs")
+            for (i in 0 until (cards?.length() ?: 0)) cards!!.getJSONObject(i).let { if (it.optString("type") == "moment") momentEnd = it.optLong("endMs", momentEnd) }
+            jumpView.show(j.optLong("fromMs"), j.optLong("toMs"), momentEnd)
+        } else jumpView.visibility = View.GONE
 
         moment?.let {
             findViewById<TextView>(R.id.moment_text).text = it
             findViewById<View>(R.id.moment_pill).visibility = View.VISIBLE
         }
-        scheduleHide(if (speech.length > 140) 14000 else 9000)
+        // Fallback if no audio plays: ~reading time for the full answer (the spoken reply re-schedules on completion).
+        scheduleHide(maxOf(9000L, 4000L + speech.length * 70L))
     }
 
     /** Suggestions per title kind, so the whole experience is reachable with the remote's D-pad alone. */
