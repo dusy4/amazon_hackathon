@@ -3,57 +3,100 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Semantic Playback · Phone</title>
+  <title>Semantic Playback</title>
   <style>
-    :root { --bg: #0b0e14; --card: #141a26; --line: #243049; --text: #e6ebf5; --muted: #8b97ad; --accent: #ff9900; color-scheme: dark; }
+    /* Amazon palette: Squid Ink text on white, Amazon Orange primary action, soft gray surfaces. */
+    :root {
+      --ink: #232f3e; --ink-2: #485769; --muted: #6b7889; --line: #e3e7ec; --surface: #f4f6f8;
+      --orange: #ff9900; --orange-ink: #1a1300; --blue: #007185; --radius: 16px;
+      color-scheme: light;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
-    header { padding: 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-    header b { font-size: 17px; }
-    #status { font-size: 12px; color: var(--muted); }
-    main { padding: 12px 16px 40px; max-width: 640px; margin: 0 auto; }
-    .empty { color: var(--muted); text-align: center; margin-top: 40px; }
-    .clip { background: var(--card); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 14px; overflow: hidden; }
-    .clip.hl { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255,153,0,.35); }
-    .clip video { width: 100%; display: block; background: #000; }
-    .clip .meta { padding: 10px 12px; }
-    .clip h3 { margin: 0 0 2px; font-size: 16px; }
-    .clip .sub { color: var(--muted); font-size: 12px; }
-    .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .actions a, .actions button { flex: 1; text-align: center; padding: 9px; border-radius: 10px; border: 1px solid var(--line); background: #1b2333; color: var(--text); text-decoration: none; font: inherit; }
-    .actions .primary { background: var(--accent); color: #111; border: 0; font-weight: 700; }
+    body { margin: 0; background: #fff; color: var(--ink); font: 16px/1.45 "Amazon Ember", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+    header { position: sticky; top: 0; z-index: 2; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding: 14px 18px; display: flex; align-items: center; gap: 12px; }
+    .mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--orange), #00a7ce); flex: none; }
+    header .t { font-weight: 700; font-size: 17px; line-height: 1.1; }
+    header .s { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #b9c2cc; }
+    .dot.live { background: #2eb67d; box-shadow: 0 0 0 3px rgba(46,182,125,.18); }
+    main { padding: 18px; max-width: 560px; margin: 0 auto; }
+    h2 { font-size: 13px; font-weight: 700; letter-spacing: .02em; color: var(--muted); margin: 6px 2px 12px; }
+    .empty { text-align: center; color: var(--muted); padding: 56px 18px; }
+    .empty .big { color: var(--ink); font-size: 20px; font-weight: 300; margin-bottom: 8px; }
+    .clip { border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(35,47,62,.08); margin-bottom: 18px; }
+    .clip.new { animation: arrive .5s cubic-bezier(.2,.8,.2,1); }
+    @keyframes arrive { from { transform: translateY(14px); opacity: 0; } }
+    .media { position: relative; background: #000; aspect-ratio: 16/9; }
+    .media video { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .badge { position: absolute; left: 12px; top: 12px; background: rgba(35,47,62,.88); color: #fff; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+    .meta { padding: 14px 16px 16px; }
+    .meta h3 { margin: 0 0 4px; font-size: 19px; font-weight: 700; line-height: 1.25; }
+    .meta .sub { color: var(--ink-2); font-size: 14px; }
+    .meta .attr { color: var(--muted); font-size: 12px; margin-top: 6px; }
+    .actions { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-top: 14px; }
+    .btn { appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 600; text-decoration: none; text-align: center; cursor: pointer; }
+    .btn.primary { background: var(--orange); border-color: var(--orange); color: var(--orange-ink); }
+    .btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
   </style>
 </head>
 <body>
-  <header><b>📱 Sent from your TV</b><span id="status">connecting…</span></header>
-  <main id="list"><p class="empty" id="empty">Clips you send from the TV (“clip that and send it to my phone”) appear here instantly.</p></main>
+  <header>
+    <div class="mark" aria-hidden="true"></div>
+    <div>
+      <div class="t">Semantic Playback</div>
+      <div class="s"><span class="dot" id="dot"></span><span id="status">Connecting to your TV…</span></div>
+    </div>
+  </header>
+  <main>
+    <h2 id="heading" hidden>SENT FROM YOUR TV</h2>
+    <div id="list"></div>
+    <div class="empty" id="empty">
+      <div class="big">Moments you send from the TV appear here.</div>
+      Say “Clip that and send it to my phone”.
+    </div>
+  </main>
   <script type="module">
     const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
     const fmt = (ms) => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+    // Media URLs are served by the same host as this page; keep only the path so any address works.
+    const local = (u) => { try { const x = new URL(u, location.href); return x.pathname + x.search; } catch { return u; } };
     const seen = new Set();
     const want = () => new URLSearchParams(location.hash.slice(1)).get("clip");
     function add(share) {
       if (seen.has(share.shareId)) return;
       seen.add(share.shareId);
-      document.getElementById("empty")?.remove();
+      document.getElementById("empty").hidden = true;
+      document.getElementById("heading").hidden = false;
       const c = share.clip;
+      const title = c.attribution.split(" - ")[0];
       const el = document.createElement("article");
-      el.className = "clip";
+      el.className = "clip new";
       el.id = c.clipId;
-      el.innerHTML = `<video src="${esc(c.url)}" poster="${esc(c.thumbnailUrl)}" controls playsinline preload="metadata"></video>
-        <div class="meta"><h3>${esc(c.label)}</h3><div class="sub">${esc(c.attribution)} · ${fmt(c.endMs - c.startMs)} · ${new Date(share.createdAt).toLocaleTimeString()}</div>
-        <div class="actions"><a class="primary" href="${esc(c.watchFullUrl)}">Watch full match</a>
-        <button data-share>Share…</button><a href="${esc(c.url)}" download>Save</a></div></div>`;
+      el.innerHTML = `<div class="media"><video src="${esc(local(c.url))}" poster="${esc(local(c.thumbnailUrl))}" controls playsinline preload="metadata"></video>
+          <span class="badge">${fmt(c.endMs - c.startMs)} clip</span></div>
+        <div class="meta"><h3>${esc(c.label)}</h3>
+          <div class="sub">${esc(title)} · at ${fmt(c.startMs)}</div>
+          <div class="attr">Sent ${new Date(share.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · ${esc(c.attribution.split(" - ").slice(1).join(" - ") || "")}</div>
+          <div class="actions"><a class="btn primary" href="${esc(local(c.watchFullUrl))}">Watch full match</a>
+            <button class="btn" data-share>Share</button><a class="btn" href="${esc(local(c.url))}" download>Save</a></div></div>`;
       el.querySelector("[data-share]").addEventListener("click", () =>
-        navigator.share ? navigator.share({ title: c.label, text: c.attribution, url: c.url }).catch(() => {}) : navigator.clipboard?.writeText(c.url));
+        navigator.share ? navigator.share({ title: c.label, text: title, url: new URL(local(c.url), location.href).href }).catch(() => {}) : navigator.clipboard?.writeText(new URL(local(c.url), location.href).href));
       document.getElementById("list").prepend(el);
-      if (want() === c.clipId) { el.classList.add("hl"); el.scrollIntoView({ behavior: "smooth" }); }
-      if (navigator.vibrate) navigator.vibrate(80);
+      if (want() === c.clipId) el.scrollIntoView({ behavior: "smooth" });
+      if (navigator.vibrate) navigator.vibrate(60);
     }
     function connect() {
       const ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`);
-      ws.onopen = () => { ws.send(JSON.stringify({ type: "hello", role: "companion", deviceId: `phone-${Math.random().toString(36).slice(2, 7)}` })); document.getElementById("status").textContent = "live"; };
-      ws.onclose = () => { document.getElementById("status").textContent = "reconnecting…"; setTimeout(connect, 1500); };
+      ws.onopen = () => {
+        ws.send(JSON.stringify({ type: "hello", role: "companion", deviceId: `phone-${Math.random().toString(36).slice(2, 7)}` }));
+        document.getElementById("status").textContent = "Connected to your TV";
+        document.getElementById("dot").classList.add("live");
+      };
+      ws.onclose = () => {
+        document.getElementById("status").textContent = "Reconnecting…";
+        document.getElementById("dot").classList.remove("live");
+        setTimeout(connect, 1500);
+      };
       ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.type === "share") add(m.share); };
     }
     connect();
