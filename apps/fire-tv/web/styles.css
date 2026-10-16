@@ -1,22 +1,24 @@
 :root {
-  --bg: #0b0e14;
-  --panel: #121722;
-  --panel-2: #182030;
-  --line: #243049;
-  --text: #e6ebf5;
-  --muted: #8b97ad;
+  /* Amazon palette: Squid Ink surfaces, Amazon Orange accent, Echo blue secondary */
+  --bg: #131a23;
+  --panel: #1b2430;
+  --panel-2: #232f3e;
+  --line: #2f3d50;
+  --text: #ebebeb;
+  --muted: #9aa6b6;
   --accent: #ff9900;
-  --accent-2: #37b6ff;
+  --accent-2: #00a7ce;
   --home: #d63031;
   --away: #2463eb;
-  --ok: #2ecc71;
+  --ok: #2eb67d;
   --warn: #facc15;
   --err: #ff5c5c;
   --focus: 0 0 0 3px #ff9900;
+  --radius: 14px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 15px/1.4 "Segoe UI", system-ui, -apple-system, sans-serif; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 16px/1.45 "Amazon Ember", "Segoe UI", system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
 button, input { font: inherit; color: inherit; }
 [data-focus]:focus-visible, [data-focus].focused { outline: none; box-shadow: var(--focus); }
 
@@ -39,9 +41,9 @@ video { width: 100%; height: 100%; display: block; }
 .hud > div:empty { display: none; }
 .hud > div { background: rgba(0,0,0,.7); padding: 4px 10px; border-radius: 8px; font-weight: 600; font-size: 13px; }
 .hud .loop { color: var(--warn); }
-.toast { position: absolute; left: 16px; right: 16px; top: 64px; margin: 0 auto; max-width: 70%; background: rgba(10,12,18,.88); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 10px; font-size: 16px; }
+.toast { position: absolute; left: 16px; right: 16px; top: 64px; margin: 0 auto; max-width: 70%; background: rgba(35,47,62,.94); font-size: 18px; border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 10px; font-size: 16px; }
 .cards { position: absolute; left: 14px; bottom: 14px; display: flex; gap: 10px; align-items: flex-end; max-width: calc(100% - 28px); flex-wrap: wrap; }
-.card { background: rgba(14,18,27,.94); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; min-width: 240px; max-width: 420px; box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+.card { background: rgba(35,47,62,.95); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 12px 14px; min-width: 240px; max-width: 420px; box-shadow: 0 8px 30px rgba(0,0,0,.4); }
 .card h4 { margin: 0 0 4px; font-size: 15px; }
 .card .sub { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
 .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }

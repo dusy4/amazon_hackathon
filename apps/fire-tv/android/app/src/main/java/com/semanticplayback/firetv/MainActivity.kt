@@ -170,6 +170,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleCommand(id: String, cmd: JSONObject) {
         if (cmd.optString("cmd") == "overlay") showOverlay(cmd.getJSONObject("overlay"))
+        // A new title starts with no active reference: clear the moment pill and any answer on screen.
+        if (cmd.optString("cmd") == "load" && cmd.optString("contentId") != controller.contentId) {
+            findViewById<View>(R.id.moment_pill).visibility = View.GONE
+            overlay.visibility = View.GONE
+        }
         val error = try { controller.exec(cmd) } catch (e: Exception) { e.message ?: "error" }
         // Seeks complete asynchronously in ExoPlayer; ack after the position has been applied.
         main.postDelayed({
