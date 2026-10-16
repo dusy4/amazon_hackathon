@@ -1,49 +1,51 @@
 {
   "summary": {
     "label": "rules",
-    "at": "2026-10-06T23:16:26.094Z",
-    "cases": 20,
-    "passRate": 0.6,
-    "seekHitRate": 0.6,
-    "R1@IoU0.5": 0.467,
-    "R1@IoU0.7": 0.467,
-    "medianMs": 8
+    "at": "2026-10-16T04:54:31.276Z",
+    "cases": 13,
+    "passRate": 0.923,
+    "seekHitRate": 0.9,
+    "R1@IoU0.5": 0.8,
+    "R1@IoU0.7": 0.8,
+    "medianMs": 28
   },
   "rows": [
     {
       "id": "m-keeper-header",
-      "pass": false,
-      "detail": "pos 215000",
-      "iou": null,
-      "ms": 113,
+      "pass": true,
+      "detail": "in ev-16",
+      "iou": 1,
+      "ms": 155,
       "interpreter": "rules",
       "tools": [
-        "moments.search"
+        "moments.search {\"query\":\"take me back to when the keeper denied the header\",\"eventTypes\":[\"header\",\"goal\"],\"entityIds\":[\"player:HCFC:1\"],\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":124600}"
       ],
-      "speech": "I couldn't do that: I couldn't find that header with Brandt."
+      "speech": "Save — Brandt (#1) denies Lindqvist."
     },
     {
       "id": "m-equaliser",
-      "pass": false,
-      "detail": "pos 207000",
-      "iou": null,
-      "ms": 9,
+      "pass": true,
+      "detail": "in ev-18",
+      "iou": 1,
+      "ms": 31,
       "interpreter": "rules",
       "tools": [
-        "player.play_segment"
+        "moments.search {\"query\":\"show me the equaliser again\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}",
+        "player.seek {\"positionMs\":141000}"
       ],
-      "speech": "Again."
+      "speech": "Goal 2 — Okafor (#9), 1-1."
     },
     {
       "id": "m-silva-header",
       "pass": true,
       "detail": "in ev-27",
       "iou": 1,
-      "ms": 20,
+      "ms": 23,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"rewind to silva's header\",\"eventTypes\":[\"header\",\"goal\"],\"entityIds\":[\"player:HCFC:7\"],\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":199000}"
       ],
       "speech": "Goal 3 — Silva (#7), 2-1."
     },
@@ -51,35 +53,38 @@
       "id": "m-levelled",
       "pass": true,
       "detail": "in ev-18",
-      "iou": 0.21,
-      "ms": 17,
+      "iou": 1,
+      "ms": 33,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"the moment okafor levelled it\",\"eventTypes\":[\"goal\"],\"entityIds\":[\"player:NGU:9\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}",
+        "player.seek {\"positionMs\":141000}"
       ],
-      "speech": "Celebration — Okafor (#9)."
+      "speech": "Goal 2 — Okafor (#9), 1-1."
     },
     {
       "id": "m-woodwork",
-      "pass": false,
-      "detail": "pos 215000",
-      "iou": null,
-      "ms": 0,
+      "pass": true,
+      "detail": "in ev-22",
+      "iou": 1,
+      "ms": 17,
       "interpreter": "rules",
-      "tools": [],
-      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+      "tools": [
+        "moments.search {\"query\":\"where did silva hit the woodwork\",\"eventTypes\":[\"shot\"],\"entityIds\":[\"player:HCFC:7\"],\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":175000}"
+      ],
+      "speech": "Shot — Silva (#7) (post)."
     },
     {
       "id": "m-booking-defender",
       "pass": true,
       "detail": "in ev-07",
       "iou": 1,
-      "ms": 10,
+      "ms": 22,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"show the booking for the northgate defender\",\"eventTypes\":[\"yellow_card\"],\"entityIds\":[\"team:NGU\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
+        "player.seek {\"positionMs\":58000}"
       ],
       "speech": "Yellow card — Reyes (#4)."
     },
@@ -88,12 +93,12 @@
       "pass": true,
       "detail": "in ev-12",
       "iou": 1,
-      "ms": 13,
+      "ms": 23,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"replay of the opener\",\"eventTypes\":[\"goal\"],\"ordinal\":1,\"limit\":3}",
+        "moments.search {\"query\":\"replay of Goal 1 — Silva (#7), 1-0\",\"replayOfEventId\":\"ev-10\",\"limit\":1}",
+        "player.seek {\"positionMs\":100000}"
       ],
       "speech": "Replay of goal 1 — Silva."
     },
@@ -102,36 +107,35 @@
       "pass": true,
       "detail": "in ev-29",
       "iou": null,
-      "ms": 5,
+      "ms": 31,
       "interpreter": "rules",
       "tools": [
-        "player.set_speed"
+        "player.set_speed {\"rate\":0.5}"
       ],
       "speech": "0.5× speed."
     },
     {
       "id": "m-spoiler",
-      "pass": false,
-      "detail": "pos 88000",
+      "pass": true,
+      "detail": "guarded",
       "iou": null,
-      "ms": 9,
+      "ms": 14,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"show me the equaliser\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}"
       ],
-      "speech": "Goal 1 — Silva (#7), 1-0."
+      "speech": "I won't spoil it — the equaliser happens after the point you've watched up to. Say “spoilers off” if you want it anyway."
     },
     {
       "id": "m-who-scored-first",
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 8,
+      "ms": 28,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "lens.identify"
+        "moments.search {\"query\":\"goal\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":1}",
+        "lens.identify {\"target\":\"entity\",\"entityId\":\"player:HCFC:7\",\"atMs\":215000}"
       ],
       "speech": "That's Silva, number 7 for Harbor City FC. 2 goals so far."
     },
@@ -140,14 +144,14 @@
       "pass": true,
       "detail": "in ev-29",
       "iou": 0.77,
-      "ms": 18,
+      "ms": 42,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "moments.search",
-        "player.seek",
-        "player.seek",
-        "player.set_speed"
+        "moments.search {\"query\":\"go back to the replay of the last goal\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
+        "moments.search {\"query\":\"replay of Goal 3 — Silva (#7), 2-1\",\"replayOfEventId\":\"ev-27\",\"limit\":1}",
+        "player.seek {\"positionMs\":210000}",
+        "player.seek {\"positionMs\":207000}",
+        "player.set_speed {\"rate\":0.5}"
       ],
       "speech": "Replay of goal 3 — Silva. 3 seconds earlier. 0.5× speed."
     },
@@ -156,108 +160,25 @@
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 4,
+      "ms": 9,
       "interpreter": "rules",
       "tools": [
-        "lens.read_text"
+        "lens.read_text {\"atMs\":215000}"
       ],
       "speech": "Harbor City FC 2, Northgate United 1, 78 minutes played."
     },
     {
-      "id": "n-reads-note",
-      "pass": true,
-      "detail": "in bt-3",
-      "iou": 1,
-      "ms": 8,
-      "interpreter": "rules",
-      "tools": [
-        "moments.search",
-        "player.seek"
-      ],
-      "speech": "Mara reads the letter: meet me at the north cliff at midnight, signed T."
-    },
-    {
-      "id": "n-dig-key",
+      "id": "f-thom-sorry",
       "pass": false,
-      "detail": "pos 170000",
-      "iou": null,
-      "ms": 1,
-      "interpreter": "rules",
-      "tools": [],
-      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
-    },
-    {
-      "id": "n-docks-argument",
-      "pass": false,
-      "detail": "pos 170000",
-      "iou": null,
-      "ms": 0,
-      "interpreter": "rules",
-      "tools": [],
-      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
-    },
-    {
-      "id": "n-brother-admits",
-      "pass": true,
-      "detail": "in bt-7",
-      "iou": 1,
-      "ms": 9,
-      "interpreter": "rules",
-      "tools": [
-        "moments.search",
-        "player.seek"
-      ],
-      "speech": "Theo admits he wrote the letter so they would find the key together."
-    },
-    {
-      "id": "n-lamp",
-      "pass": false,
-      "detail": "pos 109369",
+      "detail": "pos 25000",
       "iou": 0,
-      "ms": 7,
+      "ms": 746,
       "interpreter": "rules",
       "tools": [
-        "moments.search",
-        "player.seek"
+        "moments.search {\"query\":\"the part where thom finally apologises to her\",\"entityIds\":[\"person:thom\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":25000}"
       ],
-      "speech": "Scene 5 — North cliff at midnight."
-    },
-    {
-      "id": "n-prev-inspector",
-      "pass": true,
-      "detail": "in sc-6",
-      "iou": 1,
-      "ms": 8,
-      "interpreter": "rules",
-      "tools": [
-        "moments.search",
-        "player.seek"
-      ],
-      "speech": "Scene 6 — Hale returns."
-    },
-    {
-      "id": "n-who-cap",
-      "pass": false,
-      "detail": "",
-      "iou": null,
-      "ms": 6,
-      "interpreter": "rules",
-      "tools": [
-        "lens.identify"
-      ],
-      "speech": "That's Mara Quinn, the lighthouse keeper. Keeper of the Gullrock lighthouse; Theo's older sister."
-    },
-    {
-      "id": "n-spoiler-key",
-      "pass": true,
-      "detail": "guarded",
-      "iou": null,
-      "ms": 4,
-      "interpreter": "rules",
-      "tools": [
-        "moments.search"
-      ],
-      "speech": "I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway."
+      "speech": "Celia and Thom discuss fears."
     }
   ]
 }

@@ -68,7 +68,7 @@ const EVENT_PATTERNS: [RegExp, string[]][] = [
   [/\btackles?\b|\bwins? (it|the ball) back\b/, ["tackle"]],
   [/\binterceptions?\b|\bintercepts?\b/, ["interception"]],
   [/\bclearances?\b/, ["clearance"]],
-  [/\bgoals?\b|\bscored\b|\bequali[sz]er\b|\bopener\b|\bwinner\b|\bwinning goal\b/, ["goal"]],
+  [/\bgoals?\b|\bscored\b|\bequali[sz](er|ed|ing)\b|\blevell?ed (it|the score|things up)\b|\bopener\b|\bwinner\b|\bwinning goal\b/, ["goal"]],
   [/\bscenes?\b/, ["scene"]],
 ];
 const PLURAL_RE = /\b(goals|saves|shots|chances|cards|bookings|fouls|corners|headers|replays|tackles|moments|attempts|scenes)\b/;
@@ -249,7 +249,9 @@ export function parseClause(clause: string, titles: string[] = []): Intent {
   if (/\b(\d+)\s*times\b/.test(t) && /\b(play|watch|show)\b/.test(t) && !parseMomentSpec(t)?.eventTypes.length) {
     return { type: "loop", count: Math.min(50, parseInt(t.match(/\b(\d+)\s*times\b/)![1], 10)) };
   }
-  if (/\bagain\b|\bone more time\b|\bonce more\b|\breplay (it|that|this)\b|\bplay (it|that) back\b/.test(t)) return { type: "again" };
+  // "show me the equaliser again" names a moment: that's a seek, not a replay of the active one.
+  if (/\bagain\b|\bone more time\b|\bonce more\b|\breplay (it|that|this)\b|\bplay (it|that) back\b/.test(t) && !parseMomentSpec(t.replace(/\bagain\b/g, " "))?.eventTypes.length)
+    return { type: "again" };
 
   if (/^(pause|stop|hold on|freeze|wait)( it| there| that| here| the (video|match|game))?$/.test(t)) return { type: "pause" };
   if (/^(play|resume|continue|unpause|keep going|carry on|go on)( it| playing| the (video|match|game))?$/.test(t)) return { type: "play" };
@@ -273,7 +275,7 @@ export function parseClause(clause: string, titles: string[] = []): Intent {
   if (spec) {
     const listy = /\b(every|all|each|list|how many)\b/.test(t) || (spec.plural && /\b(show|find|see|give)\b/.test(t) && spec.ordinal === undefined);
     if (listy) return { type: "list_moments", spec };
-    if (/\b(go|rewind|jump|take me|skip|back|show|play|find|seek|bring up|start|watch|to)\b/.test(t) || /^(the|that|his|her)\b/.test(t) || spec.replay || spec.ordinal !== undefined)
+    if (/\b(go|rewind|jump|take me|skip|back|show|play|find|seek|bring up|start|watch|to|where|when)\b/.test(t) || /^(the|that|his|her)\b/.test(t) || spec.replay || spec.ordinal !== undefined)
       return { type: "seek_moment", spec };
   }
   return { type: "unknown", text: clause };

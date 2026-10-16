@@ -22,7 +22,8 @@ const lastSeek = () => [...player.commands].reverse().find((c) => c.cmd === "see
 beforeAll(async () => {
   dataDir = mkdtempSync(join(tmpdir(), "sp-e2e-"));
   cpSync("data/index", join(dataDir, "index"), { recursive: true });
-  cpSync("data/content", join(dataDir, "content"), { recursive: true });
+  // Only the synthetic titles are exercised here; skip copying the large real-footage files.
+  for (const id of ["harbor-v-northgate", "keepers-key"]) cpSync(`data/content/${id}`, join(dataDir, "content", id), { recursive: true });
   srv = await startServer({ port: PORT, dataDir, host: "127.0.0.1" });
   player = new SimPlayer();
   await player.connect(`ws://127.0.0.1:${PORT}/ws`);

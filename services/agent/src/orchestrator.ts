@@ -23,7 +23,7 @@ import { buildEnvelope } from "../../context/src/envelope.ts";
 import type { PlaybackSession } from "../../context/src/session.ts";
 import type { AppContext } from "./app-context.ts";
 import { defaultChatModel } from "./llm.ts";
-import { LlmAgent } from "./llm-agent.ts";
+import { LlmAgent, LlmDeadlineError } from "./llm-agent.ts";
 import { resolveEntities } from "./entities.ts";
 import { type Intent, type MomentSpec, parseMomentSpec, parseUtterance, splitClauses } from "./intent.ts";
 
@@ -40,6 +40,20 @@ interface SearchResult {
  * goes to the LLM agent. With no LLM configured (or if it fails) the rules handle everything they can.
  */
 const FAST_PATH = new Set<Intent["type"]>(["pause", "play", "set_speed", "relative_seek", "loop", "again", "clear_loop", "spoilers", "select_result", "return_live"]);
+
+/**
+ * On titles with an authoritative provider event feed (the sports match), the rules interpreter also owns
+ * structured requests — "the replay of the last goal", "who is number 7", "every yellow card" — because
+ * the feed answers them exactly in milliseconds (golden set: 11/12 match cases). Free-form or descriptive
+ * requests ("where Silva hit the woodwork" is fine, "the bit where they argue" is not) still go to the LLM.
+ */
+const STRUCTURED_RULES = new Set<Intent["type"]>([
+  ...FAST_PATH, "seek_moment", "list_moments", "identify", "read_text", "what_said", "describe", "catch_up", "clip", "share", "memory_query",
+]);
+const specIsStructured = (i: Intent) => !("spec" in i) || !i.spec || i.spec.eventTypes.length > 0 || i.spec.replay;
+
+/** Upper bound on an LLM turn before the rules interpreter takes over (free models can take a minute). */
+const LLM_DEADLINE_MS = Number(process.env.SP_LLM_DEADLINE_MS ?? 25000);
 
 class SpoilerGuard extends Error {}
 
@@ -110,14 +124,24 @@ export class Orchestrator {
 
     // Fast path only when every clause is a transport control AND no clause refers to a moment
     // ("show me the equaliser again" needs understanding, "again" alone does not).
-    const fastPath = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type)) && splitClauses(utterance).every((c) => !parseMomentSpec(c));
+    const transportOnly = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type)) && splitClauses(utterance).every((c) => !parseMomentSpec(c));
+    const structured =
+      index?.kind === "sports_match" && intents.length > 0 && intents.every((i) => STRUCTURED_RULES.has(i.type) && specIsStructured(i));
+    const fastPath = transportOnly || structured;
+    if (structured && !transportOnly) step({ kind: "intent", label: "structured request on a title with a provider event feed → rules", component: "router" });
     let useRules = !this.llm || fastPath;
     if (this.llm && !fastPath) {
       interpreter = this.llm.label;
       try {
         const catalog = this.app.store.list().map((c) => ({ contentId: c.contentId, title: c.title, kind: c.kind }));
         const observed = observeLlmCalls(ctx);
-        const r = await this.llm.run(utterance, envelope, catalog, observed, step, async () => (await (await this.mcp()).listTools()).tools);
+        const deadline = Date.now() + LLM_DEADLINE_MS;
+        const run = this.llm.run(utterance, envelope, catalog, observed, step, async () => (await (await this.mcp()).listTools()).tools, deadline);
+        run.catch(() => {}); // a run abandoned at the deadline stops itself at its next checkpoint
+        const r = await Promise.race([
+          run,
+          new Promise<never>((_, reject) => setTimeout(() => reject(new LlmDeadlineError(`LLM exceeded its ${LLM_DEADLINE_MS / 1000} s budget`)), LLM_DEADLINE_MS)),
+        ]);
         speech.push(r);
       } catch (e) {
         // The model is unavailable (quota, network): degrade to the rules interpreter, visibly.
@@ -274,7 +298,23 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
     else if (anchorMs !== undefined) Object.assign(args, { relation: spec.anchor!.relation, anchorMs, order: spec.anchor!.relation === "before" ? "nearest" : "first" });
     else if (spec.descriptive) Object.assign(args, { order: "relevance" });
     else Object.assign(args, { relation: "before", order: "nearest" });
-    const r = await search(c, { ...args, limit: 3 });
+    // "the equaliser" / "levelled it": among goals, only those after which the score is level.
+    const levelling = types.includes("goal") && /\bequali[sz]\w*|\blevel(led|ler|s)?\b/.test(spec.query);
+    const r = await search(c, { ...args, limit: levelling ? 10 : 3 });
+    if (levelling) {
+      const events = c.app.currentIndex()?.events ?? [];
+      const level = r.moments.filter((m) => {
+        const ev = events.find((e) => e.id === m.eventId);
+        return ev?.type !== "goal" || (ev.score !== undefined && ev.score.home === ev.score.away);
+      });
+      if (!level.length) {
+        // The temporal filter hides future goals before spoiler counting, so check the feed directly.
+        const boundary = c.envelope.relevantCore.spoilerBoundaryMs;
+        const later = events.some((e) => e.type === "goal" && e.score && e.score.home === e.score.away && e.startMs > boundary);
+        noResult(c, { ...r, hiddenBySpoilerBoundary: later && c.session.spoilerMode === "strict" ? 1 : r.hiddenBySpoilerBoundary }, "the equaliser");
+      }
+      r.moments = level;
+    }
     if (!r.moments.length) noResult(c, r, `that ${types[0].replace("_", " ")}${entityIds?.length ? ` with ${entityNames(c, entityIds)}` : ""}`);
     return r.moments[0];
   };

@@ -32,6 +32,8 @@ How to act:
 - If the request is genuinely ambiguous, ask one short clarifying question instead of guessing.
 - Execute multi-step requests in order. Finish with one or two short spoken sentences describing what you did; no markdown, no JSON.`;
 
+export class LlmDeadlineError extends Error {}
+
 export class LlmAgent {
   constructor(private model: ChatModel) {}
   get label() {
@@ -45,7 +47,13 @@ export class LlmAgent {
     call: Call,
     step: (s: Omit<TraceStep, "ms">) => void,
     listTools: () => Promise<McpTool[]>,
+    /** Epoch ms after which no further model turn or tool call is made (the caller falls back to rules). */
+    deadline = Infinity,
   ): Promise<string> {
+    const checkDeadline = () => {
+      if (Date.now() > deadline) throw new LlmDeadlineError(`LLM exceeded its ${Math.round((deadline - started) / 1000)} s budget`);
+    };
+    const started = Date.now();
     const tools: ToolSpec[] = (await listTools()).map((t) => ({ name: t.name, description: t.description ?? t.name, parameters: t.inputSchema }));
     const system = `${POLICY}\n\nCatalog: ${JSON.stringify(catalog)}\n\nContext Envelope:\n${JSON.stringify(envelope)}`;
     const messages: ChatMessage[] = [{ role: "user", content: utterance }];
@@ -53,11 +61,15 @@ export class LlmAgent {
     let nudged = false;
     for (let turn = 1; turn <= MAX_TURNS; turn++) {
       const t0 = Date.now();
+      checkDeadline();
       const res = await this.model.complete(system, messages, tools);
+      // A late answer must not act: the rules fallback may already be driving the player.
+      checkDeadline();
       step({ kind: "intent", label: `LLM turn ${turn}: ${res.toolCalls.length ? res.toolCalls.map((c) => c.name).join(", ") : "reply"} (${Date.now() - t0} ms)`, component: `llm:${res.model}`, data: res.toolCalls.map((c) => ({ tool: c.name, args: c.args })) });
       messages.push({ role: "assistant", content: res.text, toolCalls: res.toolCalls });
       if (!res.toolCalls.length) return res.text.trim() || "Done.";
       for (const c of res.toolCalls) {
+        checkDeadline();
         let content: string;
         try {
           content = JSON.stringify(await call(c.name, c.args));
