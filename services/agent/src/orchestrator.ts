@@ -364,6 +364,13 @@ async function baseOfReplay(c: SkillCtx, replay: Moment): Promise<Moment> {
   return { segmentId: seg.id, kind: seg.kind, eventId: seg.eventId, eventType: seg.eventType, startMs: seg.startMs, endMs: seg.endMs, label: seg.label, score: 1, scoreBreakdown: {}, entityIds: seg.entityIds };
 }
 
+/** "Show me X" means play it: seek to the grounded moment and resume if the player was paused (e.g. by the Lens). */
+async function showMoment(c: SkillCtx, ms: number): Promise<PlayerState> {
+  const s = await seekTo(c, ms);
+  if (s.paused) return c.call("player.play");
+  return s;
+}
+
 async function seekTo(c: SkillCtx, ms: number): Promise<PlayerState> {
   c.session.lastSeekTargetMs = ms;
   const s = await c.call("player.seek", { positionMs: Math.max(0, Math.round(ms)) });
@@ -383,7 +390,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
   switch (intent.type) {
     case "seek_moment": {
       const m = await resolveMoment(c, intent.spec);
-      await seekTo(c, m.startMs);
+      await showMoment(c, m.startMs);
       await groundMoment(c, m, "semantic_seek");
       c.speech.push(`${m.label}.`);
       c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
@@ -403,7 +410,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       if (!r.moments.length) noResult(c, r, "any matching moments");
       c.session.ground({ kind: "result_set", label: spec.query, results: r.moments, resultIndex: 0 });
       if (entityIds?.length === 1) c.session.activeEntityId = entityIds[0];
-      await seekTo(c, r.moments[0].startMs);
+      await showMoment(c, r.moments[0].startMs);
       await c.app.record({ type: "moments_listed", contentId: c.envelope.relevantCore.contentId, contentTimeMs: r.moments[0].startMs, summary: `Listed ${r.moments.length} × ${spec.query}`, entityIds: entityIds ?? [], payload: { count: r.moments.length } });
       const n = r.moments.length;
       c.speech.push(`Found ${n} so far${r.hiddenBySpoilerBoundary ? " (not counting anything you haven't watched yet)" : ""}. Playing the first one.`);
@@ -420,7 +427,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       const m = set.results[i];
       c.session.ground({ ...set, resultIndex: i });
       c.step({ kind: "intent", label: `result ${i + 1}/${n} of “${set.label}”`, component: "context-service" });
-      await seekTo(c, m.startMs);
+      await showMoment(c, m.startMs);
       c.speech.push(`${m.label}.`);
       c.cards.push({ type: "moments", title: `${i + 1} of ${n}`, items: set.results.map((x) => ({ label: x.label, startMs: x.startMs, endMs: x.endMs })), selected: i });
       return;
