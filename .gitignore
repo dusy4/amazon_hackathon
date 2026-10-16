@@ -40,3 +40,7 @@ data/clips/
 data/memory/
 data/content/*/*.mp4
 data/content/*/analysis/proxy.mp4
+
+# Local-only test titles (third-party copyrighted media): never committed
+data/content/local-*/
+data/index/local-*

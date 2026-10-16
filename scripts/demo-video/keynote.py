@@ -441,6 +441,17 @@ def arch_diagram(img, t, a):
     line(1270, 650, 1380, 600, 4.2)
 
 
+def win(scene_id, k, pre=0.8, post=4.5, until_turn=None):
+    """Recording-time pieces around turn k (or from turn k to turn `until_turn`), long waits cut."""
+    sc = MANIFEST[scene_id]
+    off = sc.get("recordingStartOffsetMs", 1200) / 1000
+    at, done = sc["turns"][k]["atMs"] / 1000 + off, sc["turns"][k]["doneMs"] / 1000 + off
+    end = (sc["turns"][until_turn]["doneMs"] / 1000 + off + post) if until_turn is not None else done + post
+    if done - at > 6:
+        return [(max(0.0, at - pre), at + 3.0), (done - 0.8, end)]
+    return [(max(0.0, at - pre), end)]
+
+
 def main():
     f1 = MANIFEST["f1-football"]
     f2 = MANIFEST["f2-spoilers-memory"]
@@ -463,25 +474,25 @@ def main():
         Card("Semantic Playback", kicker="For Fire TV", sub="Talk about what you saw. The TV finds it — and acts.", center=True,
              vo="Meet Semantic Playback. Talk about what you saw, and Fire TV finds it, and acts."),
         Card("Ask who's on screen.", kicker="Viewing Lens", sub="Live Amazon Rekognition on the exact frame you asked about.", vo="Ask who's on screen."),
-        Footage("f1-football", [(23.2, 32.6)]),
+        Footage("f1-football", win("f1-football", 0, pre=6.0, post=4.5)),
         Card("Then just refer to it.", kicker="Conversational references", sub="“His goal” resolves to Usain Bolt — then to the exact moment.", vo="Then just refer to it."),
-        Footage("f1-football", [(33.6, 37.4), (59.9, 64.4)]),
+        Footage("f1-football", win("f1-football", 1, post=4.2)),
         Card("Every request becomes a grounded moment.", kicker="How it works", min_dur=9.0, top=True,
              vo="Every request becomes a grounded moment: understood in context, found in an index built with Amazon Rekognition, played on Fire TV, and remembered.",
              extra=lambda img, t, a: step_cards(img, t, a, explainer)),
         Card("Replay it your way.", kicker="Deterministic follow-ups", sub="Half speed, repeat twice — arithmetic on the grounded moment, no model call.", vo="Replay it your way."),
-        Footage("f1-football", [(64.4, 74.6)]),
+        Footage("f1-football", win("f1-football", 2, pre=0.6, post=6.5, until_turn=3)),
         Card("Share the moment.", kicker="Clip and share", sub="A server-side clip, pushed to your phone with a link back to the match.", vo="Share the moment."),
-        Footage("f1-football", [(78.4, 86.2)]),
+        Footage("f1-football", win("f1-football", 5, pre=1.0, post=3.2)),
         Card("", min_dur=4.2, extra=None),  # phone beat (filled below)
         Card("Never ahead of you.", kicker="Spoiler-safe by design", sub="Search and recaps stop at the furthest point you've watched.", vo="And it never spoils what's ahead."),
-        Footage("f2-spoilers-memory", [(0.6, 4.4), (14.2, 19.4)]),
+        Footage("f2-spoilers-memory", win("f2-spoilers-memory", 0, pre=0.6, post=4.6)),
         Card("Catch up in seconds.", kicker="Catch me up", sub="The few moments that mattered, from the part you missed.", vo="Catch up in seconds."),
-        Footage("f2-spoilers-memory", [(19.4, 26.6)]),
+        Footage("f2-spoilers-memory", win("f2-spoilers-memory", 1, pre=0.6, post=6.4)),
         Card("It remembers what you asked.", kicker="Viewing Memory", sub="Every meaningful action is an event in Amazon DynamoDB.", vo="And it remembers what you asked."),
-        Footage("f2-spoilers-memory", [(26.8, 32.8)]),
+        Footage("f2-spoilers-memory", win("f2-spoilers-memory", 2, pre=0.6, post=4.6)),
         Card("It works on films, too.", kicker="Beyond sports", sub="Tears of Steel — dialogue, scenes and faces, indexed the same way.", vo="It works on films, too."),
-        Footage("s4-real-footage", [(31.0, 35.2), (51.6, 57.0), (83.6, 90.2)]),
+        Footage("s4-real-footage", win("s4-real-footage", 1, post=4.4) + win("s4-real-footage", 3, pre=0.6, post=5.6)),
         Card("Under the hood.", kicker="Architecture", min_dur=8.5, top=True,
              vo="Under the hood, a self-hosted MCP server drives the Fire TV player, with Amazon Rekognition, Polly, DynamoDB and S3.",
              extra=arch_diagram),
