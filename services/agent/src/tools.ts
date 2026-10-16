@@ -192,10 +192,18 @@ export function registerTools(server: McpServer, app: AppContext) {
       const to = session.spoilerMode === "strict" ? Math.min(toMs, Math.max(session.watchedUpToMs, pos)) : toMs;
       if (isNarrative(idx)) {
         // Story beats (authored films) or described segments (real footage): everything but scene headers.
-        const beats = idx.events.filter((e) => e.type !== "scene" && e.startMs >= fromMs && e.startMs <= to);
+        // A TV recap is the few moments that matter, not every described shot: rank by importance,
+        // keep at most four, then tell them in order.
+        const importance: Record<string, number> = { goal: 10, result: 8, save: 6, chance: 5, shot: 5, reveal: 5, foul: 3, free_kick: 3, celebration: 2, action: 1 };
+        const all = idx.events.filter((e) => e.type !== "scene" && e.startMs >= fromMs && e.startMs <= to);
+        const ranked = all.some((e) => importance[e.type])
+          ? [...all].sort((a, b) => (importance[b.type] ?? 0) - (importance[a.type] ?? 0) || b.startMs - a.startMs).slice(0, 4)
+          : all.slice(-4);
+        const beats = ranked.sort((a, b) => a.startMs - b.startMs);
         const scenes = idx.events.filter((e) => e.type === "scene" && e.endMs > fromMs && e.startMs <= to);
+        const sentence = (t: string) => t.trim().replace(/[.!?…]+$/, "") + ".";
         const summary = beats.length
-          ? `${beats.map((b) => b.description).join(". ")}.`
+          ? beats.map((b) => sentence(b.description)).join(" ")
           : scenes.length
             ? `${scenes.map((s) => s.description).join(" ")}`
             : `Nothing happened between ${formatMs(fromMs)} and ${formatMs(to)}.`;

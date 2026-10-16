@@ -269,7 +269,7 @@ export function parseClause(clause: string, titles: string[] = []): Intent {
   )
     return { type: "read_text" };
   if (/\bwhat did (he|she|they|the commentators?|the commentary) (just )?say\b|\bwhat was (just )?said\b|\brepeat (that|the) line\b/.test(t)) return { type: "what_said" };
-  if (/\bdescribe\b|\bwhat (just )?happened\b|\bexplain (that|this|what|the play)\b|\bwhat'?s going on\b|\bwhat is happening\b/.test(t)) return { type: "describe" };
+  if (/\bdescribe\b|\bwhat (just )?happened\b|\bexplain (that|this|what|the play)\b|\bwhat'?s going on\b|\bwhat is happening\b|\bwhat'?s happening\b|\bwhat are they doing\b/.test(t)) return { type: "describe" };
 
   const spec = parseMomentSpec(t);
   if (spec) {

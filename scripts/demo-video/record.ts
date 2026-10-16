@@ -34,35 +34,25 @@ interface Scene {
 
 const SCENES: Scene[] = [
   {
-    id: "s1-north-star",
-    title: "Go back to what I mean",
+    id: "f1-football",
+    title: "Real football: Soccer Aid 2023 (CC BY, Soccer Aid for UNICEF)",
     steps: [
-      { open: "harbor-v-northgate" },
+      { open: "yt-soccer-aid-2023" },
       { setup: { spoilerMode: "strict" } },
-      { seek: 86000, play: true, untilMs: 112000 }, // goal 1 happens live, celebration, replay plays
-      { say: "Go back to the replay of that goal", holdMs: 4000 },
-      { say: "Three seconds earlier", holdMs: 2500 },
+      { seek: 128000, play: true, untilMs: 148200 }, // the viewer watches Usain Bolt score
+      { say: "Who's this?", holdMs: 5000 },
+      { say: "Show me his goal", holdMs: 4000 },
       { say: "Half speed", holdMs: 2500 },
       { say: "Repeat it twice", holdMs: 9000 },
+      { say: "Normal speed", holdMs: 1500 },
       { say: "Clip that and send it to my phone", holdMs: 5000 },
     ],
   },
   {
-    id: "s2-entities",
-    title: "Who is that — and show me his shots",
+    id: "f2-spoilers-memory",
+    title: "Spoiler-safe, and it remembers",
     steps: [
-      { say: "Normal speed", holdMs: 1500 },
-      { say: "Who is number 7?", holdMs: 5000 },
-      { say: "Show me his shots", holdMs: 5000 },
-      { say: "The second one", holdMs: 6000 },
-    ],
-  },
-  {
-    id: "s3-spoilers-catchup",
-    title: "Spoiler-safe by construction",
-    steps: [
-      { say: "Show me the equaliser", holdMs: 5000 },
-      { say: "Read the score", holdMs: 4000 },
+      { say: "Show me Robbie Keane's goal", holdMs: 5000 },
       { say: "I was away for 2 minutes, catch me up", holdMs: 7000 },
       { say: "Who was the player I asked about?", holdMs: 5000 },
     ],
