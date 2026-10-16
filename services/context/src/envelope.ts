@@ -55,7 +55,7 @@ export async function buildEnvelope(i: EnvelopeInput): Promise<ContextEnvelope> 
     }
   }
   const activeEntity = session.activeEntityId && index ? index.entities.find((e) => e.id === session.activeEntityId) : undefined;
-  const recent = await i.memory.recent(session.userId, 6);
+  const recent = await recentWithin(i.memory, session.userId, 800);
 
   return {
     request: {
@@ -97,4 +97,16 @@ export async function buildEnvelope(i: EnvelopeInput): Promise<ContextEnvelope> 
       embeddingModel: index?.embeddingModel ?? null,
     },
   };
+}
+
+/**
+ * Ambient Context is optional: a slow memory backend must never hold up a TV request. The last good read is
+ * reused when the backend does not answer within the budget (it keeps loading in the background).
+ */
+const lastRecent = new Map<string, Awaited<ReturnType<ViewingMemory["recent"]>>>();
+async function recentWithin(memory: ViewingMemory, userId: string, budgetMs: number) {
+  const read = memory.recent(userId, 6).then((r) => (lastRecent.set(userId, r), r));
+  read.catch(() => {});
+  const timeout = new Promise<null>((r) => setTimeout(() => r(null), budgetMs).unref?.());
+  return (await Promise.race([read, timeout])) ?? lastRecent.get(userId) ?? [];
 }

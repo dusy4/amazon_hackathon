@@ -196,9 +196,12 @@ export function registerTools(server: McpServer, app: AppContext) {
         // keep at most four, then tell them in order.
         const importance: Record<string, number> = { goal: 10, result: 8, save: 6, chance: 5, shot: 5, reveal: 5, foul: 3, free_kick: 3, celebration: 2, action: 1 };
         const all = idx.events.filter((e) => e.type !== "scene" && e.startMs >= fromMs && e.startMs <= to);
+        // One shot of a goal is often described two or three times (strike, replay, reaction): keep the
+        // first of any same-type moments within 30 s, so the recap names each moment once.
+        const distinct = (es: typeof all) => es.filter((e, i) => !es.slice(0, i).some((p) => p.type === e.type && Math.abs(p.startMs - e.startMs) < 30_000));
         const ranked = all.some((e) => importance[e.type])
-          ? [...all].sort((a, b) => (importance[b.type] ?? 0) - (importance[a.type] ?? 0) || b.startMs - a.startMs).slice(0, 4)
-          : all.slice(-4);
+          ? distinct([...all].sort((a, b) => (importance[b.type] ?? 0) - (importance[a.type] ?? 0) || a.startMs - b.startMs)).slice(0, 3)
+          : all.slice(-3);
         const beats = ranked.sort((a, b) => a.startMs - b.startMs);
         const scenes = idx.events.filter((e) => e.type === "scene" && e.endMs > fromMs && e.startMs <= to);
         const sentence = (t: string) => t.trim().replace(/[.!?…]+$/, "") + ".";
@@ -463,13 +466,19 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
   const known = (id: string) => idx.entities.find((e) => e.id === id);
   let entity: { id: string; type: string; name: string; role?: string; description?: string } | null = null;
   let source = "amazon-rekognition RecognizeCelebrities (live frame)";
-  const celeb = [...f.celebrities].filter((c) => c.confidence >= 85).sort((a, b) => b.confidence - a.confidence)[0];
+  // Same corroboration rule as ingest: a face match is a public figure only if this title's index already knows
+  // them (seen in other shots or named in commentary), or the match is near-certain. Look-alikes in a crowded
+  // football frame otherwise win ("Ulysses Owens" at 85% for Usain Bolt turning away).
+  const slugId = (n: string) => `person:${n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const celeb = [...f.celebrities]
+    .filter((c) => (c.confidence >= 85 && known(slugId(c.name))) || c.confidence >= 99)
+    .sort((a, b) => b.confidence - a.confidence)[0];
   if (entityId && known(entityId)) {
     const e = known(entityId)!;
     entity = { id: e.id, type: e.type, name: e.name, description: e.description };
     source = "title index";
   } else if (celeb) {
-    const id = `person:${celeb.name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+    const id = slugId(celeb.name);
     entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
   } else {
     // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.

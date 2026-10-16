@@ -22,6 +22,7 @@ import { defaultChatModel } from "../../agent/src/llm.ts";
 import { type Embedder, defaultEmbedder } from "./embeddings.ts";
 import { type FrameAnalysis, type Shot, analyzeFrame, detectShots, uploadOnce } from "./rekognition.ts";
 import { canonicalize } from "./canonicalize.ts";
+import { applyLeadIn } from "./lead-in.ts";
 import { parseVtt } from "./vtt.ts";
 
 const BUCKET = process.env.SP_MEDIA_BUCKET ?? "semantic-playback-496494569308";
@@ -268,6 +269,8 @@ if (process.argv[1]?.endsWith("ingest-video.ts")) {
     // Merge caption mishearings ("Robbie King") into names Rekognition recognised ("Robbie Keane").
     const { merges } = canonicalize(index);
     if (merges.size) console.log(`canonicalised ${merges.size} caption-only names: ${[...merges].map(([a, b]) => `${a}→${b}`).join(", ")}`);
+    // Goals are captioned after they go in: start goal-like moments on the build-up.
+    console.log(`lead-in applied to ${applyLeadIn(index)} goal/chance moments`);
     writeFileSync(join(dataDir, "index", `${id}.json`), JSON.stringify(index));
     const types = index.events.reduce<Record<string, number>>((m, e) => ((m[e.type] = (m[e.type] ?? 0) + 1), m), {});
     console.log(`indexed ${id}: ${index.segments.length} segments ${JSON.stringify(types)}, ${index.entities.length} people, embeddings=${index.embeddingModel}(${index.embeddingDim})`);

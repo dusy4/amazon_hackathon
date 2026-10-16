@@ -41,6 +41,7 @@ SRC = SRC.split(",")[0]
 INK, INK_DEEP = (35, 47, 62), (17, 23, 31)
 WHITE, BODY, MUTED = (242, 244, 247), (185, 195, 208), (128, 141, 158)
 ORANGE = (255, 153, 0)
+CYAN = (0, 167, 206)
 FONT = {"light": "C:/Windows/Fonts/segoeuil.ttf", "semilight": "C:/Windows/Fonts/segoeuisl.ttf", "regular": "C:/Windows/Fonts/segoeui.ttf",
         "semibold": "C:/Windows/Fonts/seguisb.ttf", "mono": "C:/Windows/Fonts/consola.ttf"}
 _f = {}
@@ -72,8 +73,9 @@ def make_bg():
 
 
 BG = make_bg()
-TV_W, TV_H = 1600, 900
-TV_X, TV_Y = (W - TV_W) // 2, 158
+TV_W, TV_H = 1456, 819
+TV_X, TV_Y = (W - TV_W) // 2, 132
+SUB_Y = TV_Y + TV_H + 16  # burned-in subtitles live under the TV, never over the picture
 TV_MASK = Image.new("L", (TV_W, TV_H), 0)
 ImageDraw.Draw(TV_MASK).rounded_rectangle([0, 0, TV_W - 1, TV_H - 1], radius=20, fill=255)
 
@@ -142,6 +144,47 @@ def pill(text):
     return img
 
 
+def wrap(text, f, width):
+    d0 = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    lines, cur = [], ""
+    for w in text.split():
+        t = (cur + " " + w).strip()
+        if d0.textlength(t, font=f) <= width or not cur:
+            cur = t
+        else:
+            lines.append(cur)
+            cur = w
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def subtitle_cards(speaker, text, dur):
+    """Split one spoken line into <= 2-line subtitle cards, timed by length across the clip duration."""
+    f, tag_f = font("semilight", 32), font("semibold", 20)
+    tag, col = ("YOU", ORANGE) if speaker == "you" else ("FIRE TV", CYAN)
+    lines = wrap(text, f, 1440)
+    chunks = [lines[i:i + 2] for i in range(0, len(lines), 2)]
+    total = sum(len(" ".join(c)) for c in chunks) or 1
+    out, t = [], 0.0
+    for c in chunks:
+        d0 = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+        tw = int(d0.textlength(tag, font=tag_f)) + 26
+        lw = max(int(d0.textlength(l, font=f)) for l in c)
+        w, h = tw + lw + 24, 44 * len(c) + 14
+        img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        d = ImageDraw.Draw(img)
+        d.rounded_rectangle([0, 0, w - 1, h - 1], radius=12, fill=(8, 11, 16, 215))
+        d.rounded_rectangle([12, 13, tw - 6, 39], radius=6, fill=col + (255,))
+        d.text((12 + (tw - 18 - d0.textlength(tag, font=tag_f)) / 2, 14), tag, font=tag_f, fill=INK_DEEP + (255,))
+        for k, l in enumerate(c):
+            d.text((tw + 6, 3 + 44 * k), l, font=f, fill=WHITE + (255,))
+        span = dur * len(" ".join(c)) / total
+        out.append((t, t + span, img))
+        t += span
+    return out
+
+
 # ------------------------------------------------------------------ audio
 _tts = {}
 
@@ -176,6 +219,22 @@ def _decode(mp3, text, voice):
     a = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768
     _tts[(text, voice)] = a
     return a
+
+
+MUSIC = os.path.join("artifacts", "music", "newer-wave.mp3")  # Kevin MacLeod, "Newer Wave", incompetech.com, CC BY 4.0
+
+
+def music_track(seconds):
+    """Licensed track (stereo) if present, else the synthesised bed duplicated to stereo."""
+    n = int(seconds * SR)
+    if os.path.exists(MUSIC):
+        raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", MUSIC, "-f", "s16le", "-ac", "2", "-ar", str(SR), "-"])
+        a = np.frombuffer(raw, dtype=np.int16).astype(np.float32).reshape(-1, 2) / 32768
+        if len(a) < n:
+            a = np.concatenate([a, np.zeros((n - len(a), 2), np.float32)])
+        return a[:n] * 0.30
+    m = music_bed(seconds)[:n]
+    return np.stack([m, m], 1)
 
 
 def music_bed(seconds):
@@ -276,9 +335,12 @@ def window(scene_id, k, pre=0.8, post=3.0, until_turn=None):
     """Recording-time pieces from turn k (to turn `until_turn`), with every long model wait inside cut out."""
     sc = MANIFEST[scene_id]
     off = sc.get("recordingStartOffsetMs", 1200) / 1000
-    turns = sc["turns"][k:(until_turn if until_turn is not None else k) + 1]
+    last = until_turn if until_turn is not None else k
+    turns = sc["turns"][k:last + 1]
     start = max(0.0, turns[0]["atMs"] / 1000 + off - pre)
     end = turns[-1]["doneMs"] / 1000 + off + post
+    if last + 1 < len(sc["turns"]):  # stop before the next request appears on the TV (no leaking answers)
+        end = min(end, sc["turns"][last + 1]["atMs"] / 1000 + off - 0.3)
     pieces, cur = [], start
     for tr in turns:
         at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
@@ -295,7 +357,7 @@ PANEL_C = (0.27, 0.72)  # assistant panel centre in the TV frame (bottom-left, i
 class Beat:
     """A footage beat: caption on top, device in the middle, camera pushes in on each answer."""
 
-    def __init__(self, scene_id, pieces, kicker, headline, zoom=True):
+    def __init__(self, scene_id, pieces, kicker, headline, zoom=False):
         self.sc = MANIFEST[scene_id]
         self.pieces = pieces
         self.kicker, self.headline, self.zoom = kicker, headline, zoom
@@ -313,8 +375,11 @@ class Beat:
 
     def prepare(self, tmp):
         self.caption = text_img([(self.kicker, font("semibold", 24), ORANGE, 8), (self.headline, font("light", 54), WHITE, 0)], 1100)
-        self.events, self.voice = [], []
+        self.events, self.voice, self.subs = [], [], []
         cursor = 0.0
+        sc_turns = self.sc["turns"]
+        nxt = next((t for t in sc_turns if t["atMs"] / 1000 + self.off > self.pieces[-1][1]), None)
+        self.limit = (nxt["atMs"] / 1000 + self.off - 0.3) if nxt else self.video_len - 0.1
         for tr in self.sc["turns"]:
             at, done = tr["atMs"] / 1000 + self.off, tr["doneMs"] / 1000 + self.off
             s_at, s_done = self.seg_t(at), self.seg_t(done)
@@ -325,7 +390,7 @@ class Beat:
                 start = max(cursor + 0.1, s_at - len(said) / SR - 0.1, 0.0)
                 self.voice.append((start, said))
                 cursor = start + len(said) / SR
-                self.events.append((s_at, "ask", bubble(tr["utterance"])))
+                self.subs += [(start + a, start + b, img) for a, b, img in subtitle_cards("you", tr["utterance"], len(said) / SR + 0.6)]
             if s_done is not None:
                 reply = tr["turn"]["speech"]
                 sentences = reply.replace("! ", ". ").split(". ")
@@ -334,23 +399,28 @@ class Beat:
                 start = max(cursor + 0.15, s_done + 0.15)
                 self.voice.append((start, clip))
                 cursor = start + len(clip) / SR
+                self.subs += [(start + a, start + b, img) for a, b, img in subtitle_cards("tv", spoken, len(clip) / SR + 0.4)]
                 self.events.append((s_done, "answer", (start, cursor)))
             for (a1, b1), (a2, _b2) in zip(self.pieces, self.pieces[1:]):
                 if at <= b1 <= done:
-                    who = "LLM agent" if "openrouter" in tr["turn"]["interpreter"] or "bedrock" in tr["turn"]["interpreter"] else "fallback"
-                    self.events.append((self.seg_t(b1) - 0.01, "cut", pill(f"⏩  {done - at:.0f} s {who} turn shortened")))
+                    tools = {st.get("label") for st in tr["turn"]["trace"] if st.get("kind") == "tool_call"}
+                    why = ("AI model thinking" if "openrouter" in tr["turn"]["interpreter"] or "bedrock" in tr["turn"]["interpreter"]
+                           else "encoding the clip" if "clip.create" in tools else "Amazon Rekognition" if tools & {"lens.identify", "lens.read_text"} else "waiting")
+                    self.events.append((self.seg_t(b1) - 0.01, "cut", pill(f"{done - at:.0f} s wait cut · {why}")))
         # Never cut an answer: extend the last piece (or hold the last frame) until speech has finished.
         need = cursor + 0.9
         have = sum(b - a for a, b in self.pieces)
         self.hold = 0.0
         if need > have:
             last = self.pieces[-1]
-            grow = min(need - have, max(0.0, self.video_len - 0.1 - last[1]))
+            grow = min(need - have, max(0.0, self.limit - last[1]))
             last[1] += grow
             self.hold = max(0.0, need - have - grow)
         self.dur = sum(b - a for a, b in self.pieces) + self.hold
         self.events.sort(key=lambda e: e[0])
-        self.note = text_img([("Fire OS app · Android TV emulator · real time except where marked", font("regular", 18), MUTED, 0)], 900)
+        note = "Fire OS app · Android TV emulator · real time except where marked"
+        self.note = text_img([(note, font("regular", 18), MUTED, 0)], 900)
+        self.note_w = int(ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(note, font=font("regular", 18)))
 
     def audio(self):
         return self.voice
@@ -399,15 +469,14 @@ class Beat:
         img = STAGE.copy()
         img.paste(tv, (TV_X, TV_Y), TV_MASK)
         img = img.convert("RGBA")
-        put(img, self.caption, (TV_X, 30), ease(t / 0.45), (1 - ease(t / 0.5)) * 14)
-        ask = next((e for e in reversed(self.events) if e[1] == "ask" and e[0] <= t), None)
-        if ask and t - ask[0] < 8:
-            a_ = ease((t - ask[0]) / 0.35) * (1 - ease((t - ask[0] - 7.4) / 0.5))
-            put(img, ask[2], (TV_X + TV_W - ask[2].width, 44), a_, (1 - ease((t - ask[0]) / 0.4)) * 12)
+        put(img, self.caption, (TV_X, 14), ease(t / 0.45), (1 - ease(t / 0.5)) * 14)
+        sub = next((x for x in reversed(self.subs) if x[0] <= t < x[1]), None)
+        if sub:
+            put(img, sub[2], ((W - sub[2].width) // 2, SUB_Y), min(1.0, (t - sub[0]) / 0.12, (sub[1] - t) / 0.12))
         cut = next((e for e in reversed(self.events) if e[1] == "cut" and e[0] <= t < e[0] + 2.4), None)
         if cut:
             put(img, cut[2], (TV_X + TV_W - cut[2].width - 22, TV_Y + 22), ease((t - cut[0]) / 0.3))
-        put(img, self.note, (TV_X + TV_W - 760, H - 24), 0.85)
+        put(img, self.note, (TV_X + TV_W - self.note_w, 20), 0.85)
         frame = img.convert("RGB")
         edge = min(i / FPS, (n - i) / FPS)
         return Image.blend(BG, frame, max(0.0, edge / 0.2)) if edge < 0.2 else frame
@@ -477,14 +546,14 @@ def arch_extra(img, t, a):
 
 
 def main():
-    f1, f2, s4 = "f1-football", "f2-spoilers-memory", "s4-real-footage"
+    f1, f2, s4, s5 = "f1-football", "f2-spoilers-memory", "s4-real-footage", "s5-any-video"
     his = MANIFEST[f1]["turns"][2]["turn"]
     top = next((s["data"].get("top") or [{}] for s in his["trace"] if s["kind"] == "tool_result" and s["label"] == "moments.search"), [{}])[0]
     fmt = lambda ms: f"{int(ms // 60000)}:{int(ms // 1000 % 60):02d}"
     explainer = [
         ("Understand", ["“his goal” in context:", "who you just asked about"], ["his → Usain Bolt"]),
-        ("Ground", ["Hybrid search over an index", "built with Amazon Rekognition"], ["moments.search", f"→ {top.get('label', '')[:24]}", f"@ {fmt(top.get('startMs', 0))}"]),
-        ("Act", ["Deterministic command", "to the Fire TV player"], ["player.seek → player.play"]),
+        ("Ground", ["Search an index of the match", "built with Amazon Rekognition"], ["moments.search", f"→ {top.get('label', '')[:24]}", f"@ {fmt(top.get('startMs', 0))}"]),
+        ("Act", ["A precise command", "to the Fire TV player"], ["player.seek → player.play"]),
         ("Remember", ["A Viewing Memory event", "for follow-ups and recall"], ["Amazon DynamoDB", "semantic_seek"]),
     ]
 
@@ -500,27 +569,27 @@ def main():
         put(img, phone_rgba, (W - phone.width - 220, 130), a, (1 - ease(t / 0.6)) * 50)
 
     credits = text_img([("Semantic Playback · Fire TV track · github.com/dusy4/amazon_hackathon", font("regular", 24), BODY, 10),
-                        ("Footage: Soccer Aid for UNICEF 2023 highlights (CC BY) · Tears of Steel © Blender Foundation, CC BY 3.0 · Voices: Amazon Polly",
+                        ("Footage (CC BY): Soccer Aid for UNICEF 2023 · Tears of Steel © Blender Foundation · layered roti recipe · R. Stallman, TEDxGeneva · Voices: Amazon Polly · Music: “Newer Wave” Kevin MacLeod (incompetech.com), CC BY 4.0",
                          font("regular", 20), MUTED, 0)], 1700, "center")
 
     segs = [
-        ColdOpen(141.4, 5.2, ["You remember the moment.", "Your TV only knows the timestamp."]),
-        Card("Semantic Playback", kicker="For Fire TV", sub="Talk about what you saw. The TV finds it — and acts.", dur=3.0, center=True),
-        Beat(f1, window(f1, 0, pre=6.0, post=1.6), "Viewing Lens", "Ask who's on screen."),
-        Beat(f1, window(f1, 1, pre=0.4, post=1.6), "Viewing Lens", "Read anything on screen."),
-        Beat(f1, window(f1, 2, pre=0.5, post=10.0), "Conversational references", "Then just say “his goal”."),
-        Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.8, top=True, extra=steps_extra(explainer)),
-        Beat(f1, window(f1, 3, pre=0.5, post=2.5), "Deterministic follow-ups", "Nudge it: three seconds earlier."),
-        Beat(f1, window(f1, 4, pre=0.4, post=1.1, until_turn=6), "Deterministic follow-ups", "Slow it down. Play it twice. Back to normal."),
-        Beat(f1, window(f1, 7, pre=0.8, post=2.0), "Clip and share", "Send the moment to your phone."),
-        Card("On your phone, instantly.", sub="The real companion page, with the clip from the TV.", dur=3.0, extra=phone_extra),
-        Beat(f2, window(f2, 0, pre=0.5, post=1.5), "Spoiler-safe by design", "It never spoils what's ahead."),
-        Beat(f2, window(f2, 1, pre=0.4, post=1.4, until_turn=3), "Your call", "Spoilers off — and it plays. Back on in a word."),
-        Beat(f2, window(f2, 4, pre=0.5, post=3.0), "Catch me up", "Away for a bit? Catch up in seconds."),
-        Beat(f2, window(f2, 5, pre=0.5, post=1.5), "Viewing Memory", "It remembers what you asked."),
-        Beat(s4, window(s4, 1, pre=0.6, post=2.0), "Beyond sports", "Works on films, too."),
-        Beat(s4, window(s4, 2, pre=0.5, post=1.5), "Viewing Lens", "Ask what's happening."),
-        Card("Under the hood.", kicker="Architecture", dur=10.0, top=True, extra=arch_extra),
+        ColdOpen(482.0, 6.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
+        Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=3.4, center=True),
+        Beat(f1, window(f1, 0, pre=6.5, post=1.4), "Viewing Lens", "Ask who's on screen."),
+        Beat(f1, window(f1, 1, pre=0.3, post=1.4), "Viewing Lens", "Read the scoreboard."),
+        Beat(f1, window(f1, 2, pre=0.4, post=30.0), "Conversational references", "Say “his goal”. It plays from the build-up."),
+        Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.5, top=True, extra=steps_extra(explainer)),
+        Beat(f1, window(f1, 3, pre=0.4, post=30.0, until_turn=5), "Precise follow-ups", "Half speed. Five seconds later. The strike, in slow motion."),
+        Beat(f1, window(f1, 6, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
+        Card("On your phone, instantly.", sub="The real companion page, with the clip from the TV.", dur=3.2, extra=phone_extra),
+        Beat(f2, window(f2, 0, pre=0.5, post=1.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
+        Beat(f2, window(f2, 1, pre=0.4, post=1.5, until_turn=3), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 4, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
+        Beat(f2, window(f2, 5, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
+        Beat(s5, window(s5, 0, pre=3.0, post=3.0), "Any video", "A recipe: jump to the step you need."),
+        Beat(s5, window(s5, 1, pre=2.5, post=2.0), "Any video", "A talk: jump to the topic."),
+        Beat(s4, window(s4, 1, pre=0.6, post=2.5), "Tears of Steel · Blender Foundation", "A film: rewind to a line of dialogue."),
+        Card("Under the hood.", kicker="Architecture", dur=8.0, top=True, extra=arch_extra),
         Card("Video players understand timestamps.", sub="Humans remember moments.", dur=5.0, center=True,
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
@@ -547,12 +616,13 @@ def main():
                 speech[i0:i0 + len(c)] += c * 0.95
             t0 += s.dur
         env = np.convolve(np.abs(speech) > 0.02, np.ones(int(0.25 * SR)) / (0.25 * SR), mode="same")
-        bed = music_bed(total + 1)[:n] * (1 - 0.6 * np.clip(env * 3, 0, 1))
-        fade = np.minimum(1, np.minimum(np.arange(n) / (1.2 * SR), (n - np.arange(n)) / (2.0 * SR)))
-        mix = np.clip(speech + bed * fade, -1, 1)
+        duck = 1 - 0.72 * np.clip(env * 3, 0, 1)  # music sits well under every spoken line
+        fade = np.minimum(1, np.minimum(np.arange(n) / (0.6 * SR), (n - np.arange(n)) / (2.5 * SR)))
+        bed = music_track(n / SR) * (duck * fade)[:, None]
+        mix = np.clip(speech[:, None] + bed, -1, 1)
         apath = os.path.join(tmp, "mix.wav")
         with wave.open(apath, "wb") as w:
-            w.setnchannels(1)
+            w.setnchannels(2)
             w.setsampwidth(2)
             w.setframerate(SR)
             w.writeframes((mix * 32767).astype(np.int16).tobytes())

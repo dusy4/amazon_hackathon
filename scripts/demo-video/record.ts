@@ -39,13 +39,12 @@ const SCENES: Scene[] = [
     steps: [
       { open: "yt-soccer-aid-2023" },
       { setup: { spoilerMode: "strict" } },
-      { seek: 128000, play: true, untilMs: 148200 }, // the viewer watches Usain Bolt score
-      { say: "Who's this?", holdMs: 6500 },
-      { say: "Read the score", holdMs: 6000 },
-      { say: "Show me his goal", holdMs: 8000 },
-      { say: "Three seconds earlier", holdMs: 4500 },
-      { say: "Half speed", holdMs: 2500 },
-      { say: "Repeat it twice", holdMs: 11000 },
+      { seek: 128000, play: true, untilMs: 143000 }, // the viewer watches Usain Bolt score, then he turns to camera
+      { say: "Who's this?", holdMs: 5000 },
+      { say: "Read the score", holdMs: 5000 },
+      { say: "Show me his goal", holdMs: 12000 }, // plays from the build-up: the ball goes in ~9 s later
+      { say: "Half speed", holdMs: 1500 },
+      { say: "Five seconds later", holdMs: 10000 }, // the strike, in slow motion
       { say: "Normal speed", holdMs: 1500 },
       { say: "Clip that and send it to my phone", holdMs: 7000 },
     ],
@@ -56,10 +55,22 @@ const SCENES: Scene[] = [
     steps: [
       { say: "Show me Robbie Keane's goal", holdMs: 7000 },
       { say: "Spoilers off", holdMs: 2500 },
-      { say: "Show me Robbie Keane's goal", holdMs: 9000 },
+      { say: "Show me Robbie Keane's goal", holdMs: 8000 },
       { say: "Spoilers on", holdMs: 2000 },
       { say: "I was away for 2 minutes, catch me up", holdMs: 9000 },
       { say: "Who was the player I asked about?", holdMs: 6500 },
+    ],
+  },
+  {
+    id: "s5-any-video",
+    title: "Any video: a cooking video and a talk (CC BY)",
+    steps: [
+      { open: "yt-roti-recipe" },
+      { seek: 184000, play: true, untilMs: 191000 },
+      { say: "When do they let the dough rest?", holdMs: 6000 },
+      { open: "yt-tedx-free-software" },
+      { seek: 794000, play: true, untilMs: 801000 },
+      { say: "Go back to the part about schools teaching software", holdMs: 7000 },
     ],
   },
   {

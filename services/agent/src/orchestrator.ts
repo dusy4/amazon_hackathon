@@ -10,6 +10,7 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import {
   type AnswerCard,
   type ClipRecord,
+  type ContentIndex,
   type ContextEnvelope,
   type Moment,
   type PlayerState,
@@ -51,6 +52,14 @@ const STRUCTURED_RULES = new Set<Intent["type"]>([
   ...FAST_PATH, "seek_moment", "list_moments", "identify", "read_text", "what_said", "describe", "catch_up", "clip", "share", "memory_query",
 ]);
 const specIsStructured = (i: Intent) => !("spec" in i) || !i.spec || i.spec.eventTypes.length > 0 || i.spec.replay;
+/**
+ * On real footage the index has no provider feed, but "his goal" / "Robbie Keane's goal" is still exact: one
+ * event type, one person (a name or a pronoun bound to the person just identified). Hybrid retrieval with the
+ * entity filter answers it without a model round-trip. Descriptive or anchored requests still go to the LLM.
+ */
+const specIsPersonEvent = (i: Intent, index?: ContentIndex | null) =>
+  i.type === "seek_moment" && i.spec.eventTypes.length > 0 && !i.spec.descriptive && !i.spec.anchor && !i.spec.plural &&
+  (i.spec.pronoun || !!index?.entities.some((e) => e.type === "person" && [e.name, ...(e.aliases ?? [])].some((n) => n.length > 3 && i.spec.mentionText.includes(n.toLowerCase()))));
 
 /**
  * Requests that need no moment grounding map 1:1 onto a deterministic tool on ANY title — Viewing Lens
@@ -135,11 +144,13 @@ export class Orchestrator {
     // ("show me the equaliser again" needs understanding, "again" alone does not).
     const transportOnly = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type)) && splitClauses(utterance).every((c) => !parseMomentSpec(c));
     const structured =
-      index?.kind === "sports_match" && intents.length > 0 && intents.every((i) => STRUCTURED_RULES.has(i.type) && specIsStructured(i));
+      (index?.kind === "sports_match" && intents.length > 0 && intents.every((i) => STRUCTURED_RULES.has(i.type) && specIsStructured(i))) ||
+      (index?.kind === "video" && intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type) || isToolDirect(i) || specIsPersonEvent(i, index)) && intents.some((i) => specIsPersonEvent(i, index)));
     const direct = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type) || isToolDirect(i)) && !transportOnly;
     const fastPath = transportOnly || structured || direct;
     if (direct && !structured) step({ kind: "intent", label: "direct tool request (no grounding needed) → rules", component: "router" });
-    if (structured && !transportOnly) step({ kind: "intent", label: "structured request on a title with a provider event feed → rules", component: "router" });
+    if (structured && !transportOnly)
+      step({ kind: "intent", label: index?.kind === "video" ? "one person's event (e.g. “his goal”) → hybrid search, no model call" : "structured request on a title with a provider event feed → rules", component: "router" });
     let useRules = !this.llm || fastPath;
     if (this.llm && !fastPath) {
       interpreter = this.llm.label;
@@ -327,8 +338,16 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
     }
     else if (anchorMs !== undefined) Object.assign(args, { relation: spec.anchor!.relation, anchorMs, order: spec.anchor!.relation === "before" ? "nearest" : "first" });
     else if (spec.descriptive) Object.assign(args, { order: "relevance" });
-    else Object.assign(args, { relation: "before", order: "nearest" });
+    // "Robbie Keane's goal" names one moment anywhere in the title: best match for that person, and the
+    // spoiler guard speaks up if it lies ahead — never a different player's earlier goal.
+    else if (entityIds?.length && !levelling) {
+      // First what the viewer has already watched (“his goal” = the one just seen); only then the whole title.
+      const watched = await search(c, { ...args, relation: "before", order: "nearest", limit: 3 });
+      if (watched.moments.length && !(watched as any).constraints?.relaxed?.length) return watched.moments[0];
+      Object.assign(args, { order: "relevance" });
+    } else Object.assign(args, { relation: "before", order: "nearest" });
     const r = await search(c, { ...args, limit: levelling ? 10 : 3 });
+    if (entityIds?.length && (r as any).constraints?.relaxed?.includes("entityIds")) r.moments = [];
     if (levelling) {
       const events = c.app.currentIndex()?.events ?? [];
       const level = r.moments.filter((m) => {
