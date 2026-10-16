@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 10-foot focus state: high-contrast fill + orange leading bar, unmistakable from the sofa -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true">
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="#33FF9900" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>
+            <item android:width="4dp" android:gravity="start" android:top="10dp" android:bottom="10dp">
+                <shape>
+                    <solid android:color="@color/amazon_orange" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="#55FF9900" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
+</selector>

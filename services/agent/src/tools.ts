@@ -463,6 +463,18 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
   } else if (celeb) {
     const id = `person:${celeb.name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
     entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
+  } else {
+    // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.
+    const shot = idx.events.find((ev) => ev.startMs <= at && at < ev.endMs && ev.entityIds?.some((id) => id.startsWith("person:")));
+    // Prefer the person the shot is about (named in its title/description), not merely someone in frame.
+    const people = (shot?.entityIds ?? []).filter((id) => id.startsWith("person:"));
+    const about = `${shot?.title ?? ""} ${shot?.description ?? ""}`.toLowerCase();
+    const pid = people.find((id) => known(id) && about.includes(known(id)!.name.toLowerCase())) ?? people[0];
+    const e = pid ? known(pid) : undefined;
+    if (e) {
+      entity = { id: e.id, type: e.type, name: e.name, description: e.description };
+      source = "amazon-rekognition RecognizeCelebrities (this shot's keyframe, at ingest)";
+    }
   }
   const seen = entity ? idx.events.filter((ev) => ev.startMs <= boundary && ev.entityIds?.includes(entity!.id)) : [];
   return {

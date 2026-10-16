@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Assistant panel: Squid Ink, rounded (OneDesign rounded radius), Amazon Orange leading accent -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/squid_ink_94" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item android:width="4dp" android:gravity="start" android:top="18dp" android:bottom="18dp">
+        <shape>
+            <solid android:color="@color/amazon_orange" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+</layer-list>

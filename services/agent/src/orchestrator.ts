@@ -52,6 +52,14 @@ const STRUCTURED_RULES = new Set<Intent["type"]>([
 ]);
 const specIsStructured = (i: Intent) => !("spec" in i) || !i.spec || i.spec.eventTypes.length > 0 || i.spec.replay;
 
+/**
+ * Requests that need no moment grounding map 1:1 onto a deterministic tool on ANY title — Viewing Lens
+ * (live Rekognition), screen text, transcript, catch-up, clip/share of the active moment, memory. Routing
+ * them through the LLM only adds latency.
+ */
+const TOOL_DIRECT = new Set<Intent["type"]>(["identify", "read_text", "what_said", "describe", "catch_up", "share", "memory_query"]);
+const isToolDirect = (i: Intent) => TOOL_DIRECT.has(i.type) || (i.type === "clip" && !i.spec);
+
 /** Upper bound on an LLM turn before the rules interpreter takes over (free models can take a minute). */
 const LLM_DEADLINE_MS = Number(process.env.SP_LLM_DEADLINE_MS ?? 25000);
 
@@ -127,7 +135,9 @@ export class Orchestrator {
     const transportOnly = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type)) && splitClauses(utterance).every((c) => !parseMomentSpec(c));
     const structured =
       index?.kind === "sports_match" && intents.length > 0 && intents.every((i) => STRUCTURED_RULES.has(i.type) && specIsStructured(i));
-    const fastPath = transportOnly || structured;
+    const direct = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type) || isToolDirect(i)) && !transportOnly;
+    const fastPath = transportOnly || structured || direct;
+    if (direct && !structured) step({ kind: "intent", label: "direct tool request (no grounding needed) → rules", component: "router" });
     if (structured && !transportOnly) step({ kind: "intent", label: "structured request on a title with a provider event feed → rules", component: "router" });
     let useRules = !this.llm || fastPath;
     if (this.llm && !fastPath) {

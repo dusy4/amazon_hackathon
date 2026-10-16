@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Amazon brand palette (Amazon Global Brand Guidelines; Echo/Alexa identity guidelines) -->
+<resources>
+    <color name="squid_ink">#232F3E</color>
+    <color name="squid_ink_94">#F0232F3E</color>
+    <color name="amazon_orange">#FF9900</color>
+    <color name="accent_blue">#00A7CE</color>
+    <color name="tv_white">#EBEBEB</color>
+    <color name="tv_gray">#AAB4C3</color>
+    <color name="tv_muted">#8A96A8</color>
+</resources>

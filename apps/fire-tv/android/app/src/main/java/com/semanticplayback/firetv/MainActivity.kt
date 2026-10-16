@@ -98,14 +98,17 @@ class MainActivity : AppCompatActivity() {
         ws = http.newWebSocket(Request.Builder().url(wsUrl).build(), object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 webSocket.send(JSONObject().put("type", "hello").put("role", "player").put("deviceId", deviceId).put("deviceKind", "fireos").toString())
-                setStatus("● player bridge connected · $deviceId")
+                setStatus("Connected · press ☰ to ask")
+                // Quiet UI: the status pill only stays up while something needs attention.
+                main.postDelayed({ status.animate().alpha(0f).setDuration(600).start() }, 5000)
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 val msg = JSONObject(text)
                 when (msg.optString("type")) {
                     "command" -> main.post { handleCommand(msg.getString("id"), msg.getJSONObject("command")) }
-                    "turn" -> main.post { showStatusLine(msg.getJSONObject("turn").optString("interpreter")) }
+                    "trace" -> main.post { onTrace(msg.getJSONObject("trace")) }
+                    "turn" -> main.post { lastTurn = msg.getJSONObject("turn") }
                 }
             }
 
@@ -120,8 +123,49 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showStatusLine(interpreter: String) {
-        status.text = "● connected · interpreter: $interpreter"
+    private var lastTurn: JSONObject? = null
+    private val liveSteps = mutableListOf<String>()
+    private var pulse: android.animation.ObjectAnimator? = null
+
+    /** Listening → thinking: show what was asked and the tool calls as they happen. */
+    private fun onTrace(t: JSONObject) {
+        when (t.optString("kind")) {
+            "input" -> {
+                liveSteps.clear()
+                showPanel()
+                findViewById<TextView>(R.id.heard).text = t.optString("label")
+                findViewById<TextView>(R.id.speech).text = "Thinking…"
+                findViewById<TextView>(R.id.card).visibility = View.GONE
+                findViewById<TextView>(R.id.steps).text = ""
+                setThinking(true)
+            }
+            "tool_call" -> {
+                liveSteps += t.optString("label")
+                findViewById<TextView>(R.id.steps).text = liveSteps.joinToString("  →  ")
+            }
+        }
+    }
+
+    private fun setThinking(on: Boolean) {
+        val bar = findViewById<View>(R.id.thinking)
+        pulse?.cancel()
+        if (on) {
+            bar.visibility = View.VISIBLE
+            pulse = android.animation.ObjectAnimator.ofFloat(bar, "alpha", 0.25f, 1f).apply {
+                duration = 700; repeatMode = android.animation.ValueAnimator.REVERSE; repeatCount = android.animation.ValueAnimator.INFINITE; start()
+            }
+        } else bar.visibility = View.INVISIBLE
+    }
+
+    private fun showPanel() {
+        overlay.visibility = View.VISIBLE
+        overlay.alpha = 1f
+        main.removeCallbacksAndMessages(HIDE)
+    }
+
+    private fun scheduleHide(ms: Long) {
+        main.removeCallbacksAndMessages(HIDE)
+        main.postAtTime({ overlay.animate().alpha(0f).setDuration(400).withEndAction { overlay.visibility = View.GONE }.start() }, HIDE, android.os.SystemClock.uptimeMillis() + ms)
     }
 
     private fun handleCommand(id: String, cmd: JSONObject) {
@@ -155,28 +199,71 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showOverlay(o: JSONObject) {
-        speak(o.optString("speech"))
-        findViewById<TextView>(R.id.speech).text = o.optString("speech")
+        setThinking(false)
+        showPanel()
+        val speech = o.optString("speech")
+        speak(speech)
+        findViewById<TextView>(R.id.speech).text = speech
+        lastTurn?.optString("utterance")?.takeIf { it.isNotBlank() }?.let { findViewById<TextView>(R.id.heard).text = "“$it”" }
+
+        // Detail lines: only what adds to the spoken answer (10-foot UI: short, low density).
         val cards = o.optJSONArray("cards")
         val lines = mutableListOf<String>()
+        var moment: String? = null
         for (i in 0 until (cards?.length() ?: 0)) {
             val c = cards!!.getJSONObject(i)
-            lines += c.optString("title")
-            c.optJSONArray("facts")?.let { f -> for (j in 0 until f.length()) lines += "  • ${f.getString(j)}" }
-            c.optJSONArray("items")?.let { f -> for (j in 0 until minOf(5, f.length())) lines += "  • " + (f.getJSONObject(j).optString("label").ifEmpty { f.getJSONObject(j).optString("summary") }) }
-            c.optJSONObject("share")?.let { lines += "  → ${it.optString("deepLink")}" }
+            when (c.optString("type")) {
+                "moment" -> moment = c.optString("title")
+                "entity" -> {
+                    moment = c.optString("title")
+                    c.optJSONArray("facts")?.let { f -> for (j in 0 until minOf(3, f.length())) if (!f.getString(j).startsWith("source")) lines += f.getString(j) }
+                }
+                "moments" -> {
+                    val sel = c.optInt("selected", -1)
+                    c.optJSONArray("items")?.let { f ->
+                        for (j in 0 until minOf(4, f.length())) lines += (if (j == sel) "▸ " else "   ") + f.getJSONObject(j).optString("label")
+                        if (sel >= 0) moment = f.getJSONObject(sel).optString("label")
+                    }
+                }
+                "clip" -> {
+                    moment = c.optString("title")
+                    c.optJSONObject("share")?.let { lines += "Sent to your phone · ${it.optString("deepLink").substringAfter("://")}" }
+                }
+            }
         }
-        findViewById<TextView>(R.id.card).text = lines.joinToString("\n")
+        val card = findViewById<TextView>(R.id.card)
+        card.text = lines.joinToString("\n")
+        card.visibility = if (lines.isEmpty()) View.GONE else View.VISIBLE
+
+        // How it was done: the real MCP tool chain, interpreter and latency of this turn.
         val steps = o.optJSONArray("steps")
-        findViewById<TextView>(R.id.steps).text = (0 until (steps?.length() ?: 0)).joinToString("  →  ") { steps!!.getString(it) }
-        overlay.visibility = View.VISIBLE
-        main.removeCallbacksAndMessages(HIDE)
-        main.postAtTime({ overlay.visibility = View.GONE }, HIDE, android.os.SystemClock.uptimeMillis() + 12000)
+        val chain = (0 until (steps?.length() ?: 0)).joinToString(" → ") { steps!!.getString(it) }
+        val meta = lastTurn?.let { t -> "${t.optLong("durationMs")} ms · ${t.optString("interpreter").substringBefore(" (").substringAfterLast("/").substringBefore(":free")}" }
+        findViewById<TextView>(R.id.steps).text = listOfNotNull(chain.ifBlank { null }, meta).joinToString("  ·  ")
+
+        moment?.let {
+            findViewById<TextView>(R.id.moment_text).text = it
+            findViewById<View>(R.id.moment_pill).visibility = View.VISIBLE
+        }
+        scheduleHide(if (speech.length > 140) 14000 else 9000)
     }
 
     /** Suggestions per title kind, so the whole experience is reachable with the remote's D-pad alone. */
     private fun suggestions(): List<String> = when {
-        controller.contentId == "harbor-v-northgate" || controller.contentId?.contains("soccer") == true -> listOf(
+        controller.contentId?.contains("soccer") == true -> listOf(
+            "Who's this?",
+            "Show me Usain Bolt's goal",
+            "The replay",
+            "Half speed",
+            "Repeat it twice",
+            "Normal speed",
+            "Rewind to Robbie Keane's equaliser",
+            "I was away for 5 minutes, catch me up",
+            "Clip that and send it to my phone",
+            "Who was the player I asked about?",
+            "Back to live",
+        )
+        controller.contentId == "harbor-v-northgate" -> listOf(
             "Go back to the replay of the last goal",
             "Three seconds earlier",
             "Half speed",
@@ -210,13 +297,28 @@ class MainActivity : AppCompatActivity() {
     /** MENU: pick a suggested request with the D-pad, or type your own. */
     private fun askDialog() {
         val items = suggestions() + "Type your own…"
-        AlertDialog.Builder(this)
-            .setTitle("Ask Semantic Playback")
-            .setItems(items.toTypedArray()) { _, which ->
-                if (which == items.size - 1) typeDialog() else send(items[which], "fire-tv-dpad")
+        val view = layoutInflater.inflate(R.layout.ask_dialog, null)
+        view.findViewById<TextView>(R.id.ask_sub).text = "Choose with ◀ ▲ ▼ ▶ and press Select"
+        val dialog = AlertDialog.Builder(this).setView(view).create()
+        val list = view.findViewById<android.widget.ListView>(R.id.ask_list)
+        list.adapter = android.widget.ArrayAdapter(this, R.layout.menu_item, items)
+        list.itemsCanFocus = false
+        list.setOnItemClickListener { _, _, which, _ ->
+            dialog.dismiss()
+            if (which == items.size - 1) typeDialog() else send(items[which], "fire-tv-dpad")
+        }
+        // Focus highlight follows the D-pad selection.
+        list.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) {
+                for (i in 0 until list.childCount) list.getChildAt(i).isActivated = false
+                v?.isActivated = true
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+            override fun onNothingSelected(p: android.widget.AdapterView<*>?) {}
+        })
+        dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        dialog.show()
+        list.requestFocus()
+        list.setSelection(0)
     }
 
     private fun typeDialog() {
