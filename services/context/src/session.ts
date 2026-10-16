@@ -38,13 +38,24 @@ export class PlaybackSession {
     this.refHistory = [];
     this.activeEntityId = null;
     this.lastSeekTargetMs = null;
+    this.lastPlayingMs = null;
     return true;
   }
 
+  /** Previous playing position of the current title; null until a second consecutive report arrives. */
+  private lastPlayingMs: number | null = null;
+
   observePosition(positionMs: number, isPlaying: boolean) {
-    // Only natural playback advances the boundary; agent seeks backwards never shrink it.
-    if (isPlaying && positionMs > this.watchedUpToMs && positionMs - this.watchedUpToMs < 5000) this.watchedUpToMs = positionMs;
-    if (this.watchedUpToMs === 0 && positionMs > 0) this.watchedUpToMs = positionMs;
+    // Only natural playback advances the boundary: two consecutive playing reports moving forward by
+    // less than 5 s. A single stale report (e.g. the previous title's position while a new one loads)
+    // or a seek can never move it; agent seeks backwards never shrink it.
+    if (!isPlaying) {
+      this.lastPlayingMs = null;
+      return;
+    }
+    const last = this.lastPlayingMs;
+    this.lastPlayingMs = positionMs;
+    if (last !== null && positionMs > last && positionMs - last < 5000 && positionMs > this.watchedUpToMs) this.watchedUpToMs = positionMs;
   }
 
   /** Explicit jump forward by the user (e.g. scrubbing) also moves the boundary. */

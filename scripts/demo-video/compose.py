@@ -61,9 +61,9 @@ def kept_intervals(sc, a, b):
     for tr in sc["turns"]:
         at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
         if done - at > CUT_TURNS_LONGER_THAN:
-            cuts.append((at + 3.0, done - 1.0, done - at))
+            cuts.append((at + 3.0, done - 1.0, done - at, tr["turn"]["interpreter"].split(" (")[0]))
     out, cur = [], a
-    for c0, c1, _ in sorted(cuts):
+    for c0, c1, *_ in sorted(cuts):
         if c0 > cur:
             out.append((cur, c0))
         cur = max(cur, c1)
@@ -211,8 +211,29 @@ ARCH = [
 ]
 
 
+POLLY = os.environ.get("SP_DEMO_TTS", "polly") == "polly"
+POLLY_VOICES = {"viewer": "Matthew", "reply": "Ruth"}  # Ruth = the voice the app itself speaks with
+
+
+def synth_polly(lines, tmp):
+    """Amazon Polly (generative) via the AWS CLI → float32 arrays at SR."""
+    out = []
+    for i, (text, role) in enumerate(lines):
+        mp3, wav_path = os.path.join(tmp, f"p{i}.mp3"), os.path.join(tmp, f"p{i}.wav")
+        subprocess.run(["aws", "polly", "synthesize-speech", "--engine", "generative", "--voice-id", POLLY_VOICES[role],
+                        "--output-format", "mp3", "--text", text[:2900], "--region", os.environ.get("AWS_REGION", "us-east-1"), mp3],
+                       check=True, capture_output=True)
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", mp3, "-ac", "1", "-ar", str(SR), wav_path], check=True)
+        with wave.open(wav_path) as w:
+            out.append(np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768)
+    return out
+
+
 def synth(lines, tmp):
-    """lines: [(text, voice)] -> list of float32 arrays (Windows SAPI; draft only)."""
+    """lines: [(text, role)] with role viewer|reply -> float32 arrays. Polly by default; SAPI fallback."""
+    if POLLY:
+        return synth_polly(lines, tmp)
+    lines = [(t, "Microsoft Zira Desktop" if r == "viewer" else "Microsoft David Desktop") for t, r in lines]
     spec = [{"path": os.path.join(tmp, f"v{i}.wav"), "text": t, "voice": v} for i, (t, v) in enumerate(lines)]
     jp = os.path.join(tmp, "v.json")
     json.dump(spec, open(jp, "w", encoding="utf-8"))
@@ -269,7 +290,7 @@ def main():
                     reply = tr["turn"]["speech"]
                     if len(reply) > 140:
                         reply = reply[:reply.rfind(".", 0, 140) + 1] or reply[:140]
-                    voice_lines += [(tr["utterance"], "Microsoft Zira Desktop"), (reply, "Microsoft David Desktop")]
+                    voice_lines += [(tr["utterance"], "viewer"), (reply, "reply")]
                     # the reply is spoken when the answer arrives (after any shortened wait)
                     placements += [at - 1.6, None]
             t_cursor += dur
@@ -341,10 +362,10 @@ def main():
                 d.line([(0, TV_H), (W, TV_H)], fill=LINE, width=2)
                 d.text((28, TV_H + 22), f"Fire OS app · Media3 ExoPlayer · {p['device']['deviceId']} (Android TV emulator, API 30)", font=F(18), fill=MUTED)
                 if shortened:
-                    d.text((W - 640, TV_H + 22), f"⏩ {shortened[2]:.1f} s model turn shortened in this cut", font=F(20, True), fill=ACCENT)
+                    d.text((W - 640, TV_H + 22), f"⏩ {shortened[2]:.1f} s turn ({shortened[3]}) shortened in this cut", font=F(20, True), fill=ACCENT)
                 if turn and rec_t - turn["atMs"] / 1000 < 6:
                     d.text((28, TV_H + 70), f"Viewer:  “{turn['utterance']}”", font=F(38, True), fill=TEXT)
-                    d.text((28, TV_H + 140), "input typed by the demo script in this draft · voices are draft TTS", font=F(16), fill=MUTED)
+                    d.text((28, TV_H + 140), "request sent by the demo script · voices: Amazon Polly (viewer: Matthew, TV reply: Ruth)" if POLLY else "request sent by the demo script · voices are draft TTS", font=F(16), fill=MUTED)
                 enc.stdin.write(frame.tobytes())
             dec.stdout.close()
             dec.wait()

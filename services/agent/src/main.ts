@@ -33,6 +33,9 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
   const dataDir = resolve(opts.dataDir ?? process.env.SP_DATA_DIR ?? "data");
   const publicBaseUrl = process.env.PUBLIC_BASE_URL ?? `http://${lanIp()}:${port}`;
   const app = new AppContext({ dataDir, port, publicBaseUrl });
+  // Warm the Viewing Memory store: the first DynamoDB call resolves credentials (~10 s with `aws login`),
+  // which must not land on the viewer's first request.
+  void app.memory.recent(app.sessions.get().userId, 1).catch(() => {});
   const orchestrator = new Orchestrator(app, `http://127.0.0.1:${port}/mcp`);
 
   const http = express();

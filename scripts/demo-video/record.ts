@@ -24,6 +24,7 @@ type Step =
   /** Seek, play, then wait until the player itself reports `untilMs` (emulators decode slower than real time). */
   | { seek: number; play?: boolean; untilMs?: number; holdMs?: number }
   | { waitMs: number }
+  | { open: string }
   | { setup: Record<string, unknown> };
 interface Scene {
   id: string;
@@ -36,6 +37,7 @@ const SCENES: Scene[] = [
     id: "s1-north-star",
     title: "Go back to what I mean",
     steps: [
+      { open: "harbor-v-northgate" },
       { setup: { spoilerMode: "strict" } },
       { seek: 86000, play: true, untilMs: 112000 }, // goal 1 happens live, celebration, replay plays
       { say: "Go back to the replay of that goal", holdMs: 4000 },
@@ -73,6 +75,7 @@ const SCENES: Scene[] = [
       { seek: 548000, play: true, untilMs: 560000 }, // the viewer has watched up to 9:20
       { say: "Rewind to when they say there are two minutes left", holdMs: 6000 },
       { say: "When does the memory overwrite complete?", holdMs: 6000 },
+      { say: "What's happening?", holdMs: 7000 }, // live Amazon Rekognition on the current frame
     ],
   },
 ];
@@ -114,7 +117,10 @@ for (const scene of SCENES.filter((s) => !only || s.id.includes(only))) {
   const t0 = Date.now();
   const turns: unknown[] = [];
   for (const step of scene.steps) {
-    if ("setup" in step) await post("/api/session", step.setup);
+    if ("open" in step) {
+      await mcp.callTool({ name: "content.open", arguments: { contentId: step.open } });
+      await sleep(3000);
+    } else if ("setup" in step) await post("/api/session", step.setup);
     else if ("waitMs" in step) await sleep(step.waitMs);
     else if ("seek" in step) {
       await mcp.callTool({ name: "player.seek", arguments: { positionMs: step.seek } });
