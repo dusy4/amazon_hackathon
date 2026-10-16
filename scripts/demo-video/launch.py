@@ -146,10 +146,18 @@ def pill(text):
 _tts = {}
 
 
+TTS_CACHE = os.path.join("artifacts", "tts-cache")
+
+
 def tts(text, voice, tmp):
+    """Amazon Polly via the app's /api/tts, cached on disk so re-renders don't need AWS credentials."""
     if (text, voice) in _tts:
         return _tts[(text, voice)]
-    mp3 = os.path.join(tmp, f"t{len(_tts)}.mp3")
+    import hashlib
+    os.makedirs(TTS_CACHE, exist_ok=True)
+    mp3 = os.path.join(TTS_CACHE, hashlib.sha1(f"{voice}|{text}".encode()).hexdigest()[:16] + ".mp3")
+    if os.path.exists(mp3) and os.path.getsize(mp3) > 0:
+        return _decode(mp3, text, voice)
     url = f"{BASE}/api/tts?voice={voice}&text={urllib.parse.quote(text[:2900])}"
     for attempt in range(5):
         try:
@@ -160,10 +168,12 @@ def tts(text, voice, tmp):
             if attempt == 4:
                 raise
             time.sleep(2 * (attempt + 1))
-    wav_path = mp3[:-4] + ".wav"
-    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", mp3, "-ac", "1", "-ar", str(SR), wav_path], check=True)
-    with wave.open(wav_path) as w:
-        a = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
+    return _decode(mp3, text, voice)
+
+
+def _decode(mp3, text, voice):
+    raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", mp3, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"], check=True, capture_output=True).stdout
+    a = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768
     _tts[(text, voice)] = a
     return a
 
@@ -263,13 +273,20 @@ class ColdOpen:
 
 
 def window(scene_id, k, pre=0.8, post=3.0, until_turn=None):
+    """Recording-time pieces from turn k (to turn `until_turn`), with every long model wait inside cut out."""
     sc = MANIFEST[scene_id]
     off = sc.get("recordingStartOffsetMs", 1200) / 1000
-    at, done = sc["turns"][k]["atMs"] / 1000 + off, sc["turns"][k]["doneMs"] / 1000 + off
-    end = (sc["turns"][until_turn]["doneMs"] / 1000 + off + post) if until_turn is not None else done + post
-    if done - at > 6:
-        return [[max(0.0, at - pre), at + 3.0], [done - 0.8, end]]
-    return [[max(0.0, at - pre), end]]
+    turns = sc["turns"][k:(until_turn if until_turn is not None else k) + 1]
+    start = max(0.0, turns[0]["atMs"] / 1000 + off - pre)
+    end = turns[-1]["doneMs"] / 1000 + off + post
+    pieces, cur = [], start
+    for tr in turns:
+        at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
+        if done - at > 6:
+            pieces.append([cur, at + 3.0])
+            cur = done - 0.8
+    pieces.append([cur, end])
+    return pieces
 
 
 PANEL_C = (0.27, 0.72)  # assistant panel centre in the TV frame (bottom-left, inside the safe zone)
@@ -312,7 +329,7 @@ class Beat:
             if s_done is not None:
                 reply = tr["turn"]["speech"]
                 sentences = reply.replace("! ", ". ").split(". ")
-                spoken = ". ".join(sentences[:3]) if len(reply) > 220 else reply  # whole sentences only
+                spoken = (". ".join(sentences[:2]).rstrip(".") + ".") if len(reply) > 160 else reply  # whole sentences only; full text is on the TV panel
                 clip = tts(spoken, "Ruth", tmp)
                 start = max(cursor + 0.15, s_done + 0.15)
                 self.voice.append((start, clip))
@@ -487,24 +504,25 @@ def main():
                          font("regular", 20), MUTED, 0)], 1700, "center")
 
     segs = [
-        ColdOpen(141.4, 5.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
-        Card("Semantic Playback", kicker="For Fire TV", sub="Talk about what you saw. The TV finds it — and acts.", dur=3.6, center=True),
-        Beat(f1, window(f1, 0, pre=5.5, post=2.0), "Viewing Lens", "Ask who's on screen."),
-        Beat(f1, window(f1, 1, pre=0.5, post=2.0), "Viewing Lens", "Read anything on screen."),
-        Beat(f1, window(f1, 2, pre=0.6, post=8.0), "Conversational references", "Then just say “his goal”."),
-        Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.0, top=True, extra=steps_extra(explainer)),
+        ColdOpen(141.4, 5.2, ["You remember the moment.", "Your TV only knows the timestamp."]),
+        Card("Semantic Playback", kicker="For Fire TV", sub="Talk about what you saw. The TV finds it — and acts.", dur=3.0, center=True),
+        Beat(f1, window(f1, 0, pre=4.0, post=1.6), "Viewing Lens", "Ask who's on screen."),
+        Beat(f1, window(f1, 1, pre=0.4, post=1.6), "Viewing Lens", "Read anything on screen."),
+        Beat(f1, window(f1, 2, pre=0.5, post=10.0), "Conversational references", "Then just say “his goal”."),
+        Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.8, top=True, extra=steps_extra(explainer)),
         Beat(f1, window(f1, 3, pre=0.5, post=2.5), "Deterministic follow-ups", "Nudge it: three seconds earlier."),
-        Beat(f1, window(f1, 4, pre=0.5, post=9.0, until_turn=5), "Deterministic follow-ups", "Slow it down. Play it twice."),
+        Beat(f1, window(f1, 4, pre=0.4, post=1.6, until_turn=6), "Deterministic follow-ups", "Slow it down. Play it twice. Back to normal."),
         Beat(f1, window(f1, 7, pre=0.8, post=2.0), "Clip and share", "Send the moment to your phone."),
-        Card("On your phone, instantly.", sub="The real companion page, with the clip from the TV.", dur=3.6, extra=phone_extra),
+        Card("On your phone, instantly.", sub="The real companion page, with the clip from the TV.", dur=3.0, extra=phone_extra),
         Beat(f2, window(f2, 0, pre=0.5, post=1.5), "Spoiler-safe by design", "It never spoils what's ahead."),
-        Beat(f2, window(f2, 1, pre=0.5, post=5.0, until_turn=2), "Your call", "Spoilers off — and it plays."),
-        Beat(f2, window(f2, 4, pre=0.5, post=1.5), "Catch me up", "Away for a bit? Catch up in seconds."),
+        Beat(f2, window(f2, 1, pre=0.4, post=1.4, until_turn=3), "Your call", "Spoilers off — and it plays. Back on in a word."),
+        Beat(f2, window(f2, 4, pre=0.5, post=3.0), "Catch me up", "Away for a bit? Catch up in seconds."),
         Beat(f2, window(f2, 5, pre=0.5, post=1.5), "Viewing Memory", "It remembers what you asked."),
-        Beat(s4, window(s4, 1, pre=0.6, post=2.0), "Beyond sports", "Works on films, too."),
+        Beat(s4, window(s4, 0, pre=0.4, post=3.0), "Beyond sports", "Open any title by name."),
+        Beat(s4, window(s4, 1, pre=0.6, post=2.0), "Beyond sports", "Works on films, too — by line of dialogue."),
         Beat(s4, window(s4, 2, pre=0.5, post=1.5), "Viewing Lens", "Ask what's happening."),
-        Card("Under the hood.", kicker="Architecture", dur=6.5, top=True, extra=arch_extra),
-        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=4.6, center=True,
+        Card("Under the hood.", kicker="Architecture", dur=8.5, top=True, extra=arch_extra),
+        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=5.0, center=True,
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
@@ -513,8 +531,12 @@ def main():
             s.prepare(tmp)
         total = sum(s.dur for s in segs)
         print(f"timeline {total:.1f}s across {len(segs)} segments")
-        if total > 179:
+        if total > 178:
             print("WARNING: over 3:00 — shorten beats")
+        if os.environ.get("SP_PLAN"):  # dry run: timeline only
+            for s in segs:
+                print(f"  {s.dur:6.1f}s  {type(s).__name__:8} {getattr(s, 'headline', '')}")
+            return
 
         n = int(total * SR) + SR
         speech = np.zeros(n, dtype=np.float32)
