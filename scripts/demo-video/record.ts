@@ -65,6 +65,16 @@ const SCENES: Scene[] = [
       { say: "Who was the player I asked about?", holdMs: 5000 },
     ],
   },
+  {
+    id: "s4-real-footage",
+    title: "Real footage: Tears of Steel (CC BY 3.0, Blender Foundation)",
+    steps: [
+      { say: "Play Tears of Steel", holdMs: 4000 },
+      { seek: 548000, play: true, untilMs: 560000 }, // the viewer has watched up to 9:20
+      { say: "Rewind to when they say there are two minutes left", holdMs: 6000 },
+      { say: "When does the memory overwrite complete?", holdMs: 6000 },
+    ],
+  },
 ];
 
 async function post(path: string, body: unknown): Promise<any> {
@@ -94,8 +104,10 @@ const active = health.players.find((p: { active: boolean }) => p.active);
 if (!active) throw new Error("No active player — start the Fire OS app first.");
 console.log(`recording on ${active.deviceId} (${active.kind}), interpreter=${health.interpreter}`);
 
+// Optional scene filter: `record.ts <outDir> s4` records only scenes whose id contains "s4".
+const only = process.argv[3];
 const manifest: unknown[] = [];
-for (const scene of SCENES) {
+for (const scene of SCENES.filter((s) => !only || s.id.includes(only))) {
   const remote = `/sdcard/${scene.id}.mp4`;
   const proc = startRecording(remote);
   await sleep(1200);
@@ -133,4 +145,4 @@ for (const scene of SCENES) {
 }
 writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 1));
 await mcp.close();
-console.log(`saved ${SCENES.length} scenes → ${outDir}/manifest.json`);
+console.log(`saved ${manifest.length} scenes → ${outDir}/manifest.json`);
