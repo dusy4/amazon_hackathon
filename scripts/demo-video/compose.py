@@ -48,7 +48,9 @@ for sdir in srcs:
 CUT_TURNS_LONGER_THAN = 6.0
 
 # Which part of each recording to use (seconds into the recording).
-TRIM = {"s1-north-star": (13.0, None), "s4-real-footage": (0.0, None)}
+TRIM = {"s1-north-star": (17.0, None), "s4-real-footage": (0.0, None)}
+# Extra editorial cuts (recording seconds): plain playback with no interaction.
+EXTRA_CUTS = {"s4-real-footage": [(19.2, 30.2)]}
 SCENE_SUB = {
     "s1-north-star": "The viewer watches goal 1 happen, then talks to the TV.",
     "s2-entities": "Entity-aware playback: identify a player, then navigate by him.",
@@ -65,6 +67,8 @@ def kept_intervals(sc, a, b):
         at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
         if done - at > CUT_TURNS_LONGER_THAN:
             cuts.append((at + 3.0, done - 1.0, done - at, tr["turn"]["interpreter"].split(" (")[0]))
+    for c0, c1 in EXTRA_CUTS.get(sc["id"], []):
+        cuts.append((c0, c1, 0.0, None))
     out, cur = [], a
     for c0, c1, *_ in sorted(cuts):
         if c0 > cur:
@@ -265,15 +269,15 @@ $s.SetOutputToNull()
 
 def main():
     segments = []  # (kind, payload, duration_s)
-    segments.append(("card", card("Video players understand timestamps.", [], "Humans remember moments."), 5.0))
+    segments.append(("card", card("Video players understand timestamps.", [], "Humans remember moments."), 4.0))
     segments.append(("card", card("Semantic Playback", ["An agentic context layer for Fire TV: talk about what you saw — the TV finds it and acts.",
-                                                         "Fire OS app · self-hosted MCP server · Amazon DynamoDB · Rekognition · Polly"], "Fire TV track · AWS Builder"), 5.0))
+                                                         "Fire OS app · self-hosted MCP server · Amazon DynamoDB · Rekognition · Polly"], "Fire TV track · AWS Builder"), 4.0))
     for sc in manifest:
         a, b = TRIM.get(sc["id"], (0.0, None))
-        segments.append(("card", card(sc["title"], [], SCENE_SUB.get(sc["id"])), 3.0))
+        segments.append(("card", card(sc["title"], [], SCENE_SUB.get(sc["id"])), 2.5))
         segments.append(("scene", dict(sc, trim=(a, b)), None))
-    segments.append(("card", card("As built", ARCH, None), 12.0))
-    segments.append(("card", card("Semantic Playback", ["github.com/dusy4/amazon_hackathon"], "Video players understand timestamps. Humans remember moments."), 4.0))
+    segments.append(("card", card("As built", ARCH, None), 10.0))
+    segments.append(("card", card("Semantic Playback", ["github.com/dusy4/amazon_hackathon"], "Video players understand timestamps. Humans remember moments."), 3.0))
 
     # Durations for scenes from ffprobe, minus the shortened model waits
     for i, (kind, p, dur) in enumerate(segments):
@@ -354,7 +358,7 @@ def main():
                     tv = Image.frombytes("RGB", (TV_W, TV_H), buf)
                 written += 1
                 rec_t = src_t - off  # seconds since scene start in recorder clock
-                shortened = next((c for c in p["cuts"] if c[1] <= src_t < c[1] + 2.5), None)
+                shortened = next((c for c in p["cuts"] if c[3] and c[1] <= src_t < c[1] + 2.5), None)
                 turn, ti = None, -1
                 for k, tr in enumerate(p["turns"]):
                     if tr["atMs"] / 1000 <= rec_t:
