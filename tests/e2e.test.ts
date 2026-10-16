@@ -81,6 +81,12 @@ describe("conversational playback", () => {
     expect(lastSeek()?.positionMs).toBe(88000);
   });
 
+  it("a descriptive goal name never falls back to the active reference", async () => {
+    await say("go back to the replay of that goal"); // grounds goal 1 as the active reference
+    const t = await say("show me the equaliser"); // goal 2 (1-1) is after the 2:05 boundary
+    expect(t.speech).toMatch(/won't spoil/);
+  });
+
   it("spoiler guard, then spoilers off", async () => {
     const t = await say("show me the second goal");
     expect(t.speech).toMatch(/won't spoil/);

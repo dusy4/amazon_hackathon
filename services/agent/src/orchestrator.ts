@@ -279,8 +279,11 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
   }
 
   const resolveBase = async (types: string[]): Promise<Moment> => {
+    // "the equaliser" / "levelled it": among goals, only those after which the score is level.
+    // A descriptive name picks its own goal, so it must not resolve to the active reference.
+    const levelling = types.includes("goal") && /\bequali[sz]\w*|\blevel(led|ler|s)?\b/.test(spec.query);
     // "that goal" / "the goal": prefer the grounded reference.
-    if (spec.deictic && active && !spec.anchor && !spec.descriptive) {
+    if (spec.deictic && active && !spec.anchor && !spec.descriptive && !levelling) {
       const activeType = active.kind === "replay" ? c.app.currentIndex()?.events.find((e) => e.id === active.ofEventId)?.type : active.eventType;
       if (activeType && types.includes(activeType)) {
         c.step({ kind: "intent", label: `“that ${activeType.replace("_", " ")}” → active reference ${active.label}`, component: "context-service" });
@@ -298,8 +301,6 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
     else if (anchorMs !== undefined) Object.assign(args, { relation: spec.anchor!.relation, anchorMs, order: spec.anchor!.relation === "before" ? "nearest" : "first" });
     else if (spec.descriptive) Object.assign(args, { order: "relevance" });
     else Object.assign(args, { relation: "before", order: "nearest" });
-    // "the equaliser" / "levelled it": among goals, only those after which the score is level.
-    const levelling = types.includes("goal") && /\bequali[sz]\w*|\blevel(led|ler|s)?\b/.test(spec.query);
     const r = await search(c, { ...args, limit: levelling ? 10 : 3 });
     if (levelling) {
       const events = c.app.currentIndex()?.events ?? [];

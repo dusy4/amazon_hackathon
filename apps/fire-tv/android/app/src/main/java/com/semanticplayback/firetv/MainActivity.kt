@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit
  */
 class MainActivity : AppCompatActivity() {
     private lateinit var player: ExoPlayer
+    private var recoveries = 0
     private lateinit var session: MediaSession
     private lateinit var controller: PlayerController
     private lateinit var status: TextView
@@ -60,6 +61,25 @@ class MainActivity : AppCompatActivity() {
         controller.onChange = { sendState() }
         player.addListener(object : androidx.media3.common.Player.Listener {
             override fun onEvents(p: androidx.media3.common.Player, events: androidx.media3.common.Player.Events) = sendState()
+
+            override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
+                // Self-heal instead of freezing: an audio-output failure (no audio sink, HDMI/CEC hiccup,
+                // emulator without audio) must not stop video playback. Retry once with audio disabled.
+                val audioFailure = error.stackTraceToString().contains("AudioRenderer") || error.stackTraceToString().contains("AudioSink")
+                setStatus("player error: ${error.errorCodeName}${if (audioFailure) " — retrying without audio" else " — retrying"}")
+                val resumeAt = player.currentPosition
+                val wasPlaying = player.playWhenReady
+                if (audioFailure) {
+                    player.trackSelectionParameters = player.trackSelectionParameters.buildUpon()
+                        .setTrackTypeDisabled(androidx.media3.common.C.TRACK_TYPE_AUDIO, true).build()
+                }
+                if (recoveries++ < 3) {
+                    player.prepare()
+                    player.seekTo(resumeAt)
+                    player.playWhenReady = wasPlaying
+                }
+                sendState()
+            }
         })
         main.post(object : Runnable {
             override fun run() {
