@@ -1,13 +1,13 @@
 {
   "summary": {
     "label": "rules",
-    "at": "2026-10-16T04:54:31.276Z",
-    "cases": 13,
-    "passRate": 0.923,
-    "seekHitRate": 0.9,
-    "R1@IoU0.5": 0.8,
-    "R1@IoU0.7": 0.8,
-    "medianMs": 28
+    "at": "2026-10-16T04:59:27.451Z",
+    "cases": 35,
+    "passRate": 0.714,
+    "seekHitRate": 0.75,
+    "R1@IoU0.5": 0.5,
+    "R1@IoU0.7": 0.429,
+    "medianMs": 39
   },
   "rows": [
     {
@@ -15,7 +15,7 @@
       "pass": true,
       "detail": "in ev-16",
       "iou": 1,
-      "ms": 155,
+      "ms": 157,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"take me back to when the keeper denied the header\",\"eventTypes\":[\"header\",\"goal\"],\"entityIds\":[\"player:HCFC:1\"],\"order\":\"relevance\",\"limit\":3}",
@@ -28,7 +28,7 @@
       "pass": true,
       "detail": "in ev-18",
       "iou": 1,
-      "ms": 31,
+      "ms": 39,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"show me the equaliser again\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}",
@@ -41,7 +41,7 @@
       "pass": true,
       "detail": "in ev-27",
       "iou": 1,
-      "ms": 23,
+      "ms": 32,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"rewind to silva's header\",\"eventTypes\":[\"header\",\"goal\"],\"entityIds\":[\"player:HCFC:7\"],\"order\":\"relevance\",\"limit\":3}",
@@ -54,7 +54,7 @@
       "pass": true,
       "detail": "in ev-18",
       "iou": 1,
-      "ms": 33,
+      "ms": 41,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"the moment okafor levelled it\",\"eventTypes\":[\"goal\"],\"entityIds\":[\"player:NGU:9\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}",
@@ -67,7 +67,7 @@
       "pass": true,
       "detail": "in ev-22",
       "iou": 1,
-      "ms": 17,
+      "ms": 18,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"where did silva hit the woodwork\",\"eventTypes\":[\"shot\"],\"entityIds\":[\"player:HCFC:7\"],\"order\":\"relevance\",\"limit\":3}",
@@ -80,7 +80,7 @@
       "pass": true,
       "detail": "in ev-07",
       "iou": 1,
-      "ms": 22,
+      "ms": 25,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"show the booking for the northgate defender\",\"eventTypes\":[\"yellow_card\"],\"entityIds\":[\"team:NGU\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
@@ -93,7 +93,7 @@
       "pass": true,
       "detail": "in ev-12",
       "iou": 1,
-      "ms": 23,
+      "ms": 24,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"replay of the opener\",\"eventTypes\":[\"goal\"],\"ordinal\":1,\"limit\":3}",
@@ -107,7 +107,7 @@
       "pass": true,
       "detail": "in ev-29",
       "iou": null,
-      "ms": 31,
+      "ms": 20,
       "interpreter": "rules",
       "tools": [
         "player.set_speed {\"rate\":0.5}"
@@ -119,7 +119,7 @@
       "pass": true,
       "detail": "guarded",
       "iou": null,
-      "ms": 14,
+      "ms": 9,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"show me the equaliser\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}"
@@ -131,7 +131,7 @@
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 28,
+      "ms": 24,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"goal\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":1}",
@@ -144,7 +144,7 @@
       "pass": true,
       "detail": "in ev-29",
       "iou": 0.77,
-      "ms": 42,
+      "ms": 45,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"go back to the replay of the last goal\",\"eventTypes\":[\"goal\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
@@ -160,7 +160,7 @@
       "pass": true,
       "detail": "",
       "iou": null,
-      "ms": 9,
+      "ms": 17,
       "interpreter": "rules",
       "tools": [
         "lens.read_text {\"atMs\":215000}"
@@ -168,17 +168,294 @@
       "speech": "Harbor City FC 2, Northgate United 1, 78 minutes played."
     },
     {
+      "id": "n-reads-note",
+      "pass": true,
+      "detail": "in bt-3",
+      "iou": 1,
+      "ms": 33,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"go to the bit where the girl reads the note\",\"entityIds\":[\"object:letter\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":45555}"
+      ],
+      "speech": "Mara reads the letter: meet me at the north cliff at midnight, signed T."
+    },
+    {
+      "id": "n-dig-key",
+      "pass": true,
+      "detail": "in bt-6",
+      "iou": 0.31,
+      "ms": 30,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"when do they dig up the key\",\"entityIds\":[\"object:key\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":123613}"
+      ],
+      "speech": "Theo admits he wrote the letter so they would find the key together."
+    },
+    {
+      "id": "n-docks-argument",
+      "pass": false,
+      "detail": "pos 170000",
+      "iou": null,
+      "ms": 2,
+      "interpreter": "rules",
+      "tools": [],
+      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+    },
+    {
+      "id": "n-brother-admits",
+      "pass": true,
+      "detail": "in bt-7",
+      "iou": 1,
+      "ms": 31,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"jump to where the brother admits he wrote it\",\"entityIds\":[\"character:theo\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":123613}"
+      ],
+      "speech": "Theo admits he wrote the letter so they would find the key together."
+    },
+    {
+      "id": "n-lamp",
+      "pass": false,
+      "detail": "pos 109369",
+      "iou": 0,
+      "ms": 25,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"the part where the lamp finally comes on\",\"entityIds\":[\"object:lantern\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":109369}"
+      ],
+      "speech": "Scene 5 — North cliff at midnight."
+    },
+    {
+      "id": "n-prev-inspector",
+      "pass": true,
+      "detail": "in sc-6",
+      "iou": 1,
+      "ms": 18,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"previous scene with the inspector\",\"eventTypes\":[\"scene\"],\"entityIds\":[\"character:hale\"],\"relation\":\"before\",\"anchorMs\":151806,\"order\":\"nearest\",\"limit\":3}",
+        "player.seek {\"positionMs\":131432}"
+      ],
+      "speech": "Scene 6 — Hale returns."
+    },
+    {
+      "id": "n-who-cap",
+      "pass": false,
+      "detail": "",
+      "iou": null,
+      "ms": 18,
+      "interpreter": "rules",
+      "tools": [
+        "lens.identify {\"target\":\"on_screen\",\"atMs\":140000}"
+      ],
+      "speech": "That's Mara Quinn, the lighthouse keeper. Keeper of the Gullrock lighthouse; Theo's older sister. Appearance: long brown hair, red scarf, blue coat."
+    },
+    {
+      "id": "n-spoiler-key",
+      "pass": true,
+      "detail": "guarded",
+      "iou": null,
+      "ms": 20,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"skip to where they find the key\",\"entityIds\":[\"object:key\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}"
+      ],
+      "speech": "I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway."
+    },
+    {
+      "id": "r-roti-ingredients",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.85,
+      "ms": 443,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"go back to the part with the ingredients\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":8808}"
+      ],
+      "speech": "Listing required ingredients."
+    },
+    {
+      "id": "r-roti-rest",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.53,
+      "ms": 179,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"when do they let the dough rest\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":114314}"
+      ],
+      "speech": "Oil and rest dough."
+    },
+    {
+      "id": "r-roti-pan",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.22,
+      "ms": 184,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"show me where they cook it in the pan\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":158291}"
+      ],
+      "speech": "Heat the pan."
+    },
+    {
+      "id": "f-bridge-breakup",
+      "pass": false,
+      "detail": "pos 560000",
+      "iou": null,
+      "ms": 1,
+      "interpreter": "rules",
+      "tools": [],
+      "speech": "Sorry, I didn't catch a playback request there. Try “go back to the replay of the last goal”."
+    },
+    {
       "id": "f-thom-sorry",
       "pass": false,
       "detail": "pos 25000",
       "iou": 0,
-      "ms": 746,
+      "ms": 243,
       "interpreter": "rules",
       "tools": [
         "moments.search {\"query\":\"the part where thom finally apologises to her\",\"entityIds\":[\"person:thom\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
         "player.seek {\"positionMs\":25000}"
       ],
       "speech": "Celia and Thom discuss fears."
+    },
+    {
+      "id": "f-two-minutes",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.68,
+      "ms": 187,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"rewind to when they say there are 2 minutes left\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":338916}"
+      ],
+      "speech": "Urging Thom to speed up."
+    },
+    {
+      "id": "f-overwrite-done",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.32,
+      "ms": 214,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"when does the memory overwrite complete\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":537708}"
+      ],
+      "speech": "Memory overwrite declared during hug."
+    },
+    {
+      "id": "t-what-is-free",
+      "pass": false,
+      "detail": "pos 631720",
+      "iou": 0,
+      "ms": 200,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"go back to where he explains what free software means\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":631720}"
+      ],
+      "speech": "Free vs nonfree software learning."
+    },
+    {
+      "id": "t-amazon",
+      "pass": false,
+      "detail": "pos 261360",
+      "iou": 0,
+      "ms": 194,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"when does he talk about amazon\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":261360}"
+      ],
+      "speech": "Proprietary software can snoop users."
+    },
+    {
+      "id": "t-schools",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.1,
+      "ms": 184,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"the part about schools teaching software\",\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":604720}"
+      ],
+      "speech": "Stallman likens non‑free software to tobacco."
+    },
+    {
+      "id": "s-bolt-goal",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.17,
+      "ms": 233,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"show me usain bolt's goal\",\"eventTypes\":[\"goal\"],\"entityIds\":[\"person:usain-bolt\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
+        "player.seek {\"positionMs\":158640}"
+      ],
+      "speech": "Fan scores at Old Trafford, celebrates."
+    },
+    {
+      "id": "s-scholes",
+      "pass": true,
+      "detail": "in window",
+      "iou": 0.22,
+      "ms": 211,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"when did paul scholes put england ahead\",\"entityIds\":[\"person:paul-scholes\"],\"includeWindows\":true,\"order\":\"relevance\",\"limit\":3}",
+        "player.seek {\"positionMs\":459360}"
+      ],
+      "speech": "Scholes scores outside‑foot goal for 2‑1 lead."
+    },
+    {
+      "id": "s-keane-level",
+      "pass": false,
+      "detail": "pos 579000",
+      "iou": 0,
+      "ms": 190,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"rewind to robbie keane's equaliser\",\"eventTypes\":[\"goal\"],\"entityIds\":[\"person:robbie-keane\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":10}",
+        "player.seek {\"positionMs\":579000}"
+      ],
+      "speech": "Robbie Keane assists Noah."
+    },
+    {
+      "id": "s-spoiler-keane",
+      "pass": false,
+      "detail": "pos 297920",
+      "iou": null,
+      "ms": 198,
+      "interpreter": "rules",
+      "tools": [
+        "moments.search {\"query\":\"show me robbie keane's goal\",\"eventTypes\":[\"goal\"],\"entityIds\":[\"person:robbie-keane\"],\"relation\":\"before\",\"order\":\"nearest\",\"limit\":3}",
+        "player.seek {\"positionMs\":297920}"
+      ],
+      "speech": "Deflection leads to James save."
+    },
+    {
+      "id": "s-who-live",
+      "pass": false,
+      "detail": "",
+      "iou": null,
+      "ms": 641,
+      "interpreter": "rules",
+      "tools": [
+        "lens.identify {\"target\":\"on_screen\",\"atMs\":150000}"
+      ],
+      "speech": "I couldn't do that: Your session has expired. Please reauthenticate."
     }
   ]
 }
