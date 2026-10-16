@@ -40,21 +40,26 @@ const SCENES: Scene[] = [
       { open: "yt-soccer-aid-2023" },
       { setup: { spoilerMode: "strict" } },
       { seek: 128000, play: true, untilMs: 148200 }, // the viewer watches Usain Bolt score
-      { say: "Who's this?", holdMs: 5000 },
-      { say: "Show me his goal", holdMs: 4000 },
+      { say: "Who's this?", holdMs: 6500 },
+      { say: "Read the score", holdMs: 6000 },
+      { say: "Show me his goal", holdMs: 8000 },
+      { say: "Three seconds earlier", holdMs: 4500 },
       { say: "Half speed", holdMs: 2500 },
-      { say: "Repeat it twice", holdMs: 9000 },
+      { say: "Repeat it twice", holdMs: 11000 },
       { say: "Normal speed", holdMs: 1500 },
-      { say: "Clip that and send it to my phone", holdMs: 5000 },
+      { say: "Clip that and send it to my phone", holdMs: 7000 },
     ],
   },
   {
     id: "f2-spoilers-memory",
     title: "Spoiler-safe, and it remembers",
     steps: [
-      { say: "Show me Robbie Keane's goal", holdMs: 5000 },
-      { say: "I was away for 2 minutes, catch me up", holdMs: 7000 },
-      { say: "Who was the player I asked about?", holdMs: 5000 },
+      { say: "Show me Robbie Keane's goal", holdMs: 7000 },
+      { say: "Spoilers off", holdMs: 2500 },
+      { say: "Show me Robbie Keane's goal", holdMs: 9000 },
+      { say: "Spoilers on", holdMs: 2000 },
+      { say: "I was away for 2 minutes, catch me up", holdMs: 9000 },
+      { say: "Who was the player I asked about?", holdMs: 6500 },
     ],
   },
   {
@@ -63,9 +68,8 @@ const SCENES: Scene[] = [
     steps: [
       { say: "Play Tears of Steel", holdMs: 4000 },
       { seek: 548000, play: true, untilMs: 560000 }, // the viewer has watched up to 9:20
-      { say: "Rewind to when they say there are two minutes left", holdMs: 6000 },
-      { say: "When does the memory overwrite complete?", holdMs: 6000 },
-      { say: "What's happening?", holdMs: 7000 }, // live Amazon Rekognition on the current frame
+      { say: "Rewind to when they say there are two minutes left", holdMs: 8000 },
+      { say: "What's happening?", holdMs: 9000 },
     ],
   },
 ];
@@ -85,7 +89,7 @@ const EMULATOR = execFileSync("adb", ["get-serialno"]).toString().trim().startsW
 
 function startRecording(remote: string, local: string) {
   if (EMULATOR) {
-    execFileSync("adb", ["emu", "screenrecord", "start", "--fps", "30", "--bit-rate", "16000000", "--time-limit", "180", resolvePath(local.replace(/\.mp4$/, ".webm"))]);
+    execFileSync("adb", ["emu", "screenrecord", "start", "--fps", "25", "--bit-rate", "16000000", "--time-limit", "180", resolvePath(local.replace(/\.mp4$/, ".webm"))]);
     return null;
   }
   return spawn("adb", ["shell", "screenrecord", "--time-limit", "180", "--bit-rate", "8000000", remote], { stdio: "ignore" });
@@ -96,7 +100,7 @@ async function stopRecording(proc: ReturnType<typeof spawn> | null, remote: stri
     execFileSync("adb", ["emu", "screenrecord", "stop"]);
     await sleep(2500); // host encoder finalises the webm
     const webm = resolvePath(local.replace(/\.mp4$/, ".webm"));
-    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", webm, "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-pix_fmt", "yuv420p", "-r", "30", resolvePath(local)]);
+    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", webm, "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-pix_fmt", "yuv420p", "-r", "25", resolvePath(local)]);
     return;
   }
   execFileSync("adb", ["shell", "pkill", "-INT", "screenrecord"]);

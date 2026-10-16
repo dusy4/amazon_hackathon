@@ -58,7 +58,7 @@ describe("narrative title", () => {
   it("reads the sign on screen", async () => {
     const t = await say("Read that");
     expect(tools(t)).toEqual(["player.pause", "lens.read_text"]); // freeze the frame, then read it
-    expect(t.speech).toBe("It says: PIER 4");
+    expect(t.speech).toBe("It says: PIER 4.");
   });
 
   it("descriptive seek lands on the story beat, not the whole scene", async () => {

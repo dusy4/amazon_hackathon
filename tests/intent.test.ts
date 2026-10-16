@@ -91,3 +91,13 @@ describe("lens, accessibility, memory", () => {
     expect(parseUtterance("clip that and send it to my phone")).toMatchObject([{ type: "clip" }, { type: "share" }]);
   });
 });
+
+import { readAloud } from "../services/agent/src/orchestrator.ts";
+describe("reading on-screen text aloud", () => {
+  it("reads a broadcast scoreboard like a person", () => {
+    expect(readAloud(["23:57", "ENG 0-1 WXI", "donate online and full terms", "9"])).toBe("England 0, World XI 1, 23:57 on the clock.");
+  });
+  it("reads prominent lines and drops fragments", () => {
+    expect(readAloud(["PIER 4", "9"])).toBe("It says: PIER 4.");
+  });
+});

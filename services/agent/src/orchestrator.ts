@@ -380,6 +380,26 @@ async function baseOfReplay(c: SkillCtx, replay: Moment): Promise<Moment> {
   return { segmentId: seg.id, kind: seg.kind, eventId: seg.eventId, eventType: seg.eventType, startMs: seg.startMs, endMs: seg.endMs, label: seg.label, score: 1, scoreBreakdown: {}, entityIds: seg.entityIds };
 }
 
+const TEAM_NAMES: Record<string, string> = { ENG: "England", WXI: "World XI", SCO: "Scotland", WAL: "Wales", IRL: "Ireland", FRA: "France", GER: "Germany", ESP: "Spain", ITA: "Italy", USA: "USA" };
+
+/**
+ * Speak on-screen text the way a person would: a scoreboard becomes "England 0, World XI 1, 23:57 on
+ * the clock"; otherwise the most prominent lines, without stray fragments (sponsor tickers, single digits).
+ */
+export function readAloud(lines: string[]): string {
+  const clean = lines.map((l) => l.trim()).filter(Boolean);
+  for (const l of clean) {
+    const m = l.match(/^([A-Z]{2,4})\s*(\d{1,2})\s*[-–:]\s*(\d{1,2})\s*([A-Z]{2,4})$/);
+    if (m) {
+      const clock = clean.find((x) => /^\d{1,3}:\d{2}$/.test(x));
+      const name = (t: string) => TEAM_NAMES[t] ?? t;
+      return `${name(m[1])} ${m[2]}, ${name(m[4])} ${m[3]}${clock ? `, ${clock} on the clock` : ""}.`;
+    }
+  }
+  const useful = clean.filter((l) => l.replace(/[^A-Za-z]/g, "").length >= 3).slice(0, 2);
+  return useful.length ? `It says: ${useful.join(". ")}.` : "There's no readable text on screen.";
+}
+
 /** "Show me X" means play it: seek to the grounded moment and resume if the player was paused (e.g. by the Lens). */
 async function showMoment(c: SkillCtx, ms: number): Promise<PlayerState> {
   const s = await seekTo(c, ms);
@@ -562,7 +582,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       if (isNarrative(index)) {
         if (!r.text) throw new Error("there's no text on screen right now");
         await c.app.record({ type: "ocr_read", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `Read on-screen text: ${r.text}`, entityIds: [], payload: {} });
-        c.speech.push(`It says: ${r.items.map((i: { text: string }) => i.text).join(". ")}`);
+        c.speech.push(readAloud(r.items.map((i: { text: string }) => i.text)));
         c.cards.push({ type: "text", title: "On screen", body: r.items.map((i: { text: string; kind?: string }) => `${i.kind ?? "text"}: ${i.text}`).join("\n") });
         return;
       }
