@@ -30,7 +30,13 @@ SRC = sys.argv[1] if len(sys.argv) > 1 else "artifacts/launch1"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "artifacts/semantic-playback-launch.mp4"
 BASE = os.environ.get("SP_BASE", "http://127.0.0.1:8787")
 SOCCER = "data/content/yt-soccer-aid-2023/video.mp4"
-MANIFEST = {s["id"]: s for s in json.load(open(os.path.join(SRC, "manifest.json"), encoding="utf-8"))}
+# One or more recording dirs (comma-separated); a later dir's scene replaces an earlier one with the same id.
+MANIFEST = {}
+for _d in SRC.split(","):
+    for _s in json.load(open(os.path.join(_d, "manifest.json"), encoding="utf-8")):
+        _s["dir"] = _d
+        MANIFEST[_s["id"]] = _s
+SRC = SRC.split(",")[0]
 
 INK, INK_DEEP = (35, 47, 62), (17, 23, 31)
 WHITE, BODY, MUTED = (242, 244, 247), (185, 195, 208), (128, 141, 158)
@@ -277,7 +283,7 @@ class Beat:
         self.pieces = pieces
         self.kicker, self.headline, self.zoom = kicker, headline, zoom
         self.off = self.sc.get("recordingStartOffsetMs", 1200) / 1000
-        self.video = os.path.join(SRC, self.sc["video"])
+        self.video = os.path.join(self.sc["dir"], self.sc["video"])
         self.video_len = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", self.video]).decode())
 
     def seg_t(self, r):

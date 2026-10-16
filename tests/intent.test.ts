@@ -101,3 +101,14 @@ describe("reading on-screen text aloud", () => {
     expect(readAloud(["PIER 4", "9"])).toBe("It says: PIER 4.");
   });
 });
+
+import { spokenText } from "../services/agent/src/orchestrator.ts";
+describe("spoken replies", () => {
+  it("never reads out milliseconds or markdown", () => {
+    expect(spokenText("I’ve rewound to the moment where they say, “Two minutes left!”—you’re now at 338916 ms in the video.")).toBe(
+      "I’ve rewound to the moment where they say, “Two minutes left!”.",
+    );
+    expect(spokenText("It is at **8 minutes 58 seconds** (around 537.7 seconds).")).toBe("It is at 8 minutes 58 seconds.");
+    expect(spokenText("Jumped to 141600 ms.")).toBe("Jumped to 2:22.");
+  });
+});

@@ -154,7 +154,7 @@ export class Orchestrator {
           new Promise<never>((_, reject) => setTimeout(() => reject(new LlmDeadlineError(`LLM exceeded its ${LLM_DEADLINE_MS / 1000} s budget`)), LLM_DEADLINE_MS)),
         ]);
         // Spoken on a TV and by Polly: no markdown.
-        speech.push(r.replace(/\*\*|__|`/g, "").replace(/\*([^*\n]+)\*/g, "$1").replace(/^#+\s*/gm, "").trim());
+        speech.push(spokenText(r));
       } catch (e) {
         // The model is unavailable (quota, network): degrade to the rules interpreter, visibly.
         step({ kind: "error", label: `LLM unavailable: ${(e as Error).message.slice(0, 120)} — falling back to rules`, component: this.llm.label });
@@ -743,4 +743,21 @@ function summarize(name: string, d: any): unknown {
 function stripHeavy(card: AnswerCard): AnswerCard {
   if (card.type === "clip" && card.share) return { ...card, share: { ...card.share, qrSvg: "" } };
   return card;
+}
+
+/**
+ * Make a model reply fit to be spoken on a TV: no markdown, and times as people say them
+ * ("338916 ms" → "5:38", "537.7 seconds" stays readable only when it is a plain duration).
+ */
+export function spokenText(r: string): string {
+  return r
+    .replace(/\*\*|__|`/g, "")
+    .replace(/\*([^*\n]+)\*/g, "$1")
+    .replace(/^#+\s*/gm, "")
+    .replace(/\s*[—–-]?\s*(?:you(?:'|’)re now )?at\s+\d{4,}\s*ms(?: in the video)?/gi, "")
+    .replace(/\b(\d{4,})\s*ms\b/gi, (_m, ms) => formatMs(Number(ms)))
+    .replace(/\s*\((?:around |about )?\d+(?:\.\d+)? seconds\)/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,!?])/g, "$1")
+    .trim();
 }
