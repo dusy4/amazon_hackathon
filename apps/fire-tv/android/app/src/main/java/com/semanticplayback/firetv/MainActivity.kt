@@ -174,14 +174,59 @@ class MainActivity : AppCompatActivity() {
         main.postAtTime({ overlay.visibility = View.GONE }, HIDE, android.os.SystemClock.uptimeMillis() + 12000)
     }
 
+    /** Suggestions per title kind, so the whole experience is reachable with the remote's D-pad alone. */
+    private fun suggestions(): List<String> = when {
+        controller.contentId == "harbor-v-northgate" || controller.contentId?.contains("soccer") == true -> listOf(
+            "Go back to the replay of the last goal",
+            "Three seconds earlier",
+            "Half speed",
+            "Repeat it twice",
+            "Normal speed",
+            "Who is number 7?",
+            "Show me his shots",
+            "The second one",
+            "Show every yellow card so far",
+            "Read the score",
+            "I was away for 2 minutes, catch me up",
+            "Clip that and send it to my phone",
+            "Who was the player I asked about?",
+            "Back to live",
+        )
+        else -> listOf(
+            "Who's this?",
+            "What's happening?",
+            "Read the text on screen",
+            "Go back to the previous scene",
+            "Catch me up",
+            "Clip that and send it to my phone",
+            "Back to live",
+        )
+    }
+
+    private fun send(text: String, source: String) {
+        ws?.send(JSONObject().put("type", "utterance").put("text", text).put("source", source).toString())
+    }
+
+    /** MENU: pick a suggested request with the D-pad, or type your own. */
     private fun askDialog() {
+        val items = suggestions() + "Type your own…"
+        AlertDialog.Builder(this)
+            .setTitle("Ask Semantic Playback")
+            .setItems(items.toTypedArray()) { _, which ->
+                if (which == items.size - 1) typeDialog() else send(items[which], "fire-tv-dpad")
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun typeDialog() {
         val input = EditText(this).apply { hint = getString(R.string.ask_hint); setSingleLine() }
         AlertDialog.Builder(this)
             .setTitle("Semantic Playback")
             .setView(input)
             .setPositiveButton("Ask") { _, _ ->
                 val text = input.text.toString().trim()
-                if (text.isNotEmpty()) ws?.send(JSONObject().put("type", "utterance").put("text", text).put("source", "fire-tv-keyboard").toString())
+                if (text.isNotEmpty()) send(text, "fire-tv-keyboard")
             }
             .setNegativeButton("Cancel", null)
             .show()
