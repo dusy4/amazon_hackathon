@@ -16,7 +16,7 @@ import type { WireMessage } from "../../../packages/contracts/src/index.ts";
 import { AppContext } from "./app-context.ts";
 import { mountMcp } from "./mcp.ts";
 import { Orchestrator } from "./orchestrator.ts";
-import { POLLY_VOICE, synthesize } from "./tts.ts";
+import { ALLOWED_VOICES, POLLY_VOICE, synthesize } from "./tts.ts";
 
 /** Best LAN address for QR codes / phones: prefer private home-network ranges over VPN/overlay ranges. */
 function lanIp() {
@@ -81,7 +81,8 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
     if (!text) return void res.status(400).end();
     const t0 = Date.now();
     try {
-      const audio = await synthesize(text);
+      const voice = ALLOWED_VOICES.has(String(req.query.voice)) ? (String(req.query.voice) as typeof POLLY_VOICE) : POLLY_VOICE;
+      const audio = await synthesize(text, voice);
       if (req.query.turnId)
         app.emit({ type: "trace", turnId: String(req.query.turnId), trace: { kind: "action", label: `spoken reply (${audio.length} B mp3)`, component: `amazon-polly:generative:${POLLY_VOICE}`, ms: Date.now() - t0 } });
       res.type("audio/mpeg").send(Buffer.from(audio));

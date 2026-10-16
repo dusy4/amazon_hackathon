@@ -13,6 +13,9 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
+import urllib.parse
+import urllib.request
 import wave
 
 import numpy as np
@@ -45,7 +48,7 @@ for sdir in srcs:
 CUT_TURNS_LONGER_THAN = 6.0
 
 # Which part of each recording to use (seconds into the recording).
-TRIM = {"s1-north-star": (13.0, None), "s4-real-footage": (17.0, None)}
+TRIM = {"s1-north-star": (13.0, None), "s4-real-footage": (0.0, None)}
 SCENE_SUB = {
     "s1-north-star": "The viewer watches goal 1 happen, then talks to the TV.",
     "s2-entities": "Entity-aware playback: identify a player, then navigate by him.",
@@ -220,9 +223,17 @@ def synth_polly(lines, tmp):
     out = []
     for i, (text, role) in enumerate(lines):
         mp3, wav_path = os.path.join(tmp, f"p{i}.mp3"), os.path.join(tmp, f"p{i}.wav")
-        subprocess.run(["aws", "polly", "synthesize-speech", "--engine", "generative", "--voice-id", POLLY_VOICES[role],
-                        "--output-format", "mp3", "--text", text[:2900], "--region", os.environ.get("AWS_REGION", "us-east-1"), mp3],
-                       check=True, capture_output=True)
+        # Same Polly client the app speaks with (server /api/tts), retried on transient failures.
+        url = f"{os.environ.get('SP_BASE', 'http://127.0.0.1:8787')}/api/tts?voice={POLLY_VOICES[role]}&text={urllib.parse.quote(text[:2900])}"
+        for attempt in range(5):
+            try:
+                with urllib.request.urlopen(url, timeout=60) as r, open(mp3, "wb") as f:
+                    f.write(r.read())
+                break
+            except Exception as e:  # noqa: BLE001
+                if attempt == 4:
+                    raise RuntimeError(f"Polly via {url[:80]}…: {e}")
+                time.sleep(2 * (attempt + 1))
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", mp3, "-ac", "1", "-ar", str(SR), wav_path], check=True)
         with wave.open(wav_path) as w:
             out.append(np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768)

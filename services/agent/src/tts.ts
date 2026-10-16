@@ -8,12 +8,15 @@ const client = new PollyClient({ region: process.env.AWS_REGION ?? "us-east-1" }
 const cache = new Map<string, Uint8Array>();
 export const POLLY_VOICE = (process.env.POLLY_VOICE ?? "Ruth") as VoiceId;
 
-export async function synthesize(text: string): Promise<Uint8Array> {
-  const key = `${POLLY_VOICE}:${text}`;
+/** Generative voices the API may be asked for (`/api/tts?voice=`); anything else falls back to POLLY_VOICE. */
+export const ALLOWED_VOICES = new Set<string>(["Ruth", "Matthew", "Danielle", "Stephen"]);
+
+export async function synthesize(text: string, voice: VoiceId = POLLY_VOICE): Promise<Uint8Array> {
+  const key = `${voice}:${text}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const res = await client.send(
-    new SynthesizeSpeechCommand({ Engine: "generative", VoiceId: POLLY_VOICE, OutputFormat: "mp3", Text: text.slice(0, 2900) }),
+    new SynthesizeSpeechCommand({ Engine: "generative", VoiceId: voice, OutputFormat: "mp3", Text: text.slice(0, 2900) }),
   );
   const audio = await res.AudioStream!.transformToByteArray();
   if (cache.size > 200) cache.delete(cache.keys().next().value!);
