@@ -483,6 +483,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       return;
     }
     case "identify": {
+      await freezeFrame(c);
       if (isNarrative(index)) {
         let entityId: string | undefined;
         if (intent.target === "mention") {
@@ -530,6 +531,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       return;
     }
     case "read_text": {
+      await freezeFrame(c);
       const r = await c.call("lens.read_text", { atMs: pos(c) });
       if (isNarrative(index)) {
         if (!r.text) throw new Error("there's no text on screen right now");
@@ -630,6 +632,18 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       return;
     case "unknown":
       return;
+  }
+}
+
+/**
+ * Viewing Lens answers are about the frame the viewer asked about. Pause first (as visual-search
+ * features do), so the answer can never describe a shot that has already cut away.
+ */
+async function freezeFrame(c: SkillCtx) {
+  const s = c.app.bridge.state();
+  if (s && !s.paused) {
+    await c.call("player.pause");
+    c.step({ kind: "action", label: `paused on the frame you asked about (${formatMs(s.positionMs)})`, component: "player" });
   }
 }
 

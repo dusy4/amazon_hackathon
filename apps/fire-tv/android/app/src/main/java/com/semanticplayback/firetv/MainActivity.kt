@@ -231,6 +231,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        // Never repeat what the answer already says; no raw URLs on a TV.
+        lines.removeAll { l -> l.isBlank() || l.contains("://") || l.startsWith("profile") || speech.contains(l.trim().removePrefix("▸").trim(), ignoreCase = true) }
         val card = findViewById<TextView>(R.id.card)
         card.text = lines.joinToString("\n")
         card.visibility = if (lines.isEmpty()) View.GONE else View.VISIBLE
