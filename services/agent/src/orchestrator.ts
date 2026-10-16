@@ -201,9 +201,12 @@ function observeLlmCalls(c: SkillCtx) {
     if (name === "moments.search") {
       lastResults = data.moments ?? [];
       if (lastResults.length > 1) c.session.ground({ kind: "result_set", label: String(args.query ?? ""), results: lastResults, resultIndex: 0 });
-    } else if (name === "player.seek") {
-      const m = lastResults.find((x) => Math.abs(x.startMs - Number(args.positionMs)) < 1500);
+    } else if (name === "player.seek" || name === "player.play_segment" || name === "player.loop") {
+      // Any way the model puts a searched moment on screen grounds it ("it", "that", "clip that").
+      const at = Number(name === "player.seek" ? args.positionMs : args.startMs);
+      const m = lastResults.find((x) => Math.abs(x.startMs - at) < 1500);
       if (m) {
+        c.session.lastSeekTargetMs = m.startMs;
         await groundMoment(c, m, "semantic_seek");
         c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
       }
