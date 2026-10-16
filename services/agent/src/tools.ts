@@ -13,6 +13,7 @@ import { type ClipRecord, type ContentIndex, type ShareRecord, entityIdForPlayer
 import { clipAttribution, renderClip, toMediaConvertInput } from "../../media/src/clip.ts";
 import { keyframe } from "../../media/src/ingest-video.ts";
 import { analyzeFrame } from "../../media/src/rekognition.ts";
+import { identifyInCollection } from "../../media/src/faces.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
 
@@ -463,8 +464,10 @@ export const TOOL_NAMES = [
 
 /** Real footage Viewing Lens: Rekognition on the frame on screen now, enriched with the title's index. */
 async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, entityId: string | undefined, boundary: number) {
-  const f = await analyzeFrame(keyframe(mediaPath, at), at);
+  const jpeg = keyframe(mediaPath, at);
+  const f = await analyzeFrame(jpeg, at);
   const known = (id: string) => idx.entities.find((e) => e.id === id);
+  let faceMatch: Awaited<ReturnType<typeof identifyInCollection>> = null;
   let entity: { id: string; type: string; name: string; role?: string; description?: string } | null = null;
   let source = "amazon-rekognition RecognizeCelebrities (live frame)";
   // Same corroboration rule as ingest: a face match is a public figure only if this title's index already knows
@@ -489,6 +492,12 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
   } else if (celeb) {
     const id = slugId(celeb.name);
     entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
+  } else if ((idx as any).faces && (faceMatch = await identifyInCollection(idx, jpeg))) {
+    // Films: most of the cast are not public figures. The title's own face collection knows them.
+    const c = faceMatch.cluster;
+    const e = c.entityId ? known(c.entityId) : undefined;
+    entity = { id: c.entityId ?? c.id, type: "person", name: c.name!, description: e?.description };
+    source = `amazon-rekognition SearchFacesByImage (this title's face collection, ${faceMatch.similarity}% similar)`;
   } else {
     // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.
     const pid = named ?? people[0];
@@ -503,6 +512,7 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
     entity,
     facts: [
       celeb && entity?.name === celeb.name ? `recognised by Amazon Rekognition with ${celeb.confidence}% confidence` : null,
+      faceMatch ? `matched against this film's cast faces with Amazon Rekognition (${faceMatch.similarity}% similar), on screen in ${faceMatch.cluster.appearances.filter((ms) => ms <= boundary).length} sampled frames so far` : null,
       celeb?.urls[0] ? `profile: https://${celeb.urls[0].replace(/^https?:\/\//, "")}` : null,
       seen.length ? `in ${seen.length} moment${seen.length > 1 ? "s" : ""} so far (${seen.slice(-3).map((s) => s.title).join("; ")})` : null,
       !entity ? `no recognised public figure on screen; I can see: ${f.labels.slice(0, 6).map((l) => l.name).join(", ") || "nothing distinctive"}` : null,
