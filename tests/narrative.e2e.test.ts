@@ -45,7 +45,7 @@ describe("narrative title", () => {
   it("identifies who is speaking on screen", async () => {
     await player.playTo(scene(4).startMs + 4000); // "The map": Theo opens the scene
     const t = await say("Who is this?");
-    expect(tools(t)).toEqual(["player.pause", "lens.identify"]); // freeze the frame asked about, then identify
+    expect(tools(t)).toEqual(["player.pause", "lens.identify", "player.play"]); // freeze the frame asked about, identify, resume
     expect(t.speech).toMatch(/^That's Theo Quinn, the fisherman\./);
   });
 
@@ -57,7 +57,7 @@ describe("narrative title", () => {
 
   it("reads the sign on screen", async () => {
     const t = await say("Read that");
-    expect(tools(t)).toEqual(["player.pause", "lens.read_text"]); // freeze the frame, then read it
+    expect(tools(t)).toEqual(["player.pause", "lens.read_text", "player.play"]); // freeze the frame, read it, resume
     expect(t.speech).toBe("It says: PIER 4.");
   });
 

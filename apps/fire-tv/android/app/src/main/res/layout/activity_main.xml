@@ -15,14 +15,15 @@
         app:show_buffering="when_playing"
         app:use_controller="true" />
 
-    <!-- Active reference: what "that", "it" and "his" currently mean -->
+    <!-- Active reference: what "that", "it" and "his" currently mean. Bottom-right: broadcasts put the
+         scoreboard and clock top-left, and the reference must never cover them. -->
     <LinearLayout
         android:id="@+id/moment_pill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="27dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="27dp"
         android:background="@drawable/pill_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"

@@ -112,3 +112,11 @@ describe("spoken replies", () => {
     expect(spokenText("Jumped to 141600 ms.")).toBe("Jumped to 2:22.");
   });
 });
+
+describe("an action plus a speed in one breath", () => {
+  it("splits replay / rewind from slow motion", () => {
+    expect(types("Show me that again in slow motion")).toEqual(["again", "set_speed"]);
+    expect(types("Go back five seconds in slow motion")).toEqual(["relative_seek", "set_speed"]);
+    expect(types("Play it again at half speed")).toEqual(["again", "set_speed"]);
+  });
+});

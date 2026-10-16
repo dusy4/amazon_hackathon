@@ -40,11 +40,10 @@ const SCENES: Scene[] = [
       { open: "yt-soccer-aid-2023" },
       { setup: { spoilerMode: "strict" } },
       { seek: 128000, play: true, untilMs: 143000 }, // the viewer watches Usain Bolt score, then he turns to camera
-      { say: "Who's this?", holdMs: 5000 },
-      { say: "Read the score", holdMs: 5000 },
-      { say: "Show me his goal", holdMs: 12000 }, // plays from the build-up: the ball goes in ~9 s later
-      { say: "Half speed", holdMs: 1500 },
-      { say: "Five seconds later", holdMs: 10000 }, // the strike, in slow motion
+      { say: "Who's this?", holdMs: 4500 }, // the lens freezes the frame, answers, and play resumes
+      { say: "Read the score", holdMs: 4500 },
+      { say: "Show me his goal", holdMs: 11000 }, // plays from the build-up: the ball goes in ~9 s later
+      { say: "Go back five seconds in slow motion", holdMs: 9000 }, // the strike again, at half speed
       { say: "Normal speed", holdMs: 1500 },
       { say: "Clip that and send it to my phone", holdMs: 7000 },
     ],
@@ -54,8 +53,10 @@ const SCENES: Scene[] = [
     title: "Spoiler-safe, and it remembers",
     steps: [
       { say: "Show me Robbie Keane's goal", holdMs: 7000 },
-      { say: "Spoilers off", holdMs: 2500 },
-      { say: "Show me Robbie Keane's goal", holdMs: 8000 },
+      { say: "Spoilers off", holdMs: 1500 },
+      { say: "Show me Robbie Keane's goal", holdMs: 3000 }, // a long-range strike, ~2 s after the jump
+      { say: "Go back five seconds in slow motion", holdMs: 9500 },
+      { say: "Normal speed", holdMs: 1000 },
       { say: "Spoilers on", holdMs: 2000 },
       { say: "I was away for 2 minutes, catch me up", holdMs: 9000 },
       { say: "Who was the player I asked about?", holdMs: 6500 },

@@ -95,6 +95,9 @@ const VERB_AFTER_AND =
 export function splitClauses(utterance: string): string[] {
   return utterance
     .replace(/^\s*(hey\s+)?alexa[,\s]+/i, "")
+    // "show me that again in slow motion", "go back five seconds at half speed": an action plus a speed,
+    // two requests in one breath.
+    .replace(/\s+(?=(?:at|in)\s+(?:half|quarter|double|normal)\s+speed\b|in\s+slow[- ]?mo(?:tion)?\b)/i, ", ")
     .split(new RegExp(`\\s*(?:,|;|!|\\?|\\.(?=\\s|$))\\s*|\\s+(?:and then|then|and)\\s+(?=${VERB_AFTER_AND}\\b)`, "i"))
     .map((c) => c.trim().replace(/^(and|then|also|and then|ok|okay|now|please)\s+/i, "").replace(/\s+please$/i, "").trim())
     .filter((c) => c.length > 0 && !/^(ok|okay|alright|right|um|uh|thanks|thank you|alexa)$/i.test(c));

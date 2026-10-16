@@ -470,9 +470,17 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
   // them (seen in other shots or named in commentary), or the match is near-certain. Look-alikes in a crowded
   // football frame otherwise win ("Ulysses Owens" at 85% for Usain Bolt turning away).
   const slugId = (n: string) => `person:${n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
-  const celeb = [...f.celebrities]
+  // The person this shot is about: matched in the shot's keyframe at ingest AND named by its commentary/description.
+  const shot = idx.events.find((ev) => ev.startMs <= at && at < ev.endMs && ev.entityIds?.some((id) => id.startsWith("person:")));
+  const people = (shot?.entityIds ?? []).filter((id) => id.startsWith("person:"));
+  const about = `${shot?.title ?? ""} ${shot?.description ?? ""}`.toLowerCase();
+  const named = people.find((id) => known(id) && about.includes(known(id)!.name.toLowerCase()));
+  const candidates = [...f.celebrities]
     .filter((c) => (c.confidence >= 85 && known(slugId(c.name))) || c.confidence >= 99)
-    .sort((a, b) => b.confidence - a.confidence)[0];
+    .sort((a, b) => b.confidence - a.confidence);
+  // A weak live match for someone else does not override the person the commentary names in this shot
+  // ("Billy Joe DuPree" at 85% vs Usain Bolt, named in "Usain Bolt scores first goal").
+  const celeb = candidates.find((c) => !named || slugId(c.name) === named || c.confidence >= 95);
   if (entityId && known(entityId)) {
     const e = known(entityId)!;
     entity = { id: e.id, type: e.type, name: e.name, description: e.description };
@@ -482,11 +490,7 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
     entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
   } else {
     // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.
-    const shot = idx.events.find((ev) => ev.startMs <= at && at < ev.endMs && ev.entityIds?.some((id) => id.startsWith("person:")));
-    // Prefer the person the shot is about (named in its title/description), not merely someone in frame.
-    const people = (shot?.entityIds ?? []).filter((id) => id.startsWith("person:"));
-    const about = `${shot?.title ?? ""} ${shot?.description ?? ""}`.toLowerCase();
-    const pid = people.find((id) => known(id) && about.includes(known(id)!.name.toLowerCase())) ?? people[0];
+    const pid = named ?? people[0];
     const e = pid ? known(pid) : undefined;
     if (e) {
       entity = { id: e.id, type: e.type, name: e.name, description: e.description };

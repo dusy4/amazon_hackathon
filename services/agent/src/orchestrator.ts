@@ -192,6 +192,11 @@ export class Orchestrator {
       step({ kind: "error", label: msg, component: "orchestrator" });
       speech.push(e instanceof SpoilerGuard ? msg : `I couldn't do that: ${msg}`);
     }
+    // The lens paused only to look at the frame you asked about; the answer stays on screen while play continues.
+    if (ctx.resumeAfter && this.app.bridge.state()?.paused) {
+      await call("player.play").catch(() => {});
+      step({ kind: "action", label: "resumed playback", component: "player" });
+    }
 
     const result: TurnResult = { turnId, utterance, speech: speech.join(" "), cards, trace, interpreter, durationMs: Date.now() - t0 };
     step({ kind: "answer", label: result.speech, component: "orchestrator" });
@@ -260,10 +265,12 @@ interface SkillCtx {
   speech: string[];
   cards: AnswerCard[];
   step: (s: Omit<TraceStep, "ms">) => void;
+  /** Set when the Viewing Lens froze a playing frame: playback resumes once the answer is ready. */
+  resumeAfter?: boolean;
 }
 
 /** People in a moment: players (sports) or characters (narrative). */
-const isPersonId = (id: string) => id.startsWith("player:") || id.startsWith("character:");
+const isPersonId = (id: string) => id.startsWith("player:") || id.startsWith("character:") || id.startsWith("person:");
 
 const pos = (c: SkillCtx) => (c.app.bridge.state()?.positionMs ?? c.envelope.relevantCore.playback?.positionMs ?? 0);
 
@@ -301,6 +308,28 @@ function noResult(c: SkillCtx, r: SearchResult, what: string): never {
   if (r.hiddenBySpoilerBoundary > 0)
     throw new SpoilerGuard(`I won't spoil it — ${what} happens after the point you've watched up to. Say “spoilers off” if you want it anyway.`);
   throw new Error(`I couldn't find ${what}.`);
+}
+
+/**
+ * Real footage describes one goal several times in a row (the strike, the reaction, the commentary about it),
+ * each as its own "goal" segment. They are one moment: walk back to the first segment of the run — same type,
+ * shares a person, starts within 30 s of the next — so "his goal" lands on the build-up, not on the applause.
+ */
+function firstOfCluster(c: SkillCtx, m: Moment): Moment {
+  const index = c.app.currentIndex();
+  if (index?.kind !== "video" || m.kind !== "event") return m;
+  const people = new Set(m.entityIds.filter(isPersonId));
+  const segs = index.segments.filter((s) => s.eventType === m.eventType && s.entityIds.some((id) => people.has(id)));
+  let cur = index.segments.find((s) => s.id === m.segmentId);
+  if (!cur) return m;
+  for (;;) {
+    const prev = segs.filter((s) => s.startMs < cur!.startMs && cur!.startMs - s.startMs <= 30_000).sort((a, b) => a.startMs - b.startMs)[0];
+    if (!prev) break;
+    cur = prev;
+  }
+  if (cur.id === m.segmentId) return m;
+  c.step({ kind: "intent", label: `same goal, described earlier → ${cur.label} @ ${formatMs(cur.startMs)}`, component: "context-service" });
+  return { ...m, segmentId: cur.id, eventId: cur.eventId, startMs: cur.startMs, endMs: cur.endMs, label: cur.label, entityIds: cur.entityIds };
 }
 
 /** Resolve a MomentSpec to a grounded moment (no player action). */
@@ -343,7 +372,7 @@ async function resolveMoment(c: SkillCtx, spec: MomentSpec): Promise<Moment> {
     else if (entityIds?.length && !levelling) {
       // First what the viewer has already watched (“his goal” = the one just seen); only then the whole title.
       const watched = await search(c, { ...args, relation: "before", order: "nearest", limit: 3 });
-      if (watched.moments.length && !(watched as any).constraints?.relaxed?.length) return watched.moments[0];
+      if (watched.moments.length && !(watched as any).constraints?.relaxed?.length) return firstOfCluster(c, watched.moments[0]);
       Object.assign(args, { order: "relevance" });
     } else Object.assign(args, { relation: "before", order: "nearest" });
     const r = await search(c, { ...args, limit: levelling ? 10 : 3 });
@@ -707,6 +736,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
 async function freezeFrame(c: SkillCtx) {
   const s = c.app.bridge.state();
   if (s && !s.paused) {
+    c.resumeAfter = true;
     await c.call("player.pause");
     c.step({ kind: "action", label: `paused on the frame you asked about (${formatMs(s.positionMs)})`, component: "player" });
   }

@@ -36,6 +36,8 @@ for _d in SRC.split(","):
     for _s in json.load(open(os.path.join(_d, "manifest.json"), encoding="utf-8")):
         _s["dir"] = _d
         MANIFEST[_s["id"]] = _s
+# The phone screenshot comes from the last recording dir that has one (it must match that take's clip).
+PHONE_DIR = next((d for d in reversed(SRC.split(",")) if os.path.exists(os.path.join(d, "phone.png"))), SRC.split(",")[0])
 SRC = SRC.split(",")[0]
 
 INK, INK_DEEP = (35, 47, 62), (17, 23, 31)
@@ -331,22 +333,31 @@ class ColdOpen:
         dec.wait()
 
 
-def window(scene_id, k, pre=0.8, post=3.0, until_turn=None):
+def window(scene_id, k, pre=0.8, post=3.0, until_turn=None, gap_cut=False):
     """Recording-time pieces from turn k (to turn `until_turn`), with every long model wait inside cut out."""
     sc = MANIFEST[scene_id]
     off = sc.get("recordingStartOffsetMs", 1200) / 1000
     last = until_turn if until_turn is not None else k
     turns = sc["turns"][k:last + 1]
     start = max(0.0, turns[0]["atMs"] / 1000 + off - pre)
+    if k > 0:  # the previous answer stays on the TV panel ~5 s after it is spoken: don't open a beat on it
+        prev_done = sc["turns"][k - 1]["doneMs"] / 1000 + off
+        if start < prev_done + 6.0:
+            start = max(start, turns[0]["atMs"] / 1000 + off - 0.05)
     end = turns[-1]["doneMs"] / 1000 + off + post
     if last + 1 < len(sc["turns"]):  # stop before the next request appears on the TV (no leaking answers)
         end = min(end, sc["turns"][last + 1]["atMs"] / 1000 + off - 0.3)
     pieces, cur = [], start
+    prev_done = None
     for tr in turns:
         at, done = tr["atMs"] / 1000 + off, tr["doneMs"] / 1000 + off
+        if gap_cut and prev_done is not None and at - prev_done > 1.6:  # idle footage between two requests
+            pieces.append([cur, prev_done + 1.0])
+            cur = at - 0.05
         if done - at > 6:
             pieces.append([cur, at + 3.0])
             cur = done - 0.8
+        prev_done = done
     pieces.append([cur, end])
     return pieces
 
@@ -453,14 +464,14 @@ class Beat:
                 buf = dec.stdout.read(sw * sh * 3)
                 src = Image.frombytes("RGB", (sw, sh), buf) if len(buf) == sw * sh * 3 else last
                 last = src
-                yield self.compose(src, base + i / FPS, i, n, sw, sh)
+                yield self.compose(src, base + i / FPS, sw, sh)
             dec.stdout.close()
             dec.wait()
         t_end = sum(b - a for a, b in self.pieces)
         for j in range(int(round(self.hold * FPS))):
-            yield self.compose(last, t_end + j / FPS, 99, 99, sw, sh)
+            yield self.compose(last, t_end + j / FPS, sw, sh)
 
-    def compose(self, src, t, i, n, sw, sh):
+    def compose(self, src, t, sw, sh):
         z = self.zoom_at(t)
         cw, ch = sw / z, sh / z
         cx = min(max(sw / 2 + (PANEL_C[0] * sw - sw / 2) * (z - 1) / 0.24, cw / 2), sw - cw / 2)
@@ -478,7 +489,7 @@ class Beat:
             put(img, cut[2], (TV_X + TV_W - cut[2].width - 22, TV_Y + 22), ease((t - cut[0]) / 0.3))
         put(img, self.note, (TV_X + TV_W - self.note_w, 20), 0.85)
         frame = img.convert("RGB")
-        edge = min(i / FPS, (n - i) / FPS)
+        edge = min(t, self.dur - t)  # fade only into and out of the beat; cuts inside it are hard cuts
         return Image.blend(BG, frame, max(0.0, edge / 0.2)) if edge < 0.2 else frame
 
 
@@ -521,9 +532,9 @@ def arch_extra(img, t, a):
         dd = ImageDraw.Draw(layer)
         dd.rounded_rectangle([0, 0, w - 1, h - 1], radius=18, fill=(255, 153, 0, 30) if accent else (255, 255, 255, 14),
                              outline=(255, 153, 0, 150) if accent else (255, 255, 255, 46), width=2)
-        dd.text((22, 16), title, font=font("semibold", 28), fill=WHITE + (255,))
+        dd.text((22, 14), title, font=font("semibold", 30), fill=WHITE + (255,))
         if sub:
-            dd.text((22, 56), sub, font=font("semilight", 21), fill=BODY + (255,))
+            dd.text((22, 58), sub, font=font("regular", 24), fill=(214, 221, 230, 255))
         put(img, layer, (x, y), al, (1 - ease((t - t0) / 0.45)) * 14)
 
     def line(x1, y1, x2, y2, t0):
@@ -531,18 +542,21 @@ def arch_extra(img, t, a):
         if al > 0:
             d.line([(x1, y1), (x1 + (x2 - x1) * al, y1 + (y2 - y1) * al)], fill=(255, 153, 0, int(200 * al)), width=3)
 
-    box(140, 430, 400, 100, "Fire TV", "Fire OS app · Media3 ExoPlayer", 0.8)
-    box(140, 560, 400, 100, "Phone", "companion · clips & links", 1.0)
-    box(650, 360, 620, 100, "Context Envelope", "playhead · active reference · spoiler boundary", 1.5, True)
-    box(650, 480, 620, 100, "Router", "deterministic rules · bounded LLM agent", 1.8, True)
-    box(650, 600, 620, 100, "Self-hosted MCP server", "Streamable HTTP · spec 2025-11-25 · 20 tools", 2.1, True)
-    for k, (n, s) in enumerate([("Amazon Rekognition", "shots · faces · labels · text"), ("Amazon Polly", "every spoken answer"),
-                                ("Amazon DynamoDB", "Viewing Memory"), ("Amazon S3", "media for analysis")]):
-        box(1380, 330 + k * 110, 400, 94, n, s, 2.6 + k * 0.25)
-    line(540, 480, 650, 650, 1.3)
-    line(540, 610, 650, 650, 1.4)
-    line(1270, 650, 1380, 380, 2.8)
-    line(1270, 650, 1380, 600, 3.0)
+    box(120, 420, 420, 104, "You ask the TV", "Fire OS app · or the phone", 0.6)
+    box(120, 560, 420, 104, "It acts on the TV", "seek · play · slow · clip · share", 0.9)
+    box(640, 330, 640, 104, "Context", "what's playing · who you mean · what you've seen", 1.3, True)
+    box(640, 450, 640, 104, "Router", "simple asks: instant, no AI model call", 1.6, True)
+    box(640, 570, 640, 104, "LLM agent (open-ended asks)", "OpenRouter Nemotron 120B · Amazon Bedrock pending", 1.9, True)
+    box(640, 690, 640, 104, "MCP tool server", "20 tools: search · lens · player · clip · memory", 2.2, True)
+    for k, (n, s_) in enumerate([("Amazon Rekognition", "who and what is on screen"), ("Amazon Polly", "every spoken answer"),
+                                 ("Amazon DynamoDB", "Viewing Memory"), ("Amazon S3", "media for analysis")]):
+        box(1380, 330 + k * 120, 420, 104, n, s_, 2.6 + k * 0.25)
+    line(540, 472, 640, 382, 1.1)
+    line(1280, 742, 1380, 382, 2.8)
+    line(1280, 742, 1380, 502, 2.9)
+    line(1280, 742, 1380, 622, 3.0)
+    line(1280, 742, 1380, 742, 3.1)
+    line(640, 742, 540, 612, 3.4)
 
 
 def main():
@@ -557,7 +571,8 @@ def main():
         ("Remember", ["A Viewing Memory event", "for follow-ups and recall"], ["Amazon DynamoDB", "semantic_seek"]),
     ]
 
-    phone = Image.open(os.path.join(SRC, "phone.png")).convert("RGB")
+    phone = Image.open(os.path.join(PHONE_DIR, "phone.png")).convert("RGB")
+    vid_box = (38, 245, 962, 765)  # the clip's <video> element in the 1000x1800 companion screenshot
     ph_h = 820
     phone = phone.resize((int(phone.width * ph_h / phone.height), ph_h), Image.LANCZOS)
     pm = Image.new("L", phone.size, 0)
@@ -565,27 +580,52 @@ def main():
     phone_rgba = phone.convert("RGBA")
     phone_rgba.putalpha(pm)
 
-    def phone_extra(img, t, a):
-        put(img, phone_rgba, (W - phone.width - 220, 130), a, (1 - ease(t / 0.6)) * 50)
+    # The clip that was actually sent, playing inside the companion page (from its own file, real time).
+    clip_rec = next((s_["data"] for tr in MANIFEST[f1]["turns"] for s_ in tr["turn"]["trace"]
+                     if s_["kind"] == "tool_result" and s_["label"] == "clip.create"), None)
+    clip_path = os.path.join("data", "clips", f"{clip_rec['clipId']}.mp4") if clip_rec else None
+    k_ = ph_h / 1800
+    vx0, vy0, vx1, vy1 = [int(v * k_) for v in vid_box]
+    clip_state = {"proc": None, "last": None}
 
-    credits = text_img([("Semantic Playback · Fire TV track · github.com/dusy4/amazon_hackathon", font("regular", 24), BODY, 10),
-                        ("Footage (CC BY): Soccer Aid for UNICEF 2023 · Tears of Steel © Blender Foundation · layered roti recipe · R. Stallman, TEDxGeneva · Voices: Amazon Polly · Music: “Newer Wave” Kevin MacLeod (incompetech.com), CC BY 4.0",
-                         font("regular", 20), MUTED, 0)], 1700, "center")
+    def clip_frame(t):
+        if not clip_path or not os.path.exists(clip_path) or t < 0.5:
+            return None
+        if clip_state["proc"] is None:
+            clip_state["proc"] = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-ss", "1.5", "-i", clip_path, "-vf", f"fps={FPS},scale={vx1 - vx0}:{vy1 - vy0}",
+                                                   "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
+        sz = (vx1 - vx0) * (vy1 - vy0) * 3
+        buf = clip_state["proc"].stdout.read(sz)
+        if len(buf) == sz:
+            clip_state["last"] = Image.frombytes("RGB", (vx1 - vx0, vy1 - vy0), buf)
+        return clip_state["last"]
+
+    def phone_extra(img, t, a):
+        ph = phone_rgba
+        fr = clip_frame(t)
+        if fr is not None:
+            ph = phone_rgba.copy()
+            ph.paste(fr, (vx0, vy0))
+        put(img, ph, (W - phone.width - 220, 130), a, (1 - ease(t / 0.6)) * 50)
+
+    credits = text_img([("Semantic Playback · Fire TV track · github.com/dusy4/amazon_hackathon", font("regular", 26), WHITE, 12),
+                        ("Footage (CC BY): Soccer Aid for UNICEF 2023 · Tears of Steel © Blender Foundation · Maple Kitchen roti recipe · TEDxGeneva", font("regular", 22), BODY, 8),
+                        ("Voices: Amazon Polly · Music: “Newer Wave” by Kevin MacLeod (incompetech.com), CC BY 4.0", font("regular", 22), BODY, 0)], 1760, "center")
 
     segs = [
         ColdOpen(482.0, 6.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
         Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=3.4, center=True),
-        Beat(f1, window(f1, 0, pre=6.5, post=1.4), "Viewing Lens", "Ask who's on screen."),
+        Beat(f1, window(f1, 0, pre=2.5, post=1.4), "Viewing Lens", "Ask who's on screen."),
         Beat(f1, window(f1, 1, pre=0.3, post=1.4), "Viewing Lens", "Read the scoreboard."),
         Beat(f1, window(f1, 2, pre=0.4, post=30.0), "Conversational references", "Say “his goal”. It plays from the build-up."),
         Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.5, top=True, extra=steps_extra(explainer)),
-        Beat(f1, window(f1, 3, pre=0.4, post=30.0, until_turn=5), "Precise follow-ups", "Half speed. Five seconds later. The strike, in slow motion."),
-        Beat(f1, window(f1, 6, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
-        Card("On your phone, instantly.", sub="The real companion page, with the clip from the TV.", dur=3.2, extra=phone_extra),
+        Beat(f1, window(f1, 3, pre=0.4, post=1.2, until_turn=4), "Precise follow-ups", "Rewind it in slow motion."),
+        Beat(f1, window(f1, 5, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
+        Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=8.0, extra=phone_extra),
         Beat(f2, window(f2, 0, pre=0.5, post=1.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
-        Beat(f2, window(f2, 1, pre=0.4, post=1.5, until_turn=3), "Your call", "…turn spoilers off, and it plays."),
-        Beat(f2, window(f2, 4, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
-        Beat(f2, window(f2, 5, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
+        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=True), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 6, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
+        Beat(f2, window(f2, 7, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
         Beat(s5, window(s5, 0, pre=3.0, post=3.0), "Any video", "A recipe: jump to the step you need."),
         Beat(s5, window(s5, 1, pre=2.5, post=2.0), "Any video", "A talk: jump to the topic."),
         Beat(s4, window(s4, 1, pre=0.6, post=2.5), "Tears of Steel · Blender Foundation", "A film: rewind to a line of dialogue."),
@@ -594,7 +634,8 @@ def main():
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
-    with tempfile.TemporaryDirectory() as tmp:
+    os.makedirs(".tmp", exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=".tmp") as tmp:  # C: is nearly full; keep render scratch on the project drive
         for s in segs:
             s.prepare(tmp)
         total = sum(s.dur for s in segs)
