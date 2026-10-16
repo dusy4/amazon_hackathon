@@ -153,7 +153,8 @@ export class Orchestrator {
           new Promise<never>((_, reject) => setTimeout(() => reject(new LlmDeadlineError(`LLM exceeded its ${LLM_DEADLINE_MS / 1000} s budget`)), LLM_DEADLINE_MS)),
         ]);
         // Spoken on a TV and by Polly: no markdown.
-        speech.push(r.replace(/\*\*|__|`/g, "").replace(/^#+\s*/gm, "").trim());
+        speech.push(r.replace(/\*\*|__|`/g, "").replace(/\*([^*
+]+)\*/g, "$1").replace(/^#+\s*/gm, "").trim());
       } catch (e) {
         // The model is unavailable (quota, network): degrade to the rules interpreter, visibly.
         step({ kind: "error", label: `LLM unavailable: ${(e as Error).message.slice(0, 120)} — falling back to rules`, component: this.llm.label });
