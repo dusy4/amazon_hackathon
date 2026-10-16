@@ -23,16 +23,26 @@ Try: “Rewind to the replay of the last goal, start three seconds before it, pl
 
 | Layer | Implementation | AWS path (env-switched) |
 |---|---|---|
-| Demo media | `scripts/demo-media/generate_match.py`: synthetic, owned match + provider feed + TTS commentary | — |
-| Transcript | commentary script with measured timings | `npm run ingest -- --transcribe <Amazon Transcribe JSON>` |
-| Embeddings | `local-hash-v1` (dev fallback, not a learned model) | `SP_EMBEDDINGS=nova` → Nova Multimodal Embeddings |
-| Retrieval | hybrid BM25 + vector + entity + event, deterministic temporal constraints, spoiler boundary | OpenSearch (planned) |
-| Agent | deterministic rules parser + orchestrator, an MCP client of its own server | `SP_AGENT=bedrock` → Bedrock Converse tool-use fallback |
-| Tools | self-hosted MCP server, Streamable HTTP, 17 tools (`player.*`, `moments.*`, `lens.*`, `clip.create`, `share.send`, `memory.search`…) | — |
-| Players | web TV player (`apps/fire-tv/web`) + Fire OS app (`apps/fire-tv/android`, Media3 ExoPlayer + MediaSession) | — |
+| Demo media | `scripts/demo-media/generate_match.py`: synthetic, owned match + provider feed + TTS commentary; 4 CC BY real titles via `scripts/fetch-videos.sh` | — |
+| Transcript | commentary script (synthetic) / YouTube captions (real footage) | `npm run ingest -- --transcribe <Amazon Transcribe JSON>` |
+| Vision ingest | — | **Rekognition Video** shot detection + **Rekognition** labels / text / celebrities per keyframe (`npm run ingest:video`) |
+| Embeddings | `local-hash-v1` (synthetic) / OpenRouter embeddings (real footage) | `SP_EMBEDDINGS=nova` → Nova Multimodal Embeddings |
+| Retrieval | dense + BM25 + entity channels fused with RRF, deterministic temporal constraints, spoiler boundary | OpenSearch (planned) |
+| Interpreter | router: structured requests on provider-feed titles → rules (~30 ms); open-ended → LLM agent calling the MCP tools, bounded by `SP_LLM_DEADLINE_MS` (default 25 s) with rules fallback | `SP_LLM=bedrock` → Bedrock Converse (`SP_LLM=openrouter` while Bedrock is blocked) |
+| Tools | self-hosted MCP server, Streamable HTTP (2025-11-25), 17 tools (`player.*`, `moments.*`, `lens.*`, `clip.create`, `share.send`, `memory.search`…) | — |
+| Players | web TV player (`apps/fire-tv/web`) + Fire OS app (`apps/fire-tv/android`, Media3 ExoPlayer + MediaSession, D-pad suggestion menu) | — |
+| Voice | browser speech recognition in; spoken replies | **Polly** (generative) via `/api/tts` |
 | Clips | ffmpeg clip + watermark + attribution (MediaConvert-equivalent job shape) | MediaConvert |
-| Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` — **live-verified 2026-10-06** |
+| Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` (falls back to the local log if DynamoDB is unreachable) |
 | Send to phone | companion web app push + QR/deep link | Alexa Send to Phone (future) |
+
+## Demo video pipeline
+
+```bash
+npm start                                         # with the Fire OS app (or /tv) connected as the active player
+npx tsx scripts/demo-video/record.ts artifacts/demo   # scripted scenes via /api/utterance + adb screenrecord + real traces
+python scripts/demo-video/compose.py artifacts/demo   # → artifacts/demo/demo-draft.mp4 (pipeline panel drawn from the traces)
+```
 
 ## Real footage
 
