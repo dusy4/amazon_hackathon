@@ -703,7 +703,8 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       const r = await c.call("lens.translate", { atMs: p, targetLanguage: intent.target, ...(text ? { text } : {}) });
       if (!r.translation) throw new Error("there's no text on screen to translate");
       await c.app.record({ type: "ocr_translate", contentId: c.envelope.relevantCore.contentId, contentTimeMs: p, summary: `Translated “${r.original}” into ${r.language}: “${r.translation}”`, entityIds: [], payload: { engine: r.engine } });
-      c.speech.push(`In ${r.language}: ${r.translation}`);
+      // Say what was translated, then the translation: the viewer hears both.
+      c.speech.push(`${intent.what === "screen" ? "That says" : "They said"}: “${r.original}” In ${r.language}: ${r.translation}`);
       c.cards.push({ type: "text", title: `${intent.what === "screen" ? "On screen" : "Dialogue"} → ${r.language}`, body: `${r.original}\n→ ${r.translation}` });
       return;
     }

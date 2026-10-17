@@ -90,7 +90,7 @@ const SCENES: Scene[] = [
       { seek: 357000, play: true, untilMs: 363000 },
       { say: "Who is she?", holdMs: 3500 },
       { say: "Where have I seen her before?", holdMs: 4500 },
-      { seek: 312000, play: true, untilMs: 315000 },
+      { seek: 311000, play: true, untilMs: 314200 }, // pause while the handwritten sign is fully on screen
       { say: "Translate that into Spanish", holdMs: 2500 },
       { seek: 315300, play: true, untilMs: 320600 },
       { say: "Say that again slowly", holdMs: 5500 },
