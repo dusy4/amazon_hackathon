@@ -112,6 +112,8 @@ export class Orchestrator {
     let interpreter = "rules";
 
     step({ kind: "input", label: `“${utterance}”`, component: opts.inputSource ?? "text" });
+    this.app.onRecord = (e) =>
+      step({ kind: "action", label: `saved to Viewing Memory: ${e.type}`, component: `${this.app.memory.backend}${process.env.SP_AGENTCORE_MEMORY_ID ? " + agentcore-memory" : ""}` });
     const envelope = await buildEnvelope({
       utterance,
       inputSource: opts.inputSource ?? "text",

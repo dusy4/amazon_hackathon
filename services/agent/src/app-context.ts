@@ -63,6 +63,9 @@ export class AppContext {
     return scored[0]?.score > 0 ? scored[0].c : undefined;
   }
 
+  /** Set by the orchestrator during a turn, so every memory write appears in the turn's trace. */
+  onRecord: ((e: ActionEvent) => void) | null = null;
+
   async record(e: Omit<ActionEvent, "id" | "wallClock" | "privacy" | "userId" | "sessionId" | "sourceDevice"> & { sessionId?: string }) {
     const session = this.sessions.get(e.sessionId);
     const ev: ActionEvent = {
@@ -76,6 +79,7 @@ export class AppContext {
     };
     await this.memory.append(ev);
     void agentCoreMemory?.append(ev); // AgentCore Memory mirror: never blocks the request
+    this.onRecord?.(ev);
     return ev;
   }
 }

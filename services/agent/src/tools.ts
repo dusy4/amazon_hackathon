@@ -360,12 +360,32 @@ export function registerTools(server: McpServer, app: AppContext) {
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
       let original = text ?? "";
       if (!original) {
-        if (idx.kind === "video") original = (await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at)).text.map((t) => t.text).join(" · ");
+        if (idx.kind === "video") {
+          // Stylised text is read differently from frame to frame: read five frames around the pause and merge.
+          const reads = await Promise.all([at - 1200, at - 600, at, at + 600, at + 1200].map((ms) => analyzeFrame(keyframe(app.store.mediaPath(idx), Math.max(0, ms)), ms)));
+          original = [...new Set(reads.flatMap((f) => f.text.map((t) => t.text)))].join(" · ");
+        }
         else original = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs).map((s) => s.text).join(" · ");
       }
       if (!original) return { atMs: at, original: null, translation: null };
+      // Stylised on-screen text (handwriting, graffiti) is often read only in part ("OUR PASSIONS" of "LOOK CELIA,
+      // WE HAVE TO FOLLOW OUR PASSIONS"). When the fragment is part of a line spoken around now, translate the
+      // whole line from the captions instead of the fragment.
+      let completedFrom: string | undefined;
+      if (!text) {
+        const words = original.toLowerCase().match(/[a-z']{3,}/g) ?? [];
+        const near = idx.transcript.filter((l) => l.startMs >= at - 6000 && l.startMs <= at + 8000);
+        for (let i = 0; i < near.length && words.length; i++) {
+          const joined = near.slice(i, i + 2).map((l) => l.text).join(" ");
+          if (words.every((w) => joined.toLowerCase().includes(w))) {
+            original = joined.replace(/\s+/g, " ").trim();
+            completedFrom = "captions (the on-screen text was only partly readable)";
+            break;
+          }
+        }
+      }
       const r = await translate(original, targetLanguage);
-      return { atMs: at, original, translation: r.text, language: languageName(languageCode(targetLanguage)), engine: r.engine, note: r.note };
+      return { atMs: at, original, translation: r.text, language: languageName(languageCode(targetLanguage)), engine: r.engine, note: r.note, completedFrom };
     }),
   );
 

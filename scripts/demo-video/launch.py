@@ -306,7 +306,8 @@ def rail_rows(tr):
             elif lab == "lens.translate":
                 amazon = str(d.get("engine", "")).startswith("amazon-translate")
                 rows.append((ms, AWS_C if amazon else LLM_C, "Amazon Translate" if amazon else "LLM · OpenRouter Nemotron 120B",
-                             f"“{d.get('original', '')}” → “{d.get('translation', '')}” (text read by Rekognition DetectText"
+                             f"“{d.get('original', '')}” → “{d.get('translation', '')}” ("
+                             + ("sign partly read by Rekognition DetectText, completed from the captions" if d.get("completedFrom") else "text read by Rekognition DetectText")
                              + ("" if amazon else "; Amazon Translate blocked") + ")", took))
             elif lab == "memory.search":
                 rows.append((ms, AWS_C, "Amazon DynamoDB + AgentCore Memory", f"looked up your viewing history → {out}", took))
@@ -876,7 +877,7 @@ def make_arch(scene_a, scene_b):
         "ctx": (510, Y, "stack", "Context Envelope", "who you mean · what you've seen"),
         "router": (830, Y, "fork", "Router", "picks the cheapest exact path"),
         "fast": (1150, Y - 130, "calc", "Rules + hybrid search", "no AI model call"),
-        "llm": (1150, Y + 130, "spark", "LLM agent", "Nemotron 120B · Bedrock-ready"),
+        "llm": (1150, Y + 130, "spark", "LLM agent", "stands in for Alexa+ · Bedrock-ready"),
         "mcp": (1470, Y, "layers", "MCP tool server", "26 tools · spec 2025-11-25"),
         "tv": (1760, Y, "play", "Fire TV acts", "seek · slow · clip · live"),
     }
@@ -936,6 +937,9 @@ def make_arch(scene_a, scene_b):
         x, y, *_r = nodes[k]
         return x, y
 
+    alexa_note = text_img([("Built for Alexa+: this is the MCP server an Alexa+ add-on calls. Alexa+ developer tools are", font("regular", 20), BODY, 4),
+                           ("partner-only during the hackathon, so our own agent calls the same server today.", font("regular", 20), BODY, 0)], 860)
+
     def draw(img, t, a):
         d = ImageDraw.Draw(img)
         req = A if t < (A[1] + B[0]) / 2 else B
@@ -982,8 +986,9 @@ def make_arch(scene_a, scene_b):
                 cy = y + NH // 2 + 10
             put(img, c, (int(x - c.width / 2), cy), a * fade)
         # caption
+        put(img, alexa_note, (160, 262), a)
         cap = "Fast lane: no AI model call" if req is A else "Open-ended: the LLM agent picks the tools"
-        put(img, text_img([(cap, font("semibold", 24), accent, 0)], 900), (160, 300), a * ease((t - t0 + 0.3) / 0.4))
+        put(img, text_img([(cap, font("semibold", 24), accent, 0)], 900), (160, 318), a * ease((t - t0 + 0.3) / 0.4))
 
     return draw
 
