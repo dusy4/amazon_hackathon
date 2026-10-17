@@ -15,6 +15,7 @@ import { keyframe } from "../../media/src/ingest-video.ts";
 import { analyzeFrame } from "../../media/src/rekognition.ts";
 import { identifyInCollection } from "../../media/src/faces.ts";
 import { languageCode, languageName, translate } from "./translate.ts";
+import { agentCoreMemory } from "../../context/src/agentcore-memory.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
 
@@ -436,7 +437,11 @@ export function registerTools(server: McpServer, app: AppContext) {
     wrap(async ({ query, types, entityIds, limit }: { query: string; types?: string[]; entityIds?: string[]; limit?: number }) => {
       const s = app.sessions.get();
       const hits = await app.memory.search({ userId: s.userId, text: query, types: types as never, entityIds, limit: limit ?? 5 });
-      return { backend: app.memory.backend, results: hits.map((h) => ({ ...h.event, score: +h.score.toFixed(3) })) };
+      // This session as Amazon Bedrock AgentCore Memory holds it (short-term events), within a 1.5 s budget.
+      const ac = agentCoreMemory
+        ? await Promise.race([agentCoreMemory.session(s.userId, s.sessionId, 5).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 1500))])
+        : null;
+      return { backend: app.memory.backend, results: hits.map((h) => ({ ...h.event, score: +h.score.toFixed(3) })), agentCoreMemory: ac ? { memoryId: agentCoreMemory!.memoryId, sessionEvents: ac } : undefined };
     }),
   );
 

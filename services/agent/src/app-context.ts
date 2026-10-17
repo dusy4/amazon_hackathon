@@ -1,3 +1,4 @@
+import { agentCoreMemory } from "../../context/src/agentcore-memory.ts";
 import { randomUUID } from "node:crypto";
 import type { ActionEvent, ClipRecord, ShareRecord, WireMessage } from "../../../packages/contracts/src/index.ts";
 import { ContentStore } from "../../context/src/content-store.ts";
@@ -74,6 +75,7 @@ export class AppContext {
       ...e,
     };
     await this.memory.append(ev);
+    void agentCoreMemory?.append(ev); // AgentCore Memory mirror: never blocks the request
     return ev;
   }
 }
