@@ -130,6 +130,9 @@ export async function buildVideoIndex(dataDir: string, contentId: string, embedd
   // Transcript: prefer the uploader's English subtitles, then YouTube's English auto-captions.
   const vtt = ["video.en.vtt", "video.en-orig.vtt", "video.en-US.vtt", "video.en-GB.vtt"].map((f) => join(dir, f)).find(existsSync);
   const transcript: TranscriptLine[] = vtt ? parseVtt(readFileSync(vtt, "utf8")) : [];
+  // Captions written by scripts/whisper-vtt.py say so; otherwise they came with the YouTube download.
+  const sourceFile = join(dir, "video.transcript-source.txt");
+  const txSource = !vtt ? "none" : existsSync(sourceFile) ? readFileSync(sourceFile, "utf8").trim() : "youtube-captions";
 
   const shots = await cached(dir, "shots", async () => {
     // Shot detection only needs pixels and timing: upload a small video-only H.264 proxy, not the master.
@@ -217,7 +220,7 @@ export async function buildVideoIndex(dataDir: string, contentId: string, embedd
       provenance: [
         { source: "amazon-rekognition", confidence: 1, epistemicType: "observed", privacy: "content_metadata" },
         { source: described.model, confidence: 0.8, epistemicType: "inferred", privacy: "content_metadata", spoilerScope: "safe_before_playhead" },
-        { source: vtt ? "youtube-captions" : "none", confidence: 0.9, epistemicType: "observed", privacy: "content_metadata" },
+        { source: txSource, confidence: 0.9, epistemicType: "observed", privacy: "content_metadata" },
       ],
     });
     for (const id of ids) presence.push({ startMs: r.startMs, endMs: r.endMs, entityId: id, name: people.get(id)!.name });
@@ -238,8 +241,8 @@ export async function buildVideoIndex(dataDir: string, contentId: string, embedd
     embeddingModel: embedder.model,
     embeddingDim: embedder.dim || vectors[0]?.length || 0,
     sources: {
-      provider: `YouTube · ${meta.channel} · ${info.license ?? "license not stated"} · ${info.webpage_url}`,
-      transcript: vtt ? "youtube-captions" : "none",
+      provider: `${info.extractor_key ?? "YouTube"} · ${meta.channel} · ${info.license ?? "license not stated"} · ${info.webpage_url}`,
+      transcript: txSource,
       screenText: "amazon-rekognition DetectText",
       shots: "amazon-rekognition StartSegmentDetection",
       vision: "amazon-rekognition DetectLabels + RecognizeCelebrities",

@@ -252,7 +252,7 @@ AWS_C, TV_C, SRV_C, LLM_C, YOU_C = ORANGE, (95, 208, 104), CYAN, (150, 125, 255)
 MEMORY_EVENT = {"seek_moment": "semantic_seek", "identify": "who_is_this", "read_text": "ocr_read", "relative_seek": "relative_seek",
                 "set_speed": "speed_change", "clip": "clip_created", "translate": "ocr_translate", "repeat_slow": "transcript_request",
                 "catch_up": "catch_up_generated", "memory_query": "memory_query", "describe": "accessibility_description",
-                "loop": "loop_moment", "again": "rewatch_moment"}
+                "loop": "loop_moment", "again": "rewatch_moment", "refine": "semantic_seek"}
 PLAYER_VERB = {"player.seek": "jumped", "player.play": "playing", "player.pause": "froze the frame", "player.set_speed": "speed set",
                "player.seek_relative": "moved", "player.loop": "looping", "player.play_segment": "replaying", "content.open": "opened the replay of the match"}
 
@@ -286,6 +286,10 @@ def rail_rows(tr):
         elif k == "intent" and lab.startswith("LLM turn"):
             what, took = (lab.split(": ", 1)[1].rsplit(" (", 1) + [""])[:2]
             rows.append((ms, LLM_C, "LLM · OpenRouter Nemotron 120B", f"the model decided to call {what} (Amazon Bedrock is blocked on this account)" if what != "reply" else "the model wrote the answer", took.rstrip(")")))
+        elif k == "intent" and lab.startswith("not ") and "(no model call)" in lab:
+            rows.append((ms, SRV_C, "Our server · refine the last search", "“not that one”: " + lab.split("→ ", 1)[-1].replace(" (no model call)", "") + ", no AI model needed", ""))
+        elif k == "intent" and lab.startswith("same ") and "best description" in lab:
+            rows.append((ms, SRV_C, "Our server · moment grounding", "named after the best description → " + lab.split("→ ", 1)[-1], ""))
         elif k == "intent" and lab.startswith("same goal"):
             rows.append((ms, SRV_C, "Our server · moment grounding", "same goal described earlier → " + lab.split("→ ", 1)[-1], ""))
         elif k == "intent" and "(no model call)" in lab:
@@ -394,7 +398,7 @@ def icon_for(title):
     for key, kind in (("you said", "mic"), ("dynamodb", "db"), ("amazon rekognition", "eye"), ("polly", "speaker"), ("translate", "layers"),
                       ("llm", "spark"), ("ivs", "play"), ("fire tv app", "play"), ("context envelope", "stack"), ("router", "fork"),
                       ("spoiler", "shield"), ("hybrid index", "search"), ("face index", "eye"), ("captions", "layers"), ("ffmpeg", "clip"),
-                      ("phone", "phone"), ("relative seek", "calc"), ("grounding", "layers")):
+                      ("phone", "phone"), ("relative seek", "calc"), ("refine", "search"), ("grounding", "layers")):
         if key in t:
             return kind
     return "layers"
@@ -1105,8 +1109,9 @@ def main():
         Beat(f1, window(f1, 5, pre=0.6, post=1.2), "Clip and share", "Clip it and send it to your phone."),
         Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=3.2, extra=phone_extra),
         Beat(f2, window(f2, 0, pre=0.3, post=0.1), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
-        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
-        Beat(f2, window(f2, 6, pre=0.4, post=1.0), "Catch me up", "Away for a bit? Catch up in seconds."),
+        Beat(f2, window(f2, 1, pre=0.4, post=3.8, until_turn=2, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 3, pre=0.3, post=6.5), "Multi-turn · no model call", "“No, not that one — before half-time.”"),
+        Beat(f2, window(f2, 6, pre=0.4, post=7.0), "Catch me up", "Away for a bit? Catch up in seconds."),
         Beat(s8, window(s8, 0, pre=9.0, post=9.4), "Live · Amazon IVS timed metadata", "Live: the stream itself says “goal”."),
         Beat(s6, window(s6, 0, pre=1.2, post=0.8), "Films · Rekognition face collection", "Who is she? Even if she's not famous."),
         Beat(s6, window(s6, 1, pre=0.3, post=0.6), "Agentic · LLM agent + 26 MCP tools", "Ask anything about what you've seen."),

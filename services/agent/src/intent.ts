@@ -50,6 +50,7 @@ export type Intent =
   | { type: "open_content"; query: string }
   | { type: "translate"; target: string; what: "screen" | "speech" }
   | { type: "repeat_slow" }
+  | { type: "refine"; when?: "earlier" | "later" | "first_half" | "second_half"; extra?: string }
   | { type: "unknown"; text: string };
 
 const ORDINALS: Record<string, number> = { first: 1, "1st": 1, opening: 1, opener: 1, second: 2, "2nd": 2, third: 3, "3rd": 3, fourth: 4, "4th": 4, fifth: 5, "5th": 5 };
@@ -102,7 +103,31 @@ export function splitClauses(utterance: string): string[] {
     .replace(/\s+(?=(?:at|in)\s+(?:half|quarter|double|normal)\s+speed\b|in\s+slow[- ]?mo(?:tion)?\b)/i, ", ")
     .split(new RegExp(`\\s*(?:,|;|!|\\?|\\.(?=\\s|$))\\s*|\\s+(?:and then|then|and)\\s+(?=${VERB_AFTER_AND}\\b)`, "i"))
     .map((c) => c.trim().replace(/^(and|then|also|and then|ok|okay|now|please)\s+/i, "").replace(/\s+please$/i, "").trim())
-    .filter((c) => c.length > 0 && !/^(ok|okay|alright|right|um|uh|thanks|thank you|alexa)$/i.test(c));
+    .filter((c) => c.length > 0 && !/^(ok|okay|alright|right|um|uh|thanks|thank you|alexa|no|nope|nah)$/i.test(c));
+}
+
+/**
+ * "No, not that one — the one before half-time": the viewer narrows the last moment search instead of
+ * restating it. Read across the whole utterance, since the refinement usually spans several clauses.
+ */
+export function parseRefine(utterance: string): Intent | null {
+  const t = normalize(utterance.replace(/^\s*(hey\s+)?alexa[,\s]+/i, "")).replace(/[,.!?;:—–-]+/g, " ").replace(/\s+/g, " ").trim();
+  if (/\bspoilers?\b/.test(t)) return null;
+  const when = /\b(first half|before (half ?time|the break|the interval))\b/.test(t) ? "first_half"
+    : /\b(second half|after (half ?time|the break|the interval))\b/.test(t) ? "second_half"
+    : /\b(earlier|before (that|this|it))\b/.test(t) ? "earlier"
+    : /\b(later|after (that|this|it))\b/.test(t) ? "later"
+    : undefined;
+  const extra = t.match(/\bthe one (?:with|where|when) (.+)$/)?.[1];
+  const lead = t.match(/^(?:no+|nope|nah|wrong one|not (?:that|this)(?: one)?|that'?s not (?:it|the one)|the other one|a different one|another one)\b(.*)$/);
+  if (lead) {
+    const rest = lead[1].trim();
+    // "No, show me the save" is a fresh request, not a refinement.
+    if (rest && !when && !extra && !/^(not (that|this)( one)?|the other one|a different one|another one|that'?s not (it|the one))?$/.test(rest)) return null;
+    return { type: "refine", when, extra };
+  }
+  if (/^(the |an? )?(earlier|later) one$|^the one (before|after) (half ?time|the break)$|^the one in the (first|second) half$/.test(t)) return { type: "refine", when, extra };
+  return null;
 }
 
 export function parseMomentSpec(clause: string): MomentSpec | null {
@@ -297,6 +322,8 @@ export function parseClause(clause: string, titles: string[] = []): Intent {
 }
 
 export function parseUtterance(utterance: string, titles: string[] = []): Intent[] {
+  const refine = parseRefine(utterance);
+  if (refine) return [refine];
   const out: Intent[] = [];
   for (const i of splitClauses(utterance).map((c) => parseClause(c, titles))) {
     const prev = out[out.length - 1];

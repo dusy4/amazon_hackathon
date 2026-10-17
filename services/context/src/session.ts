@@ -12,6 +12,8 @@ export class PlaybackSession {
   activeEntityId: string | null = null;
   /** Last absolute seek target produced by the agent; relative ops chain from here. */
   lastSeekTargetMs: number | null = null;
+  /** The last moment search and the starts already shown for it, so "no, not that one" can narrow it. */
+  lastSearch: { args: Record<string, unknown>; shownMs: number[] } | null = null;
   utterances: string[] = [];
   clips: ClipRecord[] = [];
   /** Furthest point the viewer has reached — the spoiler boundary and the "live" edge. */
@@ -38,6 +40,7 @@ export class PlaybackSession {
     this.refHistory = [];
     this.activeEntityId = null;
     this.lastSeekTargetMs = null;
+    this.lastSearch = null;
     this.lastPlayingMs = null;
     return true;
   }

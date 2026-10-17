@@ -50,7 +50,7 @@ const FAST_PATH = new Set<Intent["type"]>(["pause", "play", "set_speed", "relati
  * requests ("where Silva hit the woodwork" is fine, "the bit where they argue" is not) still go to the LLM.
  */
 const STRUCTURED_RULES = new Set<Intent["type"]>([
-  ...FAST_PATH, "seek_moment", "list_moments", "identify", "read_text", "what_said", "describe", "catch_up", "clip", "share", "memory_query",
+  ...FAST_PATH, "seek_moment", "list_moments", "refine", "identify", "read_text", "what_said", "describe", "catch_up", "clip", "share", "memory_query",
 ]);
 const specIsStructured = (i: Intent) => !("spec" in i) || !i.spec || i.spec.eventTypes.length > 0 || i.spec.replay;
 /**
@@ -67,7 +67,7 @@ const specIsPersonEvent = (i: Intent, index?: ContentIndex | null) =>
  * (live Rekognition), screen text, transcript, catch-up, clip/share of the active moment, memory. Routing
  * them through the LLM only adds latency.
  */
-const TOOL_DIRECT = new Set<Intent["type"]>(["identify", "read_text", "what_said", "describe", "catch_up", "share", "memory_query", "translate", "repeat_slow"]);
+const TOOL_DIRECT = new Set<Intent["type"]>(["identify", "read_text", "what_said", "describe", "catch_up", "share", "memory_query", "translate", "repeat_slow", "refine"]);
 const isToolDirect = (i: Intent) => TOOL_DIRECT.has(i.type) || (i.type === "clip" && !i.spec);
 
 /** Upper bound on an LLM turn before the rules interpreter takes over (free models can take a minute). */
@@ -234,6 +234,7 @@ function observeLlmCalls(c: SkillCtx) {
     const data = await c.call(name, args);
     if (name === "moments.search") {
       lastResults = data.moments ?? [];
+      c.session.lastSearch = { args: { query: args.query, eventTypes: args.eventTypes, entityIds: args.entityIds }, shownMs: [] };
       if (lastResults.length > 1) c.session.ground({ kind: "result_set", label: String(args.query ?? ""), results: lastResults, resultIndex: 0 });
     } else if (name === "player.seek" || name === "player.play_segment" || name === "player.loop") {
       // Any way the model puts a searched moment on screen grounds it ("it", "that", "clip that").
@@ -241,6 +242,7 @@ function observeLlmCalls(c: SkillCtx) {
       const m = lastResults.find((x) => Math.abs(x.startMs - at) < 1500);
       if (m) {
         c.session.lastSeekTargetMs = m.startMs;
+        c.session.lastSearch?.shownMs.push(m.startMs);
         await groundMoment(c, m, "semantic_seek");
         c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
       }
@@ -335,6 +337,29 @@ function firstOfCluster(c: SkillCtx, m: Moment): Moment {
   if (cur.id === m.segmentId) return m;
   c.step({ kind: "intent", label: `same goal, described earlier → ${cur.label} @ ${formatMs(cur.startMs)}`, component: "context-service" });
   return { ...m, segmentId: cur.id, eventId: cur.eventId, startMs: cur.startMs, endMs: cur.endMs, label: cur.label, entityIds: cur.entityIds };
+}
+
+/**
+ * One goal described several times in a row gets several titles, some of them poor ("David James scores
+ * after 5k" for the build-up to Bolt's goal). Name the moment after the description in that run that
+ * names the most people, keeping the start where it is.
+ */
+function clusterLabel(c: SkillCtx, m: Moment): Moment {
+  const index = c.app.currentIndex();
+  if (index?.kind !== "video" || m.kind !== "event") return m;
+  const run = index.segments.filter((s) => s.eventType === m.eventType).sort((a, b) => a.startMs - b.startMs);
+  const members = [];
+  let edge = m.startMs;
+  for (const s of run) {
+    if (s.startMs < m.startMs) continue;
+    if (s.startMs - edge > 30_000) break;
+    members.push(s);
+    edge = s.startMs;
+  }
+  const best = members.reduce((a, b) => (b.entityIds.filter(isPersonId).length > a.entityIds.filter(isPersonId).length ? b : a), members[0]);
+  if (!best || best.label === m.label) return m;
+  c.step({ kind: "intent", label: `same ${m.eventType}, best description → ${best.label}`, component: "context-service" });
+  return { ...m, label: best.label, entityIds: [...new Set([...m.entityIds, ...best.entityIds])] };
 }
 
 /** Resolve a MomentSpec to a grounded moment (no player action). */
@@ -501,6 +526,7 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       const m = await resolveMoment(c, intent.spec);
       await showMoment(c, m.startMs);
       await groundMoment(c, m, "semantic_seek");
+      c.session.lastSearch = { args: { query: intent.spec.query, eventTypes: intent.spec.eventTypes.length ? intent.spec.eventTypes : undefined, entityIds: entityIdsFor(c, intent.spec) }, shownMs: [m.startMs] };
       c.speech.push(`${m.label}.`);
       // Fire TV Audio Description is on: describe where we landed, briefly, from the indexed scene.
       if (c.app.bridge.state()?.accessibility?.audioDescription) {
@@ -511,6 +537,47 @@ async function runIntent(intent: Intent, c: SkillCtx) {
         }
       }
       c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
+      return;
+    }
+    case "refine": {
+      // "The other one" while a listed result set is on screen keeps its meaning: the next item.
+      if (!intent.when && !intent.extra && c.session.activeRef?.kind === "result_set") return runIntent({ type: "select_result", which: "next" }, c);
+      const last = c.session.lastSearch;
+      if (!last) throw new Error("tell me which moment you mean first, then I can narrow it down");
+      const cur = c.session.activeMoment;
+      const durationMs = c.app.bridge.state()?.durationMs || c.app.currentIndex()?.durationMs || 0;
+      const query = [last.args.query, intent.extra].filter(Boolean).join(" ");
+      // Stay within the kind of moment the viewer rejected: "not that goal" still means a goal.
+      const eventTypes = (last.args.eventTypes as string[] | undefined) ?? (cur?.eventType && cur.eventType !== "other" ? [cur.eventType] : undefined);
+      const r = await search(c, { ...last.args, eventTypes, query, order: "relevance", limit: 12 });
+      const seen = (ms: number) => last.shownMs.some((s) => Math.abs(s - ms) < 20_000);
+      const curMs = cur?.startMs ?? pos(c);
+      const fits = (m: Moment) =>
+        intent.when === "earlier" ? m.startMs < curMs - 5000
+        : intent.when === "later" ? m.startMs > curMs + 5000
+        : intent.when === "first_half" ? !durationMs || m.startMs < durationMs / 2
+        : intent.when === "second_half" ? !durationMs || m.startMs >= durationMs / 2
+        : true;
+      let left = r.moments.filter((m) => !seen(m.startMs) && fits(m));
+      // "Not that one" may well mean a different player's: widen past the person before giving up.
+      if (!left.length && (last.args.entityIds as string[] | undefined)?.length) {
+        const wide = await search(c, { ...last.args, entityIds: undefined, eventTypes, query, order: "relevance", limit: 12 });
+        left = wide.moments.filter((m) => !seen(m.startMs) && fits(m));
+      }
+      const why = [intent.when?.replace("_", " "), intent.extra && `with “${intent.extra}”`].filter(Boolean).join(", ");
+      c.step({ kind: "intent", label: `not ${cur?.label ?? "that one"}${why ? ` · ${why}` : ""} → ${left.length} other ${String(eventTypes?.[0] ?? "moment").replace("_", " ")}${left.length === 1 ? "" : "s"} to choose from (no model call)`, component: "context-service" });
+      if (!left.length) {
+        // Looking back, nothing is hidden by the spoiler boundary: there simply isn't another one.
+        if (intent.when === "earlier" || intent.when === "first_half") throw new Error(`that was the only ${String(eventTypes?.[0] ?? "match").replace("_", " ")} I found ${intent.when === "earlier" ? "before it" : "in the first half"}.`);
+        noResult(c, r, `another ${String(last.args.query ?? "moment")}${why ? ` (${why})` : ""}`);
+      }
+      const pick = intent.when === "earlier" ? left.sort((a, b) => b.startMs - a.startMs)[0] : intent.when === "later" ? left.sort((a, b) => a.startMs - b.startMs)[0] : left[0];
+      const m = clusterLabel(c, firstOfCluster(c, pick));
+      await showMoment(c, m.startMs);
+      await groundMoment(c, m, "semantic_seek");
+      last.shownMs.push(m.startMs);
+      c.speech.push(`How about this one: ${m.label}, at ${formatMs(m.startMs)}?`);
+      c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · candidate ${last.shownMs.length}`, startMs: m.startMs, endMs: m.endMs });
       return;
     }
     case "list_moments": {

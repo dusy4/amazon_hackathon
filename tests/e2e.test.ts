@@ -96,6 +96,16 @@ describe("conversational playback", () => {
     await say("spoilers on");
   });
 
+  it("narrows the last search over turns: not that one, the one before half-time", async () => {
+    await say("spoilers off");
+    await say("show me Okafor's late shot");
+    expect(lastSeek()!.positionMs).toBeGreaterThan(200000);
+    const t = await say("No, not that one, the one before half-time");
+    expect(t.interpreter).toBe("rules");
+    expect(t.trace.some((s) => s.kind === "intent" && s.label.includes("first half") && s.label.includes("no model call"))).toBe(true);
+    expect(lastSeek()!.positionMs).toBeLessThan(123000);
+    await say("spoilers on");
+  });
   it("anchored relation and screen text", async () => {
     await say("spoilers off");
     await say("go to the save before the second goal");

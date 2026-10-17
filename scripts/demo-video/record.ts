@@ -62,8 +62,8 @@ const SCENES: Scene[] = [
       { say: "Show me Robbie Keane's goal", holdMs: 6000 },
       { say: "Spoilers off", holdMs: 1500 },
       { say: "Show me Robbie Keane's goal", holdMs: 4500 }, // a long-range strike: in the net ~2.5 s after the jump
-      { say: "Go back five seconds in slow motion", holdMs: 12000 },
-      { say: "Normal speed", holdMs: 1000 },
+      { say: "No, not that one, the one before half-time", holdMs: 9000 }, // narrows the same search: Bolt's goal, first half
+      { say: "Back to where I was", holdMs: 2500 },
       { say: "Spoilers on", holdMs: 2000 },
       { say: "I was away for 2 minutes, catch me up", holdMs: 9000 },
       { say: "Who was the player I asked about?", holdMs: 6500 },

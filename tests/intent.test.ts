@@ -42,6 +42,16 @@ describe("moment references", () => {
     expect(parseUtterance("the one before that")[0]).toEqual({ type: "select_result", which: "previous" });
     expect(parseUtterance("next one")[0]).toEqual({ type: "select_result", which: "next" });
   });
+  it("refining the last search over several turns", () => {
+    expect(parseUtterance("No, not that one — the one before half-time")).toEqual([{ type: "refine", when: "first_half", extra: undefined }]);
+    expect(parseUtterance("nope, the earlier one")).toEqual([{ type: "refine", when: "earlier", extra: undefined }]);
+    expect(parseUtterance("not that one")).toEqual([{ type: "refine", when: undefined, extra: undefined }]);
+    expect(parseUtterance("no, the one where he dunks")).toEqual([{ type: "refine", when: undefined, extra: "he dunks" }]);
+    expect(parseUtterance("the later one")).toEqual([{ type: "refine", when: "later", extra: undefined }]);
+    // A fresh request after "no" is not a refinement; "no spoilers" is a setting.
+    expect(types("no, show me the save")).toEqual(["seek_moment"]);
+    expect(types("no spoilers")).toEqual(["spoilers"]);
+  });
 });
 
 describe("deterministic follow-ups", () => {
