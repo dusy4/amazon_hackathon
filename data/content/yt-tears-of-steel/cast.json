@@ -1,21 +1,24 @@
 {
- "source": "cast list: one reference face per character, as a provider or IMDb would supply it (set by hand for this demo; IMDb access unavailable)",
+ "source": "character and actor names from the film's own end credits (Amazon Rekognition DetectText at 10:01); one reference face per character picked by hand (IMDb access unavailable)",
  "characters": [
   {
    "name": "Celia",
    "entityId": "person:celia",
-   "faceId": "0e473cfc-c7bb-4e56-a1d2-305790f0095f"
+   "faceId": "0e473cfc-c7bb-4e56-a1d2-305790f0095f",
+   "actor": "Denise Rebergen"
   },
   {
    "name": "Thom",
    "entityId": "person:thom",
-   "faceId": "6d55f073-b266-4c2c-9386-9e5424a2bbc5"
+   "faceId": "6d55f073-b266-4c2c-9386-9e5424a2bbc5",
+   "actor": "Vanja Rukavina"
   },
   {
-   "name": "Derek de Lint",
+   "name": "Old Thom",
    "entityId": "person:derek-de-lint",
    "faceId": "249ce13f-2c84-4569-b7a6-79345d6f598e",
-   "note": "also matched by Amazon Rekognition RecognizeCelebrities"
+   "note": "also matched by Amazon Rekognition RecognizeCelebrities",
+   "actor": "Derek de Lint"
   }
  ]
 }

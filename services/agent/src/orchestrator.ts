@@ -66,7 +66,7 @@ const specIsPersonEvent = (i: Intent, index?: ContentIndex | null) =>
  * (live Rekognition), screen text, transcript, catch-up, clip/share of the active moment, memory. Routing
  * them through the LLM only adds latency.
  */
-const TOOL_DIRECT = new Set<Intent["type"]>(["identify", "read_text", "what_said", "describe", "catch_up", "share", "memory_query"]);
+const TOOL_DIRECT = new Set<Intent["type"]>(["identify", "read_text", "what_said", "describe", "catch_up", "share", "memory_query", "translate", "repeat_slow"]);
 const isToolDirect = (i: Intent) => TOOL_DIRECT.has(i.type) || (i.type === "clip" && !i.spec);
 
 /** Upper bound on an LLM turn before the rules interpreter takes over (free models can take a minute). */
@@ -477,6 +477,14 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       await showMoment(c, m.startMs);
       await groundMoment(c, m, "semantic_seek");
       c.speech.push(`${m.label}.`);
+      // Fire TV Audio Description is on: describe where we landed, briefly, from the indexed scene.
+      if (c.app.bridge.state()?.accessibility?.audioDescription) {
+        const desc = c.app.currentIndex()?.events.find((e) => e.id === m.eventId)?.description;
+        if (desc) {
+          c.speech.push(`Audio description: ${desc.split(/(?<=[.!?])\s/)[0]}`);
+          c.step({ kind: "action", label: "Audio Description is on (Fire TV setting) → described the scene", component: "accessibility" });
+        }
+      }
       c.cards.push({ type: "moment", title: m.label, subtitle: `${formatMs(m.startMs)}–${formatMs(m.endMs)} · score ${m.score}`, startMs: m.startMs, endMs: m.endMs });
       return;
     }
@@ -595,7 +603,8 @@ async function runIntent(intent: Intent, c: SkillCtx) {
         await c.app.record({ type: "who_is_this", contentId: c.envelope.relevantCore.contentId, contentTimeMs: pos(c), summary: `You asked who that was: ${e.name}${e.role ? ` (${e.role})` : ""}`, entityIds: [e.id], payload: { source: r.provenance.source } });
         // Spoken answer stays short: who, and how we know. Appearances and links are on the card.
         const how = (r.facts as string[]).find((f) => /^recognised/i.test(f));
-        c.speech.push(`That's ${e.name}${e.role ? `, the ${e.role}` : ""}.${how ? ` ${cap(how)}.` : ""}`.trim());
+        const role = e.role ? (/^played by /.test(e.role) ? `, ${e.role}` : `, the ${e.role}`) : "";
+        c.speech.push(`That's ${e.name}${role}.${how ? ` ${cap(how)}.` : ""}`.trim());
         c.cards.push({ type: "entity", title: e.name, subtitle: e.role, facts: [...r.facts, `source: ${r.provenance.source}`] });
         return;
       }
@@ -655,6 +664,36 @@ async function runIntent(intent: Intent, c: SkillCtx) {
       }
       c.speech.push(`The commentator said: ${lines.map((l: { text: string }) => l.text).join(" ")}`);
       c.cards.push({ type: "text", title: "Commentary", body: lines.map((l: { text: string; startMs: number }) => `${formatMs(l.startMs)}  ${l.text}`).join("\n") });
+      return;
+    }
+    case "translate": {
+      if (intent.what === "screen") await freezeFrame(c);
+      const p = pos(c);
+      let text = "";
+      if (intent.what === "speech") {
+        const r = await c.call("transcript.window", { fromMs: p - 15000, toMs: p });
+        text = r.lines.slice(-1)[0]?.text ?? "";
+        if (!text) throw new Error("nothing was said in the last few seconds");
+      }
+      const r = await c.call("lens.translate", { atMs: p, targetLanguage: intent.target, ...(text ? { text } : {}) });
+      if (!r.translation) throw new Error("there's no text on screen to translate");
+      await c.app.record({ type: "ocr_translate", contentId: c.envelope.relevantCore.contentId, contentTimeMs: p, summary: `Translated “${r.original}” into ${r.language}: “${r.translation}”`, entityIds: [], payload: { engine: r.engine } });
+      c.speech.push(`In ${r.language}: ${r.translation}`);
+      c.cards.push({ type: "text", title: `${intent.what === "screen" ? "On screen" : "Dialogue"} → ${r.language}`, body: `${r.original}\n→ ${r.translation}` });
+      return;
+    }
+    case "repeat_slow": {
+      // Accessibility: replay the real line at 0.75× rather than re-voicing it.
+      const p = pos(c);
+      const r = await c.call("transcript.window", { fromMs: p - 12000, toMs: p });
+      const line = r.lines.slice(-1)[0] as { text: string; startMs: number; endMs?: number } | undefined;
+      if (!line) throw new Error("nothing was said in the last few seconds");
+      await seekTo(c, Math.max(0, line.startMs - 400));
+      await c.call("player.set_speed", { rate: 0.75 });
+      await c.call("player.play");
+      await c.app.record({ type: "transcript_request", contentId: c.envelope.relevantCore.contentId, contentTimeMs: line.startMs, summary: `Replayed a line slower: “${line.text}”`, entityIds: [], payload: { rate: 0.75 } });
+      c.speech.push("Again, a little slower.");
+      c.cards.push({ type: "text", title: "Slower · 0.75×", body: line.text });
       return;
     }
     case "describe": {

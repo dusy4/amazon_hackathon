@@ -64,9 +64,26 @@ class MainActivity : AppCompatActivity() {
             .setMediaCodecSelector(hwFirst)
             .setEnableDecoderFallback(true)
         player = ExoPlayer.Builder(this, renderers).build()
-        findViewById<PlayerView>(R.id.player_view).player = player
+        findViewById<PlayerView>(R.id.player_view).let { pv ->
+            pv.player = player
+            // Captions centred at the bottom in the TV's own style, not the source's positioned cues.
+            pv.subtitleView?.setApplyEmbeddedStyles(false)
+            pv.subtitleView?.setBottomPaddingFraction(0.06f)
+        }
         session = MediaSession.Builder(this, player).build()
         controller = PlayerController(player, deviceId, server, intent.getStringExtra("variant"))
+        // Fire TV accessibility state (developer.amazon.com/docs/fire-tv/implement-reading-and-subscribing-to-adcc.html)
+        val captioning = getSystemService(android.content.Context.CAPTIONING_SERVICE) as android.view.accessibility.CaptioningManager
+        val adEnabled = { android.provider.Settings.Secure.getInt(contentResolver, "accessibility_audio_descriptions_enabled", 0) == 1 }
+        controller.accessibility = { JSONObject().put("audioDescription", adEnabled()).put("captions", captioning.isEnabled) }
+        controller.applyCaptions(captioning.isEnabled)
+        captioning.addCaptioningChangeListener(object : android.view.accessibility.CaptioningManager.CaptioningChangeListener() {
+            override fun onEnabledChanged(enabled: Boolean) { controller.applyCaptions(enabled); sendState() }
+        })
+        contentResolver.registerContentObserver(
+            android.provider.Settings.Secure.getUriFor("accessibility_audio_descriptions_enabled"), false,
+            object : android.database.ContentObserver(android.os.Handler(mainLooper)) { override fun onChange(selfChange: Boolean) { sendState() } },
+        )
         controller.onChange = { sendState() }
         player.addListener(object : androidx.media3.common.Player.Listener {
             override fun onEvents(p: androidx.media3.common.Player, events: androidx.media3.common.Player.Events) = sendState()

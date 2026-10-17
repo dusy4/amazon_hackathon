@@ -29,6 +29,7 @@ export const collectionFor = (contentId: string) => `semantic-playback-${content
 export interface FaceCluster {
   id: string;
   name: string | null;
+  actor?: string | null;
   entityId: string | null;
   faceIds: string[];
   appearances: number[]; // ms
@@ -124,7 +125,7 @@ export async function buildFaceIndex(dataDir: string, contentId: string, stepMs 
   // A provider cast list (one reference face per character) wins over lift: two characters who are always on
   // screen together (a couple) have the same scene co-occurrence, and lift alone swaps them.
   const castPath = join(dir, "cast.json");
-  const cast = existsSync(castPath) ? (JSON.parse(readFileSync(castPath, "utf8")).characters as { name: string; entityId: string; faceId: string }[]) : null;
+  const cast = existsSync(castPath) ? (JSON.parse(readFileSync(castPath, "utf8")).characters as { name: string; entityId: string; faceId: string; actor?: string }[]) : null;
   if (cast) {
     named.clear();
     clusters.forEach((g, c) => {
@@ -136,7 +137,8 @@ export async function buildFaceIndex(dataDir: string, contentId: string, stepMs 
   const out: FaceCluster[] = clusters.map((g, c) => {
     const n = named.get(c);
     const e = n ? people.find((p) => p.id === n.id)! : null;
-    return { id: `face-${c + 1}`, name: e?.name ?? null, entityId: e?.id ?? null, faceIds: g.map((f) => f.faceId), appearances: [...new Set(g.map((f) => f.atMs))].sort((a, b) => a - b), score: +(n?.lift ?? 0).toFixed(2) };
+    const castHit = cast?.find((x) => x.entityId === n?.id);
+    return { id: `face-${c + 1}`, name: castHit?.name ?? e?.name ?? null, actor: castHit?.actor ?? null, entityId: e?.id ?? null, faceIds: g.map((f) => f.faceId), appearances: [...new Set(g.map((f) => f.atMs))].sort((a, b) => a - b), score: +(n?.lift ?? 0).toFixed(2) };
   });
   for (const c of out) log(`  ${c.id}: ${c.appearances.length} frames → ${c.name ?? "unnamed"} (lift ${c.score})`);
 

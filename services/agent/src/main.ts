@@ -55,6 +55,13 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
     if (!existsSync(alt)) return next();
     res.sendFile(alt);
   });
+  // Closed captions for the Fire OS app (shown when the Fire TV CC setting is on): the title's WebVTT track.
+  http.get("/media/:contentId/captions.vtt", (req, res) => {
+    const dir = join(dataDir, "content", req.params.contentId);
+    const vtt = ["video.en.vtt", "video.en-orig.vtt", "captions.vtt"].map((f) => join(dir, f)).find((f) => existsSync(f));
+    if (!vtt) return res.status(404).end();
+    res.type("text/vtt").sendFile(vtt);
+  });
   http.use("/media", express.static(join(dataDir, "content")));
   http.use("/clips", express.static(join(dataDir, "clips")));
   http.get("/", (_req, res) => res.redirect("/tv/"));

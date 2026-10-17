@@ -14,6 +14,7 @@ import { clipAttribution, renderClip, toMediaConvertInput } from "../../media/sr
 import { keyframe } from "../../media/src/ingest-video.ts";
 import { analyzeFrame } from "../../media/src/rekognition.ts";
 import { identifyInCollection } from "../../media/src/faces.ts";
+import { languageCode, languageName, translate } from "./translate.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
 
@@ -319,6 +320,54 @@ export function registerTools(server: McpServer, app: AppContext) {
   );
 
   server.registerTool(
+    "entities.appearances",
+    {
+      title: "Where a person appears",
+      description:
+        "Every moment a person (entityId from entities.resolve or the active reference) is on screen or named in this title, up to the spoiler boundary: face/celebrity presence spans and the indexed moments that involve them. Use for 'where have I seen him before', 'show me her other scenes', 'how often is he on screen'.",
+      inputSchema: { entityId: z.string(), limit: z.number().optional() },
+    },
+    wrap(async ({ entityId, limit }: { entityId: string; limit?: number }) => {
+      const idx = requireIndex(app);
+      const session = app.sessions.get();
+      const pos = app.bridge.state()?.positionMs ?? 0;
+      const boundary = session.spoilerMode === "strict" ? Math.max(session.watchedUpToMs, pos) : Infinity;
+      const e = idx.entities.find((x) => x.id === entityId);
+      const spans = (idx.presence ?? []).filter((p) => p.entityId === entityId);
+      const moments = idx.segments.filter((s) => s.entityIds.includes(entityId)).map((s) => ({ startMs: s.startMs, endMs: s.endMs, label: s.label, eventType: s.eventType }));
+      const seen = moments.filter((m) => m.startMs <= boundary);
+      return {
+        entity: e ? { id: e.id, name: e.name } : { id: entityId },
+        onScreenMs: spans.filter((p) => p.startMs <= boundary).reduce((a, p) => a + Math.min(p.endMs, boundary) - p.startMs, 0),
+        moments: seen.slice(0, limit ?? 8),
+        hiddenBySpoilerBoundary: moments.length - seen.length,
+        sources: [...new Set([...(spans.length ? ["face/celebrity presence (Amazon Rekognition)"] : []), "indexed moments"])],
+      };
+    }),
+  );
+
+  server.registerTool(
+    "lens.translate",
+    {
+      title: "Translate on-screen text or a line",
+      description: "Translate `text`, or the on-screen text at atMs (Rekognition DetectText) when no text is given, into targetLanguage. Amazon Translate first; the agent's model if Amazon Translate is unavailable.",
+      inputSchema: { targetLanguage: z.string(), text: z.string().optional(), atMs: z.number().optional() },
+    },
+    wrap(async ({ targetLanguage, text, atMs }: { targetLanguage: string; text?: string; atMs?: number }) => {
+      const idx = requireIndex(app);
+      const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
+      let original = text ?? "";
+      if (!original) {
+        if (idx.kind === "video") original = (await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at)).text.map((t) => t.text).join(" · ");
+        else original = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs).map((s) => s.text).join(" · ");
+      }
+      if (!original) return { atMs: at, original: null, translation: null };
+      const r = await translate(original, targetLanguage);
+      return { atMs: at, original, translation: r.text, language: languageName(languageCode(targetLanguage)), engine: r.engine, note: r.note };
+    }),
+  );
+
+  server.registerTool(
     "transcript.window",
     { title: "Transcript window", description: "Commentary/dialogue lines between fromMs and toMs.", inputSchema: { fromMs: z.number(), toMs: z.number() } },
     wrap(async ({ fromMs, toMs }: { fromMs: number; toMs: number }) => {
@@ -459,7 +508,7 @@ export function registerTools(server: McpServer, app: AppContext) {
 export const TOOL_NAMES = [
   "player.get_state", "player.seek", "player.seek_relative", "player.play", "player.pause", "player.set_speed", "player.play_segment", "player.loop", "player.clear_loop",
   "entities.resolve", "moments.search", "moments.summarize", "lens.identify", "lens.read_text", "transcript.window", "memory.search", "clip.create", "share.send",
-  "content.open", "lens.describe",
+  "content.open", "lens.describe", "lens.translate", "entities.appearances",
 ] as const;
 
 /** Real footage Viewing Lens: Rekognition on the frame on screen now, enriched with the title's index. */
@@ -492,11 +541,14 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
   } else if (celeb) {
     const id = slugId(celeb.name);
     entity = { id, type: "person", name: celeb.name, description: known(id)?.description };
+    // A celebrity who plays a named character in this film: answer with the character, credit the actor.
+    const role = ((idx as any).faces?.clusters as { entityId: string | null; name: string | null; actor?: string | null }[] | undefined)?.find((c) => c.entityId === id && c.actor && c.name);
+    if (role) entity = { ...entity, name: role.name!, role: `played by ${role.actor}` };
   } else if ((idx as any).faces && (faceMatch = await identifyInCollection(idx, jpeg))) {
     // Films: most of the cast are not public figures. The title's own face collection knows them.
     const c = faceMatch.cluster;
     const e = c.entityId ? known(c.entityId) : undefined;
-    entity = { id: c.entityId ?? c.id, type: "person", name: c.name!, description: e?.description };
+    entity = { id: c.entityId ?? c.id, type: "person", name: c.name!, description: e?.description, ...(c.actor ? { role: `played by ${c.actor}` } : {}) };
     source = `amazon-rekognition SearchFacesByImage (this title's face collection, ${faceMatch.similarity}% similar)`;
   } else {
     // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.
@@ -512,6 +564,7 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
     entity,
     facts: [
       celeb && entity?.name === celeb.name ? `recognised by Amazon Rekognition with ${celeb.confidence}% confidence` : null,
+      faceMatch?.cluster.actor ? `played by ${faceMatch.cluster.actor}` : null,
       faceMatch ? `matched against this film's cast faces with Amazon Rekognition (${faceMatch.similarity}% similar), on screen in ${faceMatch.cluster.appearances.filter((ms) => ms <= boundary).length} sampled frames so far` : null,
       celeb?.urls[0] ? `profile: https://${celeb.urls[0].replace(/^https?:\/\//, "")}` : null,
       seen.length ? `in ${seen.length} moment${seen.length > 1 ? "s" : ""} so far (${seen.slice(-3).map((s) => s.title).join("; ")})` : null,

@@ -86,7 +86,8 @@ export async function buildEnvelope(i: EnvelopeInput): Promise<ContextEnvelope> 
       recentActions: recent.map((e) => ({ type: e.type, summary: e.summary, at: e.wallClock })),
       previousUtterances: session.utterances.slice(-5),
       recentClips: session.clips.slice(-3).map((c) => ({ clipId: c.clipId, label: c.label })),
-      accessibility: session.accessibility,
+      // The device reports the Fire TV system settings; they win over the session defaults.
+      accessibility: { ...session.accessibility, ...(i.player?.accessibility ? { captions: !!i.player.accessibility.captions, audioDescription: !!i.player.accessibility.audioDescription, source: "Fire TV accessibility settings" } : {}) },
       devices: i.devices,
     },
     deep: {

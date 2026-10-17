@@ -48,6 +48,8 @@ export type Intent =
   | { type: "memory_query"; text: string; types: string[] }
   | { type: "spoilers"; mode: "strict" | "full" }
   | { type: "open_content"; query: string }
+  | { type: "translate"; target: string; what: "screen" | "speech" }
+  | { type: "repeat_slow" }
   | { type: "unknown"; text: string };
 
 const ORDINALS: Record<string, number> = { first: 1, "1st": 1, opening: 1, opener: 1, second: 2, "2nd": 2, third: 3, "3rd": 3, fourth: 4, "4th": 4, fifth: 5, "5th": 5 };
@@ -240,6 +242,16 @@ export function parseClause(clause: string, titles: string[] = []): Intent {
   if (/^the one after (that|it)$/.test(t)) return { type: "select_result", which: "next" };
 
   if (/\b(stop|cancel|end) (the )?(loop(ing)?|repeat(ing)?)\b/.test(t)) return { type: "clear_loop" };
+
+  // Accessibility: hear the last line again, slower (the real audio, not a re-voicing).
+  if (/\b(say|repeat) (that|it|the line|that line)( line)?( again)? (more )?slow(ly|er)\b|\bi did ?n[o']?t (catch|hear|get) (that|it|what (he|she|they) said)\b|\bslower,? please\b/.test(t))
+    return { type: "repeat_slow" };
+  // Translate on-screen text, or the last line spoken.
+  const lang = t.match(/\b(?:into|to|in) (spanish|french|german|italian|portuguese|ukrainian|russian|polish|dutch|japanese|chinese|korean|arabic|hindi|turkish|english)\b/);
+  if (/\btranslate\b/.test(t) || (lang && /\b(say|says|said|mean|means)\b/.test(t))) {
+    const what = /\b(said|saying|line|dialogue)\b|\b(he|she|they) (just )?(say|says|said)\b/.test(t) && !/\b(sign|text|screen|written)\b/.test(t) ? "speech" : "screen";
+    return { type: "translate", target: lang?.[1] ?? "spanish", what };
+  }
 
   const rel = relSeek(t);
   if (rel) return rel;

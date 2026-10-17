@@ -135,6 +135,8 @@ export interface PlayerState {
   rate: number;
   loop: { startMs: number; endMs: number; remaining: number } | null;
   segment: { startMs: number; endMs: number } | null;
+  /** Fire TV accessibility settings reported by the device (Audio Description, Closed Captions). */
+  accessibility?: { audioDescription?: boolean; captions?: boolean };
   updatedAt: number;
 }
 
@@ -240,6 +242,7 @@ export type ActionEventType =
   | "speed_change"
   | "who_is_this"
   | "ocr_read"
+  | "ocr_translate"
   | "transcript_request"
   | "scene_explained"
   | "accessibility_description"
