@@ -162,7 +162,8 @@ export type WireMessage =
   | { type: "trace"; trace: TraceStep; turnId: string }
   | { type: "turn"; turn: TurnResult }
   | { type: "share"; share: ShareRecord }
-  | { type: "utterance"; text: string; source: string };
+  | { type: "utterance"; text: string; source: string }
+  | { type: "live_cue"; cue: { t: string; title: string; src: string; ms: number; at: number }; positionMs?: number };
 
 // ---------------------------------------------------------------------------------------------
 // Grounded references — "that goal", "the replay", "his shots", "the second one"
@@ -243,6 +244,8 @@ export type ActionEventType =
   | "who_is_this"
   | "ocr_read"
   | "ocr_translate"
+  | "live_event"
+  | "live_replay"
   | "transcript_request"
   | "scene_explained"
   | "accessibility_description"

@@ -17,6 +17,7 @@ import type { WireMessage } from "../../../packages/contracts/src/index.ts";
 import { AppContext } from "./app-context.ts";
 import { mountMcp } from "./mcp.ts";
 import { Orchestrator } from "./orchestrator.ts";
+import { live } from "./live.ts";
 import { ALLOWED_VOICES, POLLY_VOICE, synthesize } from "./tts.ts";
 
 /** Best LAN address for QR codes / phones: prefer private home-network ranges over VPN/overlay ranges. */
@@ -55,6 +56,29 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
     if (!existsSync(alt)) return next();
     res.sendFile(alt);
   });
+  // Relay for the Amazon IVS live channel, for players that can reach this server but not the internet (the
+  // Android TV emulator here). Playlists are rewritten so every URI goes through the relay; media segments
+  // (with their ID3 timed metadata) pass through byte for byte. A real Fire TV plays the IVS URL directly.
+  http.get("/live-proxy", async (req, res) => {
+    const u = String(req.query.u ?? "");
+    if (!/^https:\/\/[a-z0-9.-]+\.(live-video\.net|ttvnw\.net)\//.test(u)) return res.status(400).end();
+    try {
+      const r = await fetch(u);
+      const type = r.headers.get("content-type") ?? "";
+      const buf = Buffer.from(await r.arrayBuffer());
+      if (/mpegurl/i.test(type) || buf.subarray(0, 7).toString() === "#EXTM3U") {
+        const base = new URL(u);
+        const wrap = (x: string) => `/live-proxy?u=${encodeURIComponent(new URL(x, base).toString())}`;
+        const text = buf.toString("utf8").split("\n").map((line) =>
+          line.startsWith("#") ? line.replace(/URI="([^"]+)"/g, (_m, x) => `URI="${wrap(x)}"`) : line.trim() ? wrap(line.trim()) : line,
+        ).join("\n");
+        res.status(r.status).type("application/vnd.apple.mpegurl").set("cache-control", "no-cache").send(text);
+      } else res.status(r.status).type(type || "application/octet-stream").send(buf);
+    } catch (e) {
+      res.status(502).send((e as Error).message);
+    }
+  });
+
   // Closed captions for the Fire OS app (shown when the Fire TV CC setting is on): the title's WebVTT track.
   http.get("/media/:contentId/captions.vtt", (req, res) => {
     const dir = join(dataDir, "content", req.params.contentId);
@@ -134,6 +158,20 @@ export async function startServer(opts: { port?: number; dataDir?: string; host?
       if (msg.type === "utterance") {
         app.bridge.setActive(deviceId);
         await orchestrator.handle(msg.text, { inputSource: msg.source, device: deviceId });
+        return;
+      }
+      if (msg.type === "live_cue" && !(msg.cue?.title && msg.cue?.src)) return; // IVS's own ld_lat_data telemetry cues
+      if (msg.type === "live_cue") {
+        // The TV received an Amazon IVS timed-metadata cue in the stream: remember it and offer the replay.
+        const cue = { ...msg.cue, receivedAt: new Date().toISOString() };
+        live.received.push(cue);
+        const s = app.sessions.get();
+        s.watchedUpToMs = Math.max(s.watchedUpToMs, cue.at);
+        await app.record({ type: "live_event", contentId: cue.src, contentTimeMs: cue.ms, summary: `Live ${cue.t}: ${cue.title}`, entityIds: [], payload: { source: "amazon-ivs timed metadata" } });
+        app.bridge.broadcast({
+          cmd: "overlay",
+          overlay: { speech: `Goal! ${cue.title}. Say "show me that goal" to watch it from the build-up.`, cards: [{ type: "moment", title: cue.title, startMs: cue.ms, endMs: cue.at }], steps: ["ivs.timed_metadata"], title: "Live · Amazon IVS" },
+        } as never);
         return;
       }
       if (deviceId) app.bridge.handle(deviceId, msg);

@@ -16,6 +16,7 @@ import { analyzeFrame } from "../../media/src/rekognition.ts";
 import { identifyInCollection } from "../../media/src/faces.ts";
 import { languageCode, languageName, translate } from "./translate.ts";
 import { agentCoreMemory } from "../../context/src/agentcore-memory.ts";
+import { LiveChannel, live } from "./live.ts";
 import type { AppContext } from "./app-context.ts";
 import { resolveEntities } from "./entities.ts";
 
@@ -426,6 +427,52 @@ export function registerTools(server: McpServer, app: AppContext) {
     }),
   );
 
+  // ---------------------------------------------------------------- Live (Amazon IVS)
+  server.registerTool(
+    "live.start",
+    {
+      title: "Go live (Amazon IVS)",
+      description: "Broadcast a match on the Amazon IVS low-latency channel from fromMs, insert IVS timed metadata at every goal, and switch the TV to the live channel.",
+      inputSchema: { contentId: z.string(), fromMs: z.number().min(0).optional() },
+    },
+    wrap(async ({ contentId, fromMs }: { contentId: string; fromMs?: number }) => {
+      const idx = app.store.get(contentId);
+      if (!idx) throw new Error(`unknown title ${contentId}`);
+      live.start(idx, app.store.mediaPath(idx), fromMs ?? 0);
+      app.currentContentId = idx.contentId;
+      app.sessions.get().setContent(idx.contentId);
+      // IVS needs a few seconds of ingest before the playlist exists.
+      await new Promise((r) => setTimeout(r, 9000));
+      const state = await app.bridge.send({ cmd: "load", contentId: `live:${idx.contentId}`, url: live.tvUrl }, 20000);
+      await app.bridge.send({ cmd: "play" });
+      return { live: true, playbackUrl: live.playbackUrl, markers: LiveChannel.markers(idx).filter((m) => m.at > (fromMs ?? 0)).length, state };
+    }),
+  );
+  server.registerTool(
+    "live.rejoin",
+    { title: "Back to live", description: "Switch the TV back to the Amazon IVS live channel.", inputSchema: {} },
+    wrap(async () => {
+      if (!live.active || !live.source) throw new Error("nothing is live right now");
+      app.currentContentId = live.source.contentId;
+      const state = await app.bridge.send({ cmd: "load", contentId: `live:${live.source.contentId}`, url: live.tvUrl }, 20000);
+      await app.bridge.send({ cmd: "play" });
+      return { live: true, state };
+    }),
+  );
+  server.registerTool(
+    "live.status",
+    { title: "Live status", description: "IVS timed-metadata cues sent and received by the TV.", inputSchema: {} },
+    wrap(async () => ({ active: live.active, source: live.source, sent: live.sent, received: live.received })),
+  );
+  server.registerTool(
+    "live.stop",
+    { title: "Stop live", description: "Stop the IVS broadcast.", inputSchema: {} },
+    wrap(async () => {
+      live.stop();
+      return { active: false };
+    }),
+  );
+
   // ---------------------------------------------------------------- Viewing Memory
   server.registerTool(
     "memory.search",
@@ -513,7 +560,7 @@ export function registerTools(server: McpServer, app: AppContext) {
 export const TOOL_NAMES = [
   "player.get_state", "player.seek", "player.seek_relative", "player.play", "player.pause", "player.set_speed", "player.play_segment", "player.loop", "player.clear_loop",
   "entities.resolve", "moments.search", "moments.summarize", "lens.identify", "lens.read_text", "transcript.window", "memory.search", "clip.create", "share.send",
-  "content.open", "lens.describe", "lens.translate", "entities.appearances",
+  "content.open", "lens.describe", "lens.translate", "entities.appearances", "live.start", "live.status", "live.stop", "live.rejoin",
 ] as const;
 
 /** Real footage Viewing Lens: Rekognition on the frame on screen now, enriched with the title's index. */

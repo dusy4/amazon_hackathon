@@ -30,6 +30,7 @@ android {
 dependencies {
     val media3 = "1.3.1"
     implementation("androidx.media3:media3-exoplayer:$media3")
+    implementation("androidx.media3:media3-exoplayer-hls:$media3") // Amazon IVS live channel (HLS + ID3 timed metadata)
     implementation("androidx.media3:media3-ui:$media3")
     implementation("androidx.media3:media3-session:$media3")
     implementation("androidx.appcompat:appcompat:1.6.1")

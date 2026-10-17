@@ -27,6 +27,7 @@ import { defaultChatModel } from "./llm.ts";
 import { LlmAgent, LlmDeadlineError } from "./llm-agent.ts";
 import { resolveEntities } from "./entities.ts";
 import { type Intent, type MomentSpec, parseMomentSpec, parseUtterance, splitClauses } from "./intent.ts";
+import { live } from "./live.ts";
 
 interface SearchResult {
   moments: Moment[];
@@ -147,7 +148,9 @@ export class Orchestrator {
       (index?.kind === "sports_match" && intents.length > 0 && intents.every((i) => STRUCTURED_RULES.has(i.type) && specIsStructured(i))) ||
       (index?.kind === "video" && intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type) || isToolDirect(i) || specIsPersonEvent(i, index)) && intents.some((i) => specIsPersonEvent(i, index)));
     const direct = intents.length > 0 && intents.every((i) => FAST_PATH.has(i.type) || isToolDirect(i)) && !transportOnly;
-    const fastPath = transportOnly || structured || direct;
+    const liveReplay = intents.length > 0 && intents.every((i) => isLiveReplay(i) || (i.type === "return_live" && live.active));
+    if (liveReplay) step({ kind: "intent", label: "live replay from an IVS timed-metadata cue → no model call", component: "router" });
+    const fastPath = transportOnly || structured || direct || liveReplay;
     if (direct && !structured) step({ kind: "intent", label: "direct tool request (no grounding needed) → rules", component: "router" });
     if (structured && !transportOnly)
       step({ kind: "intent", label: index?.kind === "video" ? "one person's event (e.g. “his goal”) → hybrid search, no model call" : "structured request on a title with a provider event feed → rules", component: "router" });
@@ -469,8 +472,28 @@ async function groundMoment(c: SkillCtx, m: Moment, how: "semantic_seek") {
   await c.app.record({ type: how, contentId: c.envelope.relevantCore.contentId, contentTimeMs: m.startMs, summary: `Went to ${m.label}`, entityIds: m.entityIds.filter(isPersonId), payload: { segmentId: m.segmentId } });
 }
 
+/** Live: "show me that goal" / "again" replays the last goal the IVS stream announced, from the build-up. */
+const isLiveReplay = (i: Intent) =>
+  live.active && live.received.length > 0 &&
+  (i.type === "again" || (i.type === "seek_moment" && i.spec.eventTypes.includes("goal") && (i.spec.deictic || i.spec.replay || !/[a-z]+'s goal/.test(i.spec.query))));
+
 async function runIntent(intent: Intent, c: SkillCtx) {
   const index = c.app.currentIndex();
+  if (isLiveReplay(intent)) {
+    const cue = live.received[live.received.length - 1];
+    c.step({ kind: "intent", label: `“that goal” → last IVS timed-metadata cue: ${cue.title}`, component: "amazon-ivs" });
+    await c.call("content.open", { contentId: cue.src, positionMs: cue.ms });
+    await c.call("player.play");
+    await c.app.record({ type: "live_replay", contentId: cue.src, contentTimeMs: cue.ms, summary: `Replayed live goal: ${cue.title}`, entityIds: [], payload: {} });
+    c.speech.push(`Here it is from the build-up: ${cue.title}. Say "back to live" to rejoin the broadcast.`);
+    c.cards.push({ type: "moment", title: cue.title, subtitle: "replay from the live marker", startMs: cue.ms, endMs: cue.at });
+    return;
+  }
+  if (intent.type === "return_live" && live.active) {
+    await c.call("live.rejoin");
+    c.speech.push("Back to the live broadcast.");
+    return;
+  }
   switch (intent.type) {
     case "seek_moment": {
       const m = await resolveMoment(c, intent.spec);

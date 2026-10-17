@@ -15,6 +15,23 @@
         app:show_buffering="when_playing"
         app:use_controller="true" />
 
+    <!-- Live event from Amazon IVS timed metadata (arrives in the stream, frame-synchronised) -->
+    <TextView
+        android:id="@+id/live_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/pill_bg"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <!-- Active reference: what "that", "it" and "his" currently mean. Bottom-right: broadcasts put the
          scoreboard and clock top-left, and the reference must never cover them. -->
     <LinearLayout

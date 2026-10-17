@@ -81,11 +81,17 @@ class PlayerController(private val player: ExoPlayer, private val deviceId: Stri
                 if (id != contentId) {
                     contentId = id
                     // Optional lighter rendition (ABR-style) for low-power devices: --es variant 480
-                    val url = cmd.getString("url").let { if (it.startsWith("http")) it else serverBase + it }.let { u -> if (variant != null) u + (if ("?" in u) "&" else "?") + "v=" + variant else u }
+                    val raw = cmd.getString("url")
+                    val external = raw.startsWith("http") || raw.startsWith("/live-proxy")
+                    // A live channel (Amazon IVS, absolute https URL) is played as delivered; local titles may use a lighter rendition.
+                    val url = if (raw.startsWith("http")) raw else if (external) serverBase + raw else (serverBase + raw).let { u -> if (variant != null) u + (if ("?" in u) "&" else "?") + "v=" + variant else u }
                     // The title's captions ride along as a side-loaded WebVTT track (shown when CC is on).
                     val captions = MediaItem.SubtitleConfiguration.Builder(android.net.Uri.parse("$serverBase/media/$id/captions.vtt"))
                         .setMimeType(MimeTypes.TEXT_VTT).setLanguage("en").setSelectionFlags(C.SELECTION_FLAG_DEFAULT).build()
-                    player.setMediaItem(MediaItem.Builder().setUri(url).setSubtitleConfigurations(listOf(captions)).build())
+                    player.setMediaItem(
+                        if (external) MediaItem.Builder().setUri(url).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        else MediaItem.Builder().setUri(url).setSubtitleConfigurations(listOf(captions)).build(),
+                    )
                     player.prepare()
                 }
                 if (cmd.has("positionMs")) player.seekTo(cmd.getLong("positionMs"))

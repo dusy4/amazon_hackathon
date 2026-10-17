@@ -88,6 +88,28 @@ class MainActivity : AppCompatActivity() {
         player.addListener(object : androidx.media3.common.Player.Listener {
             override fun onEvents(p: androidx.media3.common.Player, events: androidx.media3.common.Player.Events) = sendState()
 
+            // Amazon IVS timed metadata: PutMetadata payloads arrive as ID3 frames inside the HLS segments,
+            // exactly at the frame they were inserted. Show it, and tell the agent (it can offer a replay).
+            override fun onMetadata(metadata: androidx.media3.common.Metadata) {
+                for (i in 0 until metadata.length()) {
+                    // ID3 frames (TS segments) or emsg boxes carrying an ID3 tag (fMP4 / low-latency HLS).
+                    val text = when (val e = metadata.get(i)) {
+                        is androidx.media3.extractor.metadata.id3.TextInformationFrame -> e.values.joinToString("")
+                        is androidx.media3.extractor.metadata.id3.PrivFrame -> String(e.privateData)
+                        is androidx.media3.extractor.metadata.id3.BinaryFrame -> String(e.data)
+                        is androidx.media3.extractor.metadata.emsg.EventMessage -> String(e.messageData)
+                        else -> null
+                    } ?: continue
+                    val start = text.indexOf('{')
+                    val end = text.lastIndexOf('}')
+                    if (start < 0 || end <= start) continue
+                    val cue = runCatching { JSONObject(text.substring(start, end + 1)) }.getOrNull() ?: continue
+                    if (!cue.has("title") || !cue.has("src")) continue // IVS's own latency telemetry (ld_lat_data)
+                    showLiveBanner(cue)
+                    ws?.send(JSONObject().put("type", "live_cue").put("cue", cue).put("positionMs", player.currentPosition).toString())
+                }
+            }
+
             override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
                 // Self-heal instead of freezing: an audio-output failure (no audio sink, HDMI/CEC hiccup,
                 // emulator without audio) must not stop video playback. Retry once with audio disabled.
@@ -231,6 +253,17 @@ class MainActivity : AppCompatActivity() {
             setOnErrorListener { _, _, _ -> true }
             prepareAsync()
         }
+    }
+
+    private val hideLive = Runnable { findViewById<View>(R.id.live_banner).visibility = View.GONE }
+
+    private fun showLiveBanner(cue: JSONObject) {
+        val v = findViewById<TextView>(R.id.live_banner)
+        val kind = cue.optString("t").replace('_', ' ').uppercase()
+        v.text = "●  LIVE  ·  $kind  ·  ${cue.optString("title")}"
+        v.visibility = View.VISIBLE
+        v.removeCallbacks(hideLive)
+        v.postDelayed(hideLive, 7000)
     }
 
     private fun showOverlay(o: JSONObject) {
