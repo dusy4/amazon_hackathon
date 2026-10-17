@@ -61,6 +61,8 @@ export class LiveChannel {
   start(index: ContentIndex, mediaPath: string, fromMs: number, log = console.log) {
     if (!this.configured) throw new Error("IVS channel not configured (SP_IVS_* in .env)");
     this.stop();
+    this.sent = [];
+    this.received = [];
     const url = `rtmps://${process.env.SP_IVS_INGEST}:443/app/${process.env.SP_IVS_STREAM_KEY}`;
     // Real-time push of the match: 720p H.264, 2 s keyframes (IVS low-latency recommendation), AAC.
     this.proc = spawn("ffmpeg", [

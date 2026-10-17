@@ -25,7 +25,7 @@ live in Notion (see [AGENTS.md](./AGENTS.md)).
 | "Show me Robbie Keane's goal" | "I won't spoil it…" until "spoilers off" | Spoiler boundary that advances only on real playback |
 | "I was away for 2 minutes, catch me up" | The latest big moments, spoiler-bounded | `moments.summarize` |
 | "Who was the player I asked about?" | "You asked who that was: Usain Bolt — 2 minutes ago." | Amazon DynamoDB Viewing Memory, mirrored to Amazon Bedrock AgentCore Memory |
-| "Where have I seen her before?" | Free-form: the LLM agent combines tools and answers, spoiler-aware | LLM agent over 24 MCP tools (`entities.appearances`, `memory.search`, …) |
+| "Where have I seen her before?" | Free-form: the LLM agent combines tools and answers, spoiler-aware | LLM agent over 26 MCP tools (`entities.appearances`, `memory.search`, …) |
 | "Translate that into Spanish" | On-screen text, translated | Rekognition DetectText → Amazon Translate (model fallback while the account is blocked) |
 | "Say that again slowly" | Replays the real line at 0.75× | Captions timeline |
 | (Fire TV setting) Captions / Audio Description | Real captions on screen; a spoken scene description after every jump | Fire TV AD/CC API (`Settings.Secure`, `CaptioningManager`) |
@@ -95,7 +95,7 @@ Fire TV app (Kotlin, Media3) ⇄ WebSocket player bridge ⇄ Orchestrator
                                                           ├─ Context service (Context Envelope: relevant core · ambient · deep refs)
                                                           ├─ Router: simple asks → rules + hybrid search (no model call)
                                                           │          open-ended → LLM agent (deadline-bounded, MCP client)
-                                                          └─ MCP server (Streamable HTTP, 2025-11-25, 24 tools)
+                                                          └─ MCP server (Streamable HTTP, 2025-11-25, 26 tools)
                                                                player.* · moments.* · lens.* · entities.* · memory.search
                                                                clip.create · share.send · content.open · live.*
                                                                → Rekognition · Polly · DynamoDB · AgentCore Memory · IVS · S3

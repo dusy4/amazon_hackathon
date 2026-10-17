@@ -269,7 +269,7 @@ def rail_rows(tr):
             rows.append((ms, VIOLET, "Router: LLM agent", "open-ended request · OpenRouter Nemotron 120B", ""))
         elif k == "intent" and lab.startswith("LLM turn"):
             what, took = (lab.split(": ", 1)[1].rsplit(" (", 1) + [""])[:2]
-            rows.append((ms, VIOLET, f"LLM decides: {what}", "model reasoning over the context + 20 MCP tools", took.rstrip(")")))
+            rows.append((ms, VIOLET, f"LLM decides: {what}", "model reasoning over the context + 26 MCP tools", took.rstrip(")")))
         elif k == "intent" and lab.startswith("same goal"):
             rows.append((ms, GREY, "Same goal, described earlier", lab.split("→ ", 1)[-1], ""))
         elif k == "intent" and "(no model call)" in lab:
@@ -810,7 +810,7 @@ def arch_extra(img, t, a):
     box(640, 330, 640, 104, "Context", "what's playing · who you mean · what you've seen", 1.3, True)
     box(640, 450, 640, 104, "Router", "simple asks: instant, no AI model call", 1.6, True)
     box(640, 570, 640, 104, "LLM agent (open-ended asks)", "OpenRouter Nemotron 120B today · Bedrock-ready", 1.9, True)
-    box(640, 690, 640, 104, "MCP tool server", "20 tools: search · lens · player · clip · memory", 2.2, True)
+    box(640, 690, 640, 104, "MCP tool server", "26 tools: search · lens · player · clip · memory · live", 2.2, True)
     for k, (n, s_) in enumerate([("Amazon Rekognition", "shots · text · faces · cast"), ("Amazon IVS", "live channel + timed metadata"),
                                  ("Amazon Polly", "every spoken answer"), ("Amazon DynamoDB", "Viewing Memory"),
                                  ("Bedrock AgentCore Memory", "the agent's session memory"), ("Amazon S3", "media for analysis")]):
@@ -900,7 +900,7 @@ def main():
         Beat(f2, window(f2, 6, pre=0.4, post=1.0), "Catch me up", "Away for a bit? Catch up in seconds."),
         Beat(s8, window(s8, 0, pre=11.0, post=9.4), "Live · Amazon IVS timed metadata", "Live: the stream itself says “goal”."),
         Beat(s6, window(s6, 0, pre=1.2, post=0.8), "Films · Rekognition face collection", "Who is she? Even if she's not famous."),
-        Beat(s6, window(s6, 1, pre=0.3, post=0.6), "Agentic · LLM agent + 21 MCP tools", "Ask anything about what you've seen."),
+        Beat(s6, window(s6, 1, pre=0.3, post=0.6), "Agentic · LLM agent + 26 MCP tools", "Ask anything about what you've seen."),
         Beat(s6, window(s6, 2, pre=0.4, post=1.0), "Accessibility", "Translate what's on screen."),
         Beat(s6, window(s6, 3, pre=1.8, post=30.0), "Accessibility", "Didn't catch it? Hear it again, slower."),
         Beat(s7, window(s7, 0, pre=3.0, post=2.5), "Fire TV settings · Captions + Audio Description", "It follows your accessibility settings."),
