@@ -247,43 +247,96 @@ def _result_text(name, d):
     return ""
 
 
+AWS_C, TV_C, SRV_C, LLM_C, YOU_C = ORANGE, (95, 208, 104), CYAN, (150, 125, 255), (190, 198, 210)
+# What each recorded request saves to Viewing Memory (orchestrator.ts / tools.ts call app.record for these).
+MEMORY_EVENT = {"seek_moment": "semantic_seek", "identify": "who_is_this", "read_text": "ocr_read", "relative_seek": "relative_seek",
+                "set_speed": "speed_change", "clip": "clip_created", "translate": "ocr_translate", "repeat_slow": "transcript_request",
+                "catch_up": "catch_up_generated", "memory_query": "memory_query", "describe": "accessibility_description",
+                "loop": "loop_moment", "again": "rewatch_moment"}
+PLAYER_VERB = {"player.seek": "jumped", "player.play": "playing", "player.pause": "froze the frame", "player.set_speed": "speed set",
+               "player.seek_relative": "moved", "player.loop": "looping", "player.play_segment": "replaying", "content.open": "opened the replay of the match"}
+
+
 def rail_rows(tr):
-    """Pipeline rows for one recorded turn: (ms, colour, title, detail, right-hand label), all from its real trace."""
+    """One row per recorded step: (ms, colour, SERVICE that did it, what it did → result, time). From the real trace."""
     steps, interp = tr["turn"]["trace"], tr["turn"]["interpreter"]
     llm = not interp.startswith("rules")
-    rows = []
+    model = interp.split(":", 1)[-1].split(" ")[0] if llm else ""
+    rows, intent, failed = [], "", False
     for i, st in enumerate(steps):
         k, lab, ms, comp = st["kind"], st.get("label", ""), st.get("ms", 0), st.get("component", "")
+        if k == "intent" and comp == "rules-parser":
+            intent = lab
         if k == "context":
             rc = (st.get("data") or {}).get("relevantCore") or {}
-            ref = (rc.get("activeReference") or {}).get("label")
+            ar = rc.get("activeReference") or {}
+            ref = ar.get("label") if ar.get("kind") == "entity" else None
             pb = rc.get("playback") or {}
             bits = [f"playing {_fmt(pb.get('positionMs'))}"] if pb else []
             if ref:
-                bits.append(f"active: {ref}")
+                bits.append(f"“his/her” = {ref}")
             bits.append(f"spoilers up to {_fmt(rc.get('spoilerBoundaryMs'))}" if rc.get("spoilerMode") == "strict" else "spoilers off")
-            rows.append((ms, GREY, "Context Envelope", " · ".join(bits), f"{ms} ms"))
+            rows.append((ms, SRV_C, "Our server · Context Envelope", "built the context: " + " · ".join(bits), f"{ms} ms"))
         elif k == "intent" and comp == "router":
-            rows.append((ms, CYAN, "Router: no AI model call", lab.split("→")[0].strip().replace("“", "").replace("”", ""), ""))
+            why = lab.split("→")[0].strip().replace("“", "").replace("”", "")
+            why = {"direct tool request (no grounding needed)": "a direct tool call, nothing to search"}.get(why, why)
+            rows.append((ms, SRV_C, "Our server · Router", "no AI model needed: " + why, ""))
         elif k == "intent" and comp == "rules-parser" and llm:
-            rows.append((ms, VIOLET, "Router: LLM agent", "open-ended request · OpenRouter Nemotron 120B", ""))
+            rows.append((ms, SRV_C, "Our server · Router", "open-ended request → handed to the LLM agent", ""))
         elif k == "intent" and lab.startswith("LLM turn"):
             what, took = (lab.split(": ", 1)[1].rsplit(" (", 1) + [""])[:2]
-            rows.append((ms, VIOLET, f"LLM decides: {what}", "model reasoning over the context + 26 MCP tools", took.rstrip(")")))
+            rows.append((ms, LLM_C, "LLM · OpenRouter Nemotron 120B", f"the model decided to call {what} (Amazon Bedrock is blocked on this account)" if what != "reply" else "the model wrote the answer", took.rstrip(")")))
         elif k == "intent" and lab.startswith("same goal"):
-            rows.append((ms, GREY, "Same goal, described earlier", lab.split("→ ", 1)[-1], ""))
+            rows.append((ms, SRV_C, "Our server · moment grounding", "same goal described earlier → " + lab.split("→ ", 1)[-1], ""))
         elif k == "intent" and "(no model call)" in lab:
-            rows.append((ms, CYAN, "Exact maths, no model", lab.replace(" (no model call)", ""), ""))
+            rows.append((ms, SRV_C, "Our server · relative seek", lab.replace(" (no model call)", "") + ", exact maths", ""))
+        elif k == "intent" and comp == "amazon-ivs":
+            rows.append((ms, AWS_C, "Amazon IVS · timed-metadata cue", lab.split("→ ", 1)[-1], ""))
         elif k == "tool_call":
             res = next((x for x in steps[i + 1:] if x["kind"] in ("tool_result", "error") and (x.get("label") == lab or x["kind"] == "error")), None)
-            took = (res.get("ms", ms) - ms) if res else 0
-            svc = TOOL_SERVICE.get(lab, "Fire TV" if lab.startswith("player.") else "")
-            out = _result_text(lab, res.get("data") if res else None)
-            rows.append((ms, ORANGE if svc.startswith("Amazon") else CYAN, lab, (f"{svc} → {out}" if svc and out else svc or out), f"{took} ms"))
+            took = f"{(res.get('ms', ms) - ms) if res else 0} ms"
+            d = (res.get("data") if res else None) or {}
+            out = _result_text(lab, d)
+            if lab == "lens.identify":
+                src = (d.get("provenance") or {}).get("source", "")
+                api = "SearchFacesByImage" if "SearchFacesByImage" in src else "RecognizeCelebrities"
+                rows.append((ms, AWS_C, "Amazon Rekognition", f"{api}: face on the paused frame → {out}", took))
+            elif lab == "lens.read_text":
+                rows.append((ms, AWS_C, "Amazon Rekognition", f"DetectText: read the screen → {out}", took))
+            elif lab == "lens.translate":
+                amazon = str(d.get("engine", "")).startswith("amazon-translate")
+                rows.append((ms, AWS_C if amazon else LLM_C, "Amazon Translate" if amazon else "LLM · OpenRouter Nemotron 120B",
+                             f"“{d.get('original', '')}” → “{d.get('translation', '')}” (text read by Rekognition DetectText"
+                             + ("" if amazon else "; Amazon Translate blocked") + ")", took))
+            elif lab == "memory.search":
+                rows.append((ms, AWS_C, "Amazon DynamoDB + AgentCore Memory", f"looked up your viewing history → {out}", took))
+            elif lab == "moments.search":
+                rows.append((ms, SRV_C, "Our server · hybrid index search", f"index built with Amazon Rekognition Video → {out}", took))
+            elif lab == "moments.summarize":
+                rows.append((ms, SRV_C, "Our server · hybrid index", f"what you missed → {out}", took))
+            elif lab == "entities.appearances":
+                rows.append((ms, SRV_C, "Our server · Rekognition face index", f"where she appears → {out}", took))
+            elif lab == "transcript.window":
+                rows.append((ms, SRV_C, "Our server · captions index", "the last line of dialogue", took))
+            elif lab == "clip.create":
+                rows.append((ms, SRV_C, "Our server · ffmpeg", f"cut the clip → {out}", took))
+            elif lab == "share.send":
+                rows.append((ms, SRV_C, "Our server → phone (WebSocket)", "pushed the clip to the companion page", took))
+            elif lab == "live.rejoin":
+                rows.append((ms, AWS_C, "Amazon IVS · live channel", "TV switched back to the live stream", took))
+            elif lab.startswith("player.") or lab == "content.open":
+                rows.append((ms, TV_C, "Fire TV app · ExoPlayer", f"{PLAYER_VERB.get(lab, lab)} → {out}" if out else PLAYER_VERB.get(lab, lab), took))
+            else:
+                rows.append((ms, SRV_C, f"Our server · {lab}", out, took))
         elif k == "error":
-            rows.append((ms, ORANGE, "Spoiler guard" if "spoil" in lab.lower() else "Error", lab, ""))
+            failed = True
+            rows.append((ms, SRV_C, "Our server · spoiler guard" if "spoil" in lab.lower() else "Our server · error", lab, ""))
         elif k == "answer":
-            rows.append((ms, GREEN, "Answer, spoken by Amazon Polly", lab, f"{ms / 1000:.1f} s" if ms >= 1000 else f"{ms} ms"))
+            t_ = f"{ms / 1000:.1f} s" if ms >= 1000 else f"{ms} ms"
+            rows.append((ms, AWS_C, "Amazon Polly · generative voice", f"spoke the answer: {lab}", t_))
+            ev = "live_replay" if any(x.get("component") == "amazon-ivs" for x in steps) else next((v for key, v in MEMORY_EVENT.items() if intent.startswith(key)), None)
+            if ev and not failed:
+                rows.append((ms + 1, AWS_C, "Amazon DynamoDB + AgentCore Memory", f"saved to your viewing history ({ev}); AgentCore is Amazon Bedrock's agent memory", ""))
     return rows
 
 
@@ -337,24 +390,23 @@ def draw_icon(kind, colour, size=44):
 
 def icon_for(title):
     t = title.lower()
-    for key, kind in (("live broadcast", "play"), ("ivs.putmetadata", "spark"), ("timed metadata", "layers"), ("reads the cue", "play"),
-                      ("offers the replay", "speaker"), ("you said", "mic"), ("llm decides", "spark"), ("router: llm", "spark"), ("router", "fork"), ("context envelope", "stack"),
-                      ("same goal", "layers"), ("exact maths", "calc"), ("rekognition", "eye"), ("dynamodb", "db"), ("moments.", "search"),
-                      ("clip.create", "clip"), ("share.send", "phone"), ("player.", "play"), ("content.open", "play"), ("spoiler", "shield"),
-                      ("answer", "speaker")):
+    for key, kind in (("you said", "mic"), ("dynamodb", "db"), ("amazon rekognition", "eye"), ("polly", "speaker"), ("translate", "layers"),
+                      ("llm", "spark"), ("ivs", "play"), ("fire tv app", "play"), ("context envelope", "stack"), ("router", "fork"),
+                      ("spoiler", "shield"), ("hybrid index", "search"), ("face index", "eye"), ("captions", "layers"), ("ffmpeg", "clip"),
+                      ("phone", "phone"), ("relative seek", "calc"), ("grounding", "layers")):
         if key in t:
             return kind
     return "layers"
 
 
 def rail_row_img(colour, title, detail, right):
-    w, h = RAIL_W - 32, 78
+    w, h = RAIL_W - 32, 94
     img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     d.rounded_rectangle([0, 0, w - 1, h - 1], radius=14, fill=(255, 255, 255, 14), outline=(255, 255, 255, 30), width=1)
-    img.alpha_composite(draw_icon(icon_for(title + " " + detail.split(" → ")[0]), colour, 48), (12, (h - 48) // 2))
-    ft, fd, fr = font("semibold", 22), font("regular", 18), font("mono", 18)
-    IX = 70  # text starts right of the icon
+    img.alpha_composite(draw_icon(icon_for(title), colour, 44), (12, 12))
+    ft, fd, fr = font("semibold", 21), font("regular", 16), font("mono", 17)
+    IX = 66
     rw = int(d.textlength(right, font=fr)) if right else 0
     def clip(text, f, width):
         if d.textlength(text, font=f) <= width:
@@ -362,10 +414,17 @@ def rail_row_img(colour, title, detail, right):
         while text and d.textlength(text + "…", font=f) > width:
             text = text[:-1]
         return text + "…"
-    d.text((IX, 10), clip(title, ft, w - IX - 24 - rw), font=ft, fill=WHITE + (255,))
+    size = 21
+    while size > 16 and d.textlength(title, font=font("semibold", size)) > w - IX - 22 - rw:
+        size -= 1
+    d.text((IX, 8 + (21 - size) // 2), clip(title, font("semibold", size), w - IX - 22 - rw), font=font("semibold", size), fill=colour + (255,))
     if right:
-        d.text((w - 14 - rw, 13), right, font=fr, fill=BODY + (255,))
-    d.text((IX, 44), clip(detail, fd, w - IX - 14), font=fd, fill=(200, 208, 218, 255))
+        d.text((w - 12 - rw, 11), right, font=fr, fill=BODY + (255,))
+    lines = wrap(detail, fd, w - IX - 14)
+    if len(lines) > 2:
+        lines = [lines[0], clip(" ".join(lines[1:]), fd, w - IX - 14)]
+    for k, line in enumerate(lines):
+        d.text((IX, 40 + k * 23), line, font=fd, fill=(214, 221, 230, 255))
     return img
 
 
@@ -374,6 +433,12 @@ def make_rail_bg():
     d = ImageDraw.Draw(img)
     d.rounded_rectangle([0, 0, RAIL_W - 1, RAIL_H - 1], radius=20, fill=(10, 14, 20, 200), outline=(70, 82, 98, 255), width=2)
     d.text((16, 14), "UNDER THE HOOD", font=font("semibold", 20), fill=ORANGE + (255,))
+    x, y = 18, RAIL_H - 40
+    f = font("semibold", 17)
+    for col, name in ((AWS_C, "AWS service"), (TV_C, "Fire TV app"), (SRV_C, "our server"), (LLM_C, "LLM")):
+        d.ellipse([x, y + 5, x + 14, y + 19], fill=col + (255,))
+        d.text((x + 22, y), name, font=f, fill=(210, 218, 228, 255))
+        x += 30 + int(d.textlength(name, font=f)) + 18
     return img
 
 
@@ -607,7 +672,7 @@ class Beat:
                 continue
             rows = [(max(0.0, self.film_t(at + ms / 1000)), rail_row_img(c, ti, de, ri)) for ms, c, ti, de, ri in rail_rows(tr)]
             self.rail.append({"start": max(0.0, self.film_t(at)), "at": at, "total": tr["doneMs"] - tr["atMs"], "rows": rows,
-                              "you": rail_row_img(ORANGE, "You said", f"“{tr['utterance']}”", "")})
+                              "you": rail_row_img(YOU_C, "You said", f"“{tr['utterance']}”", "")})
         for ev in self.sc.get("events", []):
             if ev.get("kind") != "live_cue":
                 continue
@@ -618,13 +683,13 @@ class Beat:
             cue = ev["cue"]
             lat = int((at - sent) * 1000)
             rows = [
-                (max(0.0, self.film_t(sent)), rail_row_img(ORANGE, "ivs.PutMetadata  ·  Amazon IVS", f"goal marker → {cue['title']}", "")),
-                (max(0.0, self.film_t(sent) + 0.6), rail_row_img(CYAN, "Timed metadata in the stream", "ID3 in the HLS segment, on the goal's frame", "")),
-                (max(0.0, self.film_t(at)), rail_row_img(CYAN, "Fire TV reads the cue  ·  ExoPlayer", "LIVE banner · reported to the agent", f"{lat} ms")),
-                (max(0.0, self.film_t(at) + 0.3), rail_row_img(GREEN, "Agent offers the replay", "spoken by Amazon Polly · no request needed", "")),
+                (max(0.0, self.film_t(sent)), rail_row_img(AWS_C, "Amazon IVS · PutMetadata", f"our server marked the goal in the live stream → {cue['title']}", "")),
+                (max(0.0, self.film_t(sent) + 0.6), rail_row_img(AWS_C, "Amazon IVS · low-latency channel", "the marker travels inside the video (ID3 timed metadata)", "")),
+                (max(0.0, self.film_t(at)), rail_row_img(TV_C, "Fire TV app · ExoPlayer", "read the marker from the stream → showed LIVE · GOAL", f"{lat} ms")),
+                (max(0.0, self.film_t(at) + 0.3), rail_row_img(AWS_C, "Amazon Polly · generative voice", "offered the replay without being asked", "")),
             ]
             self.rail.append({"start": max(0.0, self.film_t(sent)), "at": sent, "total": lat, "rows": rows,
-                              "you": rail_row_img(ORANGE, "Live broadcast", "Soccer Aid on an Amazon IVS low-latency channel", "")})
+                              "you": rail_row_img(AWS_C, "Amazon IVS · live channel", "Soccer Aid streaming live (RTMPS ingest from our server)", "")})
         self.rail.sort(key=lambda r: r["start"])
         self.events, self.voice, self.subs = [], [], []
         cursor = 0.0
@@ -691,12 +756,12 @@ class Beat:
         cw = int(ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(clock, font=font("mono", 24)))
         put(img, clk, (RAIL_X + RAIL_W - 16 - cw, RAIL_Y + 10), 1.0)
         shown = [(cur["start"], cur["you"])] + [r for r in cur["rows"] if r[0] <= t]
-        shown = shown[:1] + shown[1:][-6:]  # the request stays; the latest steps scroll
-        y = RAIL_Y + 52
+        shown = shown[:1] + shown[1:][-5:]  # the request + the latest five steps  # the request stays; the latest steps scroll
+        y = RAIL_Y + 48
         for t0, row in shown:
             a = ease((t - t0) / 0.25)
             put(img, row, (RAIL_X + 16, y), a, (1 - a) * 10)
-            y += row.height + 8
+            y += row.height + 6
 
     def zoom_at(self, t):
         if not self.zoom:
