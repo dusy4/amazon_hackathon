@@ -484,7 +484,7 @@ MUSIC = os.path.join("artifacts", "music", "newer-wave.mp3")  # Kevin MacLeod, "
 
 def music_track(seconds):
     """Licensed track (stereo) if present, else the synthesised bed duplicated to stereo."""
-    n = int(seconds * SR)
+    n = int(round(seconds * SR))
     if os.path.exists(MUSIC):
         raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", MUSIC, "-f", "s16le", "-ac", "2", "-ar", str(SR), "-"])
         a = np.frombuffer(raw, dtype=np.int16).astype(np.float32).reshape(-1, 2) / 32768
@@ -877,7 +877,7 @@ def make_arch(scene_a, scene_b):
         "ctx": (510, Y, "stack", "Context Envelope", "who you mean · what you've seen"),
         "router": (830, Y, "fork", "Router", "picks the cheapest exact path"),
         "fast": (1150, Y - 130, "calc", "Rules + hybrid search", "no AI model call"),
-        "llm": (1150, Y + 130, "spark", "LLM agent", "stands in for Alexa+ · Bedrock-ready"),
+        "llm": (1150, Y + 130, "spark", "LLM agent", "stands in for Alexa+ today"),
         "mcp": (1470, Y, "layers", "MCP tool server", "26 tools · spec 2025-11-25"),
         "tv": (1760, Y, "play", "Fire TV acts", "seek · slow · clip · live"),
     }
@@ -986,9 +986,9 @@ def make_arch(scene_a, scene_b):
                 cy = y + NH // 2 + 10
             put(img, c, (int(x - c.width / 2), cy), a * fade)
         # caption
-        put(img, alexa_note, (160, 262), a)
+        put(img, alexa_note, (160, 272), a)
         cap = "Fast lane: no AI model call" if req is A else "Open-ended: the LLM agent picks the tools"
-        put(img, text_img([(cap, font("semibold", 24), accent, 0)], 900), (160, 318), a * ease((t - t0 + 0.3) / 0.4))
+        put(img, text_img([(cap, font("semibold", 24), accent, 0)], 900), (160, 334), a * ease((t - t0 + 0.3) / 0.4))
 
     return draw
 
