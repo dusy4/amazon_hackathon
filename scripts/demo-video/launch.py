@@ -784,6 +784,145 @@ def steps_extra(items):
     return draw
 
 
+# ------------------------------------------------------------------ architecture: two real requests flowing through
+def _trace_ms(scene, utt, tool=None):
+    """Real numbers for the architecture card, from the recorded traces."""
+    for tr in MANIFEST.get(scene, {}).get("turns", []):
+        if tr["utterance"] != utt:
+            continue
+        if tool is None:
+            return tr["doneMs"] - tr["atMs"]
+        steps = tr["turn"]["trace"]
+        for i, st in enumerate(steps):
+            if st["kind"] == "tool_call" and st["label"] == tool:
+                res = next((x for x in steps[i + 1:] if x["kind"] == "tool_result" and x["label"] == tool), None)
+                return (res["ms"] - st["ms"]) if res else 0
+    return 0
+
+
+def make_arch(scene_a, scene_b):
+    """Pre-renders the static parts of the flow and returns draw(img, t, a)."""
+    ga = _trace_ms(scene_a, "Show me his goal")
+    gs = _trace_ms(scene_a, "Show me his goal", "moments.search")
+    wb = _trace_ms(scene_b, "Where have I seen her before?")
+    NW, NH, Y = 250, 116, 452
+    nodes = {
+        "you": (190, Y, "mic", "You ask", "Fire OS app or phone"),
+        "ctx": (510, Y, "stack", "Context Envelope", "who you mean · what you've seen"),
+        "router": (830, Y, "fork", "Router", "picks the cheapest exact path"),
+        "fast": (1150, Y - 130, "calc", "Rules + hybrid search", "no AI model call"),
+        "llm": (1150, Y + 130, "spark", "LLM agent", "Nemotron 120B · Bedrock-ready"),
+        "mcp": (1470, Y, "layers", "MCP tool server", "26 tools · spec 2025-11-25"),
+        "tv": (1760, Y, "play", "Fire TV acts", "seek · slow · clip · live"),
+    }
+    edges = [("you", "ctx"), ("ctx", "router"), ("router", "fast"), ("router", "llm"), ("fast", "mcp"), ("llm", "mcp"), ("mcp", "tv")]
+    aws = [("rek", "eye", "Amazon Rekognition", "shots · text · faces · cast"), ("ivs", "play", "Amazon IVS", "live channel · timed metadata"),
+           ("polly", "speaker", "Amazon Polly", "every spoken answer"), ("ddb", "db", "Amazon DynamoDB", "Viewing Memory"),
+           ("agentcore", "db", "AgentCore Memory", "the agent's session memory"), ("s3", "layers", "Amazon S3", "media for analysis")]
+    TW, TH, TY, GAP = 272, 104, 800, 20
+    tx0 = (W - (len(aws) * TW + (len(aws) - 1) * GAP)) // 2
+    tiles = {k: (tx0 + i * (TW + GAP), TY) for i, (k, *_r) in enumerate(aws)}
+
+    def node_img(icon, title, sub, lit):
+        im = Image.new("RGBA", (NW, NH), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        d.rounded_rectangle([0, 0, NW - 1, NH - 1], radius=20, fill=(255, 153, 0, 34) if lit else (255, 255, 255, 12),
+                            outline=(255, 153, 0, 255) if lit else (255, 255, 255, 52), width=3 if lit else 2)
+        im.alpha_composite(draw_icon(icon, ORANGE if lit else (140, 152, 168), 44), (16, 16))
+        d.text((16, 66), title, font=font("semibold", 22), fill=WHITE + (255,))
+        d.text((16, 93), sub, font=font("regular", 15), fill=(196, 205, 216, 255))
+        return im
+
+    def tile_img(icon, name, sub, lit):
+        im = Image.new("RGBA", (TW, TH), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        d.rounded_rectangle([0, 0, TW - 1, TH - 1], radius=16, fill=(255, 153, 0, 40) if lit else (255, 255, 255, 10),
+                            outline=(255, 153, 0, 255) if lit else (255, 255, 255, 40), width=3 if lit else 2)
+        im.alpha_composite(draw_icon(icon, ORANGE if lit else (120, 132, 148), 40), (14, (TH - 40) // 2))
+        d.text((66, 26), name, font=font("semibold", 21), fill=WHITE + (255,))
+        d.text((66, 58), sub, font=font("regular", 15), fill=(196, 205, 216, 255))
+        return im
+
+    N = {k: (node_img(i, t_, s_, False), node_img(i, t_, s_, True)) for k, (x, y, i, t_, s_) in nodes.items()}
+    T = {k: (tile_img(i, n, s_, False), tile_img(i, n, s_, True)) for k, i, n, s_ in aws}
+
+    def chip(text, accent):
+        f = font("semibold", 19)
+        d0 = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+        w = int(d0.textlength(text, font=f)) + 30
+        im = Image.new("RGBA", (w, 40), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        d.rounded_rectangle([0, 0, w - 1, 39], radius=20, fill=(10, 14, 20, 235), outline=accent + (255,), width=2)
+        d.text((15, 8), text, font=f, fill=WHITE + (255,))
+        return im
+
+    # Two recorded requests: (start, end, path, chips per node, AWS tiles lit per node, chip side)
+    A = (0.7, 3.9, ["you", "ctx", "router", "fast", "mcp", "tv"],
+         {"you": "“Show me his goal”", "ctx": "his → Usain Bolt", "router": "one person's event", "fast": f"moments.search · {gs} ms",
+          "mcp": "player.seek → 2:12", "tv": f"plays from the build-up · {ga / 1000:.1f} s"},
+         {"fast": ["rek"], "tv": ["polly", "ddb", "agentcore"]}, -1, CYAN)
+    B = (4.4, 7.4, ["you", "ctx", "router", "llm", "mcp", "tv"],
+         {"you": "“Where have I seen her before?”", "ctx": "spoilers up to 6:07", "router": "open-ended", "llm": f"LLM decides · {wb / 1000:.0f} s",
+          "mcp": "entities.appearances", "tv": "answers, spoiler-aware"},
+         {"mcp": ["rek"], "tv": ["polly", "ddb", "agentcore"]}, 1, VIOLET)
+    chips = {id(A): {k: chip(v, A[6]) for k, v in A[3].items()}, id(B): {k: chip(v, B[6]) for k, v in B[3].items()}}
+
+    def centre(k):
+        x, y, *_r = nodes[k]
+        return x, y
+
+    def draw(img, t, a):
+        d = ImageDraw.Draw(img)
+        req = A if t < (A[1] + B[0]) / 2 else B
+        t0, t1, path, _c, lights, side, accent = req
+        prog = min(1.0, max(0.0, (t - t0) / (t1 - t0))) * (len(path) - 1)  # position along the path, in hops
+        reached = path[: int(prog) + 1] if t >= t0 else []
+        # edges: faint, the active request's path bright
+        on = {(path[i], path[i + 1]) for i in range(len(path) - 1) if prog >= i}
+        for e in edges:
+            (x1, y1), (x2, y2) = centre(e[0]), centre(e[1])
+            x1, x2 = x1 + NW // 2 - 4, x2 - NW // 2 + 4
+            col = accent + (int(230 * a),) if e in on else (255, 255, 255, int(46 * a))
+            d.line([(x1, y1), (x2, y2)], fill=col, width=4 if e in on else 2)
+        # bus from the tool server down to the AWS services
+        mx, my = centre("mcp")
+        bus_y = TY - 46
+        d.line([(mx, my + NH // 2), (mx, bus_y)], fill=(255, 255, 255, int(46 * a)), width=2)
+        d.line([(tiles["rek"][0] + TW // 2, bus_y), (tiles["s3"][0] + TW // 2, bus_y)], fill=(255, 255, 255, int(46 * a)), width=2)
+        lit_tiles = {k for n in reached for k in lights.get(n, [])}
+        if t > 0.2:  # the index and the media were built with these before any request
+            lit_tiles |= set()
+        for k, (x, y) in tiles.items():
+            d.line([(x + TW // 2, bus_y), (x + TW // 2, y)], fill=(255, 153, 0, int(200 * a)) if k in lit_tiles else (255, 255, 255, int(46 * a)), width=3 if k in lit_tiles else 2)
+            put(img, T[k][1 if k in lit_tiles else 0], (x, y), a)
+        for k, (x, y, *_r) in nodes.items():
+            put(img, N[k][1 if k in reached else 0], (x - NW // 2, y - NH // 2), a)
+        # the pulse
+        if t0 <= t <= t1 + 0.3:
+            i = min(int(prog), len(path) - 2)
+            f_ = prog - i
+            (x1, y1), (x2, y2) = centre(path[i]), centre(path[i + 1])
+            x1, x2 = x1 + NW // 2, x2 - NW // 2  # travel along the connector, never over a node's text
+            px, py = x1 + (x2 - x1) * f_, y1 + (y2 - y1) * f_
+            for r, al in ((18, 60), (11, 130), (6, 255)):
+                d.ellipse([px - r, py - r, px + r, py + r], fill=accent + (int(al * a),))
+        # chips with the real values
+        for k in reached:
+            c = chips[id(req)][k]
+            x, y = centre(k)
+            hop = path.index(k)
+            fade = ease((prog - hop + 0.05) / 0.4)
+            cy = y - NH // 2 - 50 if (side < 0 and k != "llm") or k == "fast" else y + NH // 2 + 10
+            if k == "llm":
+                cy = y + NH // 2 + 10
+            put(img, c, (int(x - c.width / 2), cy), a * fade)
+        # caption
+        cap = "Fast lane: no AI model call" if req is A else "Open-ended: the LLM agent picks the tools"
+        put(img, text_img([(cap, font("semibold", 24), accent, 0)], 900), (160, 300), a * ease((t - t0 + 0.3) / 0.4))
+
+    return draw
+
+
 def arch_extra(img, t, a):
     d = ImageDraw.Draw(img)
 
@@ -904,8 +1043,8 @@ def main():
         Beat(s6, window(s6, 2, pre=0.4, post=1.0), "Accessibility", "Translate what's on screen."),
         Beat(s6, window(s6, 3, pre=1.8, post=30.0), "Accessibility", "Didn't catch it? Hear it again, slower."),
         Beat(s7, window(s7, 0, pre=3.0, post=2.5), "Fire TV settings · Captions + Audio Description", "It follows your accessibility settings."),
-        Card("Under the hood.", kicker="Architecture · AWS", dur=7.6, top=True, extra=arch_extra),
-        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=4.0, center=True, sub_size=60,
+        Card("Under the hood.", kicker="Architecture · AWS", dur=8.0, top=True, extra=make_arch(f1, s6)),
+        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=3.6, center=True, sub_size=60,
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
