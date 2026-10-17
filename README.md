@@ -1,84 +1,120 @@
-# Amazon Hackathon — Semantic Playback
+# Semantic Playback
 
-Semantic Playback is an agentic context layer for video.
+**An agentic context layer for video on Fire TV.** Say what you remember ("who's this?", "show me his goal",
+"go back five seconds in slow motion", "clip that and send it to my phone"). The TV understands the moment you
+mean, grounds it to an exact position, and acts on the player.
 
 > **Video players understand timestamps. Humans remember moments.**
 
-Notion is the project source of truth (see [AGENTS.md](./AGENTS.md)). This README covers only how to run the code.
+Core loop: **Understand → Ground → Act → Remember → Continue.** The model interprets; deterministic tools do
+the precise work (seek, speed, loop, clip, share, memory).
+
+Tracks: **Fire TV** (native Fire OS app, Media3) · **Alexa+** (self-hosted MCP server, spec 2025-11-25,
+Streamable HTTP) · Mini challenge: **AWS Builder**. Project notes, research, friction log and feature requests
+live in Notion (see [AGENTS.md](./AGENTS.md)).
+
+## What it does
+
+| You say | What happens | Built on |
+|---|---|---|
+| "Who's this?" / "Who is she?" | Pauses on the frame, recognises the person, resumes | Amazon Rekognition RecognizeCelebrities; per-film face collection (IndexFaces, SearchFacesByImage) with names from the film's own credits |
+| "Read the score" | Reads the scoreboard like a person ("England 0, World XI 1, 23:57 on the clock") | Rekognition DetectText |
+| "Show me his goal" | "his" = the person just identified; plays from the build-up (~1 s, no model call) | Hybrid index (BM25 + embeddings + entities, RRF) built with Rekognition Video shot detection |
+| "Go back five seconds in slow motion" | Exact relative seek + 0.5× | Deterministic MCP tools |
+| "Clip that and send it to my phone" | Clip of the grounded moment, pushed to the companion page | ffmpeg (MediaConvert-shaped job), WebSocket |
+| "Show me Robbie Keane's goal" | "I won't spoil it…" until "spoilers off" | Spoiler boundary that advances only on real playback |
+| "I was away for 2 minutes, catch me up" | The latest big moments, spoiler-bounded | `moments.summarize` |
+| "Who was the player I asked about?" | "You asked who that was: Usain Bolt — 2 minutes ago." | Amazon DynamoDB Viewing Memory, mirrored to Amazon Bedrock AgentCore Memory |
+| "Where have I seen her before?" | Free-form: the LLM agent combines tools and answers, spoiler-aware | LLM agent over 24 MCP tools (`entities.appearances`, `memory.search`, …) |
+| "Translate that into Spanish" | On-screen text, translated | Rekognition DetectText → Amazon Translate (model fallback while the account is blocked) |
+| "Say that again slowly" | Replays the real line at 0.75× | Captions timeline |
+| (Fire TV setting) Captions / Audio Description | Real captions on screen; a spoken scene description after every jump | Fire TV AD/CC API (`Settings.Secure`, `CaptioningManager`) |
+| (live match) | The stream itself announces the goal; "show me that goal" replays it; "back to live" | **Amazon IVS** low-latency channel + `PutMetadata` timed metadata, read by ExoPlayer from the HLS stream |
+
+## AWS integrations (documented)
+
+| Service | Used for | Code |
+|---|---|---|
+| Amazon Rekognition Video | Shot detection (StartSegmentDetection) over S3 media at ingest | `services/media/src/rekognition.ts`, `ingest-video.ts` |
+| Amazon Rekognition Image | DetectLabels, DetectText, RecognizeCelebrities per keyframe and on the live paused frame | `services/media/src/rekognition.ts`, `services/agent/src/tools.ts` (`lens.*`) |
+| Amazon Rekognition face collections | Characters in films: IndexFaces, SearchFaces clustering, SearchFacesByImage | `services/media/src/faces.ts` |
+| Amazon S3 | Media staged for Rekognition Video | `services/media/src/rekognition.ts` |
+| Amazon Polly (generative) | Every spoken answer | `services/agent/src/tts.ts` |
+| Amazon DynamoDB | Viewing Memory (canonical activity log) with local failover | `services/context/src/memory.ts` |
+| Amazon Bedrock AgentCore Memory | The agent's session memory: every action mirrored as a short-term event; read back by `memory.search` | `services/context/src/agentcore-memory.ts` |
+| Amazon IVS | Live channel, RTMPS ingest, `PutMetadata` goal markers in the stream | `services/agent/src/live.ts`, Fire OS `MainActivity.kt` (`onMetadata`) |
+| Amazon Translate | Translation of on-screen text and dialogue (falls back to the agent's model when unavailable) | `services/agent/src/translate.ts` |
+| Amazon Bedrock | Target for the LLM agent (`SP_LLM=bedrock`, Converse). Blocked by account verification; OpenRouter runs the same code | `services/agent/src/llm.ts` |
 
 ## Quick start
 
 ```bash
 npm install
-npm run media:generate   # renders the owned demo match (needs Python + Pillow + numpy + ffmpeg; Windows SAPI TTS)
-npm run ingest           # builds data/index/harbor-v-northgate.json
-npm start                # http://localhost:8787/tv/  ·  /phone/  ·  /mcp
-npm test                 # parser + retrieval + end-to-end (real MCP + headless player)
-npm run smoke:mcp        # what any MCP client sees
+cp .env.example .env            # see "AWS setup"
+npm start                       # http://localhost:8787  ·  /tv/  ·  /phone/  ·  MCP at /mcp
+npm test                        # 56 tests: parser, retrieval, canonicalisation, end-to-end over real MCP
+npm run smoke:mcp               # what any MCP client (Alexa+, an AgentCore agent) sees
 ```
 
-Try: “Rewind to the replay of the last goal, start three seconds before it, play it slower, repeat it twice, clip it, and send it to my phone.”
-
-## What runs today
-
-| Layer | Implementation | AWS path (env-switched) |
-|---|---|---|
-| Demo media | `scripts/demo-media/generate_match.py`: synthetic, owned match + provider feed + TTS commentary; 4 CC BY real titles via `scripts/fetch-videos.sh` | — |
-| Transcript | commentary script (synthetic) / YouTube captions (real footage) | `npm run ingest -- --transcribe <Amazon Transcribe JSON>` |
-| Vision ingest | — | **Rekognition Video** shot detection + **Rekognition** labels / text / celebrities per keyframe (`npm run ingest:video`) |
-| Embeddings | `local-hash-v1` (synthetic) / OpenRouter embeddings (real footage) | `SP_EMBEDDINGS=nova` → Nova Multimodal Embeddings |
-| Retrieval | dense + BM25 + entity channels fused with RRF, deterministic temporal constraints, spoiler boundary | OpenSearch (planned) |
-| Interpreter | router: structured requests on provider-feed titles → rules (~30 ms); open-ended → LLM agent calling the MCP tools, bounded by `SP_LLM_DEADLINE_MS` (default 25 s) with rules fallback | `SP_LLM=bedrock` → Bedrock Converse (`SP_LLM=openrouter` while Bedrock is blocked) |
-| Tools | self-hosted MCP server, Streamable HTTP (2025-11-25), 17 tools (`player.*`, `moments.*`, `lens.*`, `clip.create`, `share.send`, `memory.search`…) | — |
-| Players | web TV player (`apps/fire-tv/web`) + Fire OS app (`apps/fire-tv/android`, Media3 ExoPlayer + MediaSession, D-pad suggestion menu) | — |
-| Voice | browser speech recognition in; spoken replies | **Polly** (generative) via `/api/tts` |
-| Clips | ffmpeg clip + watermark + attribution (MediaConvert-equivalent job shape) | MediaConvert |
-| Viewing Memory | JSONL event log | `SP_MEMORY=dynamodb` (falls back to the local log if DynamoDB is unreachable) |
-| Send to phone | companion web app push + QR/deep link | Alexa Send to Phone (future) |
-
-## Demo video pipeline
-
-```bash
-npm start                                         # with the Fire OS app (or /tv) connected as the active player
-npx tsx scripts/demo-video/record.ts artifacts/demo   # scripted scenes via /api/utterance + adb screenrecord + real traces
-python scripts/demo-video/compose.py artifacts/demo   # → artifacts/demo/demo-draft.mp4 (pipeline panel drawn from the traces)
-```
-
-## Real footage
-
-```bash
-bash scripts/fetch-videos.sh            # Creative-Commons test videos (see data/content/ATTRIBUTION.md)
-npm run ingest:video -- yt-roti-recipe  # S3 → Rekognition Video shots → Rekognition per keyframe → captions → LLM descriptions → embeddings
-```
-Intermediate results are cached in `data/content/<id>/analysis/` (re-running is free).
-
-## Evals
-
-```bash
-npm run eval            # golden set (evals/golden.json) through the full stack with the configured interpreter
-SP_LLM= npm run eval    # rules-only baseline
-npm run eval -- s-      # only cases whose id contains "s-"
-```
-Seek cases pass when the player lands inside the target segment (synthetic titles) or the caption-derived
-time window (real footage); results land in `evals/results/`.
-
-## AWS setup
-
-```bash
-aws login --region us-east-1      # browser sign-in, no long-lived keys
-aws dynamodb create-table --table-name semantic-playback-viewing-memory   --attribute-definitions AttributeName=userId,AttributeType=S AttributeName=sk,AttributeType=S   --key-schema AttributeName=userId,KeyType=HASH AttributeName=sk,KeyType=RANGE --billing-mode PAY_PER_REQUEST
-```
-Then copy `.env.example` to `.env` and enable `SP_MEMORY=dynamodb`, `SP_AGENT=bedrock`, `SP_EMBEDDINGS=nova`.
-A brand-new account cannot invoke Bedrock or Transcribe until AWS finishes account verification
-(errors: `AccessDeniedException … being verified`, `ThrottlingException: Too many tokens per day`,
-`SubscriptionRequiredException`); the app keeps running on its local fallbacks meanwhile.
-`npm test` always uses the local backends (see `vitest.config.ts`); `SP_TEST_AWS=1 npm test` uses `.env`.
-
-## Fire OS app
+### Fire OS app
 
 ```bash
 cd apps/fire-tv/android && ./gradlew assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 adb shell am start -n com.semanticplayback.firetv/.MainActivity --es server http://<lan-ip>:8787
 ```
-MENU on the remote opens a text prompt. The app joins the player bridge as `deviceKind: fireos`.
+The app joins the server's player bridge (WebSocket). MENU opens suggested requests. On the Android TV
+emulator, add `--es variant 480` for the lighter rendition and set `SP_IVS_RELAY=1` if the emulator has no
+internet access.
+
+### Content
+
+```bash
+bash scripts/fetch-videos.sh                         # Creative Commons titles (data/content/ATTRIBUTION.md)
+npm run ingest:video -- yt-soccer-aid-2023           # S3 → Rekognition Video shots → keyframes → Rekognition → captions → descriptions → embeddings
+npx tsx services/media/src/faces.ts yt-tears-of-steel   # per-film face collection (characters)
+```
+Intermediate results are cached in `data/content/<id>/analysis/`.
+
+## AWS setup
+
+```bash
+aws login --region us-east-1                          # browser sign-in, no long-lived keys
+aws dynamodb create-table --table-name semantic-playback-viewing-memory --attribute-definitions AttributeName=userId,AttributeType=S AttributeName=sk,AttributeType=S --key-schema AttributeName=userId,KeyType=HASH AttributeName=sk,KeyType=RANGE --billing-mode PAY_PER_REQUEST
+aws bedrock-agentcore-control create-memory --name semantic_playback_viewing --event-expiry-duration 30   # → SP_AGENTCORE_MEMORY_ID
+aws ivs create-channel --name semantic-playback-live --latency-mode LOW --type BASIC                       # → SP_IVS_CHANNEL_ARN / _INGEST / _STREAM_KEY / _PLAYBACK
+```
+`.env`: `SP_MEMORY=dynamodb`, `SP_AGENTCORE_MEMORY_ID`, `SP_IVS_*`, `SP_LLM=openrouter|bedrock`.
+New accounts cannot call Bedrock, Transcribe or Translate until AWS finishes account verification; every
+feature keeps working on its fallback and says which engine ran. `npm test` uses local backends.
+
+## Architecture
+
+```
+Fire TV app (Kotlin, Media3) ⇄ WebSocket player bridge ⇄ Orchestrator
+                                                          ├─ Context service (Context Envelope: relevant core · ambient · deep refs)
+                                                          ├─ Router: simple asks → rules + hybrid search (no model call)
+                                                          │          open-ended → LLM agent (deadline-bounded, MCP client)
+                                                          └─ MCP server (Streamable HTTP, 2025-11-25, 24 tools)
+                                                               player.* · moments.* · lens.* · entities.* · memory.search
+                                                               clip.create · share.send · content.open · live.*
+                                                               → Rekognition · Polly · DynamoDB · AgentCore Memory · IVS · S3
+```
+
+## Demo film
+
+```bash
+npx tsx scripts/demo-video/record.ts artifacts/demo        # scripted scenes on the device + every turn's real trace
+python scripts/demo-video/launch.py artifacts/demo out.mp4 # film: TV on the left, the real trace "under the hood" on the right
+```
+
+## Evals
+
+```bash
+npm run eval            # golden set (35 paraphrased requests across four videos) with the configured interpreter
+SP_LLM= npm run eval    # rules-only baseline
+```
+
+## License
+
+MIT (see [LICENSE](./LICENSE)). Footage is Creative Commons (see `data/content/ATTRIBUTION.md`).

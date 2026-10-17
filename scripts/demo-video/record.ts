@@ -25,7 +25,13 @@ type Step =
   | { seek: number; play?: boolean; untilMs?: number; holdMs?: number }
   | { waitMs: number }
   | { open: string }
-  | { setup: Record<string, unknown> };
+  | { setup: Record<string, unknown> }
+  /** Call any MCP tool (e.g. live.start), as the operator or broadcaster would. */
+  | { mcp: string; args?: Record<string, unknown>; holdMs?: number }
+  /** Change a device setting, e.g. the Fire TV Audio Description / Captions accessibility settings. */
+  | { adb: string; holdMs?: number }
+  /** Wait until the TV reports an Amazon IVS timed-metadata cue; recorded as a scene event. */
+  | { waitCue: true; timeoutMs?: number; holdMs?: number };
 interface Scene {
   id: string;
   title: string;
@@ -73,6 +79,46 @@ const SCENES: Scene[] = [
       { open: "yt-tedx-free-software" },
       { seek: 794000, play: true, untilMs: 801000 },
       { say: "Go back to the part about schools teaching software", holdMs: 7000 },
+    ],
+  },
+  {
+    id: "s6-films",
+    title: "Films: characters, open questions, translation, say it again slowly (Tears of Steel, CC BY 3.0)",
+    steps: [
+      { open: "yt-tears-of-steel" },
+      { setup: { spoilerMode: "strict" } },
+      { seek: 357000, play: true, untilMs: 363000 },
+      { say: "Who is she?", holdMs: 3500 },
+      { say: "Where have I seen her before?", holdMs: 4500 },
+      { seek: 311000, play: true, untilMs: 313200 },
+      { say: "Translate that into Spanish", holdMs: 2500 },
+      { seek: 313500, play: true, untilMs: 320600 },
+      { say: "Say that again slowly", holdMs: 5500 },
+      { say: "Normal speed", holdMs: 1000 },
+    ],
+  },
+  {
+    id: "s7-accessibility",
+    title: "Fire TV accessibility settings: captions and audio description",
+    steps: [
+      { open: "yt-soccer-aid-2023" },
+      { adb: "settings put secure accessibility_captioning_enabled 1", holdMs: 800 },
+      { adb: "settings put secure accessibility_audio_descriptions_enabled 1", holdMs: 800 },
+      { seek: 150000, play: true, untilMs: 155000 },
+      { say: "Show me Usain Bolt's goal", holdMs: 11000 },
+      { adb: "settings put secure accessibility_audio_descriptions_enabled 0", holdMs: 300 },
+      { adb: "settings put secure accessibility_captioning_enabled 0", holdMs: 300 },
+    ],
+  },
+  {
+    id: "s8-live",
+    title: "Live on Amazon IVS: timed metadata at the goal, replay from the build-up, back to live",
+    steps: [
+      { mcp: "live.start", args: { contentId: "yt-soccer-aid-2023", fromMs: 127000 }, holdMs: 1000 },
+      { waitCue: true, timeoutMs: 60000, holdMs: 6500 },
+      { say: "Show me that goal", holdMs: 11500 },
+      { say: "Back to live", holdMs: 5000 },
+      { mcp: "live.stop" },
     ],
   },
   {
@@ -138,12 +184,36 @@ for (const scene of SCENES.filter((s) => !only || s.id.includes(only))) {
   const proc = startRecording(remote, join(outDir, `${scene.id}.mp4`));
   await sleep(1200);
   const t0 = Date.now();
+  const wall0 = t0;
   const turns: unknown[] = [];
+  const events: unknown[] = [];
   for (const step of scene.steps) {
     if ("open" in step) {
       await mcp.callTool({ name: "content.open", arguments: { contentId: step.open } });
       await sleep(3000);
     } else if ("setup" in step) await post("/api/session", step.setup);
+    else if ("mcp" in step) {
+      await mcp.callTool({ name: step.mcp, arguments: step.args ?? {} }, undefined, { timeout: 60000 });
+      await sleep(step.holdMs ?? 0);
+    } else if ("adb" in step) {
+      execFileSync("adb", ["shell", ...step.adb.split(" ")]);
+      await sleep(step.holdMs ?? 1500);
+    } else if ("waitCue" in step) {
+      const deadline = Date.now() + (step.timeoutMs ?? 90000);
+      let seen = 0;
+      while (Date.now() < deadline) {
+        const r = JSON.parse(((await mcp.callTool({ name: "live.status", arguments: {} })) as { content: { text: string }[] }).content[0].text);
+        if (r.received.length > seen) {
+          const cue = r.received[r.received.length - 1];
+          const sent = r.sent.find((x: { title: string }) => x.title === cue.title);
+          events.push({ kind: "live_cue", atMs: Date.now() - t0, cue, sentAtMs: sent ? Date.parse(sent.sentAt) - wall0 : null });
+          console.log(`  [${scene.id} +${((Date.now() - t0) / 1000).toFixed(1)}s] IVS cue on the TV: ${cue.title}`);
+          break;
+        }
+        await sleep(400);
+      }
+      await sleep(step.holdMs ?? 0);
+    }
     else if ("waitMs" in step) await sleep(step.waitMs);
     else if ("seek" in step) {
       await mcp.callTool({ name: "player.seek", arguments: { positionMs: step.seek } });
@@ -170,7 +240,7 @@ for (const scene of SCENES.filter((s) => !only || s.id.includes(only))) {
   await sleep(1000);
   const local = join(outDir, `${scene.id}.mp4`);
   await stopRecording(proc, remote, local);
-  manifest.push({ ...scene, video: `${scene.id}.mp4`, recordingStartOffsetMs: 1200, turns, device: active, interpreter: health.interpreter });
+  manifest.push({ ...scene, video: `${scene.id}.mp4`, recordingStartOffsetMs: 1200, turns, events, device: active, interpreter: health.interpreter });
 }
 writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 1));
 await mcp.close();

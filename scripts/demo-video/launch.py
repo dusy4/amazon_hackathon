@@ -193,8 +193,10 @@ def subtitle_cards(speaker, text, dur):
 
 VIOLET, GREY, GREEN = (150, 125, 255), (150, 160, 175), (95, 208, 104)
 TOOL_SERVICE = {"lens.identify": "Amazon Rekognition", "lens.read_text": "Amazon Rekognition", "lens.describe": "Amazon Rekognition",
-                "memory.search": "Amazon DynamoDB", "moments.search": "hybrid index", "moments.summarize": "hybrid index",
-                "clip.create": "ffmpeg", "share.send": "companion page", "content.open": "Fire TV", "transcript.window": "index"}
+                "memory.search": "Amazon DynamoDB + AgentCore Memory", "moments.search": "hybrid index", "moments.summarize": "hybrid index",
+                "clip.create": "ffmpeg", "share.send": "companion page", "content.open": "Fire TV", "transcript.window": "captions index",
+                "entities.appearances": "Rekognition face index", "lens.translate": "translation", "live.rejoin": "Amazon IVS",
+                "live.start": "Amazon IVS"}
 
 
 def _fmt(ms):
@@ -216,9 +218,21 @@ def _result_text(name, d):
         return "no match"
     if name == "lens.identify":
         e = d.get("entity") or {}
-        conf = next((f for f in d.get("facts", []) if "confidence" in f), "")
+        facts = d.get("facts", [])
+        conf = next((f for f in facts if "confidence" in f), "")
+        played = next((f for f in facts if f.startswith("played by")), "")
         src = (d.get("provenance") or {}).get("source", "")
-        return f"{e.get('name', 'nobody recognised')}" + (f" · {conf.split(' with ')[-1]}" if conf else " · shot keyframe" if "ingest" in src else "")
+        how = "face collection" if "SearchFacesByImage" in src else (conf.split(" with ")[-1] if conf else "shot keyframe" if "ingest" in src else "")
+        return " · ".join(x for x in [e.get("name", "nobody recognised"), played, how] if x)
+    if name == "lens.translate":
+        eng = d.get("engine", "")
+        who = "Amazon Translate" if eng.startswith("amazon-translate") else "AI model (Amazon Translate pending)"
+        return f"“{d.get('original', '')}” → “{d.get('translation', '')}” · {who}"
+    if name == "entities.appearances":
+        ms = d.get("moments") or []
+        return f"{len(ms)} moments so far" + (f", {d.get('hiddenBySpoilerBoundary')} hidden (spoilers)" if d.get("hiddenBySpoilerBoundary") else "")
+    if name == "live.rejoin":
+        return "TV back on the live channel"
     if name == "lens.read_text":
         return d.get("text", "")
     if name == "clip.create":
@@ -323,7 +337,8 @@ def draw_icon(kind, colour, size=44):
 
 def icon_for(title):
     t = title.lower()
-    for key, kind in (("you said", "mic"), ("llm decides", "spark"), ("router: llm", "spark"), ("router", "fork"), ("context envelope", "stack"),
+    for key, kind in (("live broadcast", "play"), ("ivs.putmetadata", "spark"), ("timed metadata", "layers"), ("reads the cue", "play"),
+                      ("offers the replay", "speaker"), ("you said", "mic"), ("llm decides", "spark"), ("router: llm", "spark"), ("router", "fork"), ("context envelope", "stack"),
                       ("same goal", "layers"), ("exact maths", "calc"), ("rekognition", "eye"), ("dynamodb", "db"), ("moments.", "search"),
                       ("clip.create", "clip"), ("share.send", "phone"), ("player.", "play"), ("content.open", "play"), ("spoiler", "shield"),
                       ("answer", "speaker")):
@@ -593,6 +608,24 @@ class Beat:
             rows = [(max(0.0, self.film_t(at + ms / 1000)), rail_row_img(c, ti, de, ri)) for ms, c, ti, de, ri in rail_rows(tr)]
             self.rail.append({"start": max(0.0, self.film_t(at)), "at": at, "total": tr["doneMs"] - tr["atMs"], "rows": rows,
                               "you": rail_row_img(ORANGE, "You said", f"“{tr['utterance']}”", "")})
+        for ev in self.sc.get("events", []):
+            if ev.get("kind") != "live_cue":
+                continue
+            at = ev["atMs"] / 1000 + self.off
+            sent = (ev["sentAtMs"] / 1000 + self.off) if ev.get("sentAtMs") is not None else at - 6
+            if at < self.pieces[0][0] - 12 or at > self.pieces[-1][1]:
+                continue
+            cue = ev["cue"]
+            lat = int((at - sent) * 1000)
+            rows = [
+                (max(0.0, self.film_t(sent)), rail_row_img(ORANGE, "ivs.PutMetadata  ·  Amazon IVS", f"goal marker → {cue['title']}", "")),
+                (max(0.0, self.film_t(sent) + 0.6), rail_row_img(CYAN, "Timed metadata in the stream", "ID3 in the HLS segment, on the goal's frame", "")),
+                (max(0.0, self.film_t(at)), rail_row_img(CYAN, "Fire TV reads the cue  ·  ExoPlayer", "LIVE banner · reported to the agent", f"{lat} ms")),
+                (max(0.0, self.film_t(at) + 0.3), rail_row_img(GREEN, "Agent offers the replay", "spoken by Amazon Polly · no request needed", "")),
+            ]
+            self.rail.append({"start": max(0.0, self.film_t(sent)), "at": sent, "total": lat, "rows": rows,
+                              "you": rail_row_img(ORANGE, "Live broadcast", "Soccer Aid on an Amazon IVS low-latency channel", "")})
+        self.rail.sort(key=lambda r: r["start"])
         self.events, self.voice, self.subs = [], [], []
         cursor = 0.0
         sc_turns = self.sc["turns"]
@@ -626,7 +659,7 @@ class Beat:
                 if at <= b1 <= done:
                     tools = {st.get("label") for st in tr["turn"]["trace"] if st.get("kind") == "tool_call"}
                     why = ("AI model thinking" if "openrouter" in tr["turn"]["interpreter"] or "bedrock" in tr["turn"]["interpreter"]
-                           else "encoding the clip" if "clip.create" in tools else "Amazon Rekognition" if tools & {"lens.identify", "lens.read_text"} else "waiting")
+                           else "AI model translating" if "lens.translate" in tools else "encoding the clip" if "clip.create" in tools else "Amazon Rekognition" if tools & {"lens.identify", "lens.read_text"} else "waiting")
                     self.events.append((self.seg_t(b1) - 0.01, "cut", pill(f"{done - at:.0f} s wait cut · {why}")))
         # Never cut an answer: extend the last piece (or hold the last frame) until speech has finished.
         need = cursor + 0.9
@@ -778,16 +811,15 @@ def arch_extra(img, t, a):
     box(640, 450, 640, 104, "Router", "simple asks: instant, no AI model call", 1.6, True)
     box(640, 570, 640, 104, "LLM agent (open-ended asks)", "OpenRouter Nemotron 120B today · Bedrock-ready", 1.9, True)
     box(640, 690, 640, 104, "MCP tool server", "20 tools: search · lens · player · clip · memory", 2.2, True)
-    for k, (n, s_) in enumerate([("Amazon Rekognition", "who and what is on screen"), ("Amazon Polly", "every spoken answer"),
-                                 ("Amazon DynamoDB", "Viewing Memory"), ("Amazon S3", "media for analysis")]):
-        box(1380, 330 + k * 120, 420, 104, n, s_, 2.6 + k * 0.25)
+    for k, (n, s_) in enumerate([("Amazon Rekognition", "shots · text · faces · cast"), ("Amazon IVS", "live channel + timed metadata"),
+                                 ("Amazon Polly", "every spoken answer"), ("Amazon DynamoDB", "Viewing Memory"),
+                                 ("Bedrock AgentCore Memory", "the agent's session memory"), ("Amazon S3", "media for analysis")]):
+        box(1380, 300 + k * 92, 420, 84, n, s_, 2.6 + k * 0.2)
     line(540, 472, 640, 382, 1.1)
     for k in range(3):  # Context → Router → (LLM agent) → MCP tools
         line(960, 434 + k * 120, 960, 450 + k * 120, 1.5 + k * 0.3)
-    line(1280, 742, 1380, 382, 2.8)
-    line(1280, 742, 1380, 502, 2.9)
-    line(1280, 742, 1380, 622, 3.0)
-    line(1280, 742, 1380, 742, 3.1)
+    for k in range(6):
+        line(1280, 742, 1380, 342 + k * 92, 2.8 + k * 0.08)
     line(640, 742, 540, 612, 3.4)
     line(1300, 502, 1330, 502, 2.4)  # simple asks: Router straight to the tools, outside the LLM box
     line(1330, 502, 1330, 742, 2.5)
@@ -797,6 +829,7 @@ def arch_extra(img, t, a):
 
 def main():
     f1, f2, s4, s5 = "f1-football", "f2-spoilers-memory", "s4-real-footage", "s5-any-video"
+    s6, s7, s8 = "s6-films", "s7-accessibility", "s8-live"
     his = MANIFEST[f1]["turns"][2]["turn"]
     top = next((s["data"].get("top") or [{}] for s in his["trace"] if s["kind"] == "tool_result" and s["label"] == "moments.search"), [{}])[0]
     # The moment actually grounded (after collapsing repeated descriptions of the same goal), not the raw top hit.
@@ -851,28 +884,28 @@ def main():
         put(img, ph, (W - phone.width - 220, 130), a, (1 - ease(t / 0.6)) * 50)
 
     credits = text_img([("Semantic Playback · Fire TV track · github.com/dusy4/amazon_hackathon", font("regular", 26), WHITE, 12),
-                        ("Footage (CC BY): Soccer Aid for UNICEF 2023 · Tears of Steel © Blender Foundation · Maple Kitchen roti recipe · TEDxGeneva", font("regular", 22), BODY, 8),
+                        ("Footage (CC BY): Soccer Aid for UNICEF 2023 · Tears of Steel © Blender Foundation", font("regular", 22), BODY, 8),
                         ("Voices: Amazon Polly · Music: “Newer Wave” by Kevin MacLeod (incompetech.com), CC BY 4.0", font("regular", 22), BODY, 0)], 1760, "center")
 
     segs = [
-        ColdOpen(483.0, 7.0, ["You remember the moment.", "Your TV only knows the timestamp."]),
-        Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=3.4, center=True),
-        Beat(f1, window(f1, 0, pre=2.5, post=1.4), "Viewing Lens", "Ask who's on screen."),
-        Beat(f1, window(f1, 1, pre=0.3, post=1.4), "Viewing Lens", "Read the scoreboard."),
+        ColdOpen(483.0, 5.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
+        Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=2.6, center=True),
+        Beat(f1, window(f1, 0, pre=2.0, post=1.2), "Viewing Lens · Amazon Rekognition", "Ask who's on screen."),
         Beat(f1, window(f1, 2, pre=0.4, post=30.0), "Conversational references", "Say “his goal”. It plays from the build-up."),
-        Card("Every request becomes a grounded moment.", kicker="How it works", dur=6.5, top=True, extra=steps_extra(explainer)),
-        Beat(f1, window(f1, 3, pre=0.4, post=1.2, until_turn=4), "Precise follow-ups", "Rewind it in slow motion."),
-        Beat(f1, window(f1, 5, pre=0.6, post=2.0), "Clip and share", "Clip it and send it to your phone."),
-        Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=8.0, extra=phone_extra),
-        Beat(f2, window(f2, 0, pre=0.5, post=0.6), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
-        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=4, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
-        Beat(f2, window(f2, 6, pre=0.5, post=30.0), "Catch me up", "Away for a bit? Catch up in seconds."),
-        Beat(f2, window(f2, 7, pre=0.5, post=1.6), "Viewing Memory", "It remembers what you asked."),
-        Beat(s5, window(s5, 0, pre=3.0, post=3.0), "Any video", "A recipe: jump to the step you need."),
-        Beat(s5, window(s5, 1, pre=2.5, post=2.0), "Any video", "A talk: jump to the topic."),
-        Beat(s4, window(s4, 1, pre=0.6, post=2.5), "Tears of Steel · Blender Foundation", "A film: rewind to a line of dialogue."),
-        Card("Under the hood.", kicker="Architecture", dur=8.0, top=True, extra=arch_extra),
-        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=5.0, center=True, sub_size=60,
+        Beat(f1, window(f1, 3, pre=0.4, post=8.5), "Precise follow-ups", "Rewind it in slow motion."),
+        Beat(f1, window(f1, 5, pre=0.6, post=1.2), "Clip and share", "Clip it and send it to your phone."),
+        Card("On your phone, instantly.", sub="The real companion page, playing the clip the TV just made.", dur=3.2, extra=phone_extra),
+        Beat(f2, window(f2, 0, pre=0.3, post=0.1), "Spoiler-safe by design", "Ask for a goal you haven't seen yet…"),
+        Beat(f2, window(f2, 1, pre=0.4, post=30.0, until_turn=3, gap_cut=(1,)), "Your call", "…turn spoilers off, and it plays."),
+        Beat(f2, window(f2, 6, pre=0.4, post=1.0), "Catch me up", "Away for a bit? Catch up in seconds."),
+        Beat(s8, window(s8, 0, pre=11.0, post=9.4), "Live · Amazon IVS timed metadata", "Live: the stream itself says “goal”."),
+        Beat(s6, window(s6, 0, pre=1.2, post=0.8), "Films · Rekognition face collection", "Who is she? Even if she's not famous."),
+        Beat(s6, window(s6, 1, pre=0.3, post=0.6), "Agentic · LLM agent + 21 MCP tools", "Ask anything about what you've seen."),
+        Beat(s6, window(s6, 2, pre=0.4, post=1.0), "Accessibility", "Translate what's on screen."),
+        Beat(s6, window(s6, 3, pre=1.8, post=30.0), "Accessibility", "Didn't catch it? Hear it again, slower."),
+        Beat(s7, window(s7, 0, pre=3.0, post=2.5), "Fire TV settings · Captions + Audio Description", "It follows your accessibility settings."),
+        Card("Under the hood.", kicker="Architecture · AWS", dur=7.6, top=True, extra=arch_extra),
+        Card("Video players understand timestamps.", sub="Humans remember moments.", dur=4.0, center=True, sub_size=60,
              extra=lambda img, t, a: put(img, credits, ((W - credits.width) // 2, 900), a)),
     ]
 
