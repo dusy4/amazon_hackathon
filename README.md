@@ -52,7 +52,7 @@ live in Notion (see [AGENTS.md](./AGENTS.md)).
 npm install
 cp .env.example .env            # see "AWS setup"
 npm start                       # http://localhost:8787  ·  /tv/  ·  /phone/  ·  MCP at /mcp
-npm test                        # 56 tests: parser, retrieval, canonicalisation, end-to-end over real MCP
+npm test                        # 58 tests: parser, retrieval, canonicalisation, end-to-end over real MCP
 npm run smoke:mcp               # what any MCP client (Alexa+, an AgentCore agent) sees
 ```
 
