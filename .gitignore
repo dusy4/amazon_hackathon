@@ -39,6 +39,11 @@ artifacts/
 data/clips/
 data/memory/
 data/content/*/*.mp4
+# Compact 480p copies of the six titles ship with the repo so a fresh clone plays without any download step
+# (full-quality originals: scripts/fetch-videos.sh, kept locally as *.hq.mp4).
+!data/content/*/video.mp4
+!data/content/harbor-v-northgate/match.mp4
+!data/content/keepers-key/story.mp4
 data/content/*/analysis/proxy.mp4
 
 # Local-only test titles (third-party copyrighted media): never committed
