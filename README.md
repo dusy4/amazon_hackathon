@@ -131,4 +131,6 @@ SP_LLM= npm run eval    # rules-only baseline
 
 ## License
 
-MIT (see [LICENSE](./LICENSE)). Footage is Creative Commons (see `data/content/ATTRIBUTION.md`).
+Code: MIT (see [LICENSE](./LICENSE)). The bundled videos are not MIT: the four real titles are Creative Commons
+Attribution, credited (with the re-encoding noted) in [`data/content/ATTRIBUTION.md`](data/content/ATTRIBUTION.md);
+the two synthetic titles are ours.

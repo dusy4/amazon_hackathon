@@ -1,7 +1,9 @@
 # Third-party footage (Creative Commons Attribution)
 
-Videos are not committed; `scripts/fetch-videos.sh` downloads them again. Captions, metadata and derived
-analysis (shots, Rekognition results, segment descriptions) are committed under each folder.
+These videos are **not** covered by the repository's MIT licence; each keeps its own licence below.
+The committed `video.mp4` files are **modified**: re-encoded to 480p H.264 (no other changes).
+Full-quality originals: `scripts/fetch-videos.sh`. Captions, metadata and derived analysis (shots, Rekognition
+results, segment descriptions) are committed under each folder.
 
 | Folder | Work | Author / channel | License | Source |
 |---|---|---|---|---|
