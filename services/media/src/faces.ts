@@ -179,6 +179,23 @@ export async function identifyInCollection(index: ContentIndex, jpeg: Uint8Array
   return null;
 }
 
+/**
+ * Without Rekognition access: the named character whose face was sampled closest to `atMs` when the face index
+ * was built (faces are sampled every `stepMs`, ~2 s), within `windowMs`.
+ */
+export function identifyFromIngest(index: ContentIndex, atMs: number, windowMs = 2000) {
+  const f = (index as any).faces as { clusters: FaceCluster[] } | undefined;
+  let best: { cluster: FaceCluster; distanceMs: number } | null = null;
+  for (const cluster of f?.clusters ?? []) {
+    if (!cluster.name) continue;
+    for (const ms of cluster.appearances) {
+      const distanceMs = Math.abs(ms - atMs);
+      if (distanceMs <= windowMs && (!best || distanceMs < best.distanceMs)) best = { cluster, distanceMs };
+    }
+  }
+  return best;
+}
+
 if (process.argv[1]?.endsWith("faces.ts")) {
   for (const id of process.argv.slice(2)) await buildFaceIndex(process.env.SP_DATA_DIR ?? "data", id);
 }

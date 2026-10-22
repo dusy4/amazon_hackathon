@@ -46,14 +46,28 @@ live in Notion (see [AGENTS.md](./AGENTS.md)).
 | Amazon Translate | Translation of on-screen text and dialogue (falls back to the agent's model when unavailable) | `services/agent/src/translate.ts` |
 | Amazon Bedrock | Target for the LLM agent (`SP_LLM=bedrock`, Converse). Blocked by account verification; OpenRouter runs the same code | `services/agent/src/llm.ts` |
 
-## Quick start
+## Quick start: no AWS account, no API keys
 
 ```bash
 npm install
-cp .env.example .env            # see "AWS setup"
-npm start                       # http://localhost:8787  ·  /tv/  ·  /phone/  ·  MCP at /mcp
-npm test                        # 58 tests: parser, retrieval, canonicalisation, end-to-end over real MCP
-npm run smoke:mcp               # what any MCP client (Alexa+, an AgentCore agent) sees
+npm start          # server + MCP at http://localhost:8787/mcp
+```
+
+Then pick a player:
+- **Fire OS app (the product):** see [Fire OS app](#fire-os-app) below.
+- **Browser TV (no emulator):** http://localhost:8787/tv/ in Chrome, with the tab visible. It runs the same server and player commands.
+
+The six titles ship as compact 480p copies, so there's nothing else to download. `ffmpeg` on PATH is only needed for "clip that". Without keys it works like this:
+
+| Works without keys | Needs a key or AWS |
+|---|---|
+| Find moments ("show me Usain Bolt's goal"), follow-ups, slow motion, refinements, catch-up, spoiler guard, Viewing Memory (local file), clip and send to phone | **Open questions** ("where have I seen her before?") need an LLM: `SP_LLM=openrouter` + key, or Bedrock |
+| "Who's this?", "who is she?" and "read the score" answer from the Amazon Rekognition analysis stored at indexing (the answer says so); live Rekognition is used when AWS credentials are present | **Translate** needs Amazon Translate or an LLM |
+| Spoken replies: the browser TV uses the browser's voice; the Fire OS app shows the text | **Amazon Polly** voices, **DynamoDB / AgentCore Memory**, the **IVS live channel**: AWS (see [AWS setup](#aws-setup)) |
+
+```bash
+npm test           # 58 tests: parser, retrieval, canonicalisation, end-to-end over real MCP (no AWS needed)
+npm run smoke:mcp  # what any MCP client (Alexa+, an AgentCore agent) sees
 ```
 
 ### Fire OS app
@@ -70,7 +84,7 @@ internet access.
 ### Content
 
 ```bash
-bash scripts/fetch-videos.sh                         # Creative Commons titles (data/content/ATTRIBUTION.md)
+bash scripts/fetch-videos.sh                         # full-quality originals of the bundled 480p titles (yt-dlp + ffmpeg)
 npm run ingest:video -- yt-soccer-aid-2023           # S3 → Rekognition Video shots → keyframes → Rekognition → captions → descriptions → embeddings
 npx tsx services/media/src/faces.ts yt-tears-of-steel   # per-film face collection (characters)
 ```

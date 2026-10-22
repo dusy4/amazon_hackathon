@@ -30,7 +30,7 @@ export async function translate(text: string, target: string): Promise<{ text: s
     }
   }
   const model = defaultChatModel();
-  if (!model) throw new Error("no translation engine available");
+  if (!model) throw new Error("translation needs Amazon Translate (AWS credentials) or an LLM (SP_LLM in .env); neither is available");
   const r = await model.complete(
     `Translate the user's text into ${languageName(code)}. Reply with the translation only, no quotes, no notes.`,
     [{ role: "user", content: text }],

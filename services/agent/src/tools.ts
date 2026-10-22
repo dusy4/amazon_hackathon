@@ -5,15 +5,16 @@
  * The agent reasons over references; these tools ground and act.
  */
 import { randomUUID } from "node:crypto";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import QRCode from "qrcode";
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type ClipRecord, type ContentIndex, type ShareRecord, entityIdForPlayer, formatMs, isNarrative } from "../../../packages/contracts/src/index.ts";
 import { clipAttribution, renderClip, toMediaConvertInput } from "../../media/src/clip.ts";
 import { keyframe } from "../../media/src/ingest-video.ts";
-import { analyzeFrame } from "../../media/src/rekognition.ts";
-import { identifyInCollection } from "../../media/src/faces.ts";
+import { type FrameAnalysis, analyzeFrame } from "../../media/src/rekognition.ts";
+import { type FaceCluster, identifyFromIngest, identifyInCollection } from "../../media/src/faces.ts";
 import { languageCode, languageName, translate } from "./translate.ts";
 import { agentCoreMemory } from "../../context/src/agentcore-memory.ts";
 import { LiveChannel, live } from "./live.ts";
@@ -304,10 +305,10 @@ export function registerTools(server: McpServer, app: AppContext) {
       const idx = requireIndex(app);
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
       if (idx.kind === "video") {
-        // Live OCR on the frame on screen now (Rekognition DetectText).
-        const f = await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at);
+        // OCR on the frame on screen now (Rekognition DetectText).
+        const { frame: f, source } = await frameAt(app.store.mediaPath(idx), at);
         const items = f.text.map((t) => ({ text: t.text, kind: "on-screen text", confidence: t.confidence }));
-        return { atMs: at, text: items.map((i) => i.text).join(" · ") || null, items, source: "amazon-rekognition DetectText (live frame)" };
+        return { atMs: at, text: items.map((i) => i.text).join(" · ") || null, items, source: `amazon-rekognition DetectText (${source})` };
       }
       if (isNarrative(idx)) {
         const visible = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs);
@@ -362,8 +363,8 @@ export function registerTools(server: McpServer, app: AppContext) {
       if (!original) {
         if (idx.kind === "video") {
           // Stylised text is read differently from frame to frame: read five frames around the pause and merge.
-          const reads = await Promise.all([at - 1200, at - 600, at, at + 600, at + 1200].map((ms) => analyzeFrame(keyframe(app.store.mediaPath(idx), Math.max(0, ms)), ms)));
-          original = [...new Set(reads.flatMap((f) => f.text.map((t) => t.text)))].join(" · ");
+          const reads = await Promise.all([at - 1200, at - 600, at, at + 600, at + 1200].map((ms) => frameAt(app.store.mediaPath(idx), Math.max(0, ms))));
+          original = [...new Set(reads.flatMap((r) => r.frame.text.map((t) => t.text)))].join(" · ");
         }
         else original = (idx.signs ?? []).filter((s) => s.startMs <= at && at < s.endMs).map((s) => s.text).join(" · ");
       }
@@ -413,18 +414,19 @@ export function registerTools(server: McpServer, app: AppContext) {
       const at = atMs ?? app.bridge.state()?.positionMs ?? 0;
       const seg = idx.segments.find((s) => s.kind !== "window" && s.startMs <= at && at < s.endMs) ?? idx.segments.find((s) => s.startMs <= at && at < s.endMs);
       const said = idx.transcript.filter((l) => l.endMs >= at - 12000 && l.startMs <= at).map((l) => l.text).join(" ");
-      let frame: Awaited<ReturnType<typeof analyzeFrame>> | null = null;
+      let frame: FrameAnalysis | null = null;
+      let frameSource: string | null = null;
       try {
-        frame = await analyzeFrame(keyframe(app.store.mediaPath(idx), at), at);
+        ({ frame, source: frameSource } = await frameAt(app.store.mediaPath(idx), at));
       } catch {
-        /* synthetic titles or no AWS: the indexed moment still answers */
+        /* synthetic titles (no frames analysed): the indexed moment still answers */
       }
       return {
         atMs: at,
         moment: seg ? { label: seg.label, startMs: seg.startMs, endMs: seg.endMs, description: idx.events.find((e) => e.id === seg.eventId)?.description } : null,
         justSaid: said,
         frame: frame && { labels: frame.labels.map((l) => l.name), text: frame.text.map((t) => t.text), publicFigures: frame.celebrities.filter((c) => c.confidence >= 85).map((c) => ({ name: c.name, confidence: c.confidence })) },
-        sources: { frame: frame ? "amazon-rekognition (live frame)" : null, moment: idx.sources.descriptions ?? idx.sources.provider, transcript: idx.sources.transcript },
+        sources: { frame: frame ? `amazon-rekognition (${frameSource})` : null, moment: idx.sources.descriptions ?? idx.sources.provider, transcript: idx.sources.transcript },
       };
     }),
   );
@@ -583,14 +585,38 @@ export const TOOL_NAMES = [
   "content.open", "lens.describe", "lens.translate", "entities.appearances", "live.start", "live.status", "live.stop", "live.rejoin",
 ] as const;
 
+const ingestFrames = new Map<string, FrameAnalysis[]>();
+
+/**
+ * Rekognition on the frame on screen now. Without live Rekognition (no AWS credentials or access, or no ffmpeg),
+ * the keyframe of the shot on screen, analysed with Rekognition at ingest (`analysis/frames.json`). The returned
+ * `source` says which one answered; `jpeg` is set only for a live frame.
+ */
+async function frameAt(mediaPath: string, at: number): Promise<{ frame: FrameAnalysis; jpeg?: Uint8Array; source: string }> {
+  try {
+    const jpeg = keyframe(mediaPath, at);
+    return { frame: await analyzeFrame(jpeg, at), jpeg, source: "live frame" };
+  } catch (e) {
+    const file = join(dirname(mediaPath), "analysis", "frames.json");
+    if (!ingestFrames.has(file)) {
+      const frames = existsSync(file) ? (JSON.parse(readFileSync(file, "utf8")) as FrameAnalysis[]) : [];
+      ingestFrames.set(file, frames.sort((a, b) => a.atMs - b.atMs));
+      console.warn(`live Rekognition unavailable (${(e as Error).message.split("\n")[0]}); using frames analysed at ingest`);
+    }
+    const frames = ingestFrames.get(file)!;
+    const frame = frames.findLast((f) => f.atMs <= at) ?? frames[0];
+    if (!frame) throw e;
+    return { frame, source: `this shot's keyframe at ${formatMs(frame.atMs)}, analysed at ingest; live Rekognition unavailable` };
+  }
+}
+
 /** Real footage Viewing Lens: Rekognition on the frame on screen now, enriched with the title's index. */
 async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, entityId: string | undefined, boundary: number) {
-  const jpeg = keyframe(mediaPath, at);
-  const f = await analyzeFrame(jpeg, at);
+  const { frame: f, jpeg, source: frameSource } = await frameAt(mediaPath, at);
   const known = (id: string) => idx.entities.find((e) => e.id === id);
-  let faceMatch: Awaited<ReturnType<typeof identifyInCollection>> = null;
+  let faceMatch: { cluster: FaceCluster; similarity?: number; distanceMs?: number } | null = null;
   let entity: { id: string; type: string; name: string; role?: string; description?: string } | null = null;
-  let source = "amazon-rekognition RecognizeCelebrities (live frame)";
+  let source = `amazon-rekognition RecognizeCelebrities (${frameSource})`;
   // Same corroboration rule as ingest: a face match is a public figure only if this title's index already knows
   // them (seen in other shots or named in commentary), or the match is near-certain. Look-alikes in a crowded
   // football frame otherwise win ("Ulysses Owens" at 85% for Usain Bolt turning away).
@@ -616,12 +642,14 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
     // A celebrity who plays a named character in this film: answer with the character, credit the actor.
     const role = ((idx as any).faces?.clusters as { entityId: string | null; name: string | null; actor?: string | null }[] | undefined)?.find((c) => c.entityId === id && c.actor && c.name);
     if (role) entity = { ...entity, name: role.name!, role: `played by ${role.actor}` };
-  } else if ((idx as any).faces && (faceMatch = await identifyInCollection(idx, jpeg))) {
+  } else if ((idx as any).faces && (faceMatch = jpeg ? await identifyInCollection(idx, jpeg) : identifyFromIngest(idx, at))) {
     // Films: most of the cast are not public figures. The title's own face collection knows them.
     const c = faceMatch.cluster;
     const e = c.entityId ? known(c.entityId) : undefined;
     entity = { id: c.entityId ?? c.id, type: "person", name: c.name!, description: e?.description, ...(c.actor ? { role: `played by ${c.actor}` } : {}) };
-    source = `amazon-rekognition SearchFacesByImage (this title's face collection, ${faceMatch.similarity}% similar)`;
+    source = faceMatch.similarity !== undefined
+      ? `amazon-rekognition SearchFacesByImage (this title's face collection, ${faceMatch.similarity}% similar)`
+      : `this title's face index (built with Amazon Rekognition at ingest; face sampled ${((faceMatch.distanceMs ?? 0) / 1000).toFixed(1)} s from here)`;
   } else {
     // The live frame may catch a turned head or a wide shot; the shot's keyframe was analysed at ingest.
     const pid = named ?? people[0];
@@ -637,7 +665,9 @@ async function liveIdentify(idx: ContentIndex, mediaPath: string, at: number, en
     facts: [
       celeb && entity?.name === celeb.name ? `recognised by Amazon Rekognition with ${celeb.confidence}% confidence` : null,
       faceMatch?.cluster.actor ? `played by ${faceMatch.cluster.actor}` : null,
-      faceMatch ? `matched against this film's cast faces with Amazon Rekognition (${faceMatch.similarity}% similar), on screen in ${faceMatch.cluster.appearances.filter((ms) => ms <= boundary).length} sampled frames so far` : null,
+      faceMatch
+        ? `${faceMatch.similarity !== undefined ? `matched against this film's cast faces with Amazon Rekognition (${faceMatch.similarity}% similar)` : "in this film's face index (built with Amazon Rekognition)"}, on screen in ${faceMatch.cluster.appearances.filter((ms) => ms <= boundary).length} sampled frames so far`
+        : null,
       celeb?.urls[0] ? `profile: https://${celeb.urls[0].replace(/^https?:\/\//, "")}` : null,
       seen.length ? `in ${seen.length} moment${seen.length > 1 ? "s" : ""} so far (${seen.slice(-3).map((s) => s.title).join("; ")})` : null,
       !entity ? `no recognised public figure on screen; I can see: ${f.labels.slice(0, 6).map((l) => l.name).join(", ") || "nothing distinctive"}` : null,
