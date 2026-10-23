@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1800">
+<meta name="robots" content="noindex">
+<title>Semantic Playback · gallery slides</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css?v=6">
+<style>
+  /* 1800×1200 (3:2) slides for the Devpost image gallery, rendered from real frames and recorded traces. */
+  body { background: #d9dbe3; margin: 0; }
+  .slide { position: relative; width: 1800px; height: 1200px; margin: 0 auto 40px; overflow: hidden; background: #fff; display: flex; flex-direction: column; padding: 72px 88px 0; box-sizing: border-box; }
+  .slide.tint { background: linear-gradient(160deg, #eceafc 0%, #e4ebfb 45%, #f7f8fd 100%); }
+  .s-kicker { color: #b35c00; font-size: 24px; font-weight: 600; }
+  .s-title { margin-top: 14px; font-size: 64px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: #161d26; max-width: 1400px; }
+  .s-sub { margin-top: 18px; font-size: 26px; line-height: 1.45; color: #4b5563; max-width: 1300px; }
+  .s-body { flex: 1; display: flex; gap: 40px; align-items: flex-start; margin-top: 44px; min-height: 0; }
+  .s-foot { height: 84px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #e3e3ea; margin: 0 -88px; padding: 0 88px; font-size: 20px; color: #6b7280; }
+  .s-foot .brand { font-size: 22px; color: #161d26; }
+  .s-foot .logo { width: 34px; height: 34px; }
+  .frame { border-radius: 20px; padding: 12px; background: linear-gradient(180deg, #2a313b, #0f141a); box-shadow: 0 30px 60px hsla(225 40% 20% / .22); }
+  .frame img { border-radius: 10px; width: 100%; display: block; }
+  .card { border-radius: 24px; background: #f3f3f7; padding: 28px 32px; }
+  .tint .card { background: #fff; }
+  .said { font-size: 26px; padding: 12px 22px; margin: 0 0 18px; }
+  .said .ic { width: 24px; height: 24px; }
+  .ans { margin-top: 18px; display: flex; gap: 14px; align-items: flex-start; font-size: 24px; line-height: 1.45; color: #161d26; }
+  .ans b { flex: none; margin-top: 4px; padding: 3px 10px; border-radius: 7px; font-size: 15px; letter-spacing: .06em; color: #fff; background: #0972d3; }
+  .ans b.you { background: #b35c00; }
+  .gtrace { width: 640px; flex: none; border-radius: 24px; background: #10151c; color: #f2f4f7; padding: 24px; box-shadow: 0 12px 28px hsla(220 30% 10% / .14); }
+  .gtrace .th { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .gtrace .th span:first-child { color: #ff9900; font-size: 17px; font-weight: 700; letter-spacing: .08em; }
+  .gtrace .th span:last-child { color: #5fd068; font-family: var(--mono); font-size: 26px; }
+  .gtrace .route { padding: 0 0 14px; } .gtrace .pill { height: 30px; font-size: 15px; }
+  .gtrace .pill-server { background: hsla(191 73% 49% / .16); color: #7fdcf0; } .gtrace .pill-llm { background: hsla(252 100% 76% / .18); color: #c3b6ff; } .gtrace .pill-time { background: #26303c; color: #b9c3d0; }
+  .grow { display: grid; grid-template-columns: 40px 1fr auto; gap: 14px; padding: 14px 16px; border-radius: 14px; background: #1b222c; border: 1px solid #2b3440; margin-top: 10px; }
+  .grow .row-ic { width: 40px; height: 40px; } .grow .row-ic .ic { width: 20px; height: 20px; }
+  .grow .t { font-size: 19px; font-weight: 600; color: var(--k); }
+  .grow .d { font-size: 16px; color: #b9c3d0; line-height: 1.45; margin-top: 2px; }
+  .grow .ms { font-family: var(--mono); font-size: 15px; color: #8d9aab; padding-top: 3px; white-space: nowrap; }
+  .grow.k-aws { --k: #ff9900; } .grow.k-tv { --k: #5fd068; } .grow.k-server { --k: #22b8d9; } .grow.k-llm { --k: #a48dff; }
+  .gap { text-align: center; color: #a48dff; font-size: 16px; border: 1px dashed #3a4553; border-radius: 12px; padding: 8px; margin-top: 10px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; }
+  .two h3 { font-size: 30px; font-weight: 500; margin: 20px 0 8px; color: #161d26; }
+  .two p { font-size: 21px; color: #4b5563; line-height: 1.5; }
+  .flow { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+  .flow span { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; background: #fff; border: 1px solid #e3e3ea; font-size: 20px; font-weight: 500; }
+  .flow span .ic { width: 22px; height: 22px; color: #b35c00; }
+  .flow i { color: #6b7280; font-style: normal; font-size: 22px; }
+  .shot { width: 100%; border-radius: 24px; display: block; }
+  .bigcap { font-size: 22px; color: #4b5563; line-height: 1.5; margin-top: 20px; }
+  .contribs-g { display: grid; gap: 18px; width: 720px; flex: none; }
+  .contribs-g div { border-radius: 24px; background: #fff; border: 1px solid #e3e3ea; padding: 24px 28px; }
+  .contribs-g h3 { font-size: 26px; font-weight: 500; margin: 0; display: flex; gap: 14px; align-items: center; }
+  .contribs-g h3 span { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #161d26; color: #fff; font-size: 18px; flex: none; }
+  .contribs-g p { font-size: 19px; color: #4b5563; margin-top: 10px; line-height: 1.5; }
+  .contribs-g code { font-size: 16px; color: #b35c00; display: block; margin-top: 10px; }
+  .statrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; margin-top: 28px; }
+  .statrow div { border-radius: 20px; background: #f3f3f7; padding: 24px; }
+  .statrow b { display: block; font-size: 44px; font-weight: 500; letter-spacing: -0.02em; }
+  .statrow span { display: block; margin-top: 6px; font-size: 18px; color: #4b5563; line-height: 1.45; }
+  .tint .statrow div { background: #fff; }
+  .bubble { position: absolute; left: 34px; top: 34px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px 12px 14px; border-radius: 999px; background: hsla(215 30% 8% / .85); border: 1px solid hsla(36 100% 50% / .55); color: #fff; font-size: 26px; font-weight: 500; }
+  .bubble .ic { width: 26px; height: 26px; color: #ff9900; }
+  .rel { position: relative; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7c0 5 6 5 6 10M18 7c0 5-6 5-6 10"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Z"/><path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+  <symbol id="i-live" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+  <symbol id="i-cc" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10.5 10.2a2.4 2.4 0 1 0 0 3.6M17 10.2a2.4 2.4 0 1 0 0 3.6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8"/></symbol>
+  <symbol id="i-translate" viewBox="0 0 24 24"><path d="M4 5h9M8.5 3v2c0 4-2 7-4.5 8M6 9c1 2 3 3.5 5.5 4"/><path d="m12 21 4.5-10L21 21M13.5 18h6"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6"/><path d="M4 4v4.6h4.6"/></symbol>
+</defs></svg>
+<div id="slides"></div>
+<script>
+const ICON = (t) => { t = t.toLowerCase(); return t.includes("context") ? "layers" : t.includes("router") ? "fork" : t.includes("llm") ? "spark" : t.includes("rekognition") ? "eye" : t.includes("polly") ? "speaker" : (t.includes("dynamodb") || t.includes("memory")) ? "db" : t.includes("ivs") ? "live" : t.includes("exoplayer") ? "play" : t.includes("ffmpeg") ? "film" : t.includes("phone") ? "phone" : t.includes("spoiler") ? "shield" : t.includes("translate") ? "translate" : t.includes("captions") ? "cc" : t.includes("relative") ? "replay" : (t.includes("search") || t.includes("index") || t.includes("refine")) ? "search" : "tool"; };
+const ic = (id) => `<svg class="ic"><use href="#i-${id}"/></svg>`;
+const fmt = (ms) => ms >= 10000 ? `${(ms / 1000).toFixed(1)} s` : `${Math.round(ms).toLocaleString("en-US").replace(/,/g, " ")} ms`;
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const foot = `<div class="s-foot"><span class="brand"><span class="logo"><svg viewBox="0 0 32 32"><path d="M11 9.5v13l11-6.5-11-6.5Z" fill="#fff"/></svg></span>Semantic Playback</span><span>Real recording · Fire OS app on the Android TV emulator · semanticplayback.com</span></div>`;
+
+function trace(t, { skip = /AgentCore|Context Envelope/, max = 6 } = {}) {
+  let rows = t.rows.filter((r) => !skip.test(r.title)).slice(0, max), out = "", prev = 0;
+  for (const r of rows) {
+    if (r.ms - prev > 1500) out += `<div class="gap">${((r.ms - prev) / 1000).toFixed(1)} s ${t.interpreter === "llm" ? "AI model wait" : "wait"}</div>`;
+    prev = r.ms;
+    out += `<div class="grow k-${r.kind}"><span class="row-ic" style="--k:inherit">${ic(ICON(r.title))}</span><div><div class="t">${esc(r.title)}</div><div class="d">${esc(r.detail)}</div></div><span class="ms">${r.took || ""}</span></div>`;
+  }
+  const lane = t.interpreter === "llm" ? `<span class="pill pill-llm">${ic("spark")}Agent lane · LLM</span>` : `<span class="pill pill-server">${ic("fork")}Instant lane · no AI model</span>`;
+  return `<div class="gtrace"><div class="th"><span>UNDER THE HOOD</span><span>${fmt(t.totalMs)}</span></div><div class="route">${lane}<span class="pill pill-time">“${esc(t.said)}”</span></div>${out}</div>`;
+}
+const tv = (img, said) => `<div class="frame rel"><img src="/media/gallery/f-${img}.jpg">${said ? `<span class="bubble">${ic("mic")}“${esc(said)}”</span>` : ""}</div>`;
+const ans = (t) => `<div class="ans"><b>FIRE TV</b><span>${esc(t.answer.length > 190 ? t.answer.slice(0, t.answer.lastIndexOf(" ", 186)) + "…" : t.answer)}</span></div>`;
+const slide = (cls, kicker, title, sub, body) => `<section class="slide ${cls}"><div class="s-kicker">${kicker}</div><h2 class="s-title">${title}</h2>${sub ? `<p class="s-sub">${sub}</p>` : ""}<div class="s-body">${body}</div>${foot}</section>`;
+
+fetch("/data/demo.json").then((r) => r.json()).then(({ demos: D }) => {
+  const S = [];
+  S.push(slide("tint", "For Fire TV · Amazon Developer Hackathon 2026", "Ask your TV for the moment you remember.",
+    "Semantic Playback is an AI layer for Fire TV. Say “show me his goal”, “who is she?” or “catch me up”. The TV finds the exact moment, plays it and remembers you asked.",
+    `<div style="flex:1">${tv("lens", "Who's this?")}${ans(D.lens[0])}</div>${trace(D.lens[0], { max: 5 })}`));
+  S.push(slide("", "Viewing Lens · Amazon Rekognition", "“Who's this?” The TV pauses on the frame and names him.",
+    "Amazon Rekognition reads the face on the paused frame, then playback resumes. Films get their own face collection, so characters are named too.",
+    `<div style="flex:1">${tv("lens")}${ans(D.lens[0])}</div>${trace(D.lens[0], { max: 5 })}`));
+  S.push(slide("tint", "Conversational references · no AI model call", "“Show me his goal.” It knows who “his” is.",
+    "The Context Envelope resolves “his” to the player you just asked about. Hybrid search over the index finds the goal and starts it on the build-up: 1.0 s end to end.",
+    `<div style="flex:1">${tv("goal", "Show me his goal")}${ans(D.goal[0])}</div>${trace(D.goal[0], { max: 6 })}`));
+  S.push(slide("", "Spoiler-safe · multi-turn", "It won't spoil, and it takes corrections.",
+    "The spoiler boundary moves only with real playback. “No, not that one, the one before half-time” narrows the last search in 0.6 s, without a model.",
+    `<div class="two"><div>${tv("spoilers", "Show me Robbie Keane's goal")}<h3>Spoiler guard, in code</h3><p>${esc(D.spoilers[0].answer)}</p></div><div>${tv("refine", "No, not that one, the one before half-time")}<h3>Corrections refine the last search</h3><p>${esc(D.refine[0].answer)}</p></div></div>`));
+  S.push(slide("tint", "Exact follow-ups · clip and share", "Slow motion, then send it to your phone.",
+    "Once a moment is grounded, follow-ups are exact maths on the player. The clip is cut with ffmpeg and plays on the companion page.",
+    `<div class="two"><div>${tv("slowmo", "Go back five seconds in slow motion")}${ans(D.slowmo[0])}</div><div style="display:flex;gap:28px;align-items:flex-start"><div style="flex:1">${tv("share", "Clip that and send it to my phone")}${ans(D.share[0])}</div><img src="/media/phone.png" style="width:250px;border-radius:28px;box-shadow:0 30px 60px hsla(225 40% 20% / .22)"></div></div>`));
+  S.push(slide("", "Live · Amazon IVS timed metadata", "On live TV, the stream itself says “goal”.",
+    "Goal markers travel inside the Amazon IVS stream as timed metadata. The Fire OS app reads the cue, offers the replay, plays it from the build-up and takes you back to live.",
+    `<div style="flex:1">${tv("live", "Show me that goal")}<div class="flow">${["IVS PutMetadata", "timed metadata in the stream", "Fire OS app reads the cue", "replay from the build-up", "“back to live”"].map((x, i) => `${i ? "<i>→</i>" : ""}<span>${ic(["live", "live", "tv", "play", "replay"][i])}${x}</span>`).join("")}</div></div>${trace(D.live[0], { max: 5, skip: /AgentCore|Context Envelope|provider event feed/ })}`));
+  S.push(slide("tint", "Films · Rekognition face collection · LLM agent", "Characters, not only celebrities.",
+    "“Who is she?” matches the paused frame against a face collection built for the film, named from its credits. “Where have I seen her before?” goes to the LLM agent, which answers within the spoiler limit.",
+    `<div class="two"><div>${tv("films", "Who is she?")}${ans(D.films[0])}</div><div>${tv("ask", "Where have I seen her before?")}${ans(D.ask[0])}</div></div>`));
+  S.push(slide("", "Accessibility · open source", "Captions were broken for every React Native Fire TV app. We fixed it.",
+    "Fire TV viewers turn Captions or Audio Description on once in Settings. Amazon's React Native TV sample ignored both, and a react-native-video bug stopped subtitle files loading on Android since 6.16.",
+    `<div style="flex:1">${tv("access", "Show me Usain Bolt's goal")}${ans(D.access[0])}</div><div class="contribs-g"><div><h3><span>1</span>A new open-source module</h3><p>Any React Native TV app gets the viewer's Captions and Audio Description settings, live.</p><code>github.com/dusy4/expo-tv-accessibility-settings</code></div><div><h3><span>2</span>A pull request to Amazon's TV sample</h3><p>Captions follow the setting; the described version plays at the same position.</p><code>AmazonAppDev/react-native-multi-tv-app-sample #144</code></div><div><h3><span>3</span>The root-cause fix in react-native-video</h3><p>Side-loaded subtitle files load on Android again.</p><code>TheWidlarzGroup/react-native-video #5178</code></div></div>`));
+  S.push(slide("tint", "Architecture · self-hosted MCP", "One MCP server, 26 tools, the surface Alexa+ connects to.",
+    "Simple requests run on rules and hybrid search with no model call. Open questions go to an LLM agent with a hard deadline. Tools call Amazon Rekognition, Polly, IVS, DynamoDB, AgentCore Memory and S3.",
+    `<div style="width:100%"><img class="shot" src="/media/gallery/parts/arch.png?v=2" style="max-height:640px;object-fit:contain"></div>`));
+  S.push(slide("", "Grounding · the match index", "Every moment of the match, indexed at ingest.",
+    "77 moments of Soccer Aid 2023, built from Rekognition shots, faces and on-screen text plus captions. Search runs on BM25, embeddings and people, with time order and spoiler limits enforced in code.",
+    `<div style="width:100%"><img class="shot" src="/media/gallery/parts/index.png?v=2" style="width:auto;max-width:100%;max-height:500px;margin:0 auto"><div class="statrow"><div><b>1.0 s</b><span>“show me his goal” to the build-up, no model</span></div><div><b>0.6 s</b><span>“not that one, before half-time”</span></div><div><b>91%</b><span>golden set handled by the LLM agent</span></div><div><b>27 ms</b><span>median on the rules path</span></div></div></div>`));
+  S.push(slide("tint", "Built honestly", "What runs on AWS, including what didn't.",
+    "Our new AWS account stayed in verification for the whole hackathon. Every feature degrades visibly and says which engine answered.",
+    `<div style="width:100%"><img class="shot" src="/media/gallery/parts/stack.png?v=2"><div class="statrow"><div><b>26</b><span>MCP tools, spec 2025-11-25</span></div><div><b>35</b><span>paraphrased requests in the golden set</span></div><div><b>58</b><span>automated tests, end to end over MCP</span></div><div><b>3</b><span>open-source contributions</span></div></div></div>`));
+  document.getElementById("slides").innerHTML = S.join("");
+  document.body.dataset.ready = "1";
+});
+</script>
+</body>
+</html>
