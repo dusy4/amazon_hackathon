@@ -1045,6 +1045,7 @@ def arch_extra(img, t, a):
 def main():
     f1, f2, s4, s5 = "f1-football", "f2-spoilers-memory", "s4-real-footage", "s5-any-video"
     s6, s7, s8 = "s6-films", "s7-accessibility", "s8-live"
+    who = "f0-whos-this" if "f0-whos-this" in MANIFEST else f1  # "who's this" on the close-up, recorded on its own
     his = MANIFEST[f1]["turns"][2]["turn"]
     top = next((s["data"].get("top") or [{}] for s in his["trace"] if s["kind"] == "tool_result" and s["label"] == "moments.search"), [{}])[0]
     # The moment actually grounded (after collapsing repeated descriptions of the same goal), not the raw top hit.
@@ -1105,7 +1106,7 @@ def main():
     segs = [
         ColdOpen(483.0, 5.6, ["You remember the moment.", "Your TV only knows the timestamp."]),
         Card("Semantic Playback", kicker="For Fire TV", sub="Say what you remember. The TV finds the moment — and plays it.", dur=2.6, center=True),
-        Beat(f1, window(f1, 0, pre=2.0, post=1.2), "Viewing Lens · Amazon Rekognition", "Ask who's on screen."),
+        Beat(who, window(who, 0, pre=2.0, post=1.2), "Viewing Lens · Amazon Rekognition", "Ask who's on screen."),
         Beat(f1, window(f1, 2, pre=0.4, post=30.0), "Conversational references", "Say “his goal”. It plays from the build-up."),
         Beat(f1, window(f1, 3, pre=0.4, post=8.5), "Precise follow-ups", "Rewind it in slow motion."),
         Beat(f1, window(f1, 5, pre=0.6, post=1.2), "Clip and share", "Clip it and send it to your phone."),
