@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Friction log · Semantic Playback</title>
+<meta name="description" content="Thirteen real friction points we hit while building Semantic Playback for Fire TV with AWS: task, steps, expected vs. actual, severity, workaround and suggestion.">
+<link rel="canonical" href="https://semanticplayback.com/friction-log">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css?v=6">
+<style>
+  .log-hero { padding: 64px 0 40px; background: linear-gradient(160deg, #eceafc 0%, #e4ebfb 45%, #fff 100%); }
+  .log-hero h1 { margin-top: 16px; font-size: clamp(34px, 4.6vw, 52px); letter-spacing: -0.03em; }
+  .log-hero p { margin-top: 16px; font-size: 18px; color: var(--text-2); max-width: 46em; }
+  .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px; margin-top: 28px; }
+  .toc a { display: flex; gap: 10px; align-items: baseline; padding: 10px 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); text-decoration: none; font-size: 14px; color: var(--text); }
+  .toc a span { font-family: var(--mono); color: var(--text-3); font-size: 12px; }
+  .entries { padding: 48px 0 96px; display: grid; gap: 20px; }
+  .entry { border-radius: var(--radius-lg); background: var(--surface); padding: 28px 32px; scroll-margin-top: 80px; }
+  .entry-top { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .entry-top .n { font-family: var(--mono); font-size: 13px; color: var(--text-3); }
+  .entry-top .date { font-family: var(--mono); font-size: 13px; color: var(--text-3); }
+  .sev { font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 3px 9px; border-radius: 6px; }
+  .sev-high { background: #fde7e4; color: #a32a1f; }
+  .sev-medium { background: #fff1db; color: #8a4b00; }
+  .sev-low { background: #e7f3e6; color: #1d6b12; }
+  .tool { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: #fff; border: 1px solid var(--line); color: var(--text-2); }
+  .entry h2 { margin-top: 12px; font-size: 24px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
+  .entry dl { margin: 18px 0 0; display: grid; grid-template-columns: 150px 1fr; gap: 10px 20px; }
+  .entry dt { font-size: 13px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .05em; padding-top: 3px; }
+  .entry dd { margin: 0; font-size: 16px; line-height: 1.6; color: var(--text); }
+  .entry dd code { font-size: 13.5px; padding: 1px 6px; border-radius: 5px; background: #fff; border: 1px solid var(--line); overflow-wrap: anywhere; }
+  .entry dd ol, .entry dd ul { margin: 0; padding-left: 20px; }
+  .entry a { color: #0757a1; }
+  @media (max-width: 640px) { .entry { padding: 22px 20px; } .entry dl { grid-template-columns: 1fr; gap: 4px; } .entry dd { margin-bottom: 10px; } }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M11 9.5v13l11-6.5-11-6.5Z" fill="#ffffff"/></svg></span><span>Semantic Playback</span></a>
+    <nav class="nav-links" aria-label="Sections"><a href="/#try">Try it</a><a href="/#how">How it works</a><a href="/#architecture">Architecture</a><a href="/#accessibility">Accessibility</a></nav>
+    <a class="btn btn-sm btn-primary" href="/">Back to the product</a>
+  </div>
+</header>
+<main>
+<section class="log-hero">
+  <div class="wrap">
+    <p class="kicker">Friction log · Build, Ship, Shape: Amazon Developer Hackathon 2026</p>
+    <h1>13 places we got stuck building for Fire TV and AWS.</h1>
+    <p>Every entry comes from a real attempt while building Semantic Playback between 2026-10-06 and 2026-10-23: what we tried, the exact steps, what we expected, what actually happened, how bad it was, how we worked around it and what we'd suggest. Nothing here is from reading docs alone.</p>
+    <nav class="toc" id="toc" aria-label="Entries"></nav>
+  </div>
+</section>
+<section class="wrap entries" id="entries">
+
+<article class="entry" id="f1"><div class="entry-top"><span class="n">#1</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Fire TV / Vega · hackathon rules</span><span class="date">2026-10-22</span></div>
+<h2>Which "Fire TV simulator" counts for a Fire OS app is unclear</h2><dl>
+<dt>Task</dt><dd>Before submitting, confirm that our demo footage meets the Fire TV video rule. It shows our Fire OS APK (Kotlin, Media3) on the Android TV emulator, API 30.</dd>
+<dt>Steps</dt><dd><ol><li>The rules say the video "must show the project running on an actual Fire TV device or the Fire TV/Vega simulator".</li><li>We looked for an Amazon "Fire TV simulator" for Fire OS and found none. The Fire tablet virtual-device guide says its steps "cannot be used to simulate the Fire TV".</li><li>The Vega Virtual Device runs only Vega OS apps (<code>.vpkg</code>) and needs native macOS or Ubuntu with KVM, which a judge confirmed on the forum.</li><li>Matching the rule word for word meant a Vega port (rewrite in React Native for Vega, re-implement IVS metadata and accessibility settings, rent a Linux host with KVM). We scoped it the day before the deadline.</li><li>The answer was outside the rules: the FAQ ("Android TV Emulator or the Fire TV/Vega simulator is fine") and a judge's "Yes" on a forum thread about an Android 11 TV emulator.</li></ol></dd>
+<dt>Expected</dt><dd>The rules name the accepted emulator for each Fire TV OS.</dd>
+<dt>Actual</dt><dd>Two different platforms behind one slash; "Fire TV simulator" matches no Amazon product for Fire OS. The Android TV emulator is accepted only in the FAQ and forum replies.</dd>
+<dt>Workaround</dt><dd>None needed in the end: we kept the Fire OS app and the emulator footage.</dd>
+<dt>Suggestion</dt><dd>Put the FAQ sentence in the rules ("Fire OS apps: a Fire TV device or the Android TV emulator, API 30. Vega apps: a Vega device or the Vega Virtual Device"), publish an official Fire OS 8 AVD profile or system image, and state on the VVD pages that it doesn't run Fire OS APKs.</dd></dl></article>
+
+<article class="entry" id="f2"><div class="entry-top"><span class="n">#2</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Fire OS · Vega SDK</span><span class="date">2026-10-16</span></div>
+<h2>No Fire OS or Vega emulator on Windows</h2><dl>
+<dt>Task</dt><dd>Record Fire TV footage from a Windows 10 development machine.</dd>
+<dt>Steps</dt><dd>Read the Vega SDK install docs (0.21 to 0.24) and the Vega getting-started blog (2026-07).</dd>
+<dt>Expected</dt><dd>A Fire TV simulator that runs on Windows.</dd>
+<dt>Actual</dt><dd>The Vega SDK needs native macOS or Ubuntu; Windows and WSL aren't supported. An Amazon community answer says the VVD needs KVM or Hypervisor.framework and doesn't run nested. There is no first-party Fire OS emulator.</dd>
+<dt>Workaround</dt><dd>The Fire OS APK runs on a generic Android TV API 30 emulator (WHPX); the final footage was recorded there, which the FAQ allows.</dd>
+<dt>Suggestion</dt><dd>Ship the VVD with a Windows Hypervisor Platform backend, or publish a Fire OS 8 system image for the Android Emulator.</dd></dl></article>
+
+<article class="entry" id="f3"><div class="entry-top"><span class="n">#3</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Vega SDK installer</span><span class="date">2026-10-16</span></div>
+<h2>The Vega installer in WSL2 doesn't detect WSL or missing KVM</h2><dl>
+<dt>Task</dt><dd>Run the Vega Virtual Device through WSL2 on Windows 10.</dd>
+<dt>Steps</dt><dd><ol><li>WSL2 Ubuntu 24.04.3 with Node 18.19.1.</li><li><code>ls /dev/kvm</code> → "No such file or directory"; <code>grep -cE "vmx|svm" /proc/cpuinfo</code> → 0.</li><li>Read <code>get_vvm.sh</code> (1,927 lines): platform detection only maps "Linux x86_64".</li></ol></dd>
+<dt>Expected</dt><dd>A working VVD, or an immediate "WSL / no KVM" message before a roughly 20 GB install.</dd>
+<dt>Actual</dt><dd>The installer would treat WSL as supported Linux. Nested virtualisation in WSL2 is a Windows 11 feature, so the VVD can never start on Windows 10. We stopped before installing.</dd>
+<dt>Workaround</dt><dd>Build for Fire OS instead.</dd>
+<dt>Suggestion</dt><dd>At the start of <code>get_vvm.sh</code>, check <code>/proc/version</code> for "microsoft" and for a missing <code>/dev/kvm</code>, then exit with the alternatives.</dd></dl></article>
+
+<article class="entry" id="f4"><div class="entry-top"><span class="n">#4</span><span class="sev sev-high">HIGH</span><span class="tool">Amazon Bedrock</span><span class="date">2026-10-06 · re-checked 10-23</span></div>
+<h2>Bedrock blocked on a new account, with two different, misleading errors</h2><dl>
+<dt>Task</dt><dd>Nova Multimodal Embeddings at ingest, and a Converse tool-use agent on Nova 2 Lite.</dd>
+<dt>Steps</dt><dd><ol><li><code>aws login --region us-east-1</code>.</li><li><code>aws bedrock list-foundation-models --by-provider amazon</code> lists <code>amazon.nova-2-multimodal-embeddings-v1:0</code> and <code>us.amazon.nova-2-lite-v1:0</code>.</li><li>InvokeModel on the embeddings model.</li><li><code>aws bedrock-runtime converse --model-id us.amazon.nova-2-lite-v1:0</code> with a one-word prompt.</li></ol></dd>
+<dt>Expected</dt><dd>Listed models can be invoked, or every call fails with one clear verification error.</dd>
+<dt>Actual</dt><dd>InvokeModel: <code>AccessDeniedException</code> "Your account is currently being verified…". Converse, in the same minute: <code>ThrottlingException</code> "Too many tokens per day" on the account's first request ever. Still blocked 17 days later; Service Quotas showed every Nova quota at 0. A zero quota reported as throttling tells the developer to wait.</dd>
+<dt>Workaround</dt><dd>Every feature runs on a labelled fallback: the rules interpreter, a local embedder, and the same agent code on OpenRouter.</dd>
+<dt>Suggestion</dt><dd>Return one explicit <code>AccountVerificationPending</code> error from every Bedrock API, and show "not invocable until verification completes" with an ETA in ListFoundationModels and the console.</dd></dl></article>
+
+<article class="entry" id="f5"><div class="entry-top"><span class="n">#5</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Amazon Transcribe · Amazon Translate</span><span class="date">2026-10-06 / 10-17</span></div>
+<h2>An error about an access key that doesn't exist</h2><dl>
+<dt>Task</dt><dd>List Transcribe jobs and translate a sentence, signed in with <code>aws login</code> (the account has no access keys).</dd>
+<dt>Steps</dt><dd><code>aws transcribe list-transcription-jobs --max-results 1</code>; <code>aws translate translate-text --text "Two minutes left" --source-language-code en --target-language-code es</code>.</dd>
+<dt>Expected</dt><dd>An empty job list and the translated text.</dd>
+<dt>Actual</dt><dd>Both return <code>SubscriptionRequiredException: The AWS Access Key Id needs a subscription for the service</code>.</dd>
+<dt>Workaround</dt><dd>Captions come from the source; translation tries Amazon Translate first, then falls back to the agent's model and names the engine that ran.</dd>
+<dt>Suggestion</dt><dd>Say "account verification pending" for federated or console-derived credentials.</dd></dl></article>
+
+<article class="entry" id="f6"><div class="entry-top"><span class="n">#6</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Amazon Rekognition Video</span><span class="date">2026-10-07</span></div>
+<h2>Rekognition Video fails late and vaguely on AV1 footage</h2><dl>
+<dt>Task</dt><dd>Shot detection on a 720p video (AV1 in MP4) stored in S3.</dd>
+<dt>Steps</dt><dd>StartSegmentDetection (SHOT) accepted it and returned a JobId; we polled GetSegmentDetection for about 45 s.</dd>
+<dt>Expected</dt><dd>A shot list, or an immediate validation error.</dd>
+<dt>Actual</dt><dd>IN_PROGRESS → FAILED with "Unsupported codec/format." without naming the codec. Re-uploading a fixed file under the same key with the same <code>ClientRequestToken</code> returned the old failed job.</dd>
+<dt>Workaround</dt><dd>Transcode with <code>ffmpeg -c:v libx264 -g 30</code>, and include the file size in <code>ClientRequestToken</code>.</dd>
+<dt>Suggestion</dt><dd>Validate the codec synchronously or name it in StatusMessage, and support AV1/VP9.</dd></dl></article>
+
+<article class="entry" id="f7"><div class="entry-top"><span class="n">#7</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Amazon Rekognition Image</span><span class="date">2026-10-16</span></div>
+<h2>RecognizeCelebrities returns a look-alike on a turned-away player</h2><dl>
+<dt>Task</dt><dd>"Who's this?" on a live frame of Soccer Aid 2023 at 2:22 (Usain Bolt jogging away from the camera).</dd>
+<dt>Steps</dt><dd><code>lens.identify</code> → RecognizeCelebrities on the paused frame, twice, 1 s apart.</dd>
+<dt>Expected</dt><dd>Usain Bolt, who matched at 91 to 98% on the neighbouring frames.</dd>
+<dt>Actual</dt><dd>"Ulysses Owens" at 85%; the two takes returned different people.</dd>
+<dt>Workaround</dt><dd>A live match counts only if the index already knows that person or confidence is at least 99%; otherwise we use the shot's match from ingest.</dd>
+<dt>Suggestion</dt><dd>Return a pose or quality signal with MatchConfidence, or allow scoping matches to a candidate list.</dd></dl></article>
+
+<article class="entry" id="f8"><div class="entry-top"><span class="n">#8</span><span class="sev sev-high">HIGH</span><span class="tool">Amazon DynamoDB</span><span class="date">2026-10-16</span></div>
+<h2>DynamoDB read latency spikes on the request path</h2><dl>
+<dt>Task</dt><dd>Read the last 6 Viewing Memory events for every TV request.</dd>
+<dt>Steps</dt><dd>Query from the JS SDK v3 with <code>aws login</code> session credentials during a recording session.</dd>
+<dt>Expected</dt><dd>Consistently fast reads.</dd>
+<dt>Actual</dt><dd>Usually under 200 ms, but spikes of 12.2, 9.0, 5.4 and 2.2 s; "Normal speed" took 10.5 s end to end.</dd>
+<dt>Workaround</dt><dd>An 800 ms budget on the read, reusing the last good read.</dd>
+<dt>Suggestion</dt><dd>Clearer guidance on connection reuse and keep-alive for the JS v3 client with <code>aws login</code> credentials.</dd></dl></article>
+
+<article class="entry" id="f9"><div class="entry-top"><span class="n">#9</span><span class="sev sev-medium">MEDIUM</span><span class="tool">AWS CLI <code>aws login</code></span><span class="date">2026-10-07 / 10-16</span></div>
+<h2>Sign-in sessions expire under a long-running server</h2><dl>
+<dt>Task</dt><dd>Keep our server running for hours after <code>aws login</code>.</dd>
+<dt>Steps</dt><dd>Signed in in the morning, kept the server running, then made a <code>/api/tts</code> request.</dd>
+<dt>Expected</dt><dd>Credentials keep working, or refresh.</dd>
+<dt>Actual</dt><dd>Every AWS call failed with "Your session has expired. Please reauthenticate."; re-running <code>aws login</code> once timed out; the server needed a restart; every request returned 500 because the context reads DynamoDB first.</dd>
+<dt>Workaround</dt><dd>Viewing Memory fails over to a local log, and we sign in again before recording.</dd>
+<dt>Suggestion</dt><dd>Refresh sessions silently, print the session length, and let SDKs reload credentials without a restart.</dd></dl></article>
+
+<article class="entry" id="f10"><div class="entry-top"><span class="n">#10</span><span class="sev sev-low">LOW</span><span class="tool">Amazon IVS</span><span class="date">2026-10-17</span></div>
+<h2>IVS injects its own <code>ld_lat_data</code> cues alongside PutMetadata</h2><dl>
+<dt>Task</dt><dd>Send goal markers with PutMetadata on a LOW-latency BASIC channel and read them in ExoPlayer.</dd>
+<dt>Steps</dt><dd>Pushed RTMPS from ffmpeg, called PutMetadata with <code>{"t":"goal","title":…}</code>, logged every <code>onMetadata</code> entry.</dd>
+<dt>Expected</dt><dd>Only our payloads.</dd>
+<dt>Actual</dt><dd>Every segment also carries <code>{"cmd":"ld_lat_data",…}</code>; our first build treated these as events.</dd>
+<dt>Workaround</dt><dd>Accept only cues that carry our fields.</dd>
+<dt>Suggestion</dt><dd>Document <code>ld_lat_data</code> next to PutMetadata, or use a separate ID3 owner for it.</dd></dl></article>
+
+<article class="entry" id="f11"><div class="entry-top"><span class="n">#11</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Android TV emulator (Fire OS stand-in)</span><span class="date">2026-10-17</span></div>
+<h2>The Android TV emulator has no internet DNS</h2><dl>
+<dt>Task</dt><dd>Play the IVS live stream in the Fire OS app on the emulator.</dd>
+<dt>Steps</dt><dd>Started the stream, opened it in the app; restarted the emulator with <code>-dns-server 8.8.8.8,1.1.1.1</code>.</dd>
+<dt>Expected</dt><dd>The stream plays.</dd>
+<dt>Actual</dt><dd>ExoPlayer reported <code>UnknownHostException</code> for the IVS host, while the host machine reached IVS fine.</dd>
+<dt>Workaround</dt><dd>A byte-for-byte relay for the stream (<code>SP_IVS_RELAY=1</code>). A real Fire TV plays IVS directly.</dd>
+<dt>Suggestion</dt><dd>A Fire OS emulator for Windows with working networking, or documented network setup for the Android TV image.</dd></dl></article>
+
+<article class="entry" id="f12"><div class="entry-top"><span class="n">#12</span><span class="sev sev-medium">MEDIUM</span><span class="tool">Fire TV accessibility APIs · React Native</span><span class="date">2026-10-17 / 10-22</span></div>
+<h2>Captions and Audio Description: two mechanisms, native-only docs, nothing after Fire OS 8</h2><dl>
+<dt>Task</dt><dd>Make our player follow the viewer's Closed Captions and Audio Description settings, first in Kotlin, then in React Native.</dd>
+<dt>Steps</dt><dd><ol><li>Followed <a href="https://developer.amazon.com/docs/fire-tv/implement-reading-and-subscribing-to-adcc.html" target="_blank" rel="noopener">Implement reading and subscribing to AD/CC</a>: <code>CaptioningManager</code> for captions; the secure-settings key <code>accessibility_audio_descriptions_enabled</code> with a <code>ContentObserver</code> for AD.</li><li>Looked for the same in React Native, Amazon's starter sample and npm.</li></ol></dd>
+<dt>Expected</dt><dd>One API for both settings, valid on current Fire OS, usable from React Native.</dd>
+<dt>Actual</dt><dd>Two unrelated mechanisms, one an undocumented string key that exists only after the user first toggles it; the AD section "only applies to Fire OS 8 devices and earlier"; React Native has no API for either, and Amazon's sample ignored both.</dd>
+<dt>Workaround</dt><dd>We built and open-sourced <a href="https://github.com/dusy4/expo-tv-accessibility-settings" target="_blank" rel="noopener">expo-tv-accessibility-settings</a> and contributed the integration to Amazon's sample (<a href="https://github.com/AmazonAppDev/react-native-multi-tv-app-sample/pull/144" target="_blank" rel="noopener">PR #144</a>).</dd>
+<dt>Suggestion</dt><dd>State what Fire OS 9+ uses for AD, ship an official React Native / Vega API (or an Amazon-maintained module), and make the starter sample follow both settings by default.</dd></dl></article>
+
+<article class="entry" id="f13"><div class="entry-top"><span class="n">#13</span><span class="sev sev-high">HIGH</span><span class="tool">Amazon's React Native TV sample · react-native-video</span><span class="date">2026-10-22</span></div>
+<h2>Amazon's React Native starter can't show side-loaded captions on Fire OS</h2><dl>
+<dt>Task</dt><dd>Show WebVTT captions in <code>react-native-multi-tv-app-sample</code> on the Android TV emulator, following the CC setting.</dd>
+<dt>Steps</dt><dd>Added <code>source.textTracks</code> (English and Spanish VTT) and <code>selectedTextTrack</code> to the sample's VideoPlayer (react-native-video <code>^6.8.0</code>, resolving to 6.19.1), then turned CC on.</dd>
+<dt>Expected</dt><dd>Captions appear.</dd>
+<dt>Actual</dt><dd>The VTT files were never requested ("Text track not found for type=language, value=en"). Since 6.16, side-loaded tracks are only set on <code>MediaItem.subtitleConfigurations</code>, which the per-type Media3 factories ignore. Upstream issue #4792 had no cause.</dd>
+<dt>Workaround</dt><dd>Fixed in react-native-video (<a href="https://github.com/TheWidlarzGroup/react-native-video/pull/5178" target="_blank" rel="noopener">PR #5178</a>), verified on the emulator; apps need a patch until it ships.</dd>
+<dt>Suggestion</dt><dd>Pin the sample to a react-native-video version whose captions work on Fire OS, and add a captioned title to the sample catalog so regressions are visible.</dd></dl></article>
+
+</section>
+</main>
+<footer class="footer"><div class="wrap legal" style="margin-top:0;border-top:0;padding-top:0">Semantic Playback · independent hackathon project, not affiliated with or endorsed by Amazon. Amazon, Fire TV, Alexa and AWS are trademarks of Amazon.com, Inc. or its affiliates.</div></footer>
+<script>
+document.getElementById("toc").append(...[...document.querySelectorAll(".entry")].map((e) => {
+  const a = document.createElement("a");
+  a.href = "#" + e.id;
+  a.innerHTML = `<span>${e.querySelector(".n").textContent}</span>${e.querySelector("h2").textContent}`;
+  return a;
+}));
+</script>
+</body>
+</html>

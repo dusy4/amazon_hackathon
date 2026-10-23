@@ -368,7 +368,7 @@ code { font-family: var(--mono); }
 .footer-in { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
 .footer-in > div:first-child { max-width: 360px; }
 .footer-in .muted { margin-top: 12px; font-size: 14px; }
-.footer-cols { display: grid; grid-template-columns: auto minmax(0, 420px); gap: 48px; }
+.footer-cols { display: grid; grid-template-columns: auto auto minmax(0, 420px); gap: 48px; }
 .footer-cols div { display: grid; gap: 8px; align-content: start; font-size: 14px; }
 .footer-cols b { font-size: 13px; color: var(--text-3); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
 .footer-cols a { color: var(--text-2); text-decoration: none; }
