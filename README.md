@@ -10,8 +10,15 @@ Core loop: **Understand → Ground → Act → Remember → Continue.** The mode
 the precise work (seek, speed, loop, clip, share, memory).
 
 Tracks: **Fire TV** (native Fire OS app, Media3) · **Alexa+** (self-hosted MCP server, spec 2025-11-25,
-Streamable HTTP) · Mini challenge: **AWS Builder**. Project notes, research, friction log and feature requests
-live in Notion (see [AGENTS.md](./AGENTS.md)).
+Streamable HTTP) · Mini challenges: **AWS Builder**, **Open Source**. Project notes, research, friction log and
+feature requests live in Notion (see [AGENTS.md](./AGENTS.md)).
+
+- **Demo film (2:50):** https://youtu.be/Z2pssn8QF1g
+- **Website with an interactive demo of the recordings and their traces:** https://semanticplayback.com
+- **Open-source contributions:** [expo-tv-accessibility-settings](https://github.com/dusy4/expo-tv-accessibility-settings)
+  (new module) · [react-native-multi-tv-app-sample #144](https://github.com/AmazonAppDev/react-native-multi-tv-app-sample/pull/144)
+  (Captions and Audio Description in Amazon's TV sample) · [react-native-video #5178](https://github.com/TheWidlarzGroup/react-native-video/pull/5178)
+  (side-loaded subtitles on Android)
 
 ## What it does
 
@@ -121,6 +128,15 @@ Fire TV app (Kotlin, Media3) ⇄ WebSocket player bridge ⇄ Orchestrator
 npx tsx scripts/demo-video/record.ts artifacts/demo        # scripted scenes on the device + every turn's real trace
 python scripts/demo-video/launch.py artifacts/demo out.mp4 # film: TV on the left, the real trace "under the hood" on the right
 ```
+
+The "under the hood" panel in the film and on the website is drawn from each request's saved server trace; the
+TV itself shows the request, the answer, the tool chain and the latency.
+
+## Website
+
+`apps/site` is semanticplayback.com: static pages on Cloudflare Workers, with a small Worker that answers HTTP
+Range requests for the videos. Its demo traces come from the same recordings as the film
+(`python scripts/site/build-data.py`); deploy with `cd apps/site && npx wrangler deploy`.
 
 ## Evals
 
