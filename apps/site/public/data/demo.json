@@ -1,0 +1,1336 @@
+{
+ "demos": {
+  "lens": [
+   {
+    "said": "Who's this?",
+    "answer": "That's Usain Bolt. Recognised by Amazon Rekognition with 100% confidence.",
+    "interpreter": "rules",
+    "totalMs": 2061,
+    "rows": [
+     {
+      "ms": 146,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 2:27 · spoilers up to 2:27",
+      "took": "146 ms"
+     },
+     {
+      "ms": 158,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 161,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "froze the frame → at 2:27 · 1× · paused",
+      "took": "163 ms"
+     },
+     {
+      "ms": 325,
+      "kind": "aws",
+      "title": "Amazon Rekognition",
+      "detail": "RecognizeCelebrities: face on the paused frame → Usain Bolt · 100% confidence",
+      "took": "1553 ms"
+     },
+     {
+      "ms": 1994,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "playing → at 2:27 · 1× · playing",
+      "took": "62 ms"
+     },
+     {
+      "ms": 2056,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: That's Usain Bolt. Recognised by Amazon Rekognition with 100% confidence.",
+      "took": "2.1 s"
+     },
+     {
+      "ms": 2057,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (who_is_this); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "goal": [
+   {
+    "said": "Show me his goal",
+    "answer": "Usain Bolt scores first goal.",
+    "interpreter": "rules",
+    "totalMs": 1010,
+    "rows": [
+     {
+      "ms": 120,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 2:36 · “his/her” = Usain Bolt · spoilers up to 2:36",
+      "took": "120 ms"
+     },
+     {
+      "ms": 129,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: one person's event (e.g. his goal)",
+      "took": ""
+     },
+     {
+      "ms": 136,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Fan scores at Old Trafford, celebrates @ 2:29",
+      "took": "496 ms"
+     },
+     {
+      "ms": 633,
+      "kind": "server",
+      "title": "Our server · moment grounding",
+      "detail": "same goal described earlier → Usain Bolt scores first goal @ 2:12",
+      "took": ""
+     },
+     {
+      "ms": 633,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "jumped → at 2:12 · 1× · playing",
+      "took": "243 ms"
+     },
+     {
+      "ms": 1000,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Usain Bolt scores first goal.",
+      "took": "1.0 s"
+     },
+     {
+      "ms": 1001,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (semantic_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "slowmo": [
+   {
+    "said": "Go back five seconds in slow motion",
+    "answer": "5 seconds earlier. 0.5× speed.",
+    "interpreter": "rules",
+    "totalMs": 772,
+    "rows": [
+     {
+      "ms": 138,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 2:24 · spoilers up to 2:37",
+      "took": "138 ms"
+     },
+     {
+      "ms": 148,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 149,
+      "kind": "server",
+      "title": "Our server · relative seek",
+      "detail": "2:24 − 5s = 2:19, exact maths",
+      "took": ""
+     },
+     {
+      "ms": 149,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "jumped → at 2:19 · 1× · playing",
+      "took": "231 ms"
+     },
+     {
+      "ms": 501,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "speed set → at 2:19 · 0.5× · playing",
+      "took": "140 ms"
+     },
+     {
+      "ms": 765,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: 5 seconds earlier. 0.5× speed.",
+      "took": "765 ms"
+     },
+     {
+      "ms": 766,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (relative_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "share": [
+   {
+    "said": "Clip that and send it to my phone",
+    "answer": "Clipped Usain Bolt scores first goal (13 seconds). Sent to your phone.",
+    "interpreter": "rules",
+    "totalMs": 6633,
+    "rows": [
+     {
+      "ms": 122,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 2:26 · spoilers up to 2:37",
+      "took": "122 ms"
+     },
+     {
+      "ms": 125,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 125,
+      "kind": "server",
+      "title": "Our server · ffmpeg",
+      "detail": "cut the clip → 13 s clip · rendered in 6.2 s",
+      "took": "6350 ms"
+     },
+     {
+      "ms": 6476,
+      "kind": "server",
+      "title": "Our server → phone (WebSocket)",
+      "detail": "pushed the clip to the companion page",
+      "took": "149 ms"
+     },
+     {
+      "ms": 6625,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Clipped Usain Bolt scores first goal (13 seconds). Sent to your phone.",
+      "took": "6.6 s"
+     },
+     {
+      "ms": 6626,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (clip_created); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "spoilers": [
+   {
+    "said": "Show me Robbie Keane's goal",
+    "answer": "I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway.",
+    "interpreter": "rules",
+    "totalMs": 628,
+    "rows": [
+     {
+      "ms": 127,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 3:47 · spoilers up to 3:47",
+      "took": "127 ms"
+     },
+     {
+      "ms": 140,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: one person's event (e.g. his goal)",
+      "took": ""
+     },
+     {
+      "ms": 150,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Cahill defended by Carney and Wilshire @ 3:42",
+      "took": "458 ms"
+     },
+     {
+      "ms": 609,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → 2 match(es) hidden past the spoiler boundary",
+      "took": "14 ms"
+     },
+     {
+      "ms": 623,
+      "kind": "server",
+      "title": "Our server · spoiler guard",
+      "detail": "I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway.",
+      "took": ""
+     },
+     {
+      "ms": 624,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: I won't spoil it — that happens after the point you've watched up to. Say “spoilers off” if you want it anyway.",
+      "took": "624 ms"
+     }
+    ]
+   },
+   {
+    "said": "Spoilers off",
+    "answer": "Spoiler protection is off.",
+    "interpreter": "rules",
+    "totalMs": 129,
+    "rows": [
+     {
+      "ms": 117,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 3:54 · spoilers up to 3:54",
+      "took": "117 ms"
+     },
+     {
+      "ms": 121,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Spoiler protection is off.",
+      "took": "121 ms"
+     }
+    ]
+   },
+   {
+    "said": "Show me Robbie Keane's goal",
+    "answer": "Robbie Keane scores screamer.",
+    "interpreter": "rules",
+    "totalMs": 503,
+    "rows": [
+     {
+      "ms": 127,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 3:55 · spoilers off",
+      "took": "127 ms"
+     },
+     {
+      "ms": 132,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: one person's event (e.g. his goal)",
+      "took": ""
+     },
+     {
+      "ms": 136,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Cahill defended by Carney and Wilshire @ 3:42",
+      "took": "15 ms"
+     },
+     {
+      "ms": 151,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Robbie Keane scores screamer @ 8:05",
+      "took": "14 ms"
+     },
+     {
+      "ms": 166,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "jumped → at 8:05 · 1× · playing",
+      "took": "209 ms"
+     },
+     {
+      "ms": 499,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Robbie Keane scores screamer.",
+      "took": "499 ms"
+     },
+     {
+      "ms": 500,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (semantic_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "refine": [
+   {
+    "said": "No, not that one, the one before half-time",
+    "answer": "How about this one: Usain Bolt scores first goal, at 2:00?",
+    "interpreter": "rules",
+    "totalMs": 570,
+    "rows": [
+     {
+      "ms": 162,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 8:09 · spoilers off",
+      "took": "162 ms"
+     },
+     {
+      "ms": 165,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 165,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Robbie Keane scores screamer @ 8:05",
+      "took": "17 ms"
+     },
+     {
+      "ms": 183,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Robbie Keane scores screamer @ 8:05",
+      "took": "16 ms"
+     },
+     {
+      "ms": 200,
+      "kind": "server",
+      "title": "Our server · refine the last search",
+      "detail": "“not that one”: 5 other goals to choose from, no AI model needed",
+      "took": ""
+     },
+     {
+      "ms": 201,
+      "kind": "server",
+      "title": "Our server · moment grounding",
+      "detail": "same goal described earlier → David James scores after 5k @ 2:00",
+      "took": ""
+     },
+     {
+      "ms": 201,
+      "kind": "server",
+      "title": "Our server · moment grounding",
+      "detail": "named after the best description → Usain Bolt scores first goal",
+      "took": ""
+     },
+     {
+      "ms": 201,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "jumped → at 2:00 · 1× · playing",
+      "took": "243 ms"
+     },
+     {
+      "ms": 563,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: How about this one: Usain Bolt scores first goal, at 2:00?",
+      "took": "563 ms"
+     },
+     {
+      "ms": 564,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (semantic_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "catchup": [
+   {
+    "said": "I was away for 2 minutes, catch me up",
+    "answer": "Here's what you missed. Ace of Butterfield finishes the cross into the net, making the score 1-1 after Leon Edwards is beaten. Tom Grant delivers a brilliant ball, Leon tries to knock it out but it falls short, setting up a chance for Paul Scholes. Robbie Keane scores an absolute screamer, bringing World XI level with England at 2-2.",
+    "interpreter": "rules",
+    "totalMs": 258,
+    "rows": [
+     {
+      "ms": 116,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 8:13 · spoilers up to 8:13",
+      "took": "116 ms"
+     },
+     {
+      "ms": 118,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 118,
+      "kind": "server",
+      "title": "Our server · hybrid index",
+      "detail": "what you missed → 3 key moments, spoiler-bounded",
+      "took": "15 ms"
+     },
+     {
+      "ms": 253,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Here's what you missed. Ace of Butterfield finishes the cross into the net, making the score 1-1 after Leon Edwards is beaten. Tom Grant delivers a brilliant ball, Leon tries to knock it out but it falls short, setting up a chance for Paul Scholes. Robbie Keane scores an absolute screamer, bringing World XI level with England at 2-2.",
+      "took": "253 ms"
+     },
+     {
+      "ms": 254,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (catch_up_generated); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "live": [
+   {
+    "said": "Show me that goal",
+    "answer": "Here it is from the build-up: Usain Bolt scores first goal. Say \"back to live\" to rejoin the broadcast.",
+    "interpreter": "rules",
+    "totalMs": 995,
+    "rows": [
+     {
+      "ms": 139,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 0:17 · spoilers up to 2:22",
+      "took": "139 ms"
+     },
+     {
+      "ms": 155,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: live replay from an IVS timed-metadata cue",
+      "took": ""
+     },
+     {
+      "ms": 155,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: structured request on a title with a provider event feed",
+      "took": ""
+     },
+     {
+      "ms": 158,
+      "kind": "aws",
+      "title": "Amazon IVS · timed-metadata cue",
+      "detail": "last IVS timed-metadata cue: Usain Bolt scores first goal",
+      "took": ""
+     },
+     {
+      "ms": 158,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "opened the replay of the match",
+      "took": "567 ms"
+     },
+     {
+      "ms": 725,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "playing → at 2:12 · 1× · playing",
+      "took": "137 ms"
+     },
+     {
+      "ms": 984,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Here it is from the build-up: Usain Bolt scores first goal. Say \"back to live\" to rejoin the broadcast.",
+      "took": "984 ms"
+     },
+     {
+      "ms": 985,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (live_replay); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "films": [
+   {
+    "said": "Who is she?",
+    "answer": "That's Celia, played by Denise Rebergen.",
+    "interpreter": "rules",
+    "totalMs": 3576,
+    "rows": [
+     {
+      "ms": 180,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 6:04 · spoilers up to 6:04",
+      "took": "180 ms"
+     },
+     {
+      "ms": 190,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 192,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "froze the frame → at 6:04 · 1× · paused",
+      "took": "211 ms"
+     },
+     {
+      "ms": 403,
+      "kind": "aws",
+      "title": "Amazon Rekognition",
+      "detail": "SearchFacesByImage: face on the paused frame → Celia · played by Denise Rebergen · face collection",
+      "took": "2954 ms"
+     },
+     {
+      "ms": 3485,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "playing → at 6:04 · 1× · playing",
+      "took": "85 ms"
+     },
+     {
+      "ms": 3571,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: That's Celia, played by Denise Rebergen.",
+      "took": "3.6 s"
+     },
+     {
+      "ms": 3572,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (who_is_this); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "ask": [
+   {
+    "said": "Where have I seen her before?",
+    "answer": "You’ve seen Celia twice so far in the movie: first around 0:25 when she’s talking with Thom about fears, and again around 5:10 when someone urges her to act. There’s another appearance later in the film that I can’t reveal yet due to spoilers. Would you like me to jump to one of those moments?",
+    "interpreter": "llm",
+    "totalMs": 20206,
+    "rows": [
+     {
+      "ms": 175,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 6:08 · “his/her” = Celia · spoilers up to 6:08",
+      "took": "175 ms"
+     },
+     {
+      "ms": 186,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "open-ended request → handed to the LLM agent",
+      "took": ""
+     },
+     {
+      "ms": 3648,
+      "kind": "llm",
+      "title": "LLM · OpenRouter Nemotron 120B",
+      "detail": "the model decided to call entities.appearances (Amazon Bedrock is blocked on this account)",
+      "took": "3428 ms"
+     },
+     {
+      "ms": 3649,
+      "kind": "server",
+      "title": "Our server · Rekognition face index",
+      "detail": "where she appears → 2 moments so far, 1 hidden (spoilers)",
+      "took": "15 ms"
+     },
+     {
+      "ms": 20191,
+      "kind": "llm",
+      "title": "LLM · OpenRouter Nemotron 120B",
+      "detail": "the model wrote the answer",
+      "took": "16526 ms"
+     },
+     {
+      "ms": 20194,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: You’ve seen Celia twice so far in the movie: first around 0:25 when she’s talking with Thom about fears, and again around 5:10 when someone urges her to act. There’s another appearance later in the film that I can’t reveal yet due to spoilers. Would you like me to jump to one of those moments?",
+      "took": "20.2 s"
+     },
+     {
+      "ms": 20195,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (semantic_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "translate": [
+   {
+    "said": "Translate that into Spanish",
+    "answer": "That says: “Look Celia. We have to follow our passions.” In Spanish: Mira Celia. Tenemos que seguir nuestras pasiones.",
+    "interpreter": "rules",
+    "totalMs": 8537,
+    "rows": [
+     {
+      "ms": 167,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 5:14 · “his/her” = Celia · spoilers up to 6:31",
+      "took": "167 ms"
+     },
+     {
+      "ms": 173,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: a direct tool call, nothing to search",
+      "took": ""
+     },
+     {
+      "ms": 173,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "froze the frame → at 5:15 · 1× · paused",
+      "took": "53 ms"
+     },
+     {
+      "ms": 226,
+      "kind": "llm",
+      "title": "LLM · OpenRouter Nemotron 120B",
+      "detail": "“Look Celia. We have to follow our passions.” → “Mira Celia. Tenemos que seguir nuestras pasiones.” (sign partly read by Rekognition DetectText, completed from the captions; Amazon Translate blocked)",
+      "took": "8105 ms"
+     },
+     {
+      "ms": 8460,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "playing → at 5:15 · 1× · playing",
+      "took": "73 ms"
+     },
+     {
+      "ms": 8533,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: That says: “Look Celia. We have to follow our passions.” In Spanish: Mira Celia. Tenemos que seguir nuestras pasiones.",
+      "took": "8.5 s"
+     },
+     {
+      "ms": 8534,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (ocr_translate); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ],
+  "access": [
+   {
+    "said": "Show me Usain Bolt's goal",
+    "answer": "Usain Bolt scores first goal. Audio description: Usain Bolt, the world's fastest man, scores the first goal of Shot Parade 2023 after a 5k run.",
+    "interpreter": "rules",
+    "totalMs": 1103,
+    "rows": [
+     {
+      "ms": 136,
+      "kind": "server",
+      "title": "Our server · Context Envelope",
+      "detail": "built the context: playing 2:35 · spoilers up to 2:35",
+      "took": "136 ms"
+     },
+     {
+      "ms": 144,
+      "kind": "server",
+      "title": "Our server · Router",
+      "detail": "no AI model needed: one person's event (e.g. his goal)",
+      "took": ""
+     },
+     {
+      "ms": 152,
+      "kind": "server",
+      "title": "Our server · hybrid index search",
+      "detail": "index built with Amazon Rekognition Video → Fan scores at Old Trafford, celebrates @ 2:29",
+      "took": "500 ms"
+     },
+     {
+      "ms": 654,
+      "kind": "server",
+      "title": "Our server · moment grounding",
+      "detail": "same goal described earlier → Usain Bolt scores first goal @ 2:12",
+      "took": ""
+     },
+     {
+      "ms": 654,
+      "kind": "tv",
+      "title": "Fire TV app · ExoPlayer",
+      "detail": "jumped → at 2:12 · 1× · playing",
+      "took": "323 ms"
+     },
+     {
+      "ms": 1098,
+      "kind": "aws",
+      "title": "Amazon Polly · generative voice",
+      "detail": "spoke the answer: Usain Bolt scores first goal. Audio description: Usain Bolt, the world's fastest man, scores the first goal of Shot Parade 2023 after a 5k run.",
+      "took": "1.1 s"
+     },
+     {
+      "ms": 1099,
+      "kind": "aws",
+      "title": "Amazon DynamoDB + AgentCore Memory",
+      "detail": "saved to your viewing history (semantic_seek); AgentCore is Amazon Bedrock's agent memory",
+      "took": ""
+     }
+    ]
+   }
+  ]
+ },
+ "match": {
+  "title": "Soccer Aid for UNICEF 2023 | OFFICIAL Match Highlights",
+  "durationMs": 809540,
+  "moments": [
+   {
+    "atMs": 0,
+    "endMs": 10880,
+    "type": "establishing",
+    "label": "Opening at Old Trafford",
+    "description": "The video opens at Old Trafford, highlighting the Soccer Aid event as it marks the first appearance in three years."
+   },
+   {
+    "atMs": 10880,
+    "endMs": 22240,
+    "type": "talk",
+    "label": "Williams Redknapp McClure return",
+    "description": "Robbie Williams, Harry Redknapp, Vicky McClure, Robbie Williams and Zavon Hines appear, marking their return after last year's Soccer Aid."
+   },
+   {
+    "atMs": 22240,
+    "endMs": 33600,
+    "type": "action",
+    "label": "Maisie Adam gives ball away",
+    "description": "Maisie Adam, who married yesterday, gives the ball away early in the match while Robbie Williams, Harry Redknapp and Vicky McClure watch."
+   },
+   {
+    "atMs": 28600,
+    "endMs": 47840,
+    "type": "chance",
+    "label": "Foster beaten, England leads",
+    "description": "Ben Foster fails to stop a shot, giving England a lead, while Francesco Totti, Hernán Crespo and David James are shown on screen."
+   },
+   {
+    "atMs": 47840,
+    "endMs": 54040,
+    "type": "reveal",
+    "label": "Totti Crespo James shown",
+    "description": "Francesco Totti, Hernán Crespo and David James appear as England leads 2-1."
+   },
+   {
+    "atMs": 54040,
+    "endMs": 60920,
+    "type": "result",
+    "label": "Funds raised for Unicef",
+    "description": "The match highlights a £750 donation to Unicef while referencing Totti, Crespo and David James."
+   },
+   {
+    "atMs": 60920,
+    "endMs": 68600,
+    "type": "talk",
+    "label": "Brian McFadden raises funds",
+    "description": "Brian McFadden is praised for raising £11,000 for Unicef during the show."
+   },
+   {
+    "atMs": 68600,
+    "endMs": 76360,
+    "type": "action",
+    "label": "Fletcher advantage play",
+    "description": "Darren Fletcher gains advantage as Foxy Malone challenges him, while Brian McFadden and Jonathan Cyprien are noted."
+   },
+   {
+    "atMs": 71360,
+    "endMs": 86320,
+    "type": "chance",
+    "label": "Advantage play and near miss",
+    "description": "Referee plays advantage after Foxy Malone challenges a player, Darren Fletcher assists, and Macy Adam nearly scores."
+   },
+   {
+    "atMs": 81320,
+    "endMs": 96760,
+    "type": "chance",
+    "label": "Near miss reaction",
+    "description": "Commentary reacts to Macy Adam's close chance, calling it a near wedding gift."
+   },
+   {
+    "atMs": 96760,
+    "endMs": 109600,
+    "type": "dialogue",
+    "label": "Gary Neville introduces boys to Old Trafford",
+    "description": "Gary Neville comments on the atmosphere and introduces the boys to Old Trafford after Macy Adam's near miss."
+   },
+   {
+    "atMs": 109600,
+    "endMs": 129600,
+    "type": "talk",
+    "label": "Gary Neville discusses Jill Scott and Lionesses",
+    "description": "Gary Neville talks about Jill Scott being signed by Soccerway, her European championship win, and mentions Jamaica."
+   },
+   {
+    "atMs": 129600,
+    "endMs": 129720,
+    "type": "talk",
+    "label": "Billy Joe DuPree mentioned",
+    "description": "Commentary references Billy Joe DuPree while discussing a gym anecdote."
+   },
+   {
+    "atMs": 119720,
+    "endMs": 141600,
+    "type": "goal",
+    "label": "David James scores after 5k",
+    "description": "After a 5k run, David James releases the ball, slips it past David James and scores."
+   },
+   {
+    "atMs": 131600,
+    "endMs": 151880,
+    "type": "goal",
+    "label": "Usain Bolt scores first goal",
+    "description": "Usain Bolt, the world's fastest man, scores the first goal of Shot Parade 2023 after a 5k run."
+   },
+   {
+    "atMs": 151880,
+    "endMs": 158640,
+    "type": "celebration",
+    "label": "Usain Bolt celebrated as Manchester United fan",
+    "description": "Commentary celebrates Usain Bolt's goal, noting he is a Manchester United fan who scored at Old Trafford."
+   },
+   {
+    "atMs": 148640,
+    "endMs": 168400,
+    "type": "goal",
+    "label": "Fan scores at Old Trafford, celebrates",
+    "description": "A Manchester United fan scores at Old Trafford and celebrates with a trademark move, joined by Patrice Evra and Usain Bolt."
+   },
+   {
+    "atMs": 158400,
+    "endMs": 179240,
+    "type": "goal",
+    "label": "Player scores past David James",
+    "description": "A player slots the ball past goalkeeper David James after a trademark celebration with Manchester United Legends."
+   },
+   {
+    "atMs": 169240,
+    "endMs": 188560,
+    "type": "goal",
+    "label": "Ball slips past David James",
+    "description": "The ball is slipped past goalkeeper David James following a hamstring injury mention."
+   },
+   {
+    "atMs": 188560,
+    "endMs": 207720,
+    "type": "action",
+    "label": "Wilshere curls, Cahill headers, Foster claims",
+    "description": "Jack Wilshere curls the ball toward Jill Scott, Gary Cahill heads it, and Ben Foster makes a claim, while Sir Mo Farah replaces Bugsy Malone."
+   },
+   {
+    "atMs": 207720,
+    "endMs": 215400,
+    "type": "action",
+    "label": "Wilshere to Scott, Cahill heads",
+    "description": "Jack Wilshere curls the ball toward Jill Scott as Gary Cahill heads it and Ben Foster makes a claim."
+   },
+   {
+    "atMs": 215400,
+    "endMs": 221560,
+    "type": "action",
+    "label": "Wilshere curls, Cahill heads, Evra Bolt appear",
+    "description": "Jack Wilshere curls toward Jill Scott, Gary Cahill heads the ball, while Patrice Evra and Usain Bolt appear on screen."
+   },
+   {
+    "atMs": 221560,
+    "endMs": 241560,
+    "type": "action",
+    "label": "Cahill defended by Carney and Wilshire",
+    "description": "Gary Cahill is challenged by Carney and Wilshire as Jack Wilshere receives a great ball from Tossi Beck Nanny."
+   },
+   {
+    "atMs": 236560,
+    "endMs": 243840,
+    "type": "save",
+    "label": "Beck Nanny tests James, Austin reacts",
+    "description": "Tossi Beck Nanny plays a ball that tests goalkeeper David James, prompting a reaction from Austin."
+   },
+   {
+    "atMs": 238840,
+    "endMs": 251640,
+    "type": "save",
+    "label": "David James makes a decent stop",
+    "description": "David James makes a decent stop on a shot, while Austin reacts."
+   },
+   {
+    "atMs": 246640,
+    "endMs": 259040,
+    "type": "chance",
+    "label": "Gilligan's run and David James stop",
+    "description": "David James makes a stop as Gilligan attempts a run, with commentators referencing Billy Joe DuPree and Carlos Hyde."
+   },
+   {
+    "atMs": 259040,
+    "endMs": 272120,
+    "type": "action",
+    "label": "Gilligan's run and trick attempt",
+    "description": "Gilligan makes a run, attempts a trick to get past a defender, while commentators note the effort."
+   },
+   {
+    "atMs": 272120,
+    "endMs": 278200,
+    "type": "action",
+    "label": "Player continues attack",
+    "description": "A player continues the attack, attempting to finish the play."
+   },
+   {
+    "atMs": 278200,
+    "endMs": 297920,
+    "type": "talk",
+    "label": "Fletcher praised as England threat",
+    "description": "Commentators note Fletcher will be a thorn for England, mention Everett's fitness and David James involvement."
+   },
+   {
+    "atMs": 292920,
+    "endMs": 308560,
+    "type": "save",
+    "label": "Deflection leads to James save",
+    "description": "Everett's shot takes a deflection, David James is involved, but David James makes a save."
+   },
+   {
+    "atMs": 308560,
+    "endMs": 319040,
+    "type": "foul",
+    "label": "Carney fouled, free kick awarded",
+    "description": "Karen Carney is knocked down outside the box, winning a free kick for England after a deflection and James correction."
+   },
+   {
+    "atMs": 319040,
+    "endMs": 327520,
+    "type": "foul",
+    "label": "Carney wins free kick after foul",
+    "description": "Karen Carney is fouled by Claflin, earning a dangerous free kick for England."
+   },
+   {
+    "atMs": 327520,
+    "endMs": 333720,
+    "type": "free_kick",
+    "label": "England wins free kick near penalty",
+    "description": "Claflin gives away a free kick to England after a clumsy challenge on Sakurai, with Mr Sun observing the incident."
+   },
+   {
+    "atMs": 333720,
+    "endMs": 350600,
+    "type": "build_up",
+    "label": "Butterfield appears as England presses",
+    "description": "After the free kick, Wilshire and teammates crowd the penalty edge while Butterfield is identified as the player involved."
+   },
+   {
+    "atMs": 350600,
+    "endMs": 359080,
+    "type": "talk",
+    "label": "Goalkeeper discussion as Butterfield noted",
+    "description": "Wilshire and England players press near the box while the commentator references Butterfield and other goalkeepers' involvement."
+   },
+   {
+    "atMs": 359080,
+    "endMs": 372360,
+    "type": "talk",
+    "label": "Gary Cahill comments on first touch",
+    "description": "Gary Cahill is shown discussing the player's first touch after the goalkeeper's involvement."
+   },
+   {
+    "atMs": 367360,
+    "endMs": 385800,
+    "type": "shot",
+    "label": "Leon Edwards devastated as ball slices past",
+    "description": "Kipper and Ace anticipate a cross, but the ball slices past Leon Edwards, who looks devastated."
+   },
+   {
+    "atMs": 375800,
+    "endMs": 398240,
+    "type": "goal",
+    "label": "Butterfield scores to equalize 1-1",
+    "description": "Ace of Butterfield finishes the cross into the net, making the score 1-1 after Leon Edwards is beaten."
+   },
+   {
+    "atMs": 398240,
+    "endMs": 415240,
+    "type": "action",
+    "label": "Hiddleston advances after Butterfield goal",
+    "description": "Following Butterfield's goal, Wilshire attempts a clearance and Hiddleston pursues a lovely ball forward."
+   },
+   {
+    "atMs": 415240,
+    "endMs": 422440,
+    "type": "action",
+    "label": "Hiddleston continues the attack",
+    "description": "Hiddleston keeps possession and moves forward after the previous play."
+   },
+   {
+    "atMs": 422440,
+    "endMs": 429480,
+    "type": "action",
+    "label": "Paul Scholes watches Hiddleston's play",
+    "description": "Paul Scholes is seen observing as Tom Hiddleston moves forward with a lovely ball and attempts a pass involving a girl."
+   },
+   {
+    "atMs": 429480,
+    "endMs": 440000,
+    "type": "dialogue",
+    "label": "Stormzy comments on Paul Scholes' halftime situation",
+    "description": "Stormzy is shown laughing while noting that the team is one nil down at halftime, with Paul Scholes mentioned."
+   },
+   {
+    "atMs": 430000,
+    "endMs": 449200,
+    "type": "goal",
+    "label": "Paul Scholes scores; Redknapp, Stormzy, Cove react",
+    "description": "Paul Scholes scores for Soccer Aid, while Harry Redknapp, Stormzy and Cove react as the play restarts."
+   },
+   {
+    "atMs": 449200,
+    "endMs": 459360,
+    "type": "action",
+    "label": "Tom Grant's ball leads to Leon's clearance attempt",
+    "description": "Tom Grant delivers a brilliant ball, Leon tries to knock it out but it falls short, setting up a chance for Paul Scholes."
+   },
+   {
+    "atMs": 449360,
+    "endMs": 465920,
+    "type": "goal",
+    "label": "Scholes scores outside‑foot goal for 2‑1 lead",
+    "description": "Paul Scholes strikes the ball with the outside of his foot into the net, putting England ahead 2‑1."
+   },
+   {
+    "atMs": 455920,
+    "endMs": 478120,
+    "type": "goal",
+    "label": "England goes 2‑1 up with outside‑foot strike",
+    "description": "An unnamed player scores with an outside‑foot shot, giving England a 2‑1 lead."
+   },
+   {
+    "atMs": 478120,
+    "endMs": 489360,
+    "type": "talk",
+    "label": "Robbie Keane praised after England's 2‑1 lead",
+    "description": "Robbie Keane is highlighted as the action returns to him following England's 2‑1 advantage."
+   },
+   {
+    "atMs": 489360,
+    "endMs": 495360,
+    "type": "talk",
+    "label": "Pochettino, Melanie C and Keane see Ireland level",
+    "description": "Mauricio Pochettino and Melanie C appear as Robbie Keane notes the Irish side has leveled the match."
+   },
+   {
+    "atMs": 485360,
+    "endMs": 504280,
+    "type": "goal",
+    "label": "Robbie Keane scores screamer",
+    "description": "Robbie Keane scores an absolute screamer, bringing World XI level with England at 2-2."
+   },
+   {
+    "atMs": 504280,
+    "endMs": 517520,
+    "type": "action",
+    "label": "Evra squares off Kino",
+    "description": "Patrice Evra wins the ball and squares it off, focusing on his next move."
+   },
+   {
+    "atMs": 517520,
+    "endMs": 525280,
+    "type": "action",
+    "label": "Evra squares ball Robbie key",
+    "description": "Patrice Evra wins the ball and squares it off, followed by a comment about Robbie Keane's involvement."
+   },
+   {
+    "atMs": 525280,
+    "endMs": 535120,
+    "type": "dialogue",
+    "label": "Robbie key praises Martin Compston",
+    "description": "Robbie Keane comments that Martin Compston delivered a strong hit and is a great player."
+   },
+   {
+    "atMs": 530120,
+    "endMs": 551840,
+    "type": "save",
+    "label": "Martin Compston stays fit Edwards quick",
+    "description": "Martin Compston is noted for staying fit since retiring, while goalkeeper Edwards rushes out quickly to deny a shot at Tom's feet."
+   },
+   {
+    "atMs": 551840,
+    "endMs": 570240,
+    "type": "action",
+    "label": "Cahill clears Robbie Keane strikes",
+    "description": "Edwards rushes out, Cahill clears the ball, and Robbie Keane strikes again after the rebound."
+   },
+   {
+    "atMs": 560240,
+    "endMs": 579000,
+    "type": "goal",
+    "label": "World XI takes lead via Cahill",
+    "description": "After Cahill's clearance and Robbie Keane's strike, World XI scores to go ahead 3-2 against England."
+   },
+   {
+    "atMs": 579000,
+    "endMs": 586000,
+    "type": "action",
+    "label": "Robbie Keane assists Noah",
+    "description": "Robbie Keane delivers a lovely pass to Noah, setting up World XI's latest goal."
+   },
+   {
+    "atMs": 586000,
+    "endMs": 594400,
+    "type": "action",
+    "label": "Noah Bet levels pass, Irishman dinks",
+    "description": "Noah bet receives a delivery and levels the ball, then the Irishman executes a delicate dink."
+   },
+   {
+    "atMs": 594400,
+    "endMs": 600440,
+    "type": "celebration",
+    "label": "Irishman dinks, Embrace celebrates",
+    "description": "After the Irishman's dink, Embrace finishes the play and celebrates the goal."
+   },
+   {
+    "atMs": 600440,
+    "endMs": 606840,
+    "type": "celebration",
+    "label": "Embrace celebrates finish",
+    "description": "Embrace is highlighted as the player who finishes the move and celebrates the outcome."
+   },
+   {
+    "atMs": 606840,
+    "endMs": 623840,
+    "type": "talk",
+    "label": "Embrace expresses love for Soccer Aid",
+    "description": "Embrace states that he absolutely loves being involved in Soccer Aid every single year."
+   },
+   {
+    "atMs": 623840,
+    "endMs": 636680,
+    "type": "action",
+    "label": "Chuck reacts, Force heads ball",
+    "description": "Chuck sees the action, Force throws his head at the ball, producing a quick reaction."
+   },
+   {
+    "atMs": 636680,
+    "endMs": 644160,
+    "type": "action",
+    "label": "Ball carried loose after touch",
+    "description": "Following the best touch, the ball runs loose and is carried away by a player."
+   },
+   {
+    "atMs": 644160,
+    "endMs": 651400,
+    "type": "action",
+    "label": "Ken eyes record, aims for win",
+    "description": "The player has five on his mind, aiming to finish the play and secure the record, with Ken likely to win."
+   },
+   {
+    "atMs": 651400,
+    "endMs": 658520,
+    "type": "reveal",
+    "label": "Ken Saturday tops Soccer Aid scoring",
+    "description": "Ken Saturday is identified as the player who has scored the most goals in Soccer Aid history."
+   },
+   {
+    "atMs": 658520,
+    "endMs": 670520,
+    "type": "award",
+    "label": "Ken Saturday named top scorer",
+    "description": "Ken Saturday is announced as the new highest goal scorer in Soccer Aid and expresses delight at the achievement."
+   },
+   {
+    "atMs": 660520,
+    "endMs": 679920,
+    "type": "goal",
+    "label": "Ken Saturday scores past Clarence",
+    "description": "Ken Saturday scores a lovely goal, getting past Dutch legend Clarence, and his performance is praised."
+   },
+   {
+    "atMs": 669920,
+    "endMs": 697000,
+    "type": "goal",
+    "label": "Ken Saturday goal after Farah pass",
+    "description": "After a loose pass by Mo Farah, Ken Saturday scores past Clarence, finishing a strong run."
+   },
+   {
+    "atMs": 687000,
+    "endMs": 703200,
+    "type": "goal",
+    "label": "Ken Saturday scores past Paddy McGinnis",
+    "description": "Ken Saturday slots the ball past Paddy McGinnis Kim setona following a run, with Mo Farah involved earlier in the play."
+   },
+   {
+    "atMs": 703200,
+    "endMs": 713480,
+    "type": "talk",
+    "label": "Ken Saturday desires victory",
+    "description": "Ken Saturday states that what he really wants is victory after scoring the goal."
+   },
+   {
+    "atMs": 713480,
+    "endMs": 722800,
+    "type": "substitution",
+    "label": "Scarlet Douglas replaces Alex Brooker",
+    "description": "Scarlet Douglas comes on to replace Alex Brooker, who is described as one hell of a fella."
+   },
+   {
+    "atMs": 722800,
+    "endMs": 729560,
+    "type": "celebration",
+    "label": "Scarlet Douglas praised after substitution",
+    "description": "Scarlet Douglas is celebrated after entering the match, while Alex Brooker is again praised as a great player."
+   },
+   {
+    "atMs": 729560,
+    "endMs": 741800,
+    "type": "celebration",
+    "label": "World 11 celebrate with Mauricio Pochettino",
+    "description": "The World 11 team celebrates their fifth straight win, led by Mauricio Pochettino, with Scarlet Douglas and Alex Brooker noted in the festivities."
+   },
+   {
+    "atMs": 741800,
+    "endMs": 761240,
+    "type": "celebration",
+    "label": "World XI Celebration",
+    "description": "The World XI team celebrates their victory, led by Maurizio, while on-screen prompts encourage donations to Soccer Aid."
+   },
+   {
+    "atMs": 761240,
+    "endMs": 781240,
+    "type": "talk",
+    "label": "Donation Thank You",
+    "description": "Dermot O'Leary thanks viewers for raising £6,905 for UNICEF and expresses gratitude for the support."
+   },
+   {
+    "atMs": 781240,
+    "endMs": 791880,
+    "type": "talk",
+    "label": "Thank Players and Staff",
+    "description": "Dermot O'Leary and Robbie Williams thank the players, managers, and coaching teams, urging further donations."
+   },
+   {
+    "atMs": 791880,
+    "endMs": 799480,
+    "type": "talk",
+    "label": "Donation Reminder",
+    "description": "Miriam Aïda, Robbie Williams, and Dermot O'Leary remind viewers that donations go to UNICEF and can be made until midday July 11, 2023."
+   },
+   {
+    "atMs": 799480,
+    "endMs": 809540,
+    "type": "advertisement",
+    "label": "Partnership Sponsorship",
+    "description": "On-screen shows partnership logos with Primark and WeShop, reinforcing the donation call-to-action."
+   }
+  ]
+ }
+}

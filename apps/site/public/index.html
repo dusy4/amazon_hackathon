@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semantic Playback · Ask your TV for the moment</title>
+<meta name="description" content="An AI layer for Fire TV. Say “show me his goal”, “who is she?” or “catch me up”, and the TV finds the exact moment, plays it and remembers you asked.">
+<link rel="canonical" href="https://semanticplayback.com/">
+<meta property="og:title" content="Semantic Playback · Ask your TV for the moment">
+<meta property="og:description" content="Video players understand timestamps. Humans remember moments. An AI layer for Fire TV that finds the moment you mean and acts on it.">
+<meta property="og:image" content="https://semanticplayback.com/media/og.png">
+<meta property="og:url" content="https://semanticplayback.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0c1118">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css?v=4">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+    <symbol id="i-fork" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7c0 5 6 5 6 10M18 7c0 5-6 5-6 10"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Z"/><path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+    <symbol id="i-live" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+    <symbol id="i-cc" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10.5 10.2a2.4 2.4 0 1 0 0 3.6M17 10.2a2.4 2.4 0 1 0 0 3.6"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8"/></symbol>
+    <symbol id="i-translate" viewBox="0 0 24 24"><path d="M4 5h9M8.5 3v2c0 4-2 7-4.5 8M6 9c1 2 3 3.5 5.5 4"/><path d="m12 21 4.5-10L21 21M13.5 18h6"/></symbol>
+    <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="9" r="2"/><path d="M6 8v8M18 11c0 3-4 4-10.5 5.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Z"/><path d="M17 9a4 4 0 0 1 0 6"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Z"/><path d="m17 9 5 6M22 9l-5 6"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6"/><path d="M4 4v4.6h4.6"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="top">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Semantic Playback home">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M11 9.5v13l11-6.5-11-6.5Z" fill="#0c1118"/></svg></span>
+      <span>Semantic Playback</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#try">Try it</a>
+      <a href="#how">How it works</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#accessibility">Accessibility</a>
+    </nav>
+    <button class="btn btn-sm btn-primary" data-film>
+      <svg class="ic"><use href="#i-play"/></svg>Watch the film
+    </button>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="dot"></span>For Fire TV · Amazon Developer Hackathon 2026</p>
+      <h1>Ask your TV for the&nbsp;moment you&nbsp;remember.</h1>
+      <p class="lede">Semantic Playback is an AI layer for Fire TV. Say <q>show me his goal</q>, <q>who is she?</q> or <q>catch me up</q>. The TV finds the exact moment, plays it and remembers you asked.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#try">Try it in your browser<svg class="ic"><use href="#i-arrow"/></svg></a>
+        <button class="btn btn-ghost" data-film><svg class="ic"><use href="#i-play"/></svg>Watch the 3-minute film</button>
+      </div>
+      <p class="fine">Real recordings of the Fire OS app on the Android TV emulator. Every step on this page comes from a recorded trace.</p>
+    </div>
+
+    <div class="hero-stage" aria-label="The Fire OS app answering a question">
+      <div class="tv">
+        <div class="tv-screen">
+          <video id="heroVideo" muted playsinline autoplay preload="auto" poster="/media/lens.jpg"></video>
+          <div class="tv-bubble" id="heroBubble"><svg class="ic"><use href="#i-mic"/></svg><span></span></div>
+        </div>
+      </div>
+      <div class="tv-stand" aria-hidden="true"></div>
+      <div class="remote" aria-hidden="true">
+        <div class="remote-mic"><svg class="ic"><use href="#i-mic"/></svg></div>
+        <div class="remote-ring"><i></i></div>
+        <div class="remote-row"><i></i><i></i><i></i></div>
+      </div>
+      <ol class="hero-steps" id="heroSteps" aria-label="What happened"></ol>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <dl class="stats">
+      <div><dt>1.0&nbsp;s</dt><dd>from “show me his goal” to the build-up, with no AI model call</dd></div>
+      <div><dt>26</dt><dd>MCP tools for the player, moments, people, memory, clips and live</dd></div>
+      <div><dt>10</dt><dd>kinds of requests, recorded on a native Fire OS app</dd></div>
+      <div><dt>3</dt><dd>open-source contributions so Fire TV apps respect captions</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- WORKS WITH -->
+<section class="strip" aria-label="Built with">
+  <div class="wrap strip-in">
+    <span class="strip-label">Built with</span>
+    <ul>
+      <li><svg class="ic"><use href="#i-tv"/></svg>Fire OS · Media3</li>
+      <li><svg class="ic"><use href="#i-eye"/></svg>Amazon Rekognition</li>
+      <li><svg class="ic"><use href="#i-speaker"/></svg>Amazon Polly</li>
+      <li><svg class="ic"><use href="#i-live"/></svg>Amazon IVS</li>
+      <li><svg class="ic"><use href="#i-db"/></svg>Amazon DynamoDB</li>
+      <li><svg class="ic"><use href="#i-layers"/></svg>Bedrock AgentCore Memory</li>
+      <li><svg class="ic"><use href="#i-tool"/></svg>MCP 2025-11-25</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROBLEM + INDEX -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">The problem</p>
+      <h2>Players understand timestamps. People remember moments.</h2>
+      <p class="sub">You never think “go to 2:12”. You think “his goal”, “the line where she says two minutes left”, “what did I miss?”. Today the remote can only skip ten seconds, so you hold rewind, overshoot and try again.</p>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card bad">
+        <p class="compare-tag"><svg class="ic"><use href="#i-x"/></svg>With a remote</p>
+        <div class="scrub" aria-hidden="true">
+          <div class="scrub-bar"><span class="scrub-head" style="--x:61%"></span></div>
+          <div class="scrub-marks"><i style="--x:12%"></i><i style="--x:34%"></i><i style="--x:58%"></i><i style="--x:47%"></i><i style="--x:52%"></i></div>
+        </div>
+        <p>Rewind 10 s. Too far. Forward 10 s. Missed it. Forty seconds later you find the build-up, and the moment has passed.</p>
+      </div>
+      <div class="compare-card good">
+        <p class="compare-tag"><svg class="ic"><use href="#i-check"/></svg>With Semantic Playback</p>
+        <div class="said"><svg class="ic"><use href="#i-mic"/></svg>“Show me his goal”</div>
+        <p>The TV knows “his” is the player you just asked about, finds his goal in the match index and starts on the build-up. It took 1.0 seconds in our recording.</p>
+      </div>
+    </div>
+
+    <div class="index-card">
+      <div class="index-top">
+        <div>
+          <h3>Every moment of the match, indexed</h3>
+          <p class="muted">Soccer Aid for UNICEF 2023 highlights, 13:29. Built at ingest with Amazon Rekognition shots, faces and on-screen text, plus captions. Hover a mark, or search it the way you'd say it.</p>
+        </div>
+        <label class="index-search">
+          <svg class="ic"><use href="#i-search"/></svg>
+          <input id="idxSearch" type="search" placeholder="Try “Keane screamer” or “Scholes”" autocomplete="off">
+        </label>
+      </div>
+      <div class="index-legend" id="idxLegend"></div>
+      <div class="timeline" id="timeline" role="list" aria-label="Moments in the match"></div>
+      <div class="timeline-axis"><span>0:00</span><span>3:22</span><span>6:45</span><span>10:07</span><span>13:29</span></div>
+      <div class="index-detail" id="idxDetail" aria-live="polite">
+        <span class="muted">Pick a moment to see what the index knows about it.</span>
+      </div>
+      <p class="fine">This search box runs a simple keyword match in your browser over the real index. The product uses hybrid search (BM25, embeddings and people) with spoiler limits.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRY IT -->
+<section class="section section-alt" id="try">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Try it · no Fire TV needed</p>
+      <h2>Pick something to say. Watch the TV do it.</h2>
+      <p class="sub">Each request plays the real recording from the Fire OS app. On the right, the steps replay at their recorded timing: what our server decided, which AWS service it called and what came back.</p>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tabs" role="tablist" id="demoTabs"></div>
+      <div class="demo-chips" id="demoChips"></div>
+
+      <div class="demo-body">
+        <div class="demo-left">
+          <div class="tv tv-flat">
+            <div class="tv-screen">
+              <video id="demoVideo" playsinline preload="metadata"></video>
+              <button class="sound" id="soundBtn" aria-label="Turn sound on"><svg class="ic"><use href="#i-mute"/></svg><span>Sound off</span></button>
+              <button class="replay" id="replayBtn" aria-label="Replay"><svg class="ic"><use href="#i-replay"/></svg></button>
+            </div>
+          </div>
+          <div class="captions" id="demoCaptions"></div>
+        </div>
+
+        <aside class="trace" aria-label="Under the hood">
+          <div class="trace-head">
+            <span class="trace-title">Under the hood</span>
+            <span class="trace-clock" id="traceClock">0 ms</span>
+          </div>
+          <div class="route" id="traceRoute"></div>
+          <ol class="trace-rows" id="traceRows"></ol>
+          <div class="trace-legend">
+            <span><i class="k-aws"></i>AWS service</span><span><i class="k-tv"></i>Fire TV app</span><span><i class="k-server"></i>our server</span><span><i class="k-llm"></i>LLM</span>
+          </div>
+        </aside>
+      </div>
+      <p class="fine center">Long AI model waits are shown with their real duration. Bedrock was blocked on our new AWS account for the whole hackathon, so the agent ran the same code on OpenRouter (Nemotron 120B), and every answer says which engine ran.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">How it works</p>
+      <h2>Understand, ground, act, remember, continue.</h2>
+      <p class="sub">Follow one request through the loop. The AI model is used where meaning is ambiguous. Everything after the moment is found is exact and deterministic.</p>
+    </div>
+
+    <ol class="loop">
+      <li style="--c:var(--server)">
+        <span class="loop-n">1</span>
+        <svg class="ic loop-ic"><use href="#i-layers"/></svg>
+        <h3>Understand</h3>
+        <p>The Context Envelope tells the agent what is on screen, what you just asked about and how far you've watched.</p>
+        <code>“his” → Usain Bolt<br>spoilers up to 2:27</code>
+      </li>
+      <li style="--c:var(--server)">
+        <span class="loop-n">2</span>
+        <svg class="ic loop-ic"><use href="#i-search"/></svg>
+        <h3>Ground</h3>
+        <p>Hybrid search over the index built with Amazon Rekognition picks the moment, then starts it on the build-up.</p>
+        <code>moments.search<br>→ Usain Bolt scores first goal @ 2:12</code>
+      </li>
+      <li style="--c:var(--tv)">
+        <span class="loop-n">3</span>
+        <svg class="ic loop-ic"><use href="#i-play"/></svg>
+        <h3>Act</h3>
+        <p>A precise command reaches the Fire OS app over our player bridge, and ExoPlayer executes it natively.</p>
+        <code>player.seek 2:12 → play<br>243 ms</code>
+      </li>
+      <li style="--c:var(--aws)">
+        <span class="loop-n">4</span>
+        <svg class="ic loop-ic"><use href="#i-db"/></svg>
+        <h3>Remember</h3>
+        <p>The moment is saved to your Viewing Memory in Amazon DynamoDB and mirrored to Bedrock AgentCore Memory.</p>
+        <code>semantic_seek · Usain Bolt</code>
+      </li>
+      <li style="--c:var(--violet)">
+        <span class="loop-n">5</span>
+        <svg class="ic loop-ic"><use href="#i-replay"/></svg>
+        <h3>Continue</h3>
+        <p>Follow-ups are relative to the grounded moment, so “five seconds earlier in slow motion” is exact maths.</p>
+        <code>seek −5 s · speed 0.5×<br>772 ms, no model</code>
+      </li>
+    </ol>
+
+    <div class="lanes">
+      <div class="lane lane-fast">
+        <div class="lane-head"><span class="pill pill-server">Instant lane</span><span class="lane-time">0.1 – 1 s</span></div>
+        <h3>Rules plus hybrid search, no AI model call</h3>
+        <p>Direct requests go straight to tools: who's this, his goal, slow motion, clip it, spoilers off, not that one, catch me up.</p>
+        <ul class="lane-ex">
+          <li><span>“No, not that one, the one before half-time”</span><b>0.6 s</b></li>
+          <li><span>“Go back five seconds in slow motion”</span><b>0.8 s</b></li>
+          <li><span>“Show me his goal”</span><b>1.0 s</b></li>
+        </ul>
+      </div>
+      <div class="lane lane-agent">
+        <div class="lane-head"><span class="pill pill-llm">Agent lane</span><span class="lane-time">deadline-bounded</span></div>
+        <h3>An LLM agent chooses among 26 MCP tools</h3>
+        <p>Open questions go to the agent with the Context Envelope and the tool list. A late answer is never executed, and the spoiler limit is enforced in code.</p>
+        <ul class="lane-ex">
+          <li><span>“Where have I seen her before?”</span><b>entities.appearances</b></li>
+          <li><span>“When do they let the dough rest?”</span><b>moments.search</b></li>
+          <li><span>“Go back to the part about schools teaching software”</span><b>transcript.window</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section section-alt" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">What it does</p>
+      <h2>It behaves like someone who watched with you.</h2>
+      <p class="sub">Hover a card to preview the recording. Click to open it in the demo with its trace.</p>
+    </div>
+    <div class="features" id="features-grid"></div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="section" id="architecture">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Architecture</p>
+      <h2>Select a component to see what it does.</h2>
+      <p class="sub">The self-hosted MCP server is the exact surface an Alexa+ add-on connects to. Alexa+ developer tools are partner-only during the hackathon, so our own agent and the Fire OS app call the same server today.</p>
+    </div>
+
+    <div class="arch">
+      <div class="arch-diagram" id="arch" role="group" aria-label="Architecture diagram"></div>
+      <div class="arch-panel" id="archPanel" aria-live="polite"></div>
+    </div>
+
+    <div class="ingest">
+      <p class="ingest-title">At ingest, every title becomes an index</p>
+      <ol class="ingest-flow">
+        <li><svg class="ic"><use href="#i-film"/></svg>Video</li>
+        <li><svg class="ic"><use href="#i-db"/></svg>Amazon S3</li>
+        <li><svg class="ic"><use href="#i-eye"/></svg>Rekognition Video shots</li>
+        <li><svg class="ic"><use href="#i-eye"/></svg>Rekognition faces, text, labels</li>
+        <li><svg class="ic"><use href="#i-cc"/></svg>Captions</li>
+        <li><svg class="ic"><use href="#i-spark"/></svg>Descriptions + embeddings</li>
+        <li><svg class="ic"><use href="#i-search"/></svg>Hybrid index</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESSIBILITY / OPEN SOURCE -->
+<section class="section section-alt" id="accessibility">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Accessibility · open source</p>
+      <h2>We went to fix captions in our app and found them broken for every React Native Fire TV app.</h2>
+      <p class="sub">People who rely on captions, or on Audio Description (a narrator describing the picture for blind and low-vision viewers), turn it on once in Fire TV settings. Apps are supposed to follow it. Our native app did. Amazon's React Native starter for TV apps didn't, and a bug underneath meant subtitle files never loaded on Android at all.</p>
+    </div>
+
+    <div class="a11y">
+      <div class="a11y-demo" aria-label="Captions before and after">
+        <div class="a11y-toggle" role="group" aria-label="Show">
+          <button class="seg on" data-a11y="before">Before</button>
+          <button class="seg" data-a11y="after">After</button>
+        </div>
+        <div class="a11y-tv" id="a11yTv" data-state="before">
+          <img src="/media/a11y.jpg" alt="A scene from Tears of Steel on the TV" loading="lazy">
+          <div class="a11y-settings"><span>Settings · Accessibility</span><b>Closed Captions <i class="sw on"></i></b><b>Audio Description <i class="sw on"></i></b></div>
+          <div class="a11y-cap">Look Celia. We have to follow our passions.</div>
+          <div class="a11y-note before-only">Captions are on in Settings. Nothing appears.</div>
+          <div class="a11y-note after-only ok">Captions follow the setting, live, in the chosen language. The Audio Description version plays at the same position.</div>
+        </div>
+      </div>
+
+      <ol class="contribs">
+        <li>
+          <span class="contrib-n">1</span>
+          <div>
+            <h3>A new open-source module</h3>
+            <p>Gives any React Native TV app the viewer's Captions and Audio Description settings, and updates live when they change.</p>
+            <a class="link" href="https://github.com/dusy4/expo-tv-accessibility-settings" target="_blank" rel="noopener">expo-tv-accessibility-settings<svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <span class="contrib-n">2</span>
+          <div>
+            <h3>A pull request to Amazon's TV sample</h3>
+            <p>Captions appear in the chosen language when turned on. The described version plays while Audio Description is on, and switches back mid-video without losing your place.</p>
+            <a class="link" href="https://github.com/AmazonAppDev/react-native-multi-tv-app-sample/pull/144" target="_blank" rel="noopener">react-native-multi-tv-app-sample #144<svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <span class="contrib-n">3</span>
+          <div>
+            <h3>The root-cause fix in react-native-video</h3>
+            <p>Since 6.16, side-loaded subtitle files never loaded on Android. The open issue had no cause. The fix loads each track the way Media3 expects.</p>
+            <a class="link" href="https://github.com/TheWidlarzGroup/react-native-video/pull/5178" target="_blank" rel="noopener">react-native-video #5178<svg class="ic"><use href="#i-arrow"/></svg></a>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- HONEST STACK -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Built honestly</p>
+      <h2>What runs where, including what didn't.</h2>
+      <p class="sub">Our new AWS account stayed in verification for the whole hackathon. Instead of hiding it, every feature degrades visibly and tells you which engine answered.</p>
+    </div>
+    <div class="stack" id="stackGrid"></div>
+
+    <div class="numbers">
+      <div><b>35</b><span>paraphrased requests in the golden set, across four videos</span></div>
+      <div><b>91%</b><span>handled correctly by the LLM agent</span></div>
+      <div><b>27 ms</b><span>median for the rules path, 77% of requests without any model</span></div>
+      <div><b>58</b><span>automated tests, including end-to-end over real MCP</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-alt" id="faq">
+  <div class="wrap narrow">
+    <div class="section-head center">
+      <p class="kicker">FAQ</p>
+      <h2>Questions people ask first.</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Is the demo real?</summary><p>Yes. Every clip is a screen recording of our Fire OS app (Kotlin, Media3 ExoPlayer) on the Android TV emulator, API 30, which is the Android base of Fire OS 8. The steps next to each clip come from the trace our server saved for that request. Requests were sent by a script through the same endpoint typed or spoken input uses.</p></details>
+      <details><summary>Is this Alexa+?</summary><p>No. Alexa+ is the voice front end we designed for. We built the part it connects to: a self-hosted MCP server (spec 2025-11-25, Streamable HTTP, 26 tools). Alexa+ add-on tools are partner-only, so our own agent calls the same server today.</p></details>
+      <details><summary>Does it spoil things?</summary><p>No. The spoiler boundary moves only with real playback. Search, catch-up and open questions never use moments after it until you say “spoilers off”, and that rule lives in code rather than in a prompt.</p></details>
+      <details><summary>Which videos does it work with?</summary><p>Any video that has been indexed. The demo uses Creative Commons titles: Soccer Aid for UNICEF 2023 highlights, Tears of Steel, a cooking video and a TEDx talk, plus a live Amazon IVS channel. Each title's index is built once, at ingest.</p></details>
+      <details><summary>What does it use AWS for?</summary><p>Amazon Rekognition for shots, faces, on-screen text and film characters. Amazon Polly for every spoken answer. Amazon DynamoDB and Bedrock AgentCore Memory for Viewing Memory. Amazon IVS for the live channel and its goal markers. Amazon S3 for media. Bedrock is integrated as the agent's model and switches on when the account is enabled.</p></details>
+      <details><summary>Can I run it?</summary><p>Yes, without an AWS account. The repository ships compact copies of the six titles, and features that need AWS say so when it's missing. The source is shared with the hackathon judges.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final">
+  <div class="wrap final-in">
+    <h2>Video players understand timestamps.<br><span>Humans remember moments.</span></h2>
+    <div class="cta-row center">
+      <button class="btn btn-primary" data-film><svg class="ic"><use href="#i-play"/></svg>Watch the 3-minute film</button>
+      <a class="btn btn-ghost" href="#try">Try it in your browser<svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div>
+      <a class="brand" href="#top"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M11 9.5v13l11-6.5-11-6.5Z" fill="#0c1118"/></svg></span><span>Semantic Playback</span></a>
+      <p class="muted">Built by dusy4 for Build, Ship, Shape: Amazon Developer Hackathon 2026 (Fire TV track).</p>
+    </div>
+    <div class="footer-cols">
+      <div><b>Open source</b><a href="https://github.com/dusy4/expo-tv-accessibility-settings" target="_blank" rel="noopener">Accessibility settings module</a><a href="https://github.com/AmazonAppDev/react-native-multi-tv-app-sample/pull/144" target="_blank" rel="noopener">Sample pull request</a><a href="https://github.com/TheWidlarzGroup/react-native-video/pull/5178" target="_blank" rel="noopener">react-native-video fix</a></div>
+      <div><b>Credits</b><span>Footage (CC BY): Soccer Aid for UNICEF 2023; Tears of Steel © Blender Foundation; a roti recipe and a TEDx talk.</span><span>Voices: Amazon Polly. Music in the film: “Newer Wave”, Kevin MacLeod (incompetech.com), CC BY 4.0.</span></div>
+    </div>
+  </div>
+  <div class="wrap legal">Independent hackathon project, not affiliated with or endorsed by Amazon. Amazon, Fire TV, Alexa and AWS are trademarks of Amazon.com, Inc. or its affiliates.</div>
+</footer>
+
+<dialog class="film" id="film" aria-label="The 3-minute film">
+  <form method="dialog"><button class="film-close" aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></form>
+  <video id="filmVideo" controls playsinline preload="none" poster="/media/film.jpg"></video>
+</dialog>
+
+<script src="/app.js?v=4" defer></script>
+</body>
+</html>
