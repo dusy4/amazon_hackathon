@@ -1,0 +1,40 @@
+Semantic Playback: Fire OS app (APK) and how to run it
+=======================================================
+
+What this is
+  semantic-playback-fireos-0.1.0.apk: the native Fire OS app (Kotlin, Media3 ExoPlayer),
+  package com.semanticplayback.firetv. It is the TV client; it needs the Semantic Playback
+  server from the repository running on a computer on the same network.
+
+  Download: https://semanticplayback.com/download/semantic-playback-fireos-0.1.0.apk
+  Source code: https://github.com/dusy4/amazon_hackathon (MIT)
+  Website and interactive demo: https://semanticplayback.com
+
+1. Start the server (no AWS account or API keys needed)
+     git clone https://github.com/dusy4/amazon_hackathon
+     cd amazon_hackathon
+     npm install
+     npm start
+   The server listens on port 8787. The six demo titles ship in the repository.
+
+2a. Android TV emulator (API 30, the Android base of Fire OS 8)
+     adb install -r semantic-playback-fireos-0.1.0.apk
+     adb shell am start -n com.semanticplayback.firetv/.MainActivity
+   The app reaches the host computer at http://10.0.2.2:8787 by default.
+   Optional lighter video for slow emulators:  --es variant 480
+
+2b. Fire TV device
+   Enable Developer options > ADB debugging (and Apps from Unknown Sources), then:
+     adb connect <fire-tv-ip>
+     adb install -r semantic-playback-fireos-0.1.0.apk
+     adb shell am start -n com.semanticplayback.firetv/.MainActivity --es server http://<computer-lan-ip>:8787
+
+3. Talk to it
+   Press MENU on the remote for suggested requests, or type them on the companion page
+   (http://<computer-lan-ip>:8787/phone/), or send them from any MCP client (http://<host>:8787/mcp).
+   Try: "Who's this?" · "Show me his goal" · "Go back five seconds in slow motion" ·
+        "Clip that and send it to my phone" · "Show me Robbie Keane's goal" · "Spoilers off"
+
+Without AWS credentials, "who's this" and "read the score" answer from the Amazon Rekognition
+analysis stored at indexing and say so; open questions and translation need an LLM key or AWS
+(see README > AWS setup). The video footage is CC BY; see data/content/ATTRIBUTION.md.

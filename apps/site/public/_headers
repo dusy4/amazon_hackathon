@@ -2,3 +2,8 @@
   Cache-Control: public, max-age=86400
 /data/*
   Cache-Control: public, max-age=300
+/download/*.apk
+  Content-Type: application/vnd.android.package-archive
+  Content-Disposition: attachment
+/download/*.zip
+  Content-Disposition: attachment

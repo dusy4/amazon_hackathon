@@ -79,6 +79,10 @@ npm run smoke:mcp  # what any MCP client (Alexa+, an AgentCore agent) sees
 
 ### Fire OS app
 
+Prebuilt APK, no build needed: https://semanticplayback.com/download/semantic-playback-fireos-0.1.0.apk
+(`adb install -r` it; on the Android TV emulator the app reaches the server at `10.0.2.2:8787` by default, on a
+Fire TV add `--es server http://<lan-ip>:8787` to the start command below). Or build it:
+
 ```bash
 cd apps/fire-tv/android && ./gradlew assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk

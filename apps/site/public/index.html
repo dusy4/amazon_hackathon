@@ -414,7 +414,7 @@
       <details><summary>Does it spoil things?</summary><p>No. The spoiler boundary moves only with real playback. Search, catch-up and open questions never use moments after it until you say “spoilers off”, and that rule lives in code rather than in a prompt.</p></details>
       <details><summary>Which videos does it work with?</summary><p>Any video that has been indexed. The demo uses Creative Commons titles: Soccer Aid for UNICEF 2023 highlights, Tears of Steel, a cooking video and a TEDx talk, plus a live Amazon IVS channel. Each title's index is built once, at ingest.</p></details>
       <details><summary>What does it use AWS for?</summary><p>Amazon Rekognition for shots, faces, on-screen text and film characters. Amazon Polly for every spoken answer. Amazon DynamoDB and Bedrock AgentCore Memory for Viewing Memory. Amazon IVS for the live channel and its goal markers. Amazon S3 for media. Bedrock is integrated as the agent's model and switches on when the account is enabled.</p></details>
-      <details><summary>Can I run it?</summary><p>Yes, without an AWS account. The repository ships compact copies of the six titles, and features that need AWS say so when it's missing. The code is on <a class="link" href="https://github.com/dusy4/amazon_hackathon" target="_blank" rel="noopener">GitHub</a> under the MIT licence.</p></details>
+      <details><summary>Can I run it?</summary><p>Yes, without an AWS account. Download the Fire OS app (<a class="link" href="/download/semantic-playback-fireos-0.1.0.apk">APK, 8 MB</a>, with <a class="link" href="/download/HOW-TO-RUN.txt">run instructions</a>), start the server from the repo with <code>npm install &amp;&amp; npm start</code>, and install the app on a Fire TV or the Android TV emulator. The repository ships compact copies of the six titles, and features that need AWS say so when it's missing. The code is on <a class="link" href="https://github.com/dusy4/amazon_hackathon" target="_blank" rel="noopener">GitHub</a> under the MIT licence.</p></details>
     </div>
   </div>
 </section>
@@ -439,7 +439,7 @@
     </div>
     <div class="footer-cols">
       <div><b>Open source</b><a href="https://github.com/dusy4/amazon_hackathon" target="_blank" rel="noopener">Semantic Playback on GitHub</a><a href="https://github.com/dusy4/expo-tv-accessibility-settings" target="_blank" rel="noopener">Accessibility settings module</a><a href="https://github.com/AmazonAppDev/react-native-multi-tv-app-sample/pull/144" target="_blank" rel="noopener">Sample pull request</a><a href="https://github.com/TheWidlarzGroup/react-native-video/pull/5178" target="_blank" rel="noopener">react-native-video fix</a></div>
-      <div><b>Build notes</b><a href="/friction-log">Friction log (13 entries)</a></div>
+      <div><b>Build notes</b><a href="/friction-log">Friction log (13 entries)</a><a href="/download/semantic-playback-fireos-0.1.0.apk">Fire OS app (APK)</a><a href="/download/HOW-TO-RUN.txt">How to run it</a></div>
       <div><b>Credits</b><span>Footage (CC BY): Soccer Aid for UNICEF 2023; Tears of Steel © Blender Foundation; a roti recipe and a TEDx talk.</span><span>Voices: Amazon Polly. Music in the film: “Newer Wave”, Kevin MacLeod (incompetech.com), CC BY 4.0.</span></div>
     </div>
   </div>
