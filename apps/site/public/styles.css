@@ -82,7 +82,8 @@ code { font-family: var(--mono); }
 .nav-links { display: flex; gap: 4px; margin-left: auto; }
 .nav-links a { padding: 8px 12px; border-radius: 8px; color: var(--text-2); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 200ms ease, background-color 200ms ease; }
 @media (hover: hover) { .nav-links a:hover { color: var(--text); background: hsla(214 30% 100% / .05); } }
-@media (max-width: 860px) { .nav-links { display: none; } .nav .btn { margin-left: auto; } }
+@media (max-width: 860px) { .nav-links { display: none; } .nav-gh { margin-left: auto; } }
+@media (max-width: 520px) { .nav-gh { display: none; } .nav .btn-primary { margin-left: auto; } }
 
 /* Hero */
 .hero { position: relative; padding: 64px 0 48px; overflow: hidden; }
