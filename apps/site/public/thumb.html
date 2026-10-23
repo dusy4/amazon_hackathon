@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Semantic Playback · thumbnail</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* 1800×1200 (3:2) listing image: big two-colour title left, tilted real product frame right. */
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #ccc; font-family: "Geist", sans-serif; }
+  .t { position: relative; width: 1800px; height: 1200px; overflow: hidden;
+       background: radial-gradient(900px 700px at 78% 45%, #dfe8ff 0%, transparent 70%), linear-gradient(160deg, #ffffff 0%, #f3f5fd 45%, #e6ecfb 100%); }
+  .brand { position: absolute; left: 96px; top: 92px; display: flex; align-items: center; gap: 22px; font-size: 58px; font-weight: 600; letter-spacing: -0.02em; color: #161d26; }
+  .logo { width: 84px; height: 84px; border-radius: 22px; background: linear-gradient(135deg, #ff9900 0%, #f0b13a 35%, #22b8d9 100%); display: grid; place-items: center; box-shadow: 0 10px 24px hsla(220 40% 20% / .18); }
+  .logo svg { width: 56px; height: 56px; }
+  h1 { position: absolute; left: 92px; top: 250px; margin: 0; font-family: "Anton", sans-serif; font-weight: 400; font-size: 158px; line-height: .98; letter-spacing: .005em; text-transform: uppercase; color: #161d26; }
+  h1 span { color: #e88300; display: block; }
+  .sub { position: absolute; left: 98px; top: 790px; max-width: 640px; line-height: 1.4; font-size: 34px; color: #4b5563; font-weight: 500; }
+  .sub b { color: #161d26; font-weight: 600; }
+  .stage { position: absolute; right: -90px; top: 250px; width: 1020px; perspective: 1800px; }
+  .tv { transform: rotateY(-16deg) rotateX(5deg) rotateZ(-1deg); transform-origin: left center; border-radius: 26px; padding: 14px; background: linear-gradient(180deg, #2a313b, #0f141a); box-shadow: 0 60px 90px hsla(225 45% 25% / .30), 0 10px 24px hsla(225 45% 25% / .18); }
+  .tv img { display: block; width: 100%; border-radius: 14px; }
+  .chip { position: absolute; display: flex; align-items: center; gap: 14px; padding: 16px 24px 16px 18px; border-radius: 22px; background: #fff; box-shadow: 0 24px 50px hsla(225 45% 25% / .22); font-size: 30px; font-weight: 600; color: #161d26; white-space: nowrap; }
+  .chip i { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+  .chip i svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .chip small { display: block; font-size: 21px; font-weight: 500; color: #6b7280; margin-top: 2px; }
+  .chip .ms { font-family: "Geist Mono", monospace; font-size: 22px; color: #1d8102; margin-left: 6px; }
+  .c1 { left: 40px; top: -40px; border: 2px solid #ffb84d; }
+  .c1 i { background: #fff3e0; color: #e88300; }
+  .c2 { right: 150px; top: 520px; }
+  .c2 i { background: #fff3e0; color: #b35c00; }
+  .c3 { left: 60px; top: 690px; }
+  .c3 i { background: #e8f1fd; color: #0972d3; }
+</style>
+</head>
+<body>
+<div class="t" id="thumb">
+  <div class="brand"><span class="logo"><svg viewBox="0 0 32 32"><path d="M11 9.5v13l11-6.5-11-6.5Z" fill="#fff"/></svg></span>Semantic Playback</div>
+  <h1>Ask your<br>TV for the<span>moment</span></h1>
+  <p class="sub">An AI layer for <b>Fire TV</b>. Say what you remember; the TV finds the moment and plays it.</p>
+  <div class="stage">
+    <div class="tv"><img src="/media/gallery/f-lens.jpg" alt=""></div>
+    <div class="chip c1"><i><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></i>“Who's this?”</div>
+    <div class="chip c2"><i><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></i><div>Usain Bolt · 100%<small>Amazon Rekognition, paused frame</small></div></div>
+    <div class="chip c3"><i><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg></i><div>“Show me his goal” → 2:12<span class="ms">1.0 s</span><small>from the build-up, no AI model call</small></div></div>
+  </div>
+</div>
+</body>
+</html>
