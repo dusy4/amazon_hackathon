@@ -45,7 +45,7 @@ const SCENES: Scene[] = [
     steps: [
       { open: "yt-soccer-aid-2023" },
       { setup: { spoilerMode: "strict" } },
-      { seek: 128000, play: true, untilMs: 143000 }, // the viewer watches Usain Bolt score, then he turns to camera
+      { seek: 128000, play: true, untilMs: 146000 }, // the viewer watches Usain Bolt score; ask while his salute close-up is on screen
       { say: "Who's this?", holdMs: 4500 }, // the lens freezes the frame, answers, and play resumes
       { say: "Read the score", holdMs: 4500 },
       { say: "Show me his goal", holdMs: 13000 }, // plays from the build-up: the ball goes in ~9 s later

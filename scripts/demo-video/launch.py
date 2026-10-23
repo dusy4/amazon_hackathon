@@ -222,7 +222,7 @@ def _result_text(name, d):
         conf = next((f for f in facts if "confidence" in f), "")
         played = next((f for f in facts if f.startswith("played by")), "")
         src = (d.get("provenance") or {}).get("source", "")
-        how = "face collection" if "SearchFacesByImage" in src else (conf.split(" with ")[-1] if conf else "shot keyframe" if "ingest" in src else "")
+        how = "face collection" if "SearchFacesByImage" in src else (conf.split(" with ")[-1] if conf else "")
         return " · ".join(x for x in [e.get("name", "nobody recognised"), played, how] if x)
     if name == "lens.translate":
         eng = d.get("engine", "")
@@ -304,7 +304,9 @@ def rail_rows(tr):
             if lab == "lens.identify":
                 src = (d.get("provenance") or {}).get("source", "")
                 api = "SearchFacesByImage" if "SearchFacesByImage" in src else "RecognizeCelebrities"
-                rows.append((ms, AWS_C, "Amazon Rekognition", f"{api}: face on the paused frame → {out}", took))
+                # Only claim the paused frame when that frame was the one recognised; otherwise name the indexed keyframe.
+                where = "face on the paused frame" if "live frame" in src or "SearchFacesByImage" in src else "the shot's keyframe, analysed at ingest"
+                rows.append((ms, AWS_C, "Amazon Rekognition", f"{api}: {where} → {out}", took))
             elif lab == "lens.read_text":
                 rows.append((ms, AWS_C, "Amazon Rekognition", f"DetectText: read the screen → {out}", took))
             elif lab == "lens.translate":
